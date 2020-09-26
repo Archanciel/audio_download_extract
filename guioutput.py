@@ -17,6 +17,7 @@ class GuiOutput:
 		self.msg = Message(self.root, aspect=winWidth - 10)
 		self.msg.grid(row=2, column=0, columnspan=2, padx=2) 
 		self.msgText = ''  
+		self.msg = Message(self.root, aspect=winWidth - 10)
 
 	def getPlaylistUrlFromClipboard(self):
 		playlistUrl = None
@@ -28,10 +29,14 @@ class GuiOutput:
 			pass
 
 		return playlistUrl
-		
+	
+	def setMessage(self, msgText):
+		self.msg.configure(text=msgText)
+		self.root.update()
+			
 	def displayError(self, msg):
 		return msgb.showerror(message=msg)
 		
 	def getConfirmation(self, msg):
-		return msgb.askquestion(message=msg)
+		return msgb.askquestion(message=msg) == 'yes'
 		
