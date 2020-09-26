@@ -9,7 +9,7 @@ else:
 	WIN_WIDTH_RATIO = 0.8
 	WIN_HEIGHT = 500	
 
-class GuyOutput:
+class GuiOutput:
 	def __init__(self, tkRoot):
 		self.root = tkRoot
 		winWidth = int(self.root.winfo_screenwidth() * WIN_WIDTH_RATIO)
