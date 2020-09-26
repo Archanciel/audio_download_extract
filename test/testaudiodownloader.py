@@ -1,5 +1,5 @@
 import unittest
-import os, sys, inspect, datetime, shutil, glob
+import os, sys, inspect, shutil, glob
 from io import StringIO
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
