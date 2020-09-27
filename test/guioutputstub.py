@@ -15,5 +15,6 @@ class GuiOutputStub:
 		
 	def getConfirmation(self, msg):
 		print(msg)
+		
 		return True
 		

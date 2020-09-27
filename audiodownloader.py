@@ -47,7 +47,9 @@ class AudioDownloader:
 			self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
 			self.guiOutput.setMessage(self.msgText)
 			audioStream.download(output_path=targetAudioDir)
-				
+		
+		return timeInfo, targetAudioDir
+	
 	def splitPlayListTitle(self, playlistTitle):
 		pattern = r"(.+) ([\d\./]+)"
 		playlistName = None
@@ -63,14 +65,4 @@ class AudioDownloader:
 			playlistName = playlistTitle
 
 		return playlistName, timeInfo
-
-	def splitTimeInfo(self, timeInfo):
-		timeLst = timeInfo.split('/')
-		timeStartHHMMSS = timeLst[0].split('.')
-		timeEndHHMMSS = timeLst[1].split('.')
-
-		timeStartSec = int(timeStartHHMMSS[0]) * 3600 + int(timeStartHHMMSS[1]) * 60 + int(timeStartHHMMSS[2])
-		timeEndSec = int(timeEndHHMMSS[0]) * 3600 + int(timeEndHHMMSS[1]) * 60 + int(timeEndHHMMSS[2])
-
-		return timeStartSec, timeEndSec
 		

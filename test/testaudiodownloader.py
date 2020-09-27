@@ -11,12 +11,19 @@ from guioutputstub import GuiOutputStub
 from audiodownloader import AudioDownloader
 			
 class TestAudioDownloader(unittest.TestCase):
-	def testDownloadAudioFromPlaylist_targetFolder_exist(self):
-		downloadDir = AUDIO_DIR + DIR_SEP + 'test_audio_downloader'
+	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
+		playlistName = 'test_audio_downloader_one_file'
+		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+			
 		guiOutput = GuiOutputStub()
 		audioDownloader = AudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
@@ -41,8 +48,9 @@ class TestAudioDownloader(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
 
-	def testDownloadAudioFromPlaylist_targetFolder_not_exist(self):
-		downloadDir = AUDIO_DIR + DIR_SEP + 'test_audio_downloader'
+	def testDownloadAudioFromPlaylistOneVideo_targetFolder_not_exist(self):
+		playlistName = 'test_audio_downloader_one_file'
+		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -62,7 +70,7 @@ class TestAudioDownloader(unittest.TestCase):
 
 		if os.name == 'posix':
 			self.assertEqual(['Directory',
-							  'Audiobooks/test_audio_downloader',
+							  'Audiobooks/test_audio_downloader_one_file',
 							  'will be created.',
 							  '',
 							  'Continue with download ?',
@@ -71,7 +79,7 @@ class TestAudioDownloader(unittest.TestCase):
 							  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['Directory',
-							  'Audiobooks\\test_audio_downloader',
+							  'Audiobooks\\test_audio_downloader_one_file',
 							  'will be created.',
 							  '',
 							  'Continue with download ?',
@@ -82,7 +90,50 @@ class TestAudioDownloader(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
 
+	def testDownloadAudioFromPlaylistMultipleVideo(self):
+		playlistName = 'test_audio_downloader_two_files'
+		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioDownloader = AudioDownloader(guiOutput)
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioDownloader.downloadAudioFromPlaylist(playlistUrl)
+
+		sys.stdout = stdout
+
+		if os.name == 'posix':
+			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  '',
+			                  'downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  'downloading Here to help: Give him what he wants',
+							  '',
+							  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  '',
+			                  'downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  'downloading Here to help: Give him what he wants',
+							  '',
+							  ''], outputCapturingString.getvalue().split('\n'))
+
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4',]), sorted(fileNameLst))
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioDownloader()
-	tst.testDownloadAudioFromPlaylist_targetFolder_not_exist()
+	tst.testDownloadAudioFromPlaylistMultipleVideo()

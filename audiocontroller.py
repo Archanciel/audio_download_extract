@@ -4,6 +4,7 @@ from tkinter import Tk
 from configmanager import ConfigManager
 from guioutput import GuiOutput
 from audiodownloader import AudioDownloader
+from audioextracter import AudioExtracter
 
 class AudioController:
 	def __init__(self):
@@ -27,7 +28,11 @@ class AudioController:
 			return
 			
 		audioDownloader = AudioDownloader(self.guiOutput)
+		timeInfo, targetAudioDir = audioDownloader.downloadAudioFromPlaylist(playlistUrl)
 		
+		if timeInfo:
+			audioExtracter = AudioExtracter(self.guiOutput, targetAudioDir)
+			audioExtracter.extractAudioPortion(timeInfo)
 
 if __name__ == "__main__":
 	downloader = AudioController()
