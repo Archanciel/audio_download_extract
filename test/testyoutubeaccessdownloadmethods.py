@@ -10,7 +10,10 @@ from constants import *
 from guioutputstub import GuiOutputStub
 from youtubeaccess import YoutubeAccess
 			
-class TestYoutubeAccess(unittest.TestCase):
+class TestYoutubeAccessDownloadMethods(unittest.TestCase):
+	'''
+	Since testing download consume band width, it is placed in a specific test class.
+	'''
 	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
@@ -135,5 +138,5 @@ class TestYoutubeAccess(unittest.TestCase):
 
 if __name__ == '__main__':
 #	unittest.main()
-	tst = TestYoutubeAccess()
+	tst = TestYoutubeAccessDownloadMethods()
 	tst.testDownloadAudioFromPlaylistMultipleVideo()
