@@ -11,16 +11,9 @@ class YoutubeAccess:
 		
 	def downloadAudioFromPlaylist(self, playlistUrl):
 
-		playlist = None
+		playlist = self.getPlaylistObject(playlistUrl)
 		
-		try:
-			playlist = Playlist(playlistUrl)
-			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-		except KeyError as e:
-			self.guiOutput.displayError('Playlist URL not in clipboard. Program closed.')			
-			return
-		except http.client.InvalidURL as e:
-			self.guiOutput.displayError(str(e))
+		if playlist == None:
 			return
 		
 		playlistTitle = playlist.title()
@@ -49,6 +42,21 @@ class YoutubeAccess:
 			audioStream.download(output_path=targetAudioDir)
 		
 		return timeInfo, targetAudioDir
+	
+	def getPlaylistObject(self, playlistUrl):
+		playlist = None
+		
+		try:
+			playlist = Playlist(playlistUrl)
+			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
+		except KeyError as e:
+			self.guiOutput.displayError('Playlist URL not in clipboard. Program closed.')
+		except http.client.InvalidURL as e:
+			self.guiOutput.displayError(str(e))
+		except AttributeError as e:
+			self.guiOutput.displayError('playlist URL == None')
+
+		return playlist
 	
 	def splitPlayListTitle(self, playlistTitle):
 		pattern = r"(.+) ([\d\./]+)"

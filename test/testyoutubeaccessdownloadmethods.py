@@ -28,14 +28,14 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		audioDownloader = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioDownloader.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -60,14 +60,14 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		audioDownloader = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioDownloader.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -107,14 +107,14 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioDownloader = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioDownloader.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
