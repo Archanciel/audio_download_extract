@@ -3,7 +3,7 @@ from tkinter import Tk
 
 from configmanager import ConfigManager
 from guioutput import GuiOutput
-from audiodownloader import AudioDownloader
+from youtubeaccess import YoutubeAccess
 from audioextracter import AudioExtracter
 
 class AudioController:
@@ -27,7 +27,7 @@ class AudioController:
 
 			return
 			
-		audioDownloader = AudioDownloader(self.guiOutput)
+		audioDownloader = YoutubeAccess(self.guiOutput)
 		timeInfo, targetAudioDir = audioDownloader.downloadAudioFromPlaylist(playlistUrl)
 		
 		if timeInfo:

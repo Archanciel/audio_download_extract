@@ -4,7 +4,7 @@ import http.client
 
 from constants import *
 
-class AudioDownloader:
+class YoutubeAccess:
 	def __init__(self, guiOutput):
 		self.guiOutput = guiOutput
 		self.msgText = ''

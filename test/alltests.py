@@ -2,7 +2,7 @@ import os
 from unittest import TestLoader, TextTestRunner, TestSuite
 
 from testguioutput import TestGuiOutput
-from testaudiodownloader import TestAudioDownloader
+from testyoutubeaccess import TestYoutubeAccess
 from testaudioextracter import TestAudioExtracter
 
 if __name__ == "__main__":
@@ -10,11 +10,11 @@ if __name__ == "__main__":
     
     if os.name == 'posix':
         # running TestGuiOutput on Android is not possible !
-        suite = TestSuite((loader.loadTestsFromTestCase(TestAudioDownloader),
+        suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAccess),
         ))
     else:
         suite = TestSuite((loader.loadTestsFromTestCase(TestGuiOutput),
-                    	   loader.loadTestsFromTestCase(TestAudioDownloader),
+                    	   loader.loadTestsFromTestCase(TestYoutubeAccess),
                     	   loader.loadTestsFromTestCase(TestAudioExtracter),
         ))
         

@@ -8,9 +8,9 @@ sys.path.insert(0, parentdir)
 
 from constants import *
 from guioutputstub import GuiOutputStub
-from audiodownloader import AudioDownloader
+from youtubeaccess import YoutubeAccess
 			
-class TestAudioDownloader(unittest.TestCase):
+class TestYoutubeAccess(unittest.TestCase):
 	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
@@ -25,7 +25,7 @@ class TestAudioDownloader(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		audioDownloader = AudioDownloader(guiOutput)
+		audioDownloader = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -57,7 +57,7 @@ class TestAudioDownloader(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		audioDownloader = AudioDownloader(guiOutput)
+		audioDownloader = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -104,7 +104,7 @@ class TestAudioDownloader(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioDownloader = AudioDownloader(guiOutput)
+		audioDownloader = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -135,5 +135,5 @@ class TestAudioDownloader(unittest.TestCase):
 
 if __name__ == '__main__':
 #	unittest.main()
-	tst = TestAudioDownloader()
+	tst = TestYoutubeAccess()
 	tst.testDownloadAudioFromPlaylistMultipleVideo()
