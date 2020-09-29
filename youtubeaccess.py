@@ -59,18 +59,64 @@ class YoutubeAccess:
 		return playlist
 	
 	def splitPlayListTitle(self, playlistTitle):
-		pattern = r"(.+) ([\d\./]+)"
-		playlistName = None
-		timeInfo = None
-
-		match = re.match(pattern, playlistTitle)
+		'''
+		Returns the playlist name and a dictionary whose key is the video index
+		and value is a list of two lists, one containing the start and
+		end extract positions in seconds, the second list containing the start
+		and end suppress positions in seconds.
+		'''
+		playlistNamePattern = r'([a-zaA-Z_]+) ([\(se\d:\- \)]*)'
 		
-		if match:
-			playlistName = match.group(1)
-			timeInfo = match.group(2)
-		else:
-			# no time info provided in the play list title
-			playlistName = playlistTitle
-
-		return playlistName, timeInfo
+		match = re.match(playlistNamePattern, playlistTitle)
+		playlistName = match.group(1)
+		videoTimeFramesInfo = match.group(2)
 		
+		videoTimeFramesDic = self.extractTimeInfo(videoTimeFramesInfo)
+		
+		return playlistName, videoTimeFramesDic
+	
+	def extractTimeInfo(self, playlistName):
+		videoTimeFramesPattern = r'(\([se\d:\- ]*\) ?)'
+		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
+		videoTimeFramesDic = {}
+		videoIndex = 1
+		
+		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, playlistName):
+			videoTimeFramesAllList = []
+			videoTimeFramesExtractList = []
+			videoTimeFramesSuppressList = []
+			videoTimeFramesAllList.append(videoTimeFramesExtractList)
+			videoTimeFramesAllList.append(videoTimeFramesSuppressList)			
+			videoTimeFramesDic[videoIndex] = videoTimeFramesAllList
+			#print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
+			
+			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
+				startEndTimeFrame = startEndTimeFrameGroup.group(0)
+				startEndSecondsList = self.convertToStartEndSeconds(startEndTimeFrame[1:])
+				if startEndTimeFrame[0].upper() == 'E': 
+					videoTimeFramesExtractList.append(startEndSecondsList)
+				elif startEndTimeFrame[0].upper() == 'S': 
+					videoTimeFramesSuppressList.append(startEndSecondsList)
+				#print(startEndTimeFrame)
+			videoIndex += 1
+		
+		return videoTimeFramesDic
+
+	def convertToStartEndSeconds(self, startEndTimeFrame):
+		timeLst = startEndTimeFrame.split('-')
+		timeStartHHMMSS = timeLst[0].split(':')
+		timeEndHHMMSS = timeLst[1].split(':')
+
+		timeStartSec = int(timeStartHHMMSS[0]) * 3600 + int(timeStartHHMMSS[1]) * 60 + int(timeStartHHMMSS[2])
+		timeEndSec = int(timeEndHHMMSS[0]) * 3600 + int(timeEndHHMMSS[1]) * 60 + int(timeEndHHMMSS[2])
+
+		return [timeStartSec, timeEndSec]
+		
+		
+if __name__ == '__main__':
+	playlistTitle = 'The_playlist (s01:05:52-01:07:23 e01:15:52-01:17:23 e01:18:52-01:19:23) (s0:05:52-0:07:23)'
+	
+	tp = YoutubeAccess(None)
+	playlistName, videoTimeFramesDic = tp.splitPlayListTitle(playlistTitle)
+	print('>' + playlistName + '<')
+	print(videoTimeFramesDic)
