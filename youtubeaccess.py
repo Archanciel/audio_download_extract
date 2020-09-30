@@ -65,13 +65,15 @@ class YoutubeAccess:
 		end extract positions in seconds, the second list containing the start
 		and end suppress positions in seconds.
 		'''
-		playlistNamePattern = r'([a-zaA-Z_]+) ([\(se\d:\- \)]*)'
+		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(se\d:\- \)]*))?'
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
 		videoTimeFramesInfo = match.group(2)
+		videoTimeFramesDic = {}
 		
-		videoTimeFramesDic = self.extractTimeInfo(videoTimeFramesInfo)
+		if videoTimeFramesInfo != None:
+			videoTimeFramesDic = self.extractTimeInfo(videoTimeFramesInfo)
 		
 		return playlistName, videoTimeFramesDic
 	
