@@ -122,14 +122,14 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		timeInfo = '(e01:05:52-01:07:23)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
 		
-		expectedVideoTimeFramesDic = {1: [[[3952, 4043]], []]}
+		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 
-		playlistName, videoTimeFramesDic = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(expectedVideoTimeFramesDic, videoTimeFramesDic)
+		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
 
 if __name__ == '__main__':
-	# unittest.main()
-	 tst = TestYoutubeAccessOtherMethods()
-	 tst.testSplitPlayListTitle_one_time_frame_extract()
+	unittest.main()
+	# tst = TestYoutubeAccessOtherMethods()
+	# tst.testSplitPlayListTitle_one_time_frame_extract()
