@@ -32,7 +32,7 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		
 		youtubePlaylist = youtubeAccess.getPlaylistObject(playlistUrl)
 		
-		self.assertTrue('Oops' in youtubePlaylist.title())
+		self.assertIsNone(youtubePlaylist.title())
 	
 	def testGetPlaylistObjectEmptyURL(self):
 		guiOutput = GuiOutputStub()
@@ -41,7 +41,7 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		
 		youtubePlaylist = youtubeAccess.getPlaylistObject(playlistUrl)
 		
-		self.assertTrue('Oops' in youtubePlaylist.title())
+		self.assertIsNone(youtubePlaylist.title())
 	
 	def testGetPlaylistObjectNoneURL(self):
 		guiOutput = GuiOutputStub()
@@ -128,6 +128,20 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
+		
+	def testSplitPlayListTitle_one_time_frame_suppress(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeAccess(guiOutput)
+		expectedPlayListName = 'Test_title_one_time_frame_extract'
+		timeInfo = '(s0:05:52-0:07:23)'
+		playlistTitle = expectedPlayListName + ' ' + timeInfo
+		
+		expectedVideoSuppressTimeFramesList = [[352, 443]]
+
+		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+
+		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
 
 if __name__ == '__main__':
 	unittest.main()

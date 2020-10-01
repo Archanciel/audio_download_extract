@@ -14,6 +14,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 	'''
 	Since testing download consume band width, it is placed in a specific test class.
 	'''
+
 	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
@@ -135,8 +136,48 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4',]), sorted(fileNameLst))
+	
+	def testDownloadAudioFromPlaylistOneVideo_invalid_url(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeAccess(guiOutput)
+		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+	
+	def testDownloadAudioFromPlaylistOneVideo_empty_url(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeAccess(guiOutput)
+		playlistUrl = ""
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
+			                  ''], outputCapturingString.getvalue().split('\n'))
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAccessDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo()
+	tst.testDownloadAudioFromPlaylistOneVideo_invalid_url()

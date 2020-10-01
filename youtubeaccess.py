@@ -19,7 +19,8 @@ class YoutubeAccess:
 		
 		playlistTitle = playlist.title()
 
-		if 'Oops' in playlistTitle:
+		if playlistTitle == None or \
+			'Oops' in playlistTitle:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
 			return
 			
