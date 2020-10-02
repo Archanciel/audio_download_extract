@@ -3,9 +3,10 @@ import os, glob, re
 from constants import *
 
 class AudioExtractor:
-	def __init__(self, guiOutput, targetAudioDir):
+	def __init__(self, guiOutput, targetAudioDir, downloadedVideoInfoDictionary):
 		self.guiOutput = guiOutput
 		self.targetAudioDir = targetAudioDir
+		self.downloadedVideoInfoDictionary = downloadedVideoInfoDictionary
 
 	def extractAudioPortion(self, playlistTimeFrameData):
 		files = glob.glob(self.targetAudioDir + DIR_SEP + "*.mp4")

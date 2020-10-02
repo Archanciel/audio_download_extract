@@ -10,6 +10,7 @@ from constants import *
 from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
 from playlisttimeframedata import PlaylistTimeFrameData
+from downloadedvideoinfodic import DownloadedVideoInfoDic
 			
 class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortion_dir_contains_one_file_with_one_extract_timeframe(self):
@@ -24,6 +25,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
 		playlistTimeFrameData.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir)
 
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioDir + DIR_SEP + '*')
@@ -35,7 +37,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData' + '\\Wear a mask Help slow the spread of Covid-19.mp4' , targetAudioDir + '\\Wear a mask Help slow the spread of Covid-19.mp4')
 		guiOutput = GuiOutputStub()
-		audioExtractor = AudioExtractor(guiOutput, targetAudioDir)
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()

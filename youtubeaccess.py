@@ -4,6 +4,7 @@ import http.client
 
 from constants import *
 from playlisttimeframedata import PlaylistTimeFrameData
+from downloadedvideoinfodic import DownloadedVideoInfoDic
 
 class YoutubeAccess:
 	def __init__(self, guiOutput):
@@ -35,15 +36,30 @@ class YoutubeAccess:
 				return
 				
 			os.makedirs(targetAudioDir)
-				
-		for video in playlist.videos:
-			audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
-			videoTitle = video.title
-			self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
-			self.guiOutput.setMessage(self.msgText)
-			audioStream.download(output_path=targetAudioDir)
 		
-		return playlistTimeFrameData, targetAudioDir
+		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playlistName)
+
+		try:
+			for video in playlist.videos:
+				videoTitle = video.title
+				try:
+					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
+					videoUrl = video.watch_url
+					self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
+					self.guiOutput.setMessage(self.msgText)
+					audioStream.download(output_path=targetAudioDir)
+				except:
+					self.msgText = self.msgText + videoTitle + ' download failed.\n'
+					self.guiOutput.setMessage(self.msgText)
+				else:
+					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
+					self.guiOutput.setMessage(self.msgText)
+					downloadedVideoInfoDictionary.addVideoInfo(videoTitle, videoUrl)
+		except:
+			self.msgText = self.msgText + playlistName + ' download failed.\n'
+			self.guiOutput.setMessage(self.msgText)
+		
+		return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
 	
 	def getPlaylistObject(self, playlistUrl):
 		playlist = None

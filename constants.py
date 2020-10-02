@@ -1,6 +1,7 @@
 import os
 
 YOUTUBE_STREAM_AUDIO = '140'
+DATE_TIME_FORMAT_VIDEO_INFO_FILE = '%d/%m/%Y %H:%M:%S'
 
 if os.name == 'posix':
 	CONVERT = False
