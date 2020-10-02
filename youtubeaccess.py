@@ -24,7 +24,7 @@ class YoutubeAccess:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
 			return
 			
-		playlistName, timeInfo = self.splitPlayListTitle(playlistTitle)
+		playlistName, playlistTimeFrameData = self.splitPlayListTitle(playlistTitle)
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
@@ -43,7 +43,7 @@ class YoutubeAccess:
 			self.guiOutput.setMessage(self.msgText)
 			audioStream.download(output_path=targetAudioDir)
 		
-		return timeInfo, targetAudioDir
+		return playlistTimeFrameData, targetAudioDir
 	
 	def getPlaylistObject(self, playlistUrl):
 		playlist = None
@@ -86,7 +86,6 @@ class YoutubeAccess:
 		videoIndex = 1
 		
 		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, playlistName):
-			playlistTimeFrameData.addVideoTimeFrameData(videoIndex)
 			#print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
 			
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):

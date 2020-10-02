@@ -36,7 +36,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		playlistTimeFrameData, targetAudioDir = youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -44,13 +44,17 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 							  '',
 							  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test_audio_downloader_one_file',
+			                 downloadDir)
 		else:
 			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 							  '',
 							  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test_audio_downloader_one_file', downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+		self.assertIsNone(playlistTimeFrameData)
 
 	def testDownloadAudioFromPlaylistOneVideo_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
@@ -176,8 +180,51 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		else:
 			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
 			                  ''], outputCapturingString.getvalue().split('\n'))
+	
+	def testDownloadAudioFromPlaylistOneVideo_with_timeFrame(self):
+		playlistName = 'Test_title_one_time_frame_extract'
+		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		# timeInfo = '(e0:0:5-0:0:10)'
+
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeAccess(guiOutput)
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistTimeFrameData, targetAudioDir = youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/'+ playlistName,
+			                 downloadDir)
+		else:
+			self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + playlistName,
+			                 downloadDir)
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+		self.assertEqual([[5, 10]], playlistTimeFrameData.getExtractStartEndSecondsLists(videoIndex=1))
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAccessDownloadMethods()
-	tst.testDownloadAudioFromPlaylistOneVideo_invalid_url()
+	tst.testDownloadAudioFromPlaylistOneVideo_with_timeFrame()
