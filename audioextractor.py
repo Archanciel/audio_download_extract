@@ -26,6 +26,7 @@ class AudioExtractor:
 					clip.write_audiofile(mp3FilePathName)
 					clip.close()
 					os.remove(mp4FilePathName)
+				videoIndex += 1
 		else:
 			for file in files:
 				mp4FilePathName = os.path.join(self.targetAudioDir, file)
