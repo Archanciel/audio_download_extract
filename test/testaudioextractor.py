@@ -14,8 +14,8 @@ from downloadedvideoinfodic import DownloadedVideoInfoDic
 			
 class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortion_dir_contains_one_file_with_one_extract_timeframe(self):
-		extractAudioDir = 'test_audio_downloader_one_file_for_extract_with_one_extract_timeframe'
-		targetAudioDir = AUDIO_DIR + DIR_SEP + extractAudioDir
+		playListName = 'test_audio_downloader_one_file_for_extract_with_one_extract_timeframe'
+		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -25,7 +25,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
 		playlistTimeFrameData.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
-		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir)
+		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playListName)
 
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioDir + DIR_SEP + '*')
