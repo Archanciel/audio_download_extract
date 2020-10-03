@@ -6,6 +6,7 @@ from testyoutubeaccessdownloadmethods import TestYoutubeAccessDownloadMethods
 from testyoutubeaccessothermethods import TestYoutubeAccessOtherMethods
 from testaudioextractor import TestAudioExtractor
 from testdownloadedvideoinfodic import TestDownloadedVideoInfoDic
+from testplaylisttimeframedata import TestPlaylistTimeFrameData
 
 if __name__ == "__main__":
     loader = TestLoader()
@@ -16,6 +17,7 @@ if __name__ == "__main__":
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAccessDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAccessOtherMethods),
                            loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
+                           loader.loadTestsFromTestCase(TestPlaylistTimeFrameData),
                            ))
     else:
         suite = TestSuite((loader.loadTestsFromTestCase(TestGuiOutput),
@@ -23,6 +25,7 @@ if __name__ == "__main__":
                            loader.loadTestsFromTestCase(TestYoutubeAccessOtherMethods),
                            loader.loadTestsFromTestCase(TestAudioExtractor),
                            loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
+                           loader.loadTestsFromTestCase(TestPlaylistTimeFrameData),
                            ))
         
     runner = TextTestRunner(verbosity = 2)
