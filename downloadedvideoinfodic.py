@@ -11,6 +11,12 @@ class DownloadedVideoInfoDic:
 		self.downloadDir = downloadDir
 		self.playlistName = playlistName
 		self.dic = {}
+		
+		infoDicFilePathName = self.getInfoDicFilePathName()
+		
+		if os.path.isfile(infoDicFilePathName):
+			with open(infoDicFilePathName, 'r') as f:
+				self.dic = json.load(f)
 	
 	def getVideoInfo(self, videoTitle):
 		videoInfo = None
@@ -28,12 +34,16 @@ class DownloadedVideoInfoDic:
 		self.dic[videoTitle] = [videoUrl, additionTimeStr]
 		
 	def saveDic(self):
-		with open(self.downloadDir + DIR_SEP + self.playlistName + '.txt', 'w') as f:
+		with open(self.getInfoDicFilePathName(), 'w') as f:
 			json.dump(self.dic,
 			          f,
 			          indent=4,
 			          sort_keys=True)
-		
+	
+	def getInfoDicFilePathName(self):
+		return self.downloadDir + DIR_SEP + self.playlistName + '.txt'
+
+
 if __name__ == "__main__":
 	dvi = DownloadedVideoInfoDic('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks', 'essai_vid_info')
 	dvi.addVideoInfo('title 1', 'https://youtube.com/watch?v=9iPvLx7gotk')
