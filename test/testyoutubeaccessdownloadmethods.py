@@ -158,6 +158,78 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4',]), sorted(fileNameLst))
 	
+	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames(self):
+		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		playlistName = 'test_audio_downloader_two_files_with_time_frames'
+		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeAccess(guiOutput)
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadAudioFromPlaylist(
+			playlistUrl)
+		
+		sys.stdout = stdout
+
+		# playlist title: test_audio_downloader_two_files_with_time_frames
+		# (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		startEndSecondsList_extract_firstVideo_firstTimeFrame = [2, 8]
+
+		startEndSecondsList_suppress_secondVideo_firstTimeFrame = [2, 5]
+		startEndSecondsList_suppress_secondVideo_secondTimeFrame = [7, 10]
+		
+		self.assertEqual([startEndSecondsList_extract_firstVideo_firstTimeFrame],
+		                 playlistTimeFrameData.getExtractStartEndSecondsLists(videoIndex=1))
+		self.assertEqual([],
+		                 playlistTimeFrameData.getSuppressStartEndSecondsLists(videoIndex=1))
+		
+		self.assertEqual([],
+		                 playlistTimeFrameData.getExtractStartEndSecondsLists(videoIndex=2))
+		self.assertEqual([startEndSecondsList_suppress_secondVideo_firstTimeFrame,
+		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
+		                 playlistTimeFrameData.getSuppressStartEndSecondsLists(videoIndex=2))
+
+		self.assertEqual(downloadDir, targetAudioDir)
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		                 downloadedVideoInfoDictionary.getVideoInfo('Wear a mask. Help slow the spread of Covid-19.')[0])
+		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		                 downloadedVideoInfoDictionary.getVideoInfo('Here to help: Give him what he wants')[0])
+		
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+		                  '',
+		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
+		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+		                  '',
+		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
+		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+		                  'downloading Here to help: Give him what he wants',
+		                  '',
+		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
+		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+		                  'downloading Here to help: Give him what he wants',
+		                  'Here to help: Give him what he wants downloaded.',
+		                  '',
+		                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(
+			sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4', ]),
+			sorted(fileNameLst))
+	
 	def testDownloadAudioFromPlaylistOneVideo_invalid_url(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeAccess(guiOutput)
@@ -249,4 +321,4 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAccessDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo ()
+	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames()
