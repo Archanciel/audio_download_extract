@@ -13,37 +13,35 @@ class YoutubeAccess:
 		self.msgText = ''
 		
 	def downloadAudioFromPlaylist(self, playlistUrl):
-		playlistTimeFrameData = None
 		targetAudioDir = None
-		downloadedVideoInfoDictionary = None
+		downloadedVideoInfoDic = None
 
 		playlist = self.getPlaylistObject(playlistUrl)
 		
 		if playlist == None:
-			return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+			return targetAudioDir, downloadedVideoInfoDic
 		
 		playlistTitle = playlist.title()
 
 		if playlistTitle == None or \
 			'Oops' in playlistTitle:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
-			return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+			return targetAudioDir, downloadedVideoInfoDic
 		
-		playlistName, playlistTimeFrameData = self.splitPlayListTitle(playlistTitle)
-		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
+		playlistName, targetAudioDir, downloadedVideoInfoDic = self.splitPlayListTitle(playlistTitle)
 		
 		if not os.path.isdir(targetAudioDir):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
 			if not self.guiOutput.getConfirmation("Directory\n{}\nwill be created.\n\nContinue with download ?".format(targetAudioDirShort)):
-				return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+				return targetAudioDir, downloadedVideoInfoDic
 			
 			os.makedirs(targetAudioDir)
 		
-		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playlistName)
-
 		try:
+			videoIndex = 1
+			
 			for video in playlist.videos:
 				videoTitle = video.title
 				try:
@@ -58,12 +56,13 @@ class YoutubeAccess:
 				else:
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
-					downloadedVideoInfoDictionary.addVideoInfo(videoTitle, videoUrl)
+					downloadedVideoInfoDic.addVideoInfo(videoIndex, videoTitle, videoUrl)
+				videoIndex += 1
 		except:
 			self.msgText = self.msgText + playlistName + ' download failed.\n'
 			self.guiOutput.setMessage(self.msgText)
 		
-		return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+		return targetAudioDir, downloadedVideoInfoDic
 	
 	def getPlaylistObject(self, playlistUrl):
 		playlist = None
@@ -94,17 +93,18 @@ class YoutubeAccess:
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
 		videoTimeFramesInfo = match.group(2)
-		playlistTimeFrameData = None
-		
+		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
+
+		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playlistName)
+
 		if videoTimeFramesInfo != None:
-			playlistTimeFrameData = self.extractTimeInfo(videoTimeFramesInfo)
+			self.extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo)
 		
-		return playlistName, playlistTimeFrameData
+		return playlistName, targetAudioDir, downloadedVideoInfoDic
 	
-	def extractTimeInfo(self, videoTimeFramesInfo):
+	def extractTimeInfo(self, downloadedVideoInfoDic, videoTimeFramesInfo):
 		videoTimeFramesPattern = r'(\([se\d:\- ]*\) ?)'
 		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
-		playlistTimeFrameData = PlaylistTimeFrameData()
 		videoIndex = 1
 		
 		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, videoTimeFramesInfo):
@@ -114,13 +114,13 @@ class YoutubeAccess:
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
 				startEndSecondsList = self.convertToStartEndSeconds(startEndTimeFrame[1:])
 				if startEndTimeFrame[0].upper() == 'E':
-					playlistTimeFrameData.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+					downloadedVideoInfoDic.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
 				elif startEndTimeFrame[0].upper() == 'S': 
-					playlistTimeFrameData.addSuppressStartEndSecondsList(videoIndex, startEndSecondsList)
+					downloadedVideoInfoDic.addSuppressStartEndSecondsList(videoIndex, startEndSecondsList)
 				#print(startEndTimeFrame)
 			videoIndex += 1
 		
-		return playlistTimeFrameData
+		return downloadedVideoInfoDic
 
 	def convertToStartEndSeconds(self, startEndTimeFrame):
 		timeLst = startEndTimeFrame.split('-')

@@ -125,11 +125,11 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 		expectedVideoSuppressTimeFramesList = []
 
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
 		
 	def testSplitPlayListTitle_one_time_frame_suppress(self):
 		guiOutput = GuiOutputStub()
@@ -141,11 +141,11 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443]]
 
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
 		
 	def testSplitPlayListTitle_no_time_frame(self):
 		guiOutput = GuiOutputStub()
@@ -153,10 +153,9 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedPlayListName = 'Test_title_no_time_frame'
 		playlistTitle = expectedPlayListName
 		
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertIsNone(playlistTimeFrameData)
 		
 	def testSplitPlayListTitle_two_time_frames_suppress(self):
 		guiOutput = GuiOutputStub()
@@ -168,11 +167,11 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443], [652, 653]]
 
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
 		
 	def testSplitPlayListTitle_two_time_frames_one_extract_one_suppress(self):
 		guiOutput = GuiOutputStub()
@@ -184,11 +183,11 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[352, 443]]
 		expectedVideoSuppressTimeFramesList = [[652, 653]]
 
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(1), expectedVideoExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(1), expectedVideoSuppressTimeFramesList)
 		
 	def testSplitPlayListTitle_two_time_frames_one_extract_one_suppress_two_videos(self):
 		guiOutput = GuiOutputStub()
@@ -203,13 +202,13 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		expectedVideo2ExtractTimeFramesList = [[3952, 4043]]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
 
-		playlistName, playlistTimeFrameData = youtubeAccess.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = youtubeAccess.splitPlayListTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(1), expectedVideo1ExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(1), expectedVideo1SuppressTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getExtractStartEndSecondsLists(2), expectedVideo2ExtractTimeFramesList)
-		self.assertEqual(playlistTimeFrameData.getSuppressStartEndSecondsLists(2), expectedVideo2SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(1), expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(1), expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsLists(2), expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsLists(2), expectedVideo2SuppressTimeFramesList)
 
 if __name__ == '__main__':
 	unittest.main()

@@ -17,7 +17,6 @@ if __name__ == "__main__":
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAccessDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAccessOtherMethods),
                            loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
-                           loader.loadTestsFromTestCase(TestPlaylistTimeFrameData),
                            ))
     else:
         suite = TestSuite((loader.loadTestsFromTestCase(TestGuiOutput),
@@ -25,7 +24,6 @@ if __name__ == "__main__":
                            loader.loadTestsFromTestCase(TestYoutubeAccessOtherMethods),
                            loader.loadTestsFromTestCase(TestAudioExtractor),
                            loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
-                           loader.loadTestsFromTestCase(TestPlaylistTimeFrameData),
                            ))
         
     runner = TextTestRunner(verbosity = 2)
