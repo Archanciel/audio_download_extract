@@ -1,4 +1,5 @@
-import re, os
+import re
+from urllib.error import URLError
 from pytube import YouTube, Playlist 
 import http.client
 
@@ -12,19 +13,22 @@ class YoutubeAccess:
 		self.msgText = ''
 		
 	def downloadAudioFromPlaylist(self, playlistUrl):
+		playlistTimeFrameData = None
+		targetAudioDir = None
+		downloadedVideoInfoDictionary = None
 
 		playlist = self.getPlaylistObject(playlistUrl)
 		
 		if playlist == None:
-			return
+			return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
 		
 		playlistTitle = playlist.title()
 
 		if playlistTitle == None or \
 			'Oops' in playlistTitle:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
-			return
-			
+			return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+		
 		playlistName, playlistTimeFrameData = self.splitPlayListTitle(playlistTitle)
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
 		
@@ -33,8 +37,8 @@ class YoutubeAccess:
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
 			if not self.guiOutput.getConfirmation("Directory\n{}\nwill be created.\n\nContinue with download ?".format(targetAudioDirShort)):
-				return
-				
+				return playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary
+			
 			os.makedirs(targetAudioDir)
 		
 		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playlistName)
@@ -73,6 +77,8 @@ class YoutubeAccess:
 			self.guiOutput.displayError(str(e))
 		except AttributeError as e:
 			self.guiOutput.displayError('playlist URL == None')
+		except URLError:
+			self.guiOutput.displayError('No internet access. Fix the problem and retry !')
 
 		return playlist
 	
@@ -95,13 +101,13 @@ class YoutubeAccess:
 		
 		return playlistName, playlistTimeFrameData
 	
-	def extractTimeInfo(self, playlistName):
+	def extractTimeInfo(self, videoTimeFramesInfo):
 		videoTimeFramesPattern = r'(\([se\d:\- ]*\) ?)'
 		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
 		playlistTimeFrameData = PlaylistTimeFrameData()
 		videoIndex = 1
 		
-		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, playlistName):
+		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, videoTimeFramesInfo):
 			#print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
 			
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
