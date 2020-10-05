@@ -260,12 +260,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		if os.name == 'posix':
-			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
-			                  ''], outputCapturingString.getvalue().split('\n'))
-		else:
-			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual('The URL obtained from clipboard is not pointing to a playlist. Program closed.\n', outputCapturingString.getvalue())
 	
 	def testDownloadAudioFromPlaylistOneVideo_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
