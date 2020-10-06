@@ -49,6 +49,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Wear a mask. Help slow the spread of Covid-19.')['url'])
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(1)['title'])
 
 		if os.name == 'posix':
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test_audio_downloader_one_file',

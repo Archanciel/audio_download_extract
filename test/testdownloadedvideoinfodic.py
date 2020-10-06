@@ -35,6 +35,11 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual(additionTimeStr, dvi.getVideoInfoForVideoTitle('title 1')['downloadTime'])
 		self.assertEqual(additionTimeStr, dvi.getVideoInfoForVideoTitle('title 2')['downloadTime'])
+
+		# two ways of obtaining video title !
+		self.assertEqual('title 1', dvi.getVideoInfoForVideoTitle('title 1')['title'])
+		self.assertEqual('title 1', dvi.getVideoInfoForVideoIndex(1)['title'])
+
 		self.assertIsNone(dvi.getExtractStartEndSecondsLists(videoIndex=1))
 		self.assertIsNone(dvi.getSuppressStartEndSecondsLists(videoIndex=1))
 		self.assertIsNone(dvi.getExtractStartEndSecondsLists(videoIndex=2))
@@ -67,6 +72,10 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		self.assertEqual(additionTimeStr, dvi.getVideoInfoForVideoTitle('title 1')['downloadTime'])
 		self.assertEqual(additionTimeStr, dvi.getVideoInfoForVideoTitle('title 2')['downloadTime'])
 
+		# two ways of obtaining video title !
+		self.assertEqual('title 1', dvi.getVideoInfoForVideoTitle('title 1')['title'])
+		self.assertEqual('title 1', dvi.getVideoInfoForVideoIndex(1)['title'])
+
 		dvi.saveDic()
 		
 		# creating new video info dic, reloading newly created video info dic file
@@ -86,6 +95,10 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		self.assertEqual(additionTimeStr, reloadedDvi.getVideoInfoForVideoTitle('title 2')['downloadTime'])
 		self.assertEqual(newAdditionTimeStr, reloadedDvi.getVideoInfoForVideoTitle('title 3')['downloadTime'])
 
+		# two ways of obtaining video title !
+		self.assertEqual('title 3', reloadedDvi.getVideoInfoForVideoTitle('title 3')['title'])
+		self.assertEqual('title 3', reloadedDvi.getVideoInfoForVideoIndex(3)['title'])
+
 		reloadedDvi.saveDic()
 
 		# creating new extended video info dic, reloading newly created video info dic file
@@ -99,6 +112,11 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		self.assertEqual(additionTimeStr, newReloadedDvi.getVideoInfoForVideoTitle('title 1')['downloadTime'])
 		self.assertEqual(additionTimeStr, newReloadedDvi.getVideoInfoForVideoTitle('title 2')['downloadTime'])
 		self.assertEqual(newAdditionTimeStr, newReloadedDvi.getVideoInfoForVideoTitle('title 3')['downloadTime'])
+
+		# two ways of obtaining video title !
+		self.assertEqual('title 3', newReloadedDvi.getVideoInfoForVideoTitle('title 3')['title'])
+		self.assertEqual('title 3', newReloadedDvi.getVideoInfoForVideoIndex(3)['title'])
+
 		self.assertIsNone(newReloadedDvi.getExtractStartEndSecondsLists(videoIndex=1))
 		self.assertIsNone(newReloadedDvi.getSuppressStartEndSecondsLists(videoIndex=1))
 		self.assertIsNone(newReloadedDvi.getExtractStartEndSecondsLists(videoIndex=2))
