@@ -8,16 +8,16 @@ class AudioExtractor:
 		self.targetAudioDir = targetAudioDir
 		self.downloadedVideoInfoDictionary = downloadedVideoInfoDictionary
 
-	def extractAudioPortion(self, playlistTimeFrameData):
+	def extractAudioPortion(self, downloadedVideoInfoDic):
 		files = glob.glob(self.targetAudioDir + DIR_SEP + "*.mp4")
 		files.sort(key=os.path.getmtime)
 		videoIndex = 1
 		
-		if playlistTimeFrameData:
+		if downloadedVideoInfoDic:
 			import moviepy.editor as mp  # not working on Android
 			for file in files:
 				mp4FilePathName = os.path.join(self.targetAudioDir, file)
-				extractStartEndSecondsLists = playlistTimeFrameData.getExtractStartEndSecondsLists(videoIndex)
+				extractStartEndSecondsLists = downloadedVideoInfoDic.getExtractStartEndSecondsLists(videoIndex)
 				timeFrameIndex = 1
 				for extractStartEndSecondsList in extractStartEndSecondsLists:
 					timeStartSec = extractStartEndSecondsList[0]
