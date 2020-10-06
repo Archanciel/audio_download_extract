@@ -4,7 +4,6 @@ from pytube import YouTube, Playlist
 import http.client
 
 from constants import *
-from playlisttimeframedata import PlaylistTimeFrameData
 from downloadedvideoinfodic import DownloadedVideoInfoDic
 
 class YoutubeAccess:

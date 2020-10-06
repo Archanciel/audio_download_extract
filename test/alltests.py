@@ -6,7 +6,6 @@ from testyoutubeaccessdownloadmethods import TestYoutubeAccessDownloadMethods
 from testyoutubeaccessothermethods import TestYoutubeAccessOtherMethods
 from testaudioextractor import TestAudioExtractor
 from testdownloadedvideoinfodic import TestDownloadedVideoInfoDic
-from testplaylisttimeframedata import TestPlaylistTimeFrameData
 
 if __name__ == "__main__":
     loader = TestLoader()

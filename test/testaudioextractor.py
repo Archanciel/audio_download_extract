@@ -9,7 +9,6 @@ sys.path.insert(0, parentdir)
 from constants import *
 from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
-from playlisttimeframedata import PlaylistTimeFrameData
 from downloadedvideoinfodic import DownloadedVideoInfoDic
 			
 class TestAudioExtractor(unittest.TestCase):
@@ -20,11 +19,11 @@ class TestAudioExtractor(unittest.TestCase):
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
 		
-		playlistTimeFrameData = PlaylistTimeFrameData()
+		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		videoIndex = 1
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		playlistTimeFrameData.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+		downloadedVideoInfoDic.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
 		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playListName)
 
 		# deleting files in downloadDir
@@ -43,7 +42,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(playlistTimeFrameData)
+		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
 
 		sys.stdout = stdout
 
@@ -72,11 +71,11 @@ class TestAudioExtractor(unittest.TestCase):
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
 		
-		playlistTimeFrameData = PlaylistTimeFrameData()
+		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		videoIndex = 1
 		startEndSecondsList = [5, 50]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		playlistTimeFrameData.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+		downloadedVideoInfoDic.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
 		downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		
 		# deleting files in downloadDir
@@ -99,7 +98,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(playlistTimeFrameData)
+		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -122,8 +121,8 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 
 if __name__ == '__main__':
-#	unittest.main()
-	tst = TestAudioExtractor()
-	ts = time.time()
-	tst.testExtractAudioPortionLong_dir_contains_one_file_with_one_extract_timeframe()
-	print(time.time() - ts)
+	unittest.main()
+	# tst = TestAudioExtractor()
+	# ts = time.time()
+	# tst.testExtractAudioPortionLong_dir_contains_one_file_with_one_extract_timeframe()
+	# print(time.time() - ts)

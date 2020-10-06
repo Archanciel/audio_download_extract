@@ -28,7 +28,13 @@ class DownloadedVideoInfoDic:
 	def getInfoDicFilePathName(self):
 		return self.downloadDir + DIR_SEP + self.playlistName + '.txt'
 	
-	def addTimeFrameDataForVideo(self, videoIndex):
+	def _addTimeFrameDataForVideo(self, videoIndex):
+		'''
+		Protected method used internally only.
+		
+		:param videoIndex:
+		:return:
+		'''
 		videoTimeFramesDic = {'extract': [], 'suppress': []}
 		
 		self.dic[videoIndex]['timeFrames'] = videoTimeFramesDic
@@ -40,7 +46,7 @@ class DownloadedVideoInfoDic:
 			self.dic[videoIndex] = {}
 
 		if not 'timeFrames' in self.dic[videoIndex].keys():
-			self.addTimeFrameDataForVideo(videoIndex)
+			self._addTimeFrameDataForVideo(videoIndex)
 		
 		self.dic[videoIndex]['timeFrames']['extract'].append(startEndSecondsList)
 	
@@ -51,20 +57,26 @@ class DownloadedVideoInfoDic:
 			self.dic[videoIndex] = {}
 		
 		if not 'timeFrames' in self.dic[videoIndex].keys():
-			self.addTimeFrameDataForVideo(videoIndex)
+			self._addTimeFrameDataForVideo(videoIndex)
 		
 		self.dic[videoIndex]['timeFrames']['suppress'].append(startEndSecondsList)
 	
 	def getExtractStartEndSecondsLists(self, videoIndex):
 		videoIndex = str(videoIndex)
 
-		return self.dic[videoIndex]['timeFrames']['extract']
+		if 'timeFrames' in self.dic[videoIndex].keys():
+			return self.dic[videoIndex]['timeFrames']['extract']
+		else:
+			return None
 	
 	def getSuppressStartEndSecondsLists(self, videoIndex):
 		videoIndex = str(videoIndex)
 
-		return self.dic[videoIndex]['timeFrames']['suppress']
-	
+		if 'timeFrames' in self.dic[videoIndex].keys():
+			return self.dic[videoIndex]['timeFrames']['suppress']
+		else:
+			return None
+
 	def addVideoInfo(self, videoIndex, videoTitle, videoUrl):
 		videoIndex = str(videoIndex)
 
