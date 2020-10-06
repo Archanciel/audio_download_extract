@@ -153,6 +153,9 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Wear a mask. Help slow the spread of Covid-19.')['url'])
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Here to help: Give him what he wants')['url'])
 
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(1)['title'])
+		self.assertEqual('Here to help: Give him what he wants', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(2)['title'])
+
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4',]), sorted(fileNameLst))
 	
@@ -222,7 +225,10 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		                 downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Wear a mask. Help slow the spread of Covid-19.')['url'])
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
 		                 downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Here to help: Give him what he wants')['url'])
-		
+
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(1)['title'])
+		self.assertEqual('Here to help: Give him what he wants', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(2)['title'])
+
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
 			sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4', ]),
@@ -299,6 +305,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		self.assertEqual([[5, 10]], downloadedVideoInfoDictionary.getExtractStartEndSecondsLists(1))
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoInfoForVideoTitle('Wear a mask. Help slow the spread of Covid-19.')['url'])
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoInfoForVideoIndex(1)['title'])
 
 		if os.name == 'posix':
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/'+ playlistName,
