@@ -28,6 +28,18 @@ class DownloadedVideoInfoDic:
 	def getInfoDicFilePathName(self):
 		return self.downloadDir + DIR_SEP + self.playlistName + '.txt'
 	
+	def getVideoIndexes(self):
+		return self.dic.keys()
+	
+	def getVideoTitleForVideoIndex(self, videoIndex):
+		return self.getVideoInfoForVideoIndex(videoIndex)['title']
+
+	def getVideoFileNameForVideoIndex(self, videoIndex):
+		return self.getVideoInfoForVideoIndex(videoIndex)['downloadedVideoFileName']
+
+	def isTimeFrameDataForVideoIndexAvailable(self, videoIndex):
+		return 'timeFrames' in self.dic[videoIndex].keys()
+		
 	def _addTimeFrameDataForVideo(self, videoIndex):
 		'''
 		Protected method used internally only.
@@ -77,7 +89,7 @@ class DownloadedVideoInfoDic:
 		else:
 			return None
 
-	def addVideoInfo(self, videoIndex, videoTitle, videoUrl):
+	def addVideoInfo(self, videoIndex, videoTitle, videoUrl, downloadedVideoFileName):
 		videoIndex = str(videoIndex)
 
 		if not videoIndex in self.dic.keys():
@@ -87,6 +99,7 @@ class DownloadedVideoInfoDic:
 
 		self.dic[videoIndex]['title'] = videoTitle
 		self.dic[videoIndex]['url'] = videoUrl
+		self.dic[videoIndex]['downloadedVideoFileName'] = downloadedVideoFileName
 		self.dic[videoIndex]['downloadTime'] = additionTimeStr
 	
 	def getVideoInfoForVideoIndex(self, videoIndex):

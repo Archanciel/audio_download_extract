@@ -49,13 +49,14 @@ class YoutubeAccess:
 					self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
 					self.guiOutput.setMessage(self.msgText)
 					audioStream.download(output_path=targetAudioDir)
+					downloadedVideoFileName = audioStream.default_filename
 				except:
 					self.msgText = self.msgText + videoTitle + ' download failed.\n'
 					self.guiOutput.setMessage(self.msgText)
 				else:
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
-					downloadedVideoInfoDic.addVideoInfo(videoIndex, videoTitle, videoUrl)
+					downloadedVideoInfoDic.addVideoInfo(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 				videoIndex += 1
 		except:
 			self.msgText = self.msgText + playlistName + ' download failed.\n'
