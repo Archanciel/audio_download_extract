@@ -2,14 +2,14 @@ import unittest
 import os, sys, inspect, shutil, glob
 from io import StringIO
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentDir = os.path.dirname(currentDir)
+sys.path.insert(0, parentDir)
 
 from constants import *
 from guioutputstub import GuiOutputStub
 from youtubeaccess import YoutubeAccess
-			
+
 class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 	'''
 	Since testing download consume band width, it is placed in a specific test class.
@@ -169,7 +169,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4',]), sorted(fileNameLst))
+		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4']), sorted(fileNameLst))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)

@@ -2,9 +2,9 @@ import unittest
 import os, sys, inspect, shutil, glob, time
 from io import StringIO
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentDir = os.path.dirname(currentDir)
+sys.path.insert(0, parentDir)
 
 from constants import *
 from guioutputstub import GuiOutputStub

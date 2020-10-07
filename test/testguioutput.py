@@ -4,9 +4,9 @@ from distutils import dir_util
 from io import StringIO
 from tkinter import Tk
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
+currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentDir = os.path.dirname(currentDir)
+sys.path.insert(0, parentDir)
 		
 from guioutput import GuiOutput
 			
