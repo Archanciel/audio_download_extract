@@ -123,6 +123,12 @@ class YoutubeAccess:
 		return downloadedVideoInfoDic
 
 	def convertToStartEndSeconds(self, startEndTimeFrame):
+		'''
+		Returns a 2 element list containing the start end time framebin seconds.
+		
+		:param startEndTimeFrame: example: 2:23:41-2:24:01
+		:return: example: [8621, 8641]
+		'''
 		timeLst = startEndTimeFrame.split('-')
 		timeStartHHMMSS = timeLst[0].split(':')
 		timeEndHHMMSS = timeLst[1].split(':')

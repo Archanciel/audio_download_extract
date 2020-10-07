@@ -1,4 +1,4 @@
-import os, glob, re
+import os, shutil
 
 from constants import *
 
@@ -21,12 +21,17 @@ class AudioExtractor:
 					timeEndSec = extractStartEndSecondsList[1]
 					clip = mp.AudioFileClip(mp4FilePathName).subclip(timeStartSec,
 					                                                 timeEndSec)  # disable if do not want any clipping
+					mp3FileName = os.path.splitext(videoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3'
 					mp3FilePathName = os.path.join(self.targetAudioDir,
-					                               os.path.splitext(videoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3')
+					                               mp3FileName)
 					clip.write_audiofile(mp3FilePathName)
 					clip.close()
+					HHMMSS_TimeFrameList = self.convertStartEndSecondsListTo_HHMMSS_TimeFrameList(extractStartEndSecondsList)
+					downloadedVideoInfoDic.addExtractedFilePathNameForVideoIndex(videoIndex,
+									                                             timeFrameIndex,
+									                                             HHMMSS_TimeFrameList,
+									                                             mp3FileName)
 					timeFrameIndex += 1
-				os.remove(mp4FilePathName)
 			else:
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 				mp3FilePathName = os.path.join(self.targetAudioDir, os.path.splitext(videoFileName)[0] + '.mp3')
@@ -34,4 +39,22 @@ class AudioExtractor:
 				if os.path.isfile(mp3FilePathName):
 					os.remove(mp3FilePathName)
 				
-				os.rename(mp4FilePathName, mp3FilePathName)
+				shutil.copy(mp4FilePathName, mp3FilePathName)
+
+	def convertStartEndSecondsListTo_HHMMSS_TimeFrameList(self, startEndSecondsList):
+		startSeconds = startEndSecondsList[0]
+		endSeconds = startEndSecondsList[1]
+		
+		startTimeFrame = self.convertSecondsTo_HHMMSS(startSeconds)
+		endTimeFrame = self.convertSecondsTo_HHMMSS(endSeconds)
+		
+		return [startTimeFrame, endTimeFrame]
+
+	def convertSecondsTo_HHMMSS(self, seconds):
+		HH = int(seconds / 3600)
+		remainSeconds = seconds - HH * 3600
+		MM = int(remainSeconds / 60)
+		SS = remainSeconds - MM * 60
+		
+		return str(HH) + ':' + str(MM) + ':' + str(SS)
+		

@@ -115,7 +115,11 @@ class DownloadedVideoInfoDic:
 		else:
 			return None
 
-	def addVideoInfoForVideoIndex(self, videoIndex, videoTitle, videoUrl, downloadedVideoFileName):
+	def addVideoInfoForVideoIndex(self,
+	                              videoIndex,
+	                              videoTitle,
+	                              videoUrl,
+	                              downloadedVideoFileName):
 		videoIndex = str(videoIndex)
 
 		if not videoIndex in self.dic.keys():
@@ -129,21 +133,61 @@ class DownloadedVideoInfoDic:
 		self.dic[videoIndex]['downloadTime'] = additionTimeStr
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
+		'''
+		Returns the video info dic associated to the passedkey videoIndex.
+		Protected method used internally only.
+
+		:param videoIndex:
+		:return: dictionary containing video information
+		'''
 		videoIndex = str(videoIndex)
 		
-		videoInfo = None
+		videoInfoDic = None
 		
 		try:
-			videoInfo = self.dic[videoIndex]
+			videoInfoDic = self.dic[videoIndex]
 		except KeyError:
 			pass
 		
-		return videoInfo
+		if videoInfoDic == None:
+			videoInfoDic = {}
+			
+		return videoInfoDic
 	
 	def getVideoIndexForVideoTitle(self, videoTitle):
 		for key in self.dic.keys():
 			if self.getVideoTitleForVideoIndex(key) == videoTitle:
 				return key
+		
+		return None
+	
+	def addExtractedFilePathNameForVideoIndex(self,
+	                                          videoIndex,
+	                                          timeFrameIndex,
+	                                          startEndSecondsList,
+	                                          extractedFileName):
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		extractedFilesDic = {}
+		
+		if 'extracted files' not in videoInfoDic.keys():
+			videoInfoDic['extracted files'] = extractedFilesDic
+		else:
+			extractedFilesDic = videoInfoDic['extracted files']
+			
+		extractedFilesDic[timeFrameIndex] = {'startEndTimeFrame': startEndSecondsList,
+		                                     'fileName': extractedFileName}
+
+	def getStartEndTimeFrame(self, videoIndex, extractedFileName):
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+
+		if 'extracted files' not in videoInfoDic.keys():
+			pass
+		else:
+			extractedFilesDic = videoInfoDic['extracted files']
+			
+			for key in extractedFilesDic.keys():
+				if extractedFileName == extractedFilesDic[key]['fileName']:
+					return extractedFilesDic[key]['startEndTimeFrame']
 		
 		return None
 
