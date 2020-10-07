@@ -24,9 +24,9 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
-		downloadedVideoInfoDic.addVideoInfo(1, 'Wear a mask. Help slow the spread of Covid-19.',
+		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, 'Wear a mask. Help slow the spread of Covid-19.',
 		                                    'https://youtube.com/watch?v=9iPvLx7gotk', 'Wear a mask Help slow the spread of Covid-19.mp4')
-		downloadedVideoInfoDic.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+		downloadedVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioDir + DIR_SEP + '*')

@@ -56,7 +56,7 @@ class YoutubeAccess:
 				else:
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
-					downloadedVideoInfoDic.addVideoInfo(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
+					downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 				videoIndex += 1
 		except:
 			self.msgText = self.msgText + playlistName + ' download failed.\n'
@@ -114,9 +114,9 @@ class YoutubeAccess:
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
 				startEndSecondsList = self.convertToStartEndSeconds(startEndTimeFrame[1:])
 				if startEndTimeFrame[0].upper() == 'E':
-					downloadedVideoInfoDic.addExtractStartEndSecondsList(videoIndex, startEndSecondsList)
+					downloadedVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 				elif startEndTimeFrame[0].upper() == 'S': 
-					downloadedVideoInfoDic.addSuppressStartEndSecondsList(videoIndex, startEndSecondsList)
+					downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 				#print(startEndTimeFrame)
 			videoIndex += 1
 		

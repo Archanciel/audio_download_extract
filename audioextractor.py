@@ -11,10 +11,10 @@ class AudioExtractor:
 	def extractAudioPortion(self, downloadedVideoInfoDic):
 		for videoIndex in downloadedVideoInfoDic.getVideoIndexes():
 			videoFileName = downloadedVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
-			if downloadedVideoInfoDic.isTimeFrameDataForVideoIndexAvailable(videoIndex):
+			if downloadedVideoInfoDic.isTimeFrameDataAvailableForVideoIndex(videoIndex):
 				import moviepy.editor as mp  # not working on Android
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
-				extractStartEndSecondsLists = downloadedVideoInfoDic.getExtractStartEndSecondsLists(videoIndex)
+				extractStartEndSecondsLists = downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 				timeFrameIndex = 1
 				for extractStartEndSecondsList in extractStartEndSecondsLists:
 					timeStartSec = extractStartEndSecondsList[0]

@@ -32,12 +32,33 @@ class DownloadedVideoInfoDic:
 		return self.dic.keys()
 	
 	def getVideoTitleForVideoIndex(self, videoIndex):
-		return self.getVideoInfoForVideoIndex(videoIndex)['title']
+		return self._getVideoInfoForVideoIndex(videoIndex)['title']
 
+	def getVideoUrlForVideoIndex(self, videoIndex):
+		return self._getVideoInfoForVideoIndex(videoIndex)['url']
+	
+	def getVideoUrlForVideoTitle(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		return self._getVideoInfoForVideoIndex(videoIndex)['url']
+	
 	def getVideoFileNameForVideoIndex(self, videoIndex):
-		return self.getVideoInfoForVideoIndex(videoIndex)['downloadedVideoFileName']
+		return self._getVideoInfoForVideoIndex(videoIndex)['downloadedVideoFileName']
+	
+	def getVideoFileNameForVideoTitle(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		return self._getVideoInfoForVideoIndex(videoIndex)['downloadedVideoFileName']
+	
+	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
+		return self._getVideoInfoForVideoIndex(videoIndex)['downloadTime']
 
-	def isTimeFrameDataForVideoIndexAvailable(self, videoIndex):
+	def getVideoDownloadTimeForVideoTitle(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		return self._getVideoInfoForVideoIndex(videoIndex)['downloadTime']
+
+	def isTimeFrameDataAvailableForVideoIndex(self, videoIndex):
 		return 'timeFrames' in self.dic[videoIndex].keys()
 		
 	def _addTimeFrameDataForVideo(self, videoIndex):
@@ -51,7 +72,7 @@ class DownloadedVideoInfoDic:
 		
 		self.dic[videoIndex]['timeFrames'] = videoTimeFramesDic
 	
-	def addExtractStartEndSecondsList(self, videoIndex, startEndSecondsList):
+	def addExtractStartEndSecondsListForVideoIndex(self, videoIndex, startEndSecondsList):
 		videoIndex = str(videoIndex)
 		
 		if not videoIndex in self.dic.keys():
@@ -62,7 +83,7 @@ class DownloadedVideoInfoDic:
 		
 		self.dic[videoIndex]['timeFrames']['extract'].append(startEndSecondsList)
 	
-	def addSuppressStartEndSecondsList(self, videoIndex, startEndSecondsList):
+	def addSuppressStartEndSecondsListForVideoIndex(self, videoIndex, startEndSecondsList):
 		videoIndex = str(videoIndex)
 
 		if not videoIndex in self.dic.keys():
@@ -73,7 +94,7 @@ class DownloadedVideoInfoDic:
 		
 		self.dic[videoIndex]['timeFrames']['suppress'].append(startEndSecondsList)
 	
-	def getExtractStartEndSecondsLists(self, videoIndex):
+	def getExtractStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
 		if 'timeFrames' in self.dic[videoIndex].keys():
@@ -81,7 +102,7 @@ class DownloadedVideoInfoDic:
 		else:
 			return None
 	
-	def getSuppressStartEndSecondsLists(self, videoIndex):
+	def getSuppressStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
 		if 'timeFrames' in self.dic[videoIndex].keys():
@@ -89,7 +110,7 @@ class DownloadedVideoInfoDic:
 		else:
 			return None
 
-	def addVideoInfo(self, videoIndex, videoTitle, videoUrl, downloadedVideoFileName):
+	def addVideoInfoForVideoIndex(self, videoIndex, videoTitle, videoUrl, downloadedVideoFileName):
 		videoIndex = str(videoIndex)
 
 		if not videoIndex in self.dic.keys():
@@ -102,7 +123,7 @@ class DownloadedVideoInfoDic:
 		self.dic[videoIndex]['downloadedVideoFileName'] = downloadedVideoFileName
 		self.dic[videoIndex]['downloadTime'] = additionTimeStr
 	
-	def getVideoInfoForVideoIndex(self, videoIndex):
+	def _getVideoInfoForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 		
 		videoInfo = None
@@ -114,29 +135,26 @@ class DownloadedVideoInfoDic:
 		
 		return videoInfo
 	
-	def getVideoInfoForVideoTitle(self, videoTitle):
+	def getVideoIndexForVideoTitle(self, videoTitle):
 		for key in self.dic.keys():
-			videoInfo = self.dic[key]
-			if videoInfo['title'] == videoTitle:
-				return videoInfo
+			if self.getVideoTitleForVideoIndex(key) == videoTitle:
+				return key
 		
 		return None
 
-
 if __name__ == "__main__":
 	dvi = DownloadedVideoInfoDic('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks', 'essai_vid_info')
-	dvi.addVideoInfo(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk')
-	dvi.addVideoInfo(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999')
-	print('vidéo 1 info ', dvi.getVideoInfoForVideoIndex(1))
-	print('vidéo 2 info ', dvi.getVideoInfoForVideoIndex(2))
-	dvi.addExtractStartEndSecondsList(1, [34, 56])
-	dvi.addExtractStartEndSecondsList(1, [34, 65])
-	dvi.addSuppressStartEndSecondsList(1, [340, 560])
-	dvi.addSuppressStartEndSecondsList(3, [3400, 5600])
-	print('vidéo 3 info ', dvi.getVideoInfoForVideoIndex(3))
-	print(dvi.getExtractStartEndSecondsLists(1))
-	print(dvi.getSuppressStartEndSecondsLists(1))
-	print('vidéo 1 info                           ', dvi.getVideoInfoForVideoIndex(1))
-	print('vidéo 2 info                           ', dvi.getVideoInfoForVideoIndex(2))
-	print('vidéo info for video title Title_vid_1 ', dvi.getVideoInfoForVideoTitle('Title_vid_1'))
+	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk')
+	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999')
+	print('vidéo 1 info ', dvi._getVideoInfoForVideoIndex(1))
+	print('vidéo 2 info ', dvi._getVideoInfoForVideoIndex(2))
+	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 56])
+	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 65])
+	dvi.addSuppressStartEndSecondsListForVideoIndex(1, [340, 560])
+	dvi.addSuppressStartEndSecondsListForVideoIndex(3, [3400, 5600])
+	print('vidéo 3 info ', dvi._getVideoInfoForVideoIndex(3))
+	print(dvi.getExtractStartEndSecondsListsForVideoIndex(1))
+	print(dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
+	print('vidéo 1 info                           ', dvi._getVideoInfoForVideoIndex(1))
+	print('vidéo 2 info                           ', dvi._getVideoInfoForVideoIndex(2))
 	dvi.saveDic()
