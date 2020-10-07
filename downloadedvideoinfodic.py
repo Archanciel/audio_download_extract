@@ -29,7 +29,12 @@ class DownloadedVideoInfoDic:
 		return self.downloadDir + DIR_SEP + self.playlistName + '.txt'
 	
 	def getVideoIndexes(self):
-		return self.dic.keys()
+		'''
+		Returns a list of video indexes as string.
+		
+		:return: example: ['1', '2']
+		'''
+		return list(self.dic.keys())
 	
 	def getVideoTitleForVideoIndex(self, videoIndex):
 		return self._getVideoInfoForVideoIndex(videoIndex)['title']
