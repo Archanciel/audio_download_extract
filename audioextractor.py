@@ -27,10 +27,10 @@ class AudioExtractor:
 					clip.write_audiofile(mp3FilePathName)
 					clip.close()
 					HHMMSS_TimeFrameList = self.convertStartEndSecondsListTo_HHMMSS_TimeFrameList(extractStartEndSecondsList)
-					downloadedVideoInfoDic.addExtractedFilePathNameForVideoIndex(videoIndex,
-									                                             timeFrameIndex,
-									                                             HHMMSS_TimeFrameList,
-									                                             mp3FileName)
+					downloadedVideoInfoDic.addExtractedFileInfoForVideoIndexTimeFrameIndex(videoIndex,
+					                                                                       timeFrameIndex,
+					                                                                       mp3FileName,
+					                                                                       HHMMSS_TimeFrameList)
 					timeFrameIndex += 1
 			else:
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)

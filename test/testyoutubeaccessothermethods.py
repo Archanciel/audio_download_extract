@@ -68,12 +68,8 @@ class TestYoutubeAccessOtherMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		if os.name == 'posix':
-			self.assertEqual(['playlist URL == None',
-			                  ''], outputCapturingString.getvalue().split('\n'))
-		else:
-			self.assertEqual(['playlist URL == None',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['playlist URL == None',
+		                  ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertIsNone(youtubePlaylist)
 		

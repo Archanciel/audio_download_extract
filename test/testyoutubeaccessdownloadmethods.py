@@ -11,9 +11,9 @@ from guioutputstub import GuiOutputStub
 from youtubeaccess import YoutubeAccess
 
 class TestYoutubeAccessDownloadMethods(unittest.TestCase):
-	'''
+	"""
 	Since testing download consume band width, it is placed in a specific test class.
-	'''
+	"""
 
 	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
@@ -265,12 +265,8 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		if os.name == 'posix':
-			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
-			                  ''], outputCapturingString.getvalue().split('\n'))
-		else:
-			self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
+		                  ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testDownloadAudioFromPlaylistOneVideo_empty_url(self):
 		guiOutput = GuiOutputStub()
