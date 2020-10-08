@@ -33,7 +33,9 @@ class AudioController:
 		if playlistTimeFrameData:
 			audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
 			audioExtractor.extractAudioPortion(playlistTimeFrameData)
-
+		
+		downloadedVideoInfoDictionary.save()
+		
 if __name__ == "__main__":
 	downloader = AudioController()
 	downloader.downloadAudio()

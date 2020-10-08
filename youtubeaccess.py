@@ -12,6 +12,11 @@ class YoutubeAccess:
 		self.msgText = ''
 		
 	def downloadAudioFromPlaylist(self, playlistUrl):
+		'''
+		
+		:param playlistUrl:
+		:return: targetAudioDir, downloadedVideoInfoDic
+		'''
 		targetAudioDir = None
 		downloadedVideoInfoDic = None
 
@@ -87,6 +92,8 @@ class YoutubeAccess:
 		and value is a list of two lists, one containing the start and
 		end extract positions in seconds, the second list containing the start
 		and end suppress positions in seconds.
+		
+		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
 		'''
 		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(se\d:\- \)]*))?'
 		
