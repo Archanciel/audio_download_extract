@@ -296,6 +296,91 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual(HHMMSS_TimeFrameList_1_1, reloadedDvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_1))
 		self.assertEqual(HHMMSS_TimeFrameList_1_2, reloadedDvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_2))
+	
+	def testAddSuppressedFileInfoForVideoIndex_existing_info_dic_file(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic file
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		# creating new video info dic file and saving it
+		
+		dvi = DownloadedVideoInfoDic(downloadDir, playListName)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
+		
+		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
+		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 1'))
+		
+		startEndSecondsList_one = [1, 10]
+		startEndSecondsList_two = [15, 20]
+		
+		dvi.addExtractStartEndSecondsListForVideoIndex(1, startEndSecondsList_one)
+		dvi.addExtractStartEndSecondsListForVideoIndex(1, startEndSecondsList_two)
+		dvi.addSuppressStartEndSecondsListForVideoIndex(1, startEndSecondsList_two)
+		dvi.addSuppressStartEndSecondsListForVideoIndex(1, startEndSecondsList_one)
+		
+		self.assertEqual([startEndSecondsList_one, startEndSecondsList_two],
+		                 dvi.getExtractStartEndSecondsListsForVideoIndex(1))
+		self.assertEqual([startEndSecondsList_two, startEndSecondsList_one],
+		                 dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
+		
+		HHMMSS_TimeFrameList_1_1 = ['0:23:45', '0:24:54']
+		extractedMp3FileName_1_1 = 'title 1_1.mp3'
+		dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1,
+		                                                    1,
+		                                                    extractedMp3FileName_1_1,
+		                                                    HHMMSS_TimeFrameList_1_1)
+		HHMMSS_TimeFrameList_1_2 = ['0:25:45', '1:24:54']
+		extractedMp3FileName_1_2 = 'title 1_2.mp3'
+		dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1,
+		                                                    2,
+		                                                    extractedMp3FileName_1_2,
+		                                                    HHMMSS_TimeFrameList_1_2)
+		
+		self.assertEqual(HHMMSS_TimeFrameList_1_1,
+		                 dvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_1))
+		self.assertEqual(HHMMSS_TimeFrameList_1_2,
+		                 dvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_2))
+		
+		suppressFileName = 'title_1_s.mp3'
+		suppressTimeFrameList = ['0:23:45-0:24:54', '1:03:45-1:24:54']
+		dvi.addSuppressedFileInfoForVideoIndex(1, suppressFileName, suppressTimeFrameList)
+		
+		self.assertEqual(suppressFileName, dvi.getSuppressedFileNameForVideoIndex(1))
+		self.assertEqual(suppressTimeFrameList, dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+		
+		dvi.saveDic()
+		
+		# creating new video info dic, reloading newly created video info dic file
+		reloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
+		reloadedDvi.loadDic()
+		
+		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
+		self.assertEqual(additionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 1'))
+		
+		self.assertEqual([startEndSecondsList_one, startEndSecondsList_two],
+		                 reloadedDvi.getExtractStartEndSecondsListsForVideoIndex(1))
+		self.assertEqual([startEndSecondsList_two, startEndSecondsList_one],
+		                 reloadedDvi.getSuppressStartEndSecondsListsForVideoIndex(1))
+		
+		self.assertEqual(HHMMSS_TimeFrameList_1_1,
+		                 reloadedDvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_1))
+		self.assertEqual(HHMMSS_TimeFrameList_1_2,
+		                 reloadedDvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_2))
+		
+		self.assertEqual(suppressFileName, reloadedDvi.getSuppressedFileNameForVideoIndex(1))
+		self.assertEqual(suppressTimeFrameList, reloadedDvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
 
 
 if __name__ == '__main__':
