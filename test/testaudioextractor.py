@@ -265,7 +265,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual(["0:0:3", "0:0:8"], downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(2, extractedMp3FileName_2_1))
 		self.assertEqual(["0:0:10", "0:0:13"], downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(2, extractedMp3FileName_2_2))
 	
-	def testSuppressAudioPortion_one_video_with_no_extract_and_one_suppress_timeframe(self):
+	def testSuppressAudioPortion_one_video_with_no_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -273,8 +273,8 @@ class TestAudioExtractor(unittest.TestCase):
 			os.mkdir(targetAudioDir)
 		
 		videoIndex = 1
-		suppressStartEndSecondsList = [[0, 2], [4, 8], [11, 13], [15, 17]]
-		expectedExtractedFileDuration = 10
+		suppressStartEndSecondsList = [[4, 8], [11, 13], [15, 17]]
+		expectedExtractedFileDuration = 12
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, 'test_suppress_audio_file.',
@@ -313,11 +313,63 @@ class TestAudioExtractor(unittest.TestCase):
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
 		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.5)
 		
-		self.assertEqual([["0:0:0", "0:0:2"], ["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+		self.assertEqual([["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+	
+	def testSuppressAudioPortion_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
+		playListName = 'test_audio_extractor'
+		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
+		
+		if not os.path.isdir(targetAudioDir):
+			os.mkdir(targetAudioDir)
+		
+		videoIndex = 1
+		suppressStartEndSecondsList = [[0, 2], [4, 8], [11, 13], [15, 17]]
+		expectedExtractedFileDuration = 10
+		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
+		videoFileName = 'test_suppress_audio_file.mp4'
+		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, 'test_suppress_audio_file.',
+		                                                 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList)
+		
+		# deleting files in downloadDir
+		files = glob.glob(targetAudioDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		# restoring mp4 file
+		
+		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
+		            targetAudioDir + '\\' + videoFileName)
+		guiOutput = GuiOutputStub()
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadedVideoInfoDic)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		videoAndAudioFileList = os.listdir(targetAudioDir)
+		
+		self.assertEqual(
+			['test_suppress_audio_file.mp4', 'test_suppress_audio_file_s.mp3'],
+			videoAndAudioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName_1 = videoAndAudioFileList[1]
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
+		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.5)
+		
+		self.assertEqual([["0:0:0", "0:0:2"], ["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]],
+		                 downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
 	ts = time.time()
-	tst.testExtractAudioPortion_one_video_with_two_extract_timeframe()
+	tst.testSuppressAudioPortion_one_video_with_no_extract_and_one_suppress_timeframe()
 	print(time.time() - ts)
