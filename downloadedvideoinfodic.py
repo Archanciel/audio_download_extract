@@ -66,9 +66,18 @@ class DownloadedVideoInfoDic:
 		
 		return self._getVideoInfoForVideoIndex(videoIndex)['downloadTime']
 
-	def isTimeFrameDataAvailableForVideoIndex(self, videoIndex):
-		return 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys()
+	def isExtractTimeFrameDataAvailableForVideoIndex(self, videoIndex):
+		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
+			return 'extract' in self.dic[videoIndex]['startEndTimeFramesInSeconds']
 		
+		return False
+	
+	def isSuppressTimeFrameDataAvailableForVideoIndex(self, videoIndex):
+		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
+			return 'suppress' in self.dic[videoIndex]['startEndTimeFramesInSeconds']
+		
+		return False
+	
 	def _addTimeFrameDataForVideo(self, videoIndex):
 		'''
 		Protected method used internally only.
@@ -100,7 +109,7 @@ class DownloadedVideoInfoDic:
 		if not 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
 			self._addTimeFrameDataForVideo(videoIndex)
 		
-		self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'].append(startEndSecondsList)
+		self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'] = startEndSecondsList
 	
 	def getExtractStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
@@ -289,12 +298,17 @@ class DownloadedVideoInfoDic:
 
 
 if __name__ == "__main__":
-	dvi = DownloadedVideoInfoDic('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks', 'essai_vid_info')
+	if os.name == 'posix':
+		audioDir = '/storage/emulated/0/Download/Audiobooks'
+	else:
+		audioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks'
+		
+	dvi = DownloadedVideoInfoDic(audioDir, 'essai_vid_info')
 	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
 	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999', 'Title_vid_2.mp4')
 	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 56])
 	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 65])
-	dvi.addSuppressStartEndSecondsListForVideoIndex(1, [340, 560])
+	dvi.addSuppressStartEndSecondsListForVideoIndex(1, [[340, 560], [840, 960]])
 	dvi.addSuppressStartEndSecondsListForVideoIndex(3, [3400, 5600])
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 1, 'title_1_1.mp3', ['0:2:3', '0:4:56'])
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 2, 'title_1_2.mp3', ['0:20:3', '0:40:56'])
@@ -303,5 +317,6 @@ if __name__ == "__main__":
 
 	print(dvi)
 	
+	print(dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
 	print(dvi.getSuppressedFileNameForVideoIndex(1))
 	print(dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
