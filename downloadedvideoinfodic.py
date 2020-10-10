@@ -109,8 +109,8 @@ class DownloadedVideoInfoDic:
 		if not 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
 			self._addTimeFrameDataForVideo(videoIndex)
 		
-		self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'] = startEndSecondsList
-	
+		self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'].append(startEndSecondsList)
+
 	def getExtractStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
@@ -198,7 +198,7 @@ class DownloadedVideoInfoDic:
 		:param videoIndex:
 		:param timeFrameIndex:
 		:param extractedFileName:
-		:param startEndHHMMSS_TimeFramesList. Example: ['0:23:45', '0:24:54']
+		:param HHMMSS_suppressedTimeFramesList. Example: ['0:23:45', '0:24:54']
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		extractedFilesSubDic = {}
@@ -237,7 +237,8 @@ class DownloadedVideoInfoDic:
 	def addSuppressedFileInfoForVideoIndex(self,
 	                                       videoIndex,
 	                                       suppressedFileName,
-	                                       startEndHHMMSS_TimeFramesList):
+	                                       HHMMSS_suppressedTimeFramesList,
+	                                       HHMMSS_keptTimeFramesList):
 		"""
 		Creates the extracted files info dic if necessary.
 
@@ -246,8 +247,11 @@ class DownloadedVideoInfoDic:
 
 		:param videoIndex:
 		:param suppressedFileName:
-		:param startEndHHMMSS_TimeFramesList list os suppressed time frames.
+		:param HHMMSS_suppressedTimeFramesList list of suppressed time frames.
 											 Example: ['0:23:45-0:24:54', '1:03:45-1:24:54']
+		:param HHMMSS_keptTimeFramesList     list of kept time frames.
+											 Example: ['0:0:0-0:23:45', '0:24:54-1:03:45', '1:24:54-1:55:12']
+
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		suppressedFileSubDic = {}
@@ -258,25 +262,8 @@ class DownloadedVideoInfoDic:
 			suppressedFileSubDic = videoInfoDic['suppressed file']
 		
 		suppressedFileSubDic['fileName'] = suppressedFileName
-		suppressedFileSubDic['startEndTimeSuppressedFramesHHMMSS'] = startEndHHMMSS_TimeFramesList
-	
-	def getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
-		"""
-		Returns the suppressed time frames in HH:MM:SS format for the passed video
-		index.
-
-		:param videoIndex:
-
-		:return: startEndHHMMSS time frame list. Example: ['0:23:45', '0:24:54']
-		"""
-		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
-		
-		if 'suppressed file' not in videoInfoDic.keys():
-			pass
-		else:
-			return videoInfoDic['suppressed file']['startEndTimeSuppressedFramesHHMMSS']
-		
-		return None
+		suppressedFileSubDic['startEndTimeFramesHHMMSS_suppressed'] = HHMMSS_suppressedTimeFramesList
+		suppressedFileSubDic['startEndTimeFramesHHMMSS_kept'] = HHMMSS_keptTimeFramesList
 	
 	def getSuppressedFileNameForVideoIndex(self, videoIndex):
 		"""
@@ -293,6 +280,42 @@ class DownloadedVideoInfoDic:
 			pass
 		else:
 			return videoInfoDic['suppressed file']['fileName']
+		
+		return None
+	
+	def getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
+		"""
+		Returns the suppressed time frames in HH:MM:SS format for the passed video
+		index.
+
+		:param videoIndex:
+
+		:return: startEndHHMMSS time frame list. Example: ['0:23:45', '0:24:54']
+		"""
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if 'suppressed file' not in videoInfoDic.keys():
+			pass
+		else:
+			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_suppressed']
+		
+		return None
+	
+	def getKeptStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
+		"""
+		Returns the suppressed time frames in HH:MM:SS format for the passed video
+		index.
+
+		:param videoIndex:
+
+		:return: startEndHHMMSS time frame list. Example: ['0:23:45', '0:24:54']
+		"""
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if 'suppressed file' not in videoInfoDic.keys():
+			pass
+		else:
+			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_kept']
 		
 		return None
 
@@ -313,7 +336,7 @@ if __name__ == "__main__":
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 1, 'title_1_1.mp3', ['0:2:3', '0:4:56'])
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 2, 'title_1_2.mp3', ['0:20:3', '0:40:56'])
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(2, 1, 'title_2_1.mp3', ['0:2:3', '0:4:56'])
-	dvi.addSuppressedFileInfoForVideoIndex(1, 'title_1_s.mp3', ['0:23:45-0:24:54', '1:03:45-1:24:54'])
+	dvi.addSuppressedFileInfoForVideoIndex(1, 'title_1_s.mp3', ['0:23:45-0:24:54', '1:03:45-1:24:54'], ['0:0:0-0:23:45', '0:24:54-1:03:45', '1:24:54-1:55:12'])
 
 	print(dvi)
 	

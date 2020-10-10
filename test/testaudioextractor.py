@@ -273,13 +273,17 @@ class TestAudioExtractor(unittest.TestCase):
 			os.mkdir(targetAudioDir)
 		
 		videoIndex = 1
-		suppressStartEndSecondsList = [[4, 8], [11, 13], [15, 17]]
+		suppressStartEndSecondsList_1 = [4, 8]
+		suppressStartEndSecondsList_2 = [11, 13]
+		suppressStartEndSecondsList_3 = [15, 17]
 		expectedExtractedFileDuration = 12
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, 'test_suppress_audio_file.',
 		                                                 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
-		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_1)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_2)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_3)
 		
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioDir + DIR_SEP + '*')
@@ -314,7 +318,8 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.5)
 		
 		self.assertEqual([["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
-	
+		self.assertEqual([['0:0:0', '0:0:4'], ['0:0:8', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20.43']], downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
+
 	def testSuppressAudioPortion_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
@@ -323,14 +328,20 @@ class TestAudioExtractor(unittest.TestCase):
 			os.mkdir(targetAudioDir)
 		
 		videoIndex = 1
-		suppressStartEndSecondsList = [[0, 2], [4, 8], [11, 13], [15, 17]]
+		suppressStartEndSecondsList_1 = [0, 2]
+		suppressStartEndSecondsList_2 = [4, 8]
+		suppressStartEndSecondsList_3 = [11, 13]
+		suppressStartEndSecondsList_4 = [15, 17]
 		expectedExtractedFileDuration = 10
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, 'test_suppress_audio_file.',
 		                                                 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
-		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList)
-		
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_1)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_2)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_3)
+		downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, suppressStartEndSecondsList_4)
+
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioDir + DIR_SEP + '*')
 		
@@ -347,9 +358,8 @@ class TestAudioExtractor(unittest.TestCase):
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
-		
 		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
-		
+
 		sys.stdout = stdout
 		
 		videoAndAudioFileList = os.listdir(targetAudioDir)
@@ -363,13 +373,12 @@ class TestAudioExtractor(unittest.TestCase):
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
 		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.5)
 		
-		self.assertEqual([["0:0:0", "0:0:2"], ["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]],
-		                 downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
-
+		self.assertEqual([['0:0:0', '0:0:2'], ['0:0:4', '0:0:8'], ['0:0:11', '0:0:13'], ['0:0:15', '0:0:17']], downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+		self.assertEqual([['0:0:2', '0:0:4'], ['0:0:8', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20.43']], downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
 	ts = time.time()
-	tst.testSuppressAudioPortion_one_video_with_no_extract_and_one_suppress_timeframe()
+	tst.testSuppressAudioPortion_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero()
 	print(time.time() - ts)

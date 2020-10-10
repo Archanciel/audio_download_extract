@@ -2,6 +2,11 @@ import os, shutil
 
 from constants import *
 
+if os.name == 'posix':
+	pass
+else:
+	import moviepy.editor as mp  # not working on Android
+
 class AudioExtractor:
 	def __init__(self, guiOutput, targetAudioDir, downloadedVideoInfoDictionary):
 		self.guiOutput = guiOutput
@@ -12,7 +17,6 @@ class AudioExtractor:
 		for videoIndex in downloadedVideoInfoDic.getVideoIndexes():
 			videoFileName = downloadedVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
 			if downloadedVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
-				import moviepy.editor as mp  # not working on Android
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 				extractStartEndSecondsLists = downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 				timeFrameIndex = 1
@@ -41,51 +45,52 @@ class AudioExtractor:
 				
 				shutil.copy(mp4FilePathName, mp3FilePathName)
 	
-	def suppressFrames(self, suppressFrameList):
-		suppressFrameNb = len(suppressFrameList)
-		clips = []
-		duration = 18
-		
-		for extractIdx in range(suppressFrameNb + 1):
-			if extractIdx == 0:
-				clips.append([0, suppressFrameList[0][0]])
-			elif extractIdx == suppressFrameNb:
-				clips.append([suppressFrameList[extractIdx - 1][1], duration])
-			else:
-				clips.append([suppressFrameList[extractIdx - 1][1], suppressFrameList[extractIdx][0]])
-		
-		print(clips)
-	
 	def suppressAudioPortion(self, downloadedVideoInfoDic):
 		for videoIndex in downloadedVideoInfoDic.getVideoIndexes():
 			videoFileName = downloadedVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
 			if downloadedVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
-				import moviepy.editor as mp  # not working on Android
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 				suppressStartEndSecondsLists = downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(videoIndex)
 				suppressFrameNb = len(suppressStartEndSecondsLists)
 				videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
 				duration = videoAudioFrame.duration
 				clips = []
+				keptStartEndSecondsLists = []
 				
 				for extractIdx in range(suppressFrameNb + 1):
 					if extractIdx == 0:
-						clips.append(self.extractClip(mp, videoAudioFrame, [0, suppressStartEndSecondsLists[0][0]]))
+						timeFrameEndValue = suppressStartEndSecondsLists[0][0]
+						
+						if timeFrameEndValue == 0:
+							# suppress frame is starting at 0 and so, appending time frame 0-0 is nonsensical !
+							continue
+						
+						extractStartEndSecondsList = [0, timeFrameEndValue]
+						keptStartEndSecondsLists.append(extractStartEndSecondsList)
+						clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 					elif extractIdx == suppressFrameNb:
-						clips.append(self.extractClip(mp, videoAudioFrame, [suppressStartEndSecondsLists[extractIdx - 1][1], duration]))
+						extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1], duration]
+						keptStartEndSecondsLists.append(extractStartEndSecondsList)
+						clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 					else:
-						clips.append(self.extractClip(mp, videoAudioFrame, [suppressStartEndSecondsLists[extractIdx - 1][1], suppressStartEndSecondsLists[extractIdx][0]]))
+						extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1],
+						                              suppressStartEndSecondsLists[extractIdx][0]]
+						keptStartEndSecondsLists.append(extractStartEndSecondsList)
+						clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 
+				self.guiOutput.setMessage('Time frames kept {}'.format(keptStartEndSecondsLists))
 				clip = mp.concatenate_audioclips(clips)
 				mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
 				mp3FilePathName = os.path.join(self.targetAudioDir,
 				                               mp3FileName)
 				clip.write_audiofile(mp3FilePathName)
 				clip.close()
-				HHMMSS_SuppressedTimeFramesList = self.convertSuppressStartEndSecondsListsTo_HHMMSS_SuppressedTimeFramesList(suppressStartEndSecondsLists)
+				HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(suppressStartEndSecondsLists)
+				HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(keptStartEndSecondsLists)
 				downloadedVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
 	                                                                      mp3FileName,
-	                                                                      HHMMSS_SuppressedTimeFramesList)
+	                                                                      HHMMSS_suppressedTimeFramesList,
+				                                                          HHMMSS_keptTimeFramesList)
 			else:
 				mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 				mp3FilePathName = os.path.join(self.targetAudioDir, os.path.splitext(videoFileName)[0] + '.mp3')
@@ -95,7 +100,7 @@ class AudioExtractor:
 				
 				shutil.copy(mp4FilePathName, mp3FilePathName)
 
-	def extractClip(self, mp, videoAudioFrame, extractStartEndSecondsList):
+	def extractClip(self, videoAudioFrame, extractStartEndSecondsList):
 		timeStartSec = extractStartEndSecondsList[0]
 		timeEndSec = extractStartEndSecondsList[1]
 		
@@ -104,7 +109,7 @@ class AudioExtractor:
 	
 		return clip
 
-	def convertSuppressStartEndSecondsListsTo_HHMMSS_SuppressedTimeFramesList(self, suppressStartEndSecondsLists):
+	def convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(self, suppressStartEndSecondsLists):
 		HHMMSS_SuppressedTimeFramesList = []
 		
 		for startEndSecondsList in suppressStartEndSecondsLists:
@@ -128,4 +133,3 @@ class AudioExtractor:
 		SS = remainSeconds - MM * 60
 		
 		return str(HH) + ':' + str(MM) + ':' + str(SS)
-		

@@ -354,11 +354,13 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		suppressFileName = 'title_1_s.mp3'
 		suppressTimeFrameList = ['0:23:45-0:24:54', '1:03:45-1:24:54']
-		dvi.addSuppressedFileInfoForVideoIndex(1, suppressFileName, suppressTimeFrameList)
+		keptTimeFrameList = ['0:0:0-0:23:45', '0:24:54-1:03:45', '1:24:54-1:55:12']
+		dvi.addSuppressedFileInfoForVideoIndex(1, suppressFileName, suppressTimeFrameList, keptTimeFrameList)
 		
 		self.assertEqual(suppressFileName, dvi.getSuppressedFileNameForVideoIndex(1))
 		self.assertEqual(suppressTimeFrameList, dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
-		
+		self.assertEqual(keptTimeFrameList, dvi.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
+
 		dvi.saveDic()
 		
 		# creating new video info dic, reloading newly created video info dic file
@@ -381,6 +383,7 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		self.assertEqual(suppressFileName, reloadedDvi.getSuppressedFileNameForVideoIndex(1))
 		self.assertEqual(suppressTimeFrameList, reloadedDvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+		self.assertEqual(keptTimeFrameList, reloadedDvi.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
 
 
 if __name__ == '__main__':
