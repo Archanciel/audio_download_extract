@@ -63,7 +63,6 @@ class TestAudioExtractor(unittest.TestCase):
 			sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Wear a mask Help slow the spread of Covid-19.mp3']),
 			sorted(videoAndAudioFileList))
 		
-		from mutagen.mp3 import MP3
 		extractedMp3FileName = videoAndAudioFileList[0]
 		
 		self.assertIsNone(downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName))
@@ -456,6 +455,54 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
+	
+	def testSuppressAudioPortion_one_video_with_no_extract_no_suppress_timeframe(self):
+		playListName = 'test_audio_extractor'
+		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
+		
+		if not os.path.isdir(targetAudioDir):
+			os.mkdir(targetAudioDir)
+		
+		videoIndex = 1
+		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
+		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
+		downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
+		                                                 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
+		
+		# deleting files in downloadDir
+		files = glob.glob(targetAudioDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		# restoring mp4 file
+		
+		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
+		            targetAudioDir + '\\' + videoFileName)
+		guiOutput = GuiOutputStub()
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadedVideoInfoDic)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		videoAndAudioFileList = os.listdir(targetAudioDir)
+		self.assertEqual(
+			sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
+			        'Wear a mask Help slow the spread of Covid-19.mp3']),
+			sorted(videoAndAudioFileList))
+		
+		extractedMp3FileName = videoAndAudioFileList[0]
+		
+		self.assertIsNone(
+			downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName))
+		
+		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
+		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
 	def testSuppressAudioPortion_one_video_with_no_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'

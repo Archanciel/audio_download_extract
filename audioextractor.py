@@ -98,6 +98,7 @@ class AudioExtractor:
 				                               mp3FileName)
 				clip.write_audiofile(mp3FilePathName)
 				clip.close()
+				videoAudioFrame.close()
 				HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(suppressStartEndSecondsLists)
 				HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(keptStartEndSecondsLists)
 				downloadedVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
