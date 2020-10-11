@@ -215,6 +215,11 @@ class DownloadedVideoInfoDic:
 		"""
 		Returns the time frame in HH:MM:SS format for the passed extracted file name
 		extracted from the video videoIndex.
+
+		Unlike suppressing audio portions which produces only one mp3 file per
+		video, extracting audio portions produces potentially more than one
+		mp3 file per video. So, obtaining a start end HHMMSS time frame list
+		for a video index is nonsensical !
 		
 		:param videoIndex:
 		:param extractedFileName:
@@ -224,15 +229,13 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 
 		if 'extracted files' not in videoInfoDic.keys():
-			pass
+			return None
 		else:
 			extractedFilesSubDic = videoInfoDic['extracted files']
 			
 			for key in extractedFilesSubDic.keys():
 				if extractedFileName == extractedFilesSubDic[key]['fileName']:
 					return extractedFilesSubDic[key]['startEndTimeFrameHHMMSS']
-		
-		return None
 	
 	def addSuppressedFileInfoForVideoIndex(self,
 	                                       videoIndex,
@@ -277,16 +280,20 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
 		if 'suppressed file' not in videoInfoDic.keys():
-			pass
+			return None
 		else:
 			return videoInfoDic['suppressed file']['fileName']
-		
-		return None
 	
 	def getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
 		"""
 		Returns the suppressed time frames in HH:MM:SS format for the passed video
 		index.
+		
+		Unlike extracting audio portions which produces potentially more than one
+		mp3 file per video, suppressing audio portions produces only one mp3 file
+		per video. So, obtaining a start end HHMMSS time frame list	for a
+		specific file name is nonsensical since only one mp3 file is produced
+		when suppressing time frames !
 
 		:param videoIndex:
 
@@ -295,11 +302,9 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
 		if 'suppressed file' not in videoInfoDic.keys():
-			pass
+			return None
 		else:
 			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_suppressed']
-		
-		return None
 	
 	def getKeptStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
 		"""
@@ -313,11 +318,9 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
 		if 'suppressed file' not in videoInfoDic.keys():
-			pass
+			return None
 		else:
 			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_kept']
-		
-		return None
 
 
 if __name__ == "__main__":
