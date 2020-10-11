@@ -15,6 +15,7 @@ class YoutubeAccess:
 		'''
 		
 		:param playlistUrl:
+		
 		:return: targetAudioDir, downloadedVideoInfoDic
 		'''
 		targetAudioDir = None
@@ -95,7 +96,7 @@ class YoutubeAccess:
 		
 		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
 		'''
-		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(se\d:\- \)]*))?'
+		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
@@ -110,7 +111,7 @@ class YoutubeAccess:
 		return playlistName, targetAudioDir, downloadedVideoInfoDic
 	
 	def extractTimeInfo(self, downloadedVideoInfoDic, videoTimeFramesInfo):
-		videoTimeFramesPattern = r'(\([se\d:\- ]*\) ?)'
+		videoTimeFramesPattern = r'(\([sSeE\d:\- ]*\) ?)'
 		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
 		videoIndex = 1
 		
@@ -131,9 +132,9 @@ class YoutubeAccess:
 
 	def convertToStartEndSeconds(self, startEndTimeFrame):
 		'''
-		Returns a 2 element list containing the start end time framebin seconds.
+		Returns a 2 element list containing the start end time frame in seconds.
 		
-		:param startEndTimeFrame: example: 2:23:41-2:24:01
+		:param startEndTimeFrame: example: 2:23:41-2:24:01 or 2:23:41-e (means to end !)
 		:return: example: [8621, 8641]
 		'''
 		timeLst = startEndTimeFrame.split('-')
@@ -141,6 +142,10 @@ class YoutubeAccess:
 		timeEndHHMMSS = timeLst[1].split(':')
 
 		timeStartSec = int(timeStartHHMMSS[0]) * 3600 + int(timeStartHHMMSS[1]) * 60 + int(timeStartHHMMSS[2])
-		timeEndSec = int(timeEndHHMMSS[0]) * 3600 + int(timeEndHHMMSS[1]) * 60 + int(timeEndHHMMSS[2])
+		
+		if timeEndHHMMSS[0].upper() == 'E':
+			timeEndSec = 'end'
+		else:
+			timeEndSec = int(timeEndHHMMSS[0]) * 3600 + int(timeEndHHMMSS[1]) * 60 + int(timeEndHHMMSS[2])
 
 		return [timeStartSec, timeEndSec]

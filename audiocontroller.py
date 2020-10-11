@@ -20,6 +20,13 @@ class AudioController:
 		self.guiOutput = GuiOutput(Tk())
 		
 	def downloadAudio(self):
+		'''
+		# Example of playlist title:
+		playlist_title (s01:05:52-01:07:23 e01:15:52-E  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
+		-e or -E means "to end" !
+
+		:return:
+		'''
 		playlistUrl = self.guiOutput.getPlaylistUrlFromClipboard()
 		
 		if playlistUrl == None:

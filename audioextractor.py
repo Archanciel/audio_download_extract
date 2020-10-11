@@ -23,6 +23,14 @@ class AudioExtractor:
 				for extractStartEndSecondsList in extractStartEndSecondsLists:
 					timeStartSec = extractStartEndSecondsList[0]
 					timeEndSec = extractStartEndSecondsList[1]
+					
+					if timeEndSec == 'end':
+						# the extract time frame is from timeStartSec to end of video !
+						videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
+						timeEndSec = videoAudioFrame.duration
+						extractStartEndSecondsList[1] = timeEndSec
+						videoAudioFrame.close()
+						
 					clip = mp.AudioFileClip(mp4FilePathName).subclip(timeStartSec,
 					                                                 timeEndSec)
 					mp3FileName = os.path.splitext(videoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3'
@@ -70,6 +78,11 @@ class AudioExtractor:
 						clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 					elif extractIdx == suppressFrameNb:
 						extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1], duration]
+						
+						if extractStartEndSecondsList[0] == 'end':
+							suppressStartEndSecondsLists[extractIdx - 1][1] = duration
+							continue
+							
 						keptStartEndSecondsLists.append(extractStartEndSecondsList)
 						clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 					else:
