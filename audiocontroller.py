@@ -35,11 +35,10 @@ class AudioController:
 			return
 			
 		audioDownloader = YoutubeAccess(self.guiOutput)
-		playlistTimeFrameData, targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadAudioFromPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadVideoReferencedInPlaylist(playlistUrl)
 		
-		if playlistTimeFrameData:
-			audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
-			audioExtractor.extractAudioPortion(playlistTimeFrameData)
+		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
+		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDictionary)
 		
 		downloadedVideoInfoDictionary.save()
 		

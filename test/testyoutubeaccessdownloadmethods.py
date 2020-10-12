@@ -15,7 +15,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 	Since testing download consume band width, it is placed in a specific test class.
 	"""
 
-	def testDownloadAudioFromPlaylistOneVideo_targetFolder_exist(self):
+	def testDownloadVideoReferencedInPlaylist_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
@@ -36,7 +36,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -64,7 +64,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
 
-	def testDownloadAudioFromPlaylistOneVideo_targetFolder_not_exist(self):
+	def testDownloadVideoReferencedInPlaylist_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
@@ -80,7 +80,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -133,7 +133,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -193,7 +193,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadAudioFromPlaylist(
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(
 			playlistUrl)
 		
 		sys.stdout = stdout
@@ -252,7 +252,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4', ]),
 			sorted(fileNameLst))
 	
-	def testDownloadAudioFromPlaylistOneVideo_invalid_url(self):
+	def testDownloadVideoReferencedInPlaylist_invalid_url(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeAccess(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
@@ -261,14 +261,14 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 		
 		self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
 		                  ''], outputCapturingString.getvalue().split('\n'))
 	
-	def testDownloadAudioFromPlaylistOneVideo_empty_url(self):
+	def testDownloadVideoReferencedInPlaylist_empty_url(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeAccess(guiOutput)
 		playlistUrl = ""
@@ -277,13 +277,13 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 		
 		self.assertEqual('The URL obtained from clipboard is not pointing to a playlist. Program closed.\n', outputCapturingString.getvalue())
 	
-	def testDownloadAudioFromPlaylistOneVideo_with_timeFrame(self):
+	def testDownloadVideoReferencedInPlaylist_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 		# timeInfo = '(e0:0:5-0:0:10)'
@@ -305,7 +305,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadAudioFromPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 
@@ -340,4 +340,4 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAccessDownloadMethods()
-	tst.testDownloadAudioFromPlaylistOneVideo_targetFolder_exist()
+	tst.testDownloadVideoReferencedInPlaylist_targetFolder_exist()

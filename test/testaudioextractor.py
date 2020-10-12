@@ -24,7 +24,7 @@ class TestAudioExtractor(unittest.TestCase):
 
 		self.assertEqual(['0:0:56', '2:10:56'], audioExtractor.convertStartEndSecondsListTo_HHMMSS_TimeFrameList([56, 7856]))
 	
-	def testExtractAudioPortion_one_video_with_no_extract_no_suppress_timeframe(self):
+	def testExtractAudioPortions_one_video_with_no_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -54,7 +54,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.convertVideoToAudio(videoFileName)
 		
 		sys.stdout = stdout
 		
@@ -70,7 +70,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testExtractAudioPortion_one_video_with_one_extract_no_suppress_timeframe(self):
+	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -103,7 +103,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 
 		sys.stdout = stdout
 
@@ -120,7 +120,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testExtractAudioPortion_one_video_with_one_extract_no_suppress_timeframe_extract_from_0(self):
+	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_0(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -153,7 +153,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -174,7 +174,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 
-	def testExtractAudioPortion_one_video_with_one_extract_no_suppress_timeframe_extract_from_n_to_end(self):
+	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_n_to_end(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -207,7 +207,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -228,7 +228,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testExtractAudioPortion_one_video_with_two_extract_no_suppress_timeframe(self):
+	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -267,7 +267,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -292,7 +292,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 
-	def testExtractAudioPortion_one_video_with_two_extract_no_suppress_timeframe_last_extract_to_end(self):
+	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe_last_extract_to_end(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -331,7 +331,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -360,7 +360,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testExtractAudioPortion_two_video_with_two_extract_no_suppress_timeframe_each(self):
+	def testExtractAudioPortions_two_video_with_two_extract_no_suppress_timeframe_each(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -415,7 +415,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -424,19 +424,28 @@ class TestAudioExtractor(unittest.TestCase):
 			['Here to help Give him what he wants.mp4',
 			 'Here to help Give him what he wants_1.mp3',
 			 'Here to help Give him what he wants_2.mp3',
+			 'Here to help Give him what he wants_full.mp3',
 			 'Wear a mask Help slow the spread of Covid-19.mp4',
 			 'Wear a mask Help slow the spread of Covid-19_1.mp3',
-			 'Wear a mask Help slow the spread of Covid-19_2.mp3'],
+			 'Wear a mask Help slow the spread of Covid-19_2.mp3',
+			 'Wear a mask Help slow the spread of Covid-19_full.mp3'],
 			videoAndAudioFileList)
 		
 		from mutagen.mp3 import MP3
-		extractedMp3FileName_1_1 = videoAndAudioFileList[4]
-		extractedMp3FileName_1_2 = videoAndAudioFileList[5]
+		extractedMp3FileName_1_1 = videoAndAudioFileList[5]
+		extractedMp3FileName_1_2 = videoAndAudioFileList[6]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_1)
 		self.assertAlmostEquals(expectedExtractedFileDuration_1_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_2)
 		self.assertAlmostEquals(expectedExtractedFileDuration_1_2, audio.info.length, delta=0.1)
 		
+		extractedMp3FileName_2_1 = videoAndAudioFileList[1]
+		extractedMp3FileName_2_2 = videoAndAudioFileList[2]
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_1)
+		self.assertAlmostEquals(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_2)
+		self.assertAlmostEquals(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
+
 		self.assertEqual(["0:0:5", "0:0:10"], downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_1))
 		self.assertEqual(["0:0:11", "0:0:13"], downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_2))
 		
@@ -456,55 +465,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 	
-	def testSuppressAudioPortion_one_video_with_no_extract_no_suppress_timeframe(self):
-		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
-		
-		if not os.path.isdir(targetAudioDir):
-			os.mkdir(targetAudioDir)
-		
-		videoIndex = 1
-		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playListName)
-		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
-		downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
-		                                                 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
-		
-		# deleting files in downloadDir
-		files = glob.glob(targetAudioDir + DIR_SEP + '*')
-		
-		for f in files:
-			os.remove(f)
-		
-		# restoring mp4 file
-		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-		            targetAudioDir + '\\' + videoFileName)
-		guiOutput = GuiOutputStub()
-		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadedVideoInfoDic)
-		
-		stdout = sys.stdout
-		outputCapturingString = StringIO()
-		sys.stdout = outputCapturingString
-		
-		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
-		
-		sys.stdout = stdout
-		
-		videoAndAudioFileList = os.listdir(targetAudioDir)
-		self.assertEqual(
-			sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
-			        'Wear a mask Help slow the spread of Covid-19.mp3']),
-			sorted(videoAndAudioFileList))
-		
-		extractedMp3FileName = videoAndAudioFileList[0]
-		
-		self.assertIsNone(
-			downloadedVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName))
-		
-		self.assertIsNone(downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-		self.assertIsNone(downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
-	def testSuppressAudioPortion_one_video_with_no_extract_and_three_suppress_timeframe(self):
+	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -541,7 +502,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.suppressAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -561,7 +522,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual([["0:0:4", "0:0:8"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadedVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertEqual([['0:0:0', '0:0:4'], ['0:0:8', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20.43']], downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testSuppressAudioPortion_one_video_with_no_extract_and_three_suppress_timeframe_last_suppress_to_end(self):
+	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe_last_suppress_to_end(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -598,7 +559,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.suppressAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -621,7 +582,7 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual([['0:0:0', '0:0:4'], ['0:0:8', '0:0:11'], ['0:0:13', '0:0:15']],
 		                 downloadedVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
-	def testSuppressAudioPortion_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
+	def testSuppressAudioPortions_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
 		
@@ -659,7 +620,7 @@ class TestAudioExtractor(unittest.TestCase):
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
-		audioExtractor.suppressAudioPortion(downloadedVideoInfoDic)
+		audioExtractor.suppressAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
 
 		sys.stdout = stdout
 		
@@ -683,5 +644,5 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
 	ts = time.time()
-	tst.testSuppressAudioPortion_one_video_with_no_extract_and_three_suppress_timeframe_last_suppress_to_end()
+	tst.testExtractAudioPortions_two_video_with_two_extract_no_suppress_timeframe_each()
 	print(time.time() - ts)

@@ -11,7 +11,7 @@ class YoutubeAccess:
 		self.guiOutput = guiOutput
 		self.msgText = ''
 		
-	def downloadAudioFromPlaylist(self, playlistUrl):
+	def downloadVideoReferencedInPlaylist(self, playlistUrl):
 		'''
 		
 		:param playlistUrl:

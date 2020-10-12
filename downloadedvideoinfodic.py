@@ -68,13 +68,15 @@ class DownloadedVideoInfoDic:
 
 	def isExtractTimeFrameDataAvailableForVideoIndex(self, videoIndex):
 		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			return 'extract' in self.dic[videoIndex]['startEndTimeFramesInSeconds']
+			if 'extract' in self.dic[videoIndex]['startEndTimeFramesInSeconds']:
+				return self.dic[videoIndex]['startEndTimeFramesInSeconds']['extract'] != []
 		
 		return False
 	
 	def isSuppressTimeFrameDataAvailableForVideoIndex(self, videoIndex):
 		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			return 'suppress' in self.dic[videoIndex]['startEndTimeFramesInSeconds']
+			if 'suppress' in self.dic[videoIndex]['startEndTimeFramesInSeconds']:
+				return self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'] != []
 		
 		return False
 	
