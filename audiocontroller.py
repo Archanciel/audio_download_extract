@@ -35,7 +35,7 @@ class AudioController:
 			return
 			
 		audioDownloader = YoutubeAccess(self.guiOutput)
-		targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadVideoReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
 		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDictionary)

@@ -36,7 +36,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -80,7 +80,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -133,7 +133,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -193,7 +193,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(
 			playlistUrl)
 		
 		sys.stdout = stdout
@@ -261,7 +261,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 		
@@ -277,7 +277,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 		
@@ -305,7 +305,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideoReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 
