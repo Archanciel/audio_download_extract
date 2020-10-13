@@ -3,6 +3,20 @@ from datetime import datetime
 
 from constants import *
 
+KEY_VIDEO_TITLE = 'title'
+KEY_VIDEO_URL = 'url'
+KEY_VIDEO_DOWNLOAD_FILENAME = 'downloadedFileName'
+KEY_VIDEO_DOWNLOAD_TIME = 'downloadTime'
+KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'startEndTimeFramesInSeconds'
+KEY_TIMEFRAME_EXTRACT = 'extract'
+KEY_TIMEFRAME_SUPPRESS = 'suppress'
+KEY_VIDEO_EXTRACTED_FILES = 'extracted files'
+KEY_FILENAME = 'fileName'
+KEY_FILE_TIMEFRAME_HHMMSS = 'startEndTimeFrameHHMMSS'
+KEY_VIDEO_SUPPRESS_FILE = 'suppressed file'
+KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'startEndTimeFramesHHMMSS_suppressed'
+KEY_TIMEFRAMES_HHMMSS_KEPT = 'startEndTimeFramesHHMMSS_kept'
+
 class DownloadedVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
@@ -40,43 +54,43 @@ class DownloadedVideoInfoDic:
 		return list(self.dic.keys())
 	
 	def getVideoTitleForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)['title']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_TITLE]
 
 	def getVideoUrlForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)['url']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
 	
 	def getVideoUrlForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
-		return self._getVideoInfoForVideoIndex(videoIndex)['url']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
 	
 	def getVideoFileNameForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)['downloadedFileName']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
 	
 	def getVideoFileNameForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
-		return self._getVideoInfoForVideoIndex(videoIndex)['downloadedFileName']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
 	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)['downloadTime']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME]
 
 	def getVideoDownloadTimeForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
-		return self._getVideoInfoForVideoIndex(videoIndex)['downloadTime']
+		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME]
 
 	def isExtractTimeFrameDataAvailableForVideoIndex(self, videoIndex):
-		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			if 'extract' in self.dic[videoIndex]['startEndTimeFramesInSeconds']:
-				return self.dic[videoIndex]['startEndTimeFramesInSeconds']['extract'] != []
+		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
+			if KEY_TIMEFRAME_EXTRACT in self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS]:
+				return self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_EXTRACT] != []
 		
 		return False
 	
 	def isSuppressTimeFrameDataAvailableForVideoIndex(self, videoIndex):
-		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			if 'suppress' in self.dic[videoIndex]['startEndTimeFramesInSeconds']:
-				return self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'] != []
+		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
+			if KEY_TIMEFRAME_SUPPRESS in self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS]:
+				return self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_SUPPRESS] != []
 		
 		return False
 	
@@ -87,9 +101,9 @@ class DownloadedVideoInfoDic:
 		:param videoIndex:
 		:return:
 		'''
-		videoTimeFramesDic = {'extract': [], 'suppress': []}
+		videoTimeFramesDic = {KEY_TIMEFRAME_EXTRACT: [], KEY_TIMEFRAME_SUPPRESS: []}
 		
-		self.dic[videoIndex]['startEndTimeFramesInSeconds'] = videoTimeFramesDic
+		self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS] = videoTimeFramesDic
 	
 	def addExtractStartEndSecondsListForVideoIndex(self, videoIndex, startEndSecondsList):
 		videoIndex = str(videoIndex)
@@ -97,10 +111,10 @@ class DownloadedVideoInfoDic:
 		if not videoIndex in self.dic.keys():
 			self.dic[videoIndex] = {}
 
-		if not 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
+		if not KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
 			self._addTimeFrameDataForVideo(videoIndex)
 		
-		self.dic[videoIndex]['startEndTimeFramesInSeconds']['extract'].append(startEndSecondsList)
+		self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_EXTRACT].append(startEndSecondsList)
 	
 	def addSuppressStartEndSecondsListForVideoIndex(self, videoIndex, startEndSecondsList):
 		videoIndex = str(videoIndex)
@@ -108,24 +122,24 @@ class DownloadedVideoInfoDic:
 		if not videoIndex in self.dic.keys():
 			self.dic[videoIndex] = {}
 		
-		if not 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
+		if not KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
 			self._addTimeFrameDataForVideo(videoIndex)
 		
-		self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress'].append(startEndSecondsList)
+		self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_SUPPRESS].append(startEndSecondsList)
 
 	def getExtractStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
-		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			return self.dic[videoIndex]['startEndTimeFramesInSeconds']['extract']
+		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
+			return self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_EXTRACT]
 		else:
 			return None
 	
 	def getSuppressStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
-		if 'startEndTimeFramesInSeconds' in self.dic[videoIndex].keys():
-			return self.dic[videoIndex]['startEndTimeFramesInSeconds']['suppress']
+		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
+			return self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_SUPPRESS]
 		else:
 			return None
 
@@ -152,10 +166,10 @@ class DownloadedVideoInfoDic:
 			
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
-		self.dic[videoIndex]['title'] = videoTitle
-		self.dic[videoIndex]['url'] = videoUrl
-		self.dic[videoIndex]['downloadedFileName'] = downloadedFileName
-		self.dic[videoIndex]['downloadTime'] = additionTimeStr
+		self.dic[videoIndex][KEY_VIDEO_TITLE] = videoTitle
+		self.dic[videoIndex][KEY_VIDEO_URL] = videoUrl
+		self.dic[videoIndex][KEY_VIDEO_DOWNLOAD_FILENAME] = downloadedFileName
+		self.dic[videoIndex][KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
 		'''
@@ -205,13 +219,13 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		extractedFilesSubDic = {}
 		
-		if 'extracted files' not in videoInfoDic.keys():
-			videoInfoDic['extracted files'] = extractedFilesSubDic
+		if KEY_VIDEO_EXTRACTED_FILES not in videoInfoDic.keys():
+			videoInfoDic[KEY_VIDEO_EXTRACTED_FILES] = extractedFilesSubDic
 		else:
-			extractedFilesSubDic = videoInfoDic['extracted files']
+			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			
-		extractedFilesSubDic[timeFrameIndex] = {'fileName': extractedFileName,
-		                                     'startEndTimeFrameHHMMSS': startEndHHMMSS_TimeFramesList}
+		extractedFilesSubDic[timeFrameIndex] = {KEY_FILENAME: extractedFileName,
+		                                        KEY_FILE_TIMEFRAME_HHMMSS: startEndHHMMSS_TimeFramesList}
 
 	def getStartEndHHMMSS_TimeFrameForExtractedFileName(self, videoIndex, extractedFileName):
 		"""
@@ -230,14 +244,14 @@ class DownloadedVideoInfoDic:
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 
-		if 'extracted files' not in videoInfoDic.keys():
+		if KEY_VIDEO_EXTRACTED_FILES not in videoInfoDic.keys():
 			return None
 		else:
-			extractedFilesSubDic = videoInfoDic['extracted files']
+			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			
 			for key in extractedFilesSubDic.keys():
-				if extractedFileName == extractedFilesSubDic[key]['fileName']:
-					return extractedFilesSubDic[key]['startEndTimeFrameHHMMSS']
+				if extractedFileName == extractedFilesSubDic[key][KEY_FILENAME]:
+					return extractedFilesSubDic[key][KEY_FILE_TIMEFRAME_HHMMSS]
 	
 	def addSuppressedFileInfoForVideoIndex(self,
 	                                       videoIndex,
@@ -261,14 +275,14 @@ class DownloadedVideoInfoDic:
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		suppressedFileSubDic = {}
 		
-		if 'suppressed file' not in videoInfoDic.keys():
-			videoInfoDic['suppressed file'] = suppressedFileSubDic
+		if KEY_VIDEO_SUPPRESS_FILE not in videoInfoDic.keys():
+			videoInfoDic[KEY_VIDEO_SUPPRESS_FILE] = suppressedFileSubDic
 		else:
-			suppressedFileSubDic = videoInfoDic['suppressed file']
+			suppressedFileSubDic = videoInfoDic[KEY_VIDEO_SUPPRESS_FILE]
 		
-		suppressedFileSubDic['fileName'] = suppressedFileName
-		suppressedFileSubDic['startEndTimeFramesHHMMSS_suppressed'] = HHMMSS_suppressedTimeFramesList
-		suppressedFileSubDic['startEndTimeFramesHHMMSS_kept'] = HHMMSS_keptTimeFramesList
+		suppressedFileSubDic[KEY_FILENAME] = suppressedFileName
+		suppressedFileSubDic[KEY_TIMEFRAMES_HHMMSS_SUPPRESSED] = HHMMSS_suppressedTimeFramesList
+		suppressedFileSubDic[KEY_TIMEFRAMES_HHMMSS_KEPT] = HHMMSS_keptTimeFramesList
 	
 	def getSuppressedFileNameForVideoIndex(self, videoIndex):
 		"""
@@ -281,10 +295,10 @@ class DownloadedVideoInfoDic:
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
-		if 'suppressed file' not in videoInfoDic.keys():
+		if KEY_VIDEO_SUPPRESS_FILE not in videoInfoDic.keys():
 			return None
 		else:
-			return videoInfoDic['suppressed file']['fileName']
+			return videoInfoDic[KEY_VIDEO_SUPPRESS_FILE][KEY_FILENAME]
 	
 	def getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
 		"""
@@ -303,10 +317,10 @@ class DownloadedVideoInfoDic:
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
-		if 'suppressed file' not in videoInfoDic.keys():
+		if KEY_VIDEO_SUPPRESS_FILE not in videoInfoDic.keys():
 			return None
 		else:
-			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_suppressed']
+			return videoInfoDic[KEY_VIDEO_SUPPRESS_FILE][KEY_TIMEFRAMES_HHMMSS_SUPPRESSED]
 	
 	def getKeptStartEndHHMMSS_TimeFramesForVideoIndex(self, videoIndex):
 		"""
@@ -319,10 +333,10 @@ class DownloadedVideoInfoDic:
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
-		if 'suppressed file' not in videoInfoDic.keys():
+		if KEY_VIDEO_SUPPRESS_FILE not in videoInfoDic.keys():
 			return None
 		else:
-			return videoInfoDic['suppressed file']['startEndTimeFramesHHMMSS_kept']
+			return videoInfoDic[KEY_VIDEO_SUPPRESS_FILE][KEY_TIMEFRAMES_HHMMSS_KEPT]
 
 
 if __name__ == "__main__":
