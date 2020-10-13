@@ -33,7 +33,7 @@ class YoutubeAccess:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
 			return targetAudioDir, downloadedVideoInfoDic
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlayListTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
 		
 		if not os.path.isdir(targetAudioDir):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)

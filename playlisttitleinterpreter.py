@@ -1,5 +1,4 @@
 import re
-from pytube import YouTube, Playlist
 
 from constants import *
 from downloadedvideoinfodic import DownloadedVideoInfoDic
@@ -7,15 +6,15 @@ from downloadedvideoinfodic import DownloadedVideoInfoDic
 class PlaylistTitleInterpreter:
 	
 	@staticmethod
-	def splitPlayListTitle(playlistTitle):
-		'''
+	def splitPlaylistTitle(playlistTitle):
+		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
 		end extract positions in seconds, the second list containing the start
 		and end suppress positions in seconds.
 
 		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
-		'''
+		"""
 		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
 		
 		match = re.match(playlistNamePattern, playlistTitle)
@@ -25,7 +24,7 @@ class PlaylistTitleInterpreter:
 		
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playlistName)
 		
-		if videoTimeFramesInfo != None:
+		if videoTimeFramesInfo is not None:
 			PlaylistTitleInterpreter.extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo)
 		
 		return playlistName, targetAudioDir, downloadedVideoInfoDic
@@ -53,12 +52,12 @@ class PlaylistTitleInterpreter:
 	
 	@staticmethod
 	def convertToStartEndSeconds(startEndTimeFrame):
-		'''
+		"""
 		Returns a 2 element list containing the start end time frame in seconds.
 
 		:param startEndTimeFrame: example: 2:23:41-2:24:01 or 2:23:41-e (means to end !)
 		:return: example: [8621, 8641]
-		'''
+		"""
 		timeLst = startEndTimeFrame.split('-')
 		timeStartHHMMSS = timeLst[0].split(':')
 		timeEndHHMMSS = timeLst[1].split(':')
