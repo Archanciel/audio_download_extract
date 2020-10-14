@@ -13,25 +13,21 @@ track), a list of time frames must be added to the playlist title. Below are
 some examples of playlist titles.
 
 ### Playlist title examples
-My playlist title
-
+My playlist title  
 *For each video contained in the playlist, its audio track will be downloaded
 fully.*
 
-My two video playlist title (e0:0:20-0:02:45)
-
+My two video playlist title (e0:0:20-0:02:45)  
 *Here, for the first video the audio portion starting at 20 seconds and ending
 at 2 minutes 45 seconds will be extracted (meaning of the 'e' - extract letter). The audio
 of the second video wil be kept unmodified.*
 
-My two video extract playlist title (e0:0:20-0:02:45 e1:22:45-1:25:0) (e0:0:0-0:05:45 e0:22:45-e)
-
+My two video extract playlist title (e0:0:20-0:02:45 e1:22:45-1:25:0) (e0:0:0-0:05:45 e0:22:45-e)  
 *Here, for the first video, two audio parts will be extracted. Some thing for
 the second video, with the second portion starting at 22 minutes 45 seconds and going
 to the end of the audio track (letter 'e' for end)*
 
-My one video suppress playlist title (s0:0:0-0:02:45 s0:22:45-e)
-
+My one video suppress playlist title (s0:0:0-0:02:45 s0:22:45-e)  
 *Here, the audio portions from beginning to 2 minutes 45 seconds and from
 22 minutes 44 seconds to the end will be suppressed (meaning of the
 's' - suppress letter). Only one audio file will remain, without the suppressed 
