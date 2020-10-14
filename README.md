@@ -10,7 +10,8 @@ For the videos to be downloaded and converted to audio, they must be added to
 a Youtube playlist. The playlist must be set to public access. If the audio
 is to be splitted into parts (the interesting portions of the video audio
 track), a list of time frames must be added to the playlist title. Below are
-some examples of playlist titles.
+some examples of playlist titles. Before launching the utility, the playlist
+url must be copied in the clipboard, from which the utility will get it.
 
 ### Playlist title examples
 My playlist title  
@@ -32,6 +33,12 @@ My one video suppress playlist title (**s**0:0:0-0:02:45 **s**0:22:45-**e**)
 22 minutes 44 seconds to the end will be suppressed (meaning of the
 **s** - **suppress** letter). Only one audio file will remain, without the suppressed 
 parts.*
+
+## Additional functionalities
+
+### Editing an mp3 file
+In case an extracted portion needs to be further trimmed, the utility
+can be 
 
 ## Required libraries
 - pytube3
