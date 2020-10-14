@@ -27,11 +27,11 @@ My two video multiple extract playlist title (**e**0:0:20-0:02:45 **e**1:22:45-1
 the second video, with the second portion starting at 22 minutes 45 seconds and going
 to the end of the audio track (letter **e** means **end** here).*
 
-My one video suppress playlist title (**s**0:0:0-0:02:45 **s**0:22:45-e)  
+My one video suppress playlist title (**s**0:0:0-0:02:45 **s**0:22:45-**e**)  
 *Here, the audio portions from beginning to 2 minutes 45 seconds and from
 22 minutes 44 seconds to the end will be suppressed (meaning of the
 **s** - **suppress** letter). Only one audio file will remain, without the suppressed 
-parts.
+parts.*
 
 ## Required libraries
 - pytube3
