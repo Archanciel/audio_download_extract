@@ -38,7 +38,12 @@ parts.*
 
 ### Editing an mp3 file
 In case an extracted portion needs to be further trimmed, the utility
-can be 
+can be started with -e or -s option.
+
+Example: 
+ 
+audiodownload filepathname -e0:0:3-e  
+*Removes the first 3 seconds of the audio file.*
 
 ## Required libraries
 - pytube3
