@@ -340,4 +340,4 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAccessDownloadMethods()
-	tst.testDownloadVideoReferencedInPlaylist_targetFolder_exist()
+	tst.testDownloadVideoReferencedInPlaylist_invalid_url()

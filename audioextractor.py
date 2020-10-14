@@ -152,6 +152,10 @@ class AudioExtractor:
 		HH = int(seconds / 3600)
 		remainSeconds = seconds - HH * 3600
 		MM = int(remainSeconds / 60)
-		SS = remainSeconds - MM * 60
+		SS = round(remainSeconds) - MM * 60
+		leftZero = ''
 		
-		return str(HH) + ':' + str(MM) + ':' + str(SS)
+		if SS < 10:
+			leftZero = '0'
+		
+		return str(HH) + ':' + str(MM) + ':' + leftZero + str(SS)
