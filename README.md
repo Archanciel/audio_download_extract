@@ -17,9 +17,9 @@ My playlist title
 *For each video contained in the playlist, its audio track will be downloaded
 fully.*
 
-My two video playlist title (e0:0:20-0:02:45)  
-*Here, for the first video the audio portion starting at 20 seconds and ending
-at 2 minutes 45 seconds will be extracted (meaning of the 'e' - extract letter). The audio
+My two video playlist title (**e**0:0:20-0:02:45)  
+*Here, for the first video, the audio portion starting at 20 seconds and ending
+at 2 minutes 45 seconds will be extracted (meaning of the **e** - extract letter). The audio
 of the second video wil be kept unmodified.*
 
 My two video extract playlist title (e0:0:20-0:02:45 e1:22:45-1:25:0) (e0:0:0-0:05:45 e0:22:45-e)  
