@@ -22,8 +22,8 @@ My two video playlist title (**e**0:0:20-0:02:45)
 at 2 minutes 45 seconds will be extracted (meaning of the **e** - **extract** letter). The audio
 of the second video wil be kept unmodified.*
 
-My two video extract playlist title (e0:0:20-0:02:45 e1:22:45-1:25:0) (e0:0:0-0:05:45 e0:22:45-e)  
-*Here, for the first video, two audio parts will be extracted. Some thing for
+My two video multiple extract playlist title (**e**0:0:20-0:02:45 **e**1:22:45-1:25:0) (**e**0:0:0-0:05:45 **e**0:22:45-**e**)  
+*Here, for the first video, two audio parts will be extracted. Same thing for
 the second video, with the second portion starting at 22 minutes 45 seconds and going
 to the end of the audio track (letter **e** means **end** here).*
 
