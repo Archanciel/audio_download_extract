@@ -45,6 +45,11 @@ Example:
 audiodownload filepathname -e0:0:3-e  
 *Removes the first 3 seconds of the audio file.*
 
+or
+
+audiodownload filepathname -s0:0:0-0:0:3  
+*Removes the first 3 seconds of the audio file.*
+
 ## Required libraries
 - pytube3
 - moviepy (not working on Android !)
