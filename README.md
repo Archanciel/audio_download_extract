@@ -4,7 +4,7 @@
 In development.
 
 ## Purpose
-This Python utility automates the download and extraction of audio track of 
+This Python utility automates the download and extraction of the audio track of 
 Youtube videos. It is used mainly on conferences or interviews to select the 
 most significant audio parts or remove musical or uninteresting portions.
 
