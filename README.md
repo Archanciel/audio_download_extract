@@ -25,12 +25,12 @@ obtained by the utility.
 ### Playlist title examples
 My playlist title  
 *For each video contained in the playlist, its audio track will be downloaded
-fully.*
+integrally, with no extraction/suppression.*
 
 My two video playlist title (**e**0:0:20-0:02:45)  
 *Here, for the first video, the audio portion starting at 20 seconds and ending
 at 2 minutes 45 seconds will be extracted (meaning of the **e** - **extract** letter). The audio
-of the second video wil be kept unmodified.*
+of the second video will be kept unmodified.*
 
 My two video multiple extract playlist title (**e**0:0:20-0:02:45 **e**1:22:45-1:25:0) (**e**0:0:0-0:05:45 **e**0:22:45-**e**)  
 *Here, for the first video, two audio parts will be extracted. Same thing for
