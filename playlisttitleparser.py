@@ -12,6 +12,9 @@ class PlaylistTitleParser:
 		and value is a list of two lists, one containing the start and
 		end extract positions in seconds, the second list containing the start
 		and end suppress positions in seconds.
+		
+		Example of playlist title:
+		The Title (e0:0:2-0:0:8 e0:10:2-e) (e0:0:2-0:0:8 e0:10:2-e s0:0:2-0:0:5 s0:0:7-e)
 
 		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
 		"""
