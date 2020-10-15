@@ -14,8 +14,9 @@ class PlaylistTitleParser:
 		and end suppress positions in seconds.
 		
 		Example of playlist title:
-		The Title (e0:0:2-0:0:8 e0:10:2-e) (e0:0:2-0:0:8 e0:10:2-e s0:0:2-0:0:5 s0:0:7-e)
-
+		The title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
+		-e or -E means "to end"
+		
 		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
 		"""
 		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
