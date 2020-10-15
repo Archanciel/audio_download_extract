@@ -1,5 +1,8 @@
 # youtube_audio_downloader
 
+## Status
+In development
+
 ## Purpose
 This Python utility automates the download of Youtube videos, extract the audio
 from them - if specified selecting audio parts or suppressing audio portions - and
@@ -31,24 +34,34 @@ to the end of the audio track (letter **e** means **end** here).*
 My one video suppress playlist title (**s**0:0:0-0:02:45 **s**0:22:45-**e**)  
 *Here, the audio portions from beginning to 2 minutes 45 seconds and from
 22 minutes 44 seconds to the end will be suppressed (meaning of the
-**s** - **suppress** letter). Only one audio file will remain, without the suppressed 
-parts.*
+**s** - **suppress** letter). Only one audio file will remain, without the 
+suppressed parts.*
 
 ## Additional functionalities
 
 ### Editing an mp3 file
 In case an extracted portion needs to be further trimmed, the utility
-can be started with -e or -s option.
+can be started with -e option(s).
 
 Example: 
  
-audiodownload filepathname -e0:0:3-e  
+audiodownload filePathName -e0:0:2-e  
 *Removes the first 3 seconds of the audio file.*
 
-or
+In case you are not sure how many seconds must be trimmed, you can 
+specify several extract options. Examples: 
 
-audiodownload filepathname -s0:0:0-0:0:3  
-*Removes the first 3 seconds of the audio file.*
+audiodownload filePathName -e0:0:2-e -e0:0:3-e
+*Removes the first 2 and 3 seconds of the audio file, creating two 
+trimmed audio files with respectively the first 2 or 3 seconds 
+trimmed.*
+
+audiodownload filePathName -e0:0:2-0:10:55 -e0:0:3-0:10:53
+*Removes the first seconds of the audio file like in the previous creating two 
+example, but now resulting trimmed files are ending at different
+positions.*
+
+Note that any number of extract options can be specified !
 
 ## Required libraries
 - pytube3
