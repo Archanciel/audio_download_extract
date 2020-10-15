@@ -6,7 +6,7 @@ In development.
 ## Purpose
 This Python utility automates the download and extraction of the audio track of 
 Youtube videos. It is used mainly on conferences or interviews to select the 
-most significant audio parts or remove musical or uninteresting portions.
+most significant audio parts or remove musical or uninteresting audio portions.
 
 It is possible to specify which audio parts must be extracted or/and which
 portions must be suppressed.
@@ -15,7 +15,7 @@ Then, the extracted audio files can be shared by email or through WhatsApp.
 
 ## How it works
 For the videos to be downloaded and converted to audio, they must be added to
-a Youtube playlist. The playlist must be set to public access. If the audio
+a Youtube playlist. **The playlist must be set to public access**. If the audio
 is to be splitted into parts (the interesting portions of the video audio
 track), a list of time frames must be added to the playlist title. Below are
 some examples of playlist titles. Before launching the utility, the playlist
