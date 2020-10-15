@@ -40,7 +40,7 @@ class AudioController:
 		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
 		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDictionary)
 		
-		downloadedVideoInfoDictionary.save()
+		downloadedVideoInfoDictionary.saveDic()
 		
 if __name__ == "__main__":
 	downloader = AudioController()
