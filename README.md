@@ -56,9 +56,9 @@ trimmed audio files with respectively the first 2 or 3 seconds
 trimmed.*
 
 audiodownload filePathName -**e**0:0:2-0:10:55 -**e**0:0:3-0:10:53  
-*Removes the first seconds of the audio file like in the previous creating two 
-example, but now resulting trimmed files are ending at different
-positions.*
+*Removes the first seconds of the audio file like in the previous 
+example, creating two trimmed audio files, but now the resulting
+files are ending at different positions.*
 
 Note that any number of extract options can be specified !
 
