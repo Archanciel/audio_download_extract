@@ -41,7 +41,7 @@ suppressed parts.*
 
 ### Editing an mp3 file
 In case an extracted portion needs to be further trimmed, the utility
-can be started with -**e** option(s).
+can be started with -**e** option(s), like shown below.
 
 Example: 
  
