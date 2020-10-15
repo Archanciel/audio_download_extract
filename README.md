@@ -50,12 +50,12 @@ means **end**).*
 In case you are not sure how many seconds must be trimmed, you can 
 specify several extract options: 
 
-audiodownload filePathName -**e**0:0:2-**e** -**e**0:0:3-**e**
+audiodownload filePathName -**e**0:0:2-**e** -**e**0:0:3-**e**  
 *Removes the first 2 and 3 seconds of the audio file, creating two 
 trimmed audio files with respectively the first 2 or 3 seconds 
 trimmed.*
 
-audiodownload filePathName -**e**0:0:2-0:10:55 -**e**0:0:3-0:10:53
+audiodownload filePathName -**e**0:0:2-0:10:55 -**e**0:0:3-0:10:53  
 *Removes the first seconds of the audio file like in the previous creating two 
 example, but now resulting trimmed files are ending at different
 positions.*
