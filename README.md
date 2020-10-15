@@ -19,7 +19,8 @@ a Youtube playlist. **The playlist must be set to public access**. If the audio
 is to be splitted into parts (the interesting portions of the video audio
 track), a list of time frames must be added to the playlist title. Below are
 some examples of playlist titles. Before launching the utility, the playlist
-url must be copied into the clipboard, from which the utility will get it.
+url must be copied into the clipboard, from which it will be automatically 
+obtained by the utility.
 
 ### Playlist title examples
 My playlist title  
