@@ -4,7 +4,7 @@ from pytube import YouTube, Playlist
 import http.client
 
 from constants import *
-from playlisttitleinterpreter import PlaylistTitleInterpreter
+from playlisttitleparser import PlaylistTitleParser
 
 class YoutubeAccess:
 	def __init__(self, guiOutput):
@@ -33,7 +33,7 @@ class YoutubeAccess:
 			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
 			return targetAudioDir, downloadedVideoInfoDic
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		if not os.path.isdir(targetAudioDir):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)

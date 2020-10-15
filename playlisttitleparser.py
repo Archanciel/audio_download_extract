@@ -3,7 +3,7 @@ import re
 from constants import *
 from downloadedvideoinfodic import DownloadedVideoInfoDic
 
-class PlaylistTitleInterpreter:
+class PlaylistTitleParser:
 	
 	@staticmethod
 	def splitPlaylistTitle(playlistTitle):
@@ -25,7 +25,7 @@ class PlaylistTitleInterpreter:
 		downloadedVideoInfoDic = DownloadedVideoInfoDic(targetAudioDir, playlistName)
 		
 		if videoTimeFramesInfo is not None:
-			PlaylistTitleInterpreter.extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo)
+			PlaylistTitleParser.extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo)
 		
 		return playlistName, targetAudioDir, downloadedVideoInfoDic
 	
@@ -40,7 +40,7 @@ class PlaylistTitleInterpreter:
 			
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
-				startEndSecondsList = PlaylistTitleInterpreter.convertToStartEndSeconds(startEndTimeFrame[1:])
+				startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])
 				if startEndTimeFrame[0].upper() == 'E':
 					downloadedVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 				elif startEndTimeFrame[0].upper() == 'S':

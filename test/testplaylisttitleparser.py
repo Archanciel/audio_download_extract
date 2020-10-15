@@ -6,9 +6,9 @@ currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
-from playlisttitleinterpreter import PlaylistTitleInterpreter
+from playlisttitleparser import PlaylistTitleParser
 
-class TestPlaylistTitleInterpreter(unittest.TestCase):
+class TestPlaylistTitleParser(unittest.TestCase):
 		
 	def testSplitPlayListTitle_one_time_frame_extract(self):
 		expectedPlayListName = 'Test_title_one_time_frame_extract'
@@ -18,7 +18,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 		expectedVideoSuppressTimeFramesList = []
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -32,7 +32,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 'end']]
 		expectedVideoSuppressTimeFramesList = []
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -48,7 +48,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3902, 3905], [3952, 'end']]
 		expectedVideoSuppressTimeFramesList = []
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -64,7 +64,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 		expectedVideoSuppressTimeFramesList = []
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -80,7 +80,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443]]
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -94,7 +94,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 'end']]
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -110,7 +110,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443]]
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -122,7 +122,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedPlayListName = 'Test_title_no_time_frame'
 		playlistTitle = expectedPlayListName
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		
@@ -134,7 +134,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443], [652, 653]]
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -148,7 +148,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443], [652, 'end']]
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -164,7 +164,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[352, 443]]
 		expectedVideoSuppressTimeFramesList = [[652, 653]]
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -182,7 +182,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideo2ExtractTimeFramesList = [[3952, 4043]]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideo1ExtractTimeFramesList)
@@ -202,7 +202,7 @@ class TestPlaylistTitleInterpreter(unittest.TestCase):
 		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleInterpreter.splitPlaylistTitle(playlistTitle)
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
