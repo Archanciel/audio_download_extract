@@ -1,12 +1,17 @@
 # youtube_audio_downloader
 
 ## Status
-In development
+In development.
 
 ## Purpose
-This Python utility automates the download of Youtube videos, extract the audio
-from them - if specified selecting audio parts or suppressing audio portions - and
-then shares the audio through mail or through WhatsApp.
+This Python utility automates the download and audio track extraction of Youtube 
+videos. It is used mainly on conference or interview videos to select the 
+most significant parts.
+
+It is possible to specify which audio parts must be extracted or/and which
+audio parts must be suppressed.
+
+Then the extracted audio files can be shared by email or through WhatsApp.
 
 ## How it works
 For the videos to be downloaded and converted to audio, they must be added to
