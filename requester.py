@@ -6,6 +6,9 @@ from configmanager import ConfigManager
 class Requester:
 	def __init__(self, configManager):
 		self.configManager = configManager
+	
+	def getExtractStartEndSecondsLists(self):
+		return [[2, 'end'], [3, 'end']]
 		
 	def getProjectName(self, commandLineArgs=None):
 		"""

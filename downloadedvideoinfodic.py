@@ -21,7 +21,7 @@ class DownloadedVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, downloadDir, playlistName):
+	def __init__(self, downloadDir, playlistName=''):
 		self.downloadDir = downloadDir
 		self.playlistName = playlistName
 		self.dic = {}
