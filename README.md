@@ -68,6 +68,10 @@ files are ending at different positions.*
 
 Note that any number of extract options can be specified !
 
+## Project class diagram
+<p align="center">
+  <img src="images/class_diagram.jpg" width="600" title="Transfer File class diagram">
+</p>
 ## Required libraries
 - pytube3
 - moviepy (not working on Android !)
