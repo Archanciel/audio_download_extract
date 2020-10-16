@@ -1,16 +1,16 @@
 import re
 from urllib.error import URLError
-from pytube import YouTube, Playlist 
+from pytube import Playlist
 import http.client
 
 from constants import *
 from playlisttitleparser import PlaylistTitleParser
+from audiodownloader import AudioDownloader
 
-class YoutubeAccess:
+class YoutubeAudioDownloader(AudioDownloader):
 	def __init__(self, guiOutput):
-		self.guiOutput = guiOutput
-		self.msgText = ''
-		
+		super().__init__(guiOutput)
+
 	def downloadVideosReferencedInPlaylist(self, playlistUrl):
 		'''
 		
@@ -21,9 +21,10 @@ class YoutubeAccess:
 		targetAudioDir = None
 		downloadedVideoInfoDic = None
 
-		playlist = self.getPlaylistObject(playlistUrl)
+		playlist, errorMsg = self.getPlaylistObject(playlistUrl)
 		
-		if playlist == None:
+		if errorMsg:
+			self.guiOutput.displayError("The URL obtained from clipboard is not pointing to a playlist.\nError msg: {}\nProgram will be closed.".format(errorMsg))
 			return targetAudioDir, downloadedVideoInfoDic
 		
 		playlistTitle = playlist.title()
@@ -72,17 +73,18 @@ class YoutubeAccess:
 	
 	def getPlaylistObject(self, playlistUrl):
 		playlist = None
+		errorMsg = None
 		
 		try:
 			playlist = Playlist(playlistUrl)
 			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
 		except KeyError as e:
-			self.guiOutput.displayError('Playlist URL not in clipboard. Program closed.')
+			errorMsg = 'Playlist URL not in clipboard. Program closed.'
 		except http.client.InvalidURL as e:
-			self.guiOutput.displayError(str(e))
+			errorMsg = str(e)
 		except AttributeError as e:
-			self.guiOutput.displayError('playlist URL == None')
+			errorMsg = 'playlist URL == None'
 		except URLError:
-			self.guiOutput.displayError('No internet access. Fix the problem and retry !')
+			errorMsg = 'No internet access. Fix the problem and retry !'
 
-		return playlist
+		return playlist, errorMsg

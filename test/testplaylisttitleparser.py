@@ -217,5 +217,5 @@ class TestPlaylistTitleParser(unittest.TestCase):
 
 if __name__ == '__main__':
 	unittest.main()
-	# tst = TestYoutubeAccessOtherMethods()
+	# tst = TestYoutubeAudioDownloaderOtherMethods()
 	# tst.testSplitPlayListTitle_one_time_frame_extract()

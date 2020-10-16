@@ -8,9 +8,9 @@ sys.path.insert(0, parentDir)
 
 from constants import *
 from guioutputstub import GuiOutputStub
-from youtubeaccess import YoutubeAccess
+from youtubeaudiodownloader import YoutubeAudioDownloader
 
-class TestYoutubeAccessDownloadMethods(unittest.TestCase):
+class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 	"""
 	Since testing download consume band width, it is placed in a specific test class.
 	"""
@@ -29,7 +29,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -73,7 +73,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -126,7 +126,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -186,7 +186,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -254,7 +254,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideoReferencedInPlaylist_invalid_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
 		
 		stdout = sys.stdout
@@ -270,7 +270,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideoReferencedInPlaylist_empty_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = ""
 		
 		stdout = sys.stdout
@@ -298,7 +298,7 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAccess(guiOutput)
+		youtubeAccess = YoutubeAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -339,5 +339,5 @@ class TestYoutubeAccessDownloadMethods(unittest.TestCase):
 
 if __name__ == '__main__':
 #	unittest.main()
-	tst = TestYoutubeAccessDownloadMethods()
+	tst = TestYoutubeAudioDownloaderDownloadMethods()
 	tst.testDownloadVideoReferencedInPlaylist_invalid_url()

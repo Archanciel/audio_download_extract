@@ -6,7 +6,7 @@ from configmanager import ConfigManager
 from requester import Requester
 from downloadedvideoinfodic import DownloadedVideoInfoDic
 from guioutput import GuiOutput
-from youtubeaccess import YoutubeAccess
+from youtubeaudiodownloader import YoutubeAudioDownloader
 from audioextractor import AudioExtractor
 
 class AudioController:
@@ -48,8 +48,12 @@ class AudioController:
 			return
 		
 		# downloading the audio track of the videos referenced in the playlist
-		audioDownloader = YoutubeAccess(self.guiOutput)
+		audioDownloader = YoutubeAudioDownloader(self.guiOutput)
 		targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadVideosReferencedInPlaylist(playlistUrl)
+
+		if targetAudioDir is None:
+			# playlist url invalid (error msg was displayed !)
+			return
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
