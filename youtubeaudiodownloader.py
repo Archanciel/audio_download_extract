@@ -4,8 +4,9 @@ from pytube import Playlist
 import http.client
 
 from constants import *
-from playlisttitleparser import PlaylistTitleParser
 from audiodownloader import AudioDownloader
+from playlisttitleparser import PlaylistTitleParser
+from accesserror import AccessError
 
 class YoutubeAudioDownloader(AudioDownloader):
 	def __init__(self, guiOutput):
@@ -21,13 +22,11 @@ class YoutubeAudioDownloader(AudioDownloader):
 		targetAudioDir = None
 		downloadedVideoInfoDic = None
 
-		playlist, errorMsg = self.getPlaylistObject(playlistUrl)
+		playlist, playlistTitle, accessError = self.getPlaylistObject(playlistUrl)
 		
-		if errorMsg:
-			self.guiOutput.displayError("The URL obtained from clipboard is not pointing to a playlist.\nError msg: {}\nProgram will be closed.".format(errorMsg))
+		if accessError:
+			self.guiOutput.displayError(accessError.errorMsg)
 			return targetAudioDir, downloadedVideoInfoDic
-		
-		playlistTitle = playlist.title()
 
 		if playlistTitle == None or \
 			'Oops' in playlistTitle:
@@ -73,18 +72,23 @@ class YoutubeAudioDownloader(AudioDownloader):
 	
 	def getPlaylistObject(self, playlistUrl):
 		playlist = None
-		errorMsg = None
+		playlistTitle = None
+		accessError = None
 		
 		try:
 			playlist = Playlist(playlistUrl)
 			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
+			playlistTitle = playlist.title()
 		except KeyError as e:
-			errorMsg = 'Playlist URL not in clipboard. Program closed.'
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_NOT_IN_CLIPBOARD, 'Playlist URL not in clipboard.')
 		except http.client.InvalidURL as e:
-			errorMsg = str(e)
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
-			errorMsg = 'playlist URL == None'
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except URLError:
-			errorMsg = 'No internet access. Fix the problem and retry !'
+			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 
-		return playlist, errorMsg
+		if accessError is None and (playlistTitle is None or 'Oops' in playlistTitle):
+			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, playlistUrl)
+
+		return playlist, playlistTitle, accessError
