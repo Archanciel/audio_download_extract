@@ -27,11 +27,6 @@ class YoutubeAudioDownloader(AudioDownloader):
 		if accessError:
 			self.guiOutput.displayError(accessError.errorMsg)
 			return targetAudioDir, downloadedVideoInfoDic
-
-		if playlistTitle == None or \
-			'Oops' in playlistTitle:
-			self.guiOutput.displayError('The URL obtained from clipboard is not pointing to a playlist. Program closed.')
-			return targetAudioDir, downloadedVideoInfoDic
 		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
