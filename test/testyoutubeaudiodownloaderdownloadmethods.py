@@ -265,8 +265,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist. Program closed.',
-		                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['The URL obtained from clipboard is not pointing to a playlist.',
+						 'Wrong URL: https://www.youtube.com/playlist?list=invalid',
+						 'Program will be closed.',
+						 ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testDownloadVideoReferencedInPlaylist_empty_url(self):
 		guiOutput = GuiOutputStub()

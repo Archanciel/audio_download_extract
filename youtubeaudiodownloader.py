@@ -66,6 +66,15 @@ class YoutubeAudioDownloader(AudioDownloader):
 		return targetAudioDir, downloadedVideoInfoDic
 	
 	def getPlaylistObject(self, playlistUrl):
+		"""
+		Returns the pytube.Playlist object corresponding to the passed playlistUrl the
+		playlist title and None if no problem happened.
+		
+		:param playlistUrl:
+		:return: playlist - Playlist object
+				 playlistTitle
+				 accessError in case of problem, None otherwise
+		"""
 		playlist = None
 		playlistTitle = None
 		accessError = None
