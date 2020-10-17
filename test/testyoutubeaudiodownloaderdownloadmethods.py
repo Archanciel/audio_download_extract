@@ -283,7 +283,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual('The URL obtained from clipboard is not pointing to a playlist. Program closed.\n', outputCapturingString.getvalue())
+		self.assertEqual('The URL obtained from clipboard is empty.\nProgram will be closed.\n', outputCapturingString.getvalue())
 	
 	def testDownloadVideoReferencedInPlaylist_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'

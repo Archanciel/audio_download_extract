@@ -83,8 +83,6 @@ class YoutubeAudioDownloader(AudioDownloader):
 			playlist = Playlist(playlistUrl)
 			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
 			playlistTitle = playlist.title()
-		except KeyError as e:
-			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_NOT_IN_CLIPBOARD, 'Playlist URL not in clipboard.')
 		except http.client.InvalidURL as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
