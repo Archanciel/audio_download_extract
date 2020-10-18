@@ -16,10 +16,11 @@ class AudioController:
 		
 		:param guiOutputStub: used for unit testing only !
 		"""
+
 		if os.name == 'posix':
-			configFilePathName = '/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/audiodownload/audiodownload.ini'
+			configFilePathName = '/sdcard/audiodownload.ini'
 		else:
-			configFilePathName = 'D:\\Development\\Python\\audiodownload\\audiodownload.ini'
+			configFilePathName = 'c:\\temp\\audiodownload.ini'
 
 		self.configMgr = ConfigManager(configFilePathName)
 		self.requester = Requester(self.configMgr)
@@ -40,13 +41,15 @@ class AudioController:
 
 		:return:
 		'''
-		# obtaining th playlist url from the clipboard
+		# obtaining the playlist url from the clipboard
 		playlistUrl = self.guiOutput.getPlaylistUrlFromClipboard()
 		
 		if playlistUrl == None:
 			accessError = AccessError(AccessError.ERROR_TYPE_CLIPBOARD_EMPTY, playlistUrl)
 			self.guiOutput.displayError(accessError.errorMsg)
 
+			# returning accessError is useful for unit testing only,
+			# otherwise return alone is sufficient !
 			return accessError
 		
 		# downloading the audio track of the videos referenced in the playlist

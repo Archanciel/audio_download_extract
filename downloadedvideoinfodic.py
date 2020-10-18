@@ -24,16 +24,25 @@ class DownloadedVideoInfoDic:
 	def __init__(self, downloadDir, playlistName=''):
 		self.downloadDir = downloadDir
 		self.playlistName = playlistName
-		self.dic = {}
+		self._loadDicIfExist()
 		
 	def __str__(self):
 		return 	json.dumps(self.dic, sort_keys=False, indent=4)
 
-	def loadDic(self):
+	def _loadDicIfExist(self):
+		"""
+		If a file containing the dictionary data for the corresponding playlist,
+		it is loaded into the self.dic instance variable. Otherwise, the dic variable
+		is initialized to an empty dic.
+		
+		:return:
+		"""
 		infoDicFilePathName = self.getInfoDicFilePathName()
 		if os.path.isfile(infoDicFilePathName):
 			with open(infoDicFilePathName, 'r') as f:
 				self.dic = json.load(f)
+		else:
+			self.dic = {}
 	
 	def saveDic(self):
 		with open(self.getInfoDicFilePathName(), 'w') as f:
@@ -43,7 +52,7 @@ class DownloadedVideoInfoDic:
 			          sort_keys=True)
 	
 	def getInfoDicFilePathName(self):
-		return self.downloadDir + DIR_SEP + self.playlistName + '.txt'
+		return self.downloadDir + DIR_SEP + self.playlistName + '_dic.txt'
 	
 	def getVideoIndexes(self):
 		'''

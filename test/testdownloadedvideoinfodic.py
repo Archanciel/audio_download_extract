@@ -86,7 +86,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		reloadedDvi.loadDic()
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
@@ -109,7 +108,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 
 		# creating new extended video info dic, reloading newly created video info dic file
 		newReloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		newReloadedDvi.loadDic()
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', newReloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -178,7 +176,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		reloadedDvi.loadDic()
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		
@@ -207,7 +204,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		# creating new extended video info dic, reloading newly created video info dic file
 		newReloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		newReloadedDvi.loadDic()
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
 		                 newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -283,7 +279,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		reloadedDvi.loadDic()
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -365,7 +360,6 @@ class TestDownloadedVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadedVideoInfoDic(downloadDir, playListName)
-		reloadedDvi.loadDic()
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))

@@ -15,6 +15,7 @@ if __name__ == "__main__":
     if os.name == 'posix':
         # running TestGuiOutput on Android is not possible !
         # running TestAudioExtractor on Android is not possible !
+        # running TestAudioController on Android is not possible !
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
                            loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),

@@ -62,7 +62,8 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test_audio_downloader_one_file', downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
+								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
 	def testDownloadVideoReferencedInPlaylist_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
@@ -110,7 +111,8 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 							  ''], outputCapturingString.getvalue().split('\n'))
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
+								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
 	def testDownloadAudioFromPlaylistMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
@@ -169,7 +171,9 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
+								 'Wear a mask Help slow the spread of Covid-19.mp4',
+								 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -249,8 +253,9 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
-			sorted(['Wear a mask Help slow the spread of Covid-19.mp4', 'Here to help Give him what he wants.mp4', ]),
-			sorted(fileNameLst))
+			sorted(['Here to help Give him what he wants.mp4',
+					'Wear a mask Help slow the spread of Covid-19.mp4',
+					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 	
 	def testDownloadVideoReferencedInPlaylist_invalid_url(self):
 		guiOutput = GuiOutputStub()
@@ -336,7 +341,8 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			                 downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Test_title_one_time_frame_extract_dic.txt',
+								 'Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
 		self.assertEqual([[5, 10]], downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 
 if __name__ == '__main__':

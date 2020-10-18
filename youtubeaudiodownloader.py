@@ -58,6 +58,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
 					downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
+					downloadedVideoInfoDic.saveDic()
 				videoIndex += 1
 		except:
 			self.msgText = self.msgText + playlistName + ' download failed.\n'
