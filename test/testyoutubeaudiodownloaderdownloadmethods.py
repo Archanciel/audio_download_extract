@@ -36,10 +36,11 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
+		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 						 '',
 						 'downloading Wear a mask. Help slow the spread of Covid-19.',
@@ -135,10 +136,11 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 
 		sys.stdout = stdout
 
+		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 						 '',
 						 'downloading Wear a mask. Help slow the spread of Covid-19.',
@@ -197,11 +199,12 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylist(
 			playlistUrl)
 		
 		sys.stdout = stdout
 		
+		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 		                  '',
 		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
@@ -312,10 +315,11 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 
+		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 						 '',
 						 'downloading Wear a mask. Help slow the spread of Covid-19.',
@@ -366,10 +370,11 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
-		
+
+		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
 		                  '',
 		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
@@ -428,10 +433,11 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, redownloadedVideoInfoDictionary = youtubeAccess_redownload.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, redownloadedVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylist(playlistUrl)
 		
 		sys.stdout = stdout
 
+		self.assertIsNone(accessError)
 		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',
 						 '',
 						 'Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',

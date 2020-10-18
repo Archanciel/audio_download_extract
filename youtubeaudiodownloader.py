@@ -59,8 +59,10 @@ class YoutubeAudioDownloader(AudioDownloader):
 					audioStream.download(output_path=targetAudioDir)
 					downloadedVideoFileName = audioStream.default_filename
 				except:
-					self.msgText = self.msgText + videoTitle + ' download failed.\n'
+					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
+					self.msgText = self.msgText + accessError.errorMsg
 					self.guiOutput.setMessage(self.msgText)
+					return targetAudioDir, downloadedVideoInfoDic, accessError
 				else:
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
@@ -68,10 +70,12 @@ class YoutubeAudioDownloader(AudioDownloader):
 					downloadedVideoInfoDic.saveDic()
 				videoIndex += 1
 		except:
-			self.msgText = self.msgText + playlistName + ' download failed.\n'
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, playlistName)
+			self.msgText = self.msgText + accessError.errorMsg
 			self.guiOutput.setMessage(self.msgText)
+			return targetAudioDir, downloadedVideoInfoDic, accessError
 		
-		return targetAudioDir, downloadedVideoInfoDic
+		return targetAudioDir, downloadedVideoInfoDic, None
 	
 	def getPlaylistObject(self, playlistUrl):
 		"""

@@ -54,19 +54,26 @@ class AudioController:
 		
 		# downloading the audio track of the videos referenced in the playlist
 		audioDownloader = YoutubeAudioDownloader(self.guiOutput)
-		targetAudioDir, downloadedVideoInfoDictionary = audioDownloader.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = audioDownloader.downloadVideosReferencedInPlaylist(playlistUrl)
 
-		if targetAudioDir is None:
-			# playlist url invalid (error msg was displayed !)
-			return
+		if accessError:
+			# playlist url invalid (error msg was displayed !) or download problem
+			
+			# reloading the DownloadedVideoInfoDic will enable to obtain which videos have been
+			# successfully downloaded
+			reloaded_downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir)
+			
+			return reloaded_downloadedVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
 		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDictionary)
 		
-		# saving the content of the downloadedVideoInfoDictionary in the directory containing
-		# the extracted audio files
+		# saving the content of the downloadedVideoInfoDictionary which has been completed
+		# by AudioExtractor in the directory containing the extracted audio files
 		downloadedVideoInfoDictionary.saveDic()
+		
+		return downloadedVideoInfoDictionary
 		
 	def trimAudioFile(self, audioFilePathName):
 		"""
