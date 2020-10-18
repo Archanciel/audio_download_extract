@@ -38,6 +38,7 @@ class DownloadedVideoInfoDic:
 		:return:
 		"""
 		infoDicFilePathName = self.getInfoDicFilePathName()
+
 		if os.path.isfile(infoDicFilePathName):
 			with open(infoDicFilePathName, 'r') as f:
 				self.dic = json.load(f)
@@ -62,11 +63,26 @@ class DownloadedVideoInfoDic:
 		'''
 		return list(self.dic.keys())
 	
+	def existVideoInfoForVideoTitle(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		return videoIndex is not None
+	
 	def getVideoTitleForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_TITLE]
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if KEY_VIDEO_TITLE in videoInfoDic.keys():
+			return videoInfoDic[KEY_VIDEO_TITLE]
+		else:
+			return None
 
 	def getVideoUrlForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if KEY_VIDEO_URL in videoInfoDic.keys():
+			return videoInfoDic[KEY_VIDEO_URL]
+		else:
+			return None
 	
 	def getVideoUrlForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
@@ -74,7 +90,12 @@ class DownloadedVideoInfoDic:
 		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
 	
 	def getVideoFileNameForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if KEY_VIDEO_DOWNLOAD_FILENAME in videoInfoDic.keys():
+			return videoInfoDic[KEY_VIDEO_DOWNLOAD_FILENAME]
+		else:
+			return None
 	
 	def getVideoFileNameForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
@@ -82,7 +103,12 @@ class DownloadedVideoInfoDic:
 		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
 	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME]
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if KEY_VIDEO_DOWNLOAD_TIME in videoInfoDic.keys():
+			return videoInfoDic[KEY_VIDEO_DOWNLOAD_TIME]
+		else:
+			return None
 
 	def getVideoDownloadTimeForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)

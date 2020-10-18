@@ -1,11 +1,11 @@
 import unittest
 import os, sys, inspect, shutil, glob
-from io import StringIO
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
+from constants import  *
 from playlisttitleparser import PlaylistTitleParser
 
 class TestPlaylistTitleParser(unittest.TestCase):
@@ -18,6 +18,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 		expectedVideoSuppressTimeFramesList = []
 
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -32,6 +40,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 'end']]
 		expectedVideoSuppressTimeFramesList = []
 		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -47,6 +63,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = [[3902, 3905], [3952, 'end']]
 		expectedVideoSuppressTimeFramesList = []
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
 		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
@@ -64,6 +88,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = [[3952, 4043]]
 		expectedVideoSuppressTimeFramesList = []
 		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -79,7 +111,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443]]
-
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -93,6 +133,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 'end']]
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
 		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
@@ -110,6 +158,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443]]
 		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -122,6 +178,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedPlayListName = 'Test_title_no_time_frame'
 		playlistTitle = expectedPlayListName
 		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -133,7 +197,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443], [652, 653]]
-
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -147,6 +219,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = []
 		expectedVideoSuppressTimeFramesList = [[352, 443], [652, 'end']]
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
 		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		
@@ -163,7 +243,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideoExtractTimeFramesList = [[352, 443]]
 		expectedVideoSuppressTimeFramesList = [[652, 653]]
-
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -181,7 +269,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 
 		expectedVideo2ExtractTimeFramesList = [[3952, 4043]]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
-
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 
 		self.assertEqual(expectedPlayListName, playlistName)
@@ -201,6 +297,14 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
 		
 		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
 		

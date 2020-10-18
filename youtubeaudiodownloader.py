@@ -44,6 +44,13 @@ class YoutubeAudioDownloader(AudioDownloader):
 			
 			for video in playlist.videos:
 				videoTitle = video.title
+				if downloadedVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
+					# the video was already downloaded
+					self.msgText = self.msgText + videoTitle + ' already downloaded. Video skipped.\n'
+					self.guiOutput.setMessage(self.msgText)
+					videoIndex += 1
+					continue
+					
 				try:
 					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
 					videoUrl = video.watch_url
