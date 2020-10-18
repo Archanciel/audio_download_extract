@@ -41,7 +41,12 @@ class PlaylistTitleParser:
 		
 		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, videoTimeFramesInfo):
 			# print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
-			
+
+			# in case the playlist is redownloaded, the time frame in seconds data
+			# must be purged. Otherwise, the time frames in seconds will be added
+			# to the existing time frames set at the first download !
+			downloadedVideoInfoDic.removeTimeFrameInSecondsDataIfExistForVideoIndex(videoIndex)
+	
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
 				startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])

@@ -139,7 +139,18 @@ class DownloadedVideoInfoDic:
 		videoTimeFramesDic = {KEY_TIMEFRAME_EXTRACT: [], KEY_TIMEFRAME_SUPPRESS: []}
 		
 		self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS] = videoTimeFramesDic
-	
+
+	def removeTimeFrameInSecondsDataIfExistForVideoIndex(self, videoIndex):
+		videoIndex = str(videoIndex)
+		
+		if not videoIndex in self.dic.keys():
+			return
+
+		if not KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[videoIndex].keys():
+			return
+		else:
+			del self.dic[videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS]
+
 	def addExtractStartEndSecondsListForVideoIndex(self, videoIndex, startEndSecondsList):
 		videoIndex = str(videoIndex)
 		

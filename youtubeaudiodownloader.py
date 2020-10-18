@@ -44,6 +44,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			
 			for video in playlist.videos:
 				videoTitle = video.title
+
 				if downloadedVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
 					self.msgText = self.msgText + videoTitle + ' already downloaded. Video skipped.\n'
