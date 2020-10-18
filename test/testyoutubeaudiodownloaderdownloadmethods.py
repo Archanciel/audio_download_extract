@@ -638,9 +638,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			sorted(['Here to help Give him what he wants.mp4',
 			        'Wear a mask Help slow the spread of Covid-19.mp4',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
-
+	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
+		self.fail("Implement test !")
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeAudioDownloaderDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist()
+	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
