@@ -229,10 +229,10 @@ class AudioDownloaderGUI(BoxLayout):
 		requestListRVSpacing = 0.5
 
 		if os.name == 'posix':
-			configPath = '/sdcard/audiodownloader.ini'
+			configPath = '/sdcard/audiodownload.ini'
 			requestListRVSpacing = 2
 		else:
-			configPath = 'c:\\temp\\audiodownloader.ini'
+			configPath = 'c:\\temp\\audiodownload.ini'
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows version !
 
 		self.configMgr = ConfigManager(configPath)
@@ -804,10 +804,6 @@ class AudioDownloaderGUIApp(App):
 						   {ConfigManager.CONFIG_KEY_TIME_ZONE: ConfigManager.DEFAULT_TIME_ZONE})
 		config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL,
 						   {ConfigManager.CONFIG_KEY_DATE_TIME_FORMAT: ConfigManager.DEFAULT_DATE_TIME_FORMAT})
-		config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL,
-						   {ConfigManager.CONFIG_KEY_DATE_ONLY_FORMAT: ConfigManager.DEFAULT_DATE_ONLY_FORMAT})
-		config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL,
-						   {ConfigManager.CONFIG_KEY_REFERENCE_CURRENCY: ConfigManager.DEFAULT_REFERENCE_CURRENCY})
 
 		from kivy.utils import platform
 
@@ -860,21 +856,7 @@ class AudioDownloaderGUIApp(App):
 					"desc": "Set the full date/time format",
 					"section": "General",
 					"key": "datetimeformat",
-					"options": ["DD/MM/YY HH:mm"]
-				},
-				{"type": "options",
-					"title": "Date format",
-					"desc": "Set the date only format",
-					"section": "General",
-					"key": "dateonlyformat",
-					"options": ["DD/MM/YY"]
-				},
-				{"type": "options",
-					"title": "Reference currency",
-					"desc": "Set the reference currency in which all the returned crypto prices will be converted",
-					"section": "General",
-					"key": "referencecurrency",
-					"options": ["USD", "EURO", "CHF", "GBP"]
+					"options": ["dd/mm/yy hh:mm"]
 				},
 				{"type": "path",
 					"title": "Data files location",
@@ -937,12 +919,6 @@ class AudioDownloaderGUIApp(App):
 				self.root.configMgr.storeConfig()
 			elif key == ConfigManager.CONFIG_KEY_DATE_TIME_FORMAT:
 				self.root.configMgr.dateTimeFormat = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL, ConfigManager.CONFIG_KEY_DATE_TIME_FORMAT, ConfigManager.DEFAULT_DATE_TIME_FORMAT)
-				self.root.configMgr.storeConfig()
-			elif key == ConfigManager.CONFIG_KEY_DATE_ONLY_FORMAT:
-				self.root.configMgr.dateOnlyFormat = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL, ConfigManager.CONFIG_KEY_DATE_ONLY_FORMAT, ConfigManager.DEFAULT_DATE_ONLY_FORMAT)
-				self.root.configMgr.storeConfig()
-			elif key == ConfigManager.CONFIG_KEY_REFERENCE_CURRENCY:
-				self.root.configMgr.referenceCurrency = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL, ConfigManager.CONFIG_KEY_REFERENCE_CURRENCY, ConfigManager.DEFAULT_REFERENCE_CURRENCY)
 				self.root.configMgr.storeConfig()
 
 	def get_application_config(self, defaultpath="c:/temp/%(appname)s.ini"):

@@ -1,5 +1,5 @@
 import os
-from tkinter import Tk, TclError, Message
+from tkinter import TclError, Message
 import tkinter.messagebox as msgb
 
 if os.name == 'posix':
@@ -39,4 +39,7 @@ class GuiOutput:
 		
 	def getConfirmation(self, msg):
 		return msgb.askquestion(message=msg) == 'yes'
+	
+	def clearClipboard(self):
+		self.root.clipboard_clear()
 		

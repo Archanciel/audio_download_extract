@@ -12,6 +12,15 @@ from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 			
 class TestAudioController(unittest.TestCase):
+	def testErrorMsgEmptyClipboard(self):
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput)
+		audioController.guiOutput.clearClipboard()
+		accessError = audioController.downloadPlaylistAudio()
+		
+		self.assertIsNotNone(accessError)
+		self.assertEqual("The clipboard is empty (not containing a playlist url).\nProgram will be closed.", accessError.errorMsg)
+
 	def testTrimAudioFile(self):
 		playListName = 'test_audio_controller'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
@@ -66,5 +75,5 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
 	ts = time.time()
-	tst.testTrimAudioFile()
+	tst.testErrorMsgEmptyClipboard()
 	print(time.time() - ts)

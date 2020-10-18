@@ -17,4 +17,7 @@ class GuiOutputStub:
 		print(msg)
 		
 		return True
-		
+	
+	def clearClipboard(self):
+		from tkinter import Tk
+		Tk().clipboard_clear()

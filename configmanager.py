@@ -13,18 +13,12 @@ class ConfigManager:
 	DEFAULT_TIME_ZONE = 'Europe/Zurich'
 	
 	CONFIG_KEY_DATE_TIME_FORMAT = 'datetimeformat'
-	DEFAULT_DATE_TIME_FORMAT = 'DD/MM/YY HH:mm'
-	
-	CONFIG_KEY_DATE_ONLY_FORMAT = 'dateonlyformat'
-	DEFAULT_DATE_ONLY_FORMAT = 'DD/MM/YY'
+	DEFAULT_DATE_TIME_FORMAT = 'dd/mm/yy hh:mm:ss'
 	
 	CONFIG_KEY_DATA_PATH = 'datapath'
-	DEFAULT_DATA_PATH_ANDROID = '/sdcard/CryptoPricerData'
+	DEFAULT_DATA_PATH_ANDROID = '/storage/emulated/0/audiodownload_data'
 	DEFAULT_DATA_PATH_IOS = '~/Documents'
-	DEFAULT_DATA_PATH_WINDOWS = 'c:\\temp'
-	
-	CONFIG_KEY_REFERENCE_CURRENCY = 'referencecurrency'
-	DEFAULT_REFERENCE_CURRENCY = 'USD'
+	DEFAULT_DATA_PATH_WINDOWS = 'c:\\temp\\audiodownload_data'
 	
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
@@ -60,12 +54,6 @@ class ConfigManager:
 			self.__dateTimeFormat = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_TIME_FORMAT]
 		except KeyError:
 			self.__dateTimeFormat = self.DEFAULT_DATE_TIME_FORMAT
-			self._updated = True
-		
-		try:
-			self.__dateOnlyFormat = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_ONLY_FORMAT]
-		except KeyError:
-			self.__dateOnlyFormat = self.DEFAULT_DATE_ONLY_FORMAT
 			self._updated = True
 		
 		try:
@@ -114,12 +102,6 @@ class ConfigManager:
 			self.__appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
 			self._updated = True
 		
-		try:
-			self.__referenceCurrency = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_REFERENCE_CURRENCY]
-		except KeyError:
-			self.__referenceCurrency = self.DEFAULT_REFERENCE_CURRENCY
-			self._updated = True
-		
 		self.storeConfig()  # will save config file in case one config key raised an exception
 	
 	def getEmailDic(self):
@@ -146,10 +128,13 @@ class ConfigManager:
 		:return: nothing
 		'''
 		self.config[self.CONFIG_SECTION_GENERAL] = {}
+		self.config.comments[self.CONFIG_SECTION_GENERAL] = ["Contains app general parameters"]
 		self.config[self.CONFIG_SECTION_LAYOUT] = {}
+		self.config.comments[self.CONFIG_SECTION_LAYOUT] = ["Contains GUI layout parameters"]
+		self.config[self.CONFIG_SECTION_MAILTO] = {}
+		self.config.comments[self.CONFIG_SECTION_MAILTO] = ["Emails to which the audio file can be sent. Format: key = Field order, value list = person name, person email. Example: 1 = Joe Bidden, jbd@gmail.com"]
 		self.localTimeZone = self.DEFAULT_TIME_ZONE
 		self.dateTimeFormat = self.DEFAULT_DATE_TIME_FORMAT
-		self.dateOnlyFormat = self.DEFAULT_DATE_ONLY_FORMAT
 		
 		if os.name == 'posix':
 			self.dataPath = self.DEFAULT_DATA_PATH_ANDROID
@@ -163,7 +148,6 @@ class ConfigManager:
 		self.loadAtStartPathFilename = self.DEFAULT_LOAD_AT_START_PATH_FILENAME
 		self.histoListVisibleSize = self.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE
 		self.appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
-		self.referenceCurrency = self.DEFAULT_REFERENCE_CURRENCY
 		self._updated = True
 		
 		self.storeConfig()
@@ -184,15 +168,6 @@ class ConfigManager:
 	@dateTimeFormat.setter
 	def dateTimeFormat(self, dateTimeFormatStr):
 		self.__dateTimeFormat = dateTimeFormatStr
-		self._updated = True
-	
-	@property
-	def dateOnlyFormat(self):
-		return self.__dateOnlyFormat
-	
-	@dateOnlyFormat.setter
-	def dateOnlyFormat(self, dateOnlyFormatStr):
-		self.__dateOnlyFormat = dateOnlyFormatStr
 		self._updated = True
 	
 	@property
@@ -264,7 +239,6 @@ class ConfigManager:
 		
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_TIME_ZONE] = self.localTimeZone
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_TIME_FORMAT] = self.dateTimeFormat
-		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_ONLY_FORMAT] = self.dateOnlyFormat
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
 		self.config[self.CONFIG_SECTION_GENERAL][
 			self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME] = self.loadAtStartPathFilename
@@ -272,7 +246,6 @@ class ConfigManager:
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT] = self.histoListItemHeight
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE] = self.appSize
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE_HALF_PROPORTION] = self.appSizeHalfProportion
-		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_REFERENCE_CURRENCY] = self.referenceCurrency
 		
 		self.config.write()
 		

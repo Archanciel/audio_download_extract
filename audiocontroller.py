@@ -8,6 +8,7 @@ from downloadedvideoinfodic import DownloadedVideoInfoDic
 from guioutput import GuiOutput
 from youtubeaudiodownloader import YoutubeAudioDownloader
 from audioextractor import AudioExtractor
+from accesserror import AccessError
 
 class AudioController:
 	def __init__(self, guiOutputStub=None):
@@ -30,7 +31,7 @@ class AudioController:
 			self.guiOutput = GuiOutput(Tk())
 		else:
 			self.guiOutput = guiOutputStub
-
+		
 	def downloadPlaylistAudio(self):
 		'''
 		Example of playlist title:
@@ -43,9 +44,10 @@ class AudioController:
 		playlistUrl = self.guiOutput.getPlaylistUrlFromClipboard()
 		
 		if playlistUrl == None:
-			self.guiOutput.displayError('Playlist URL not in clipboard. Program closed.')
+			accessError = AccessError(AccessError.ERROR_TYPE_CLIPBOARD_EMPTY, playlistUrl)
+			self.guiOutput.displayError(accessError.errorMsg)
 
-			return
+			return accessError
 		
 		# downloading the audio track of the videos referenced in the playlist
 		audioDownloader = YoutubeAudioDownloader(self.guiOutput)
