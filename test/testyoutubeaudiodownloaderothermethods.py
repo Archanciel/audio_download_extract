@@ -9,6 +9,7 @@ sys.path.insert(0, parentDir)
 from constants import *
 from guioutputstub import GuiOutputStub
 from youtubeaudiodownloader import YoutubeAudioDownloader
+from accesserror import AccessError
 
 class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 	'''
@@ -23,6 +24,7 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
+		self.assertIsNone(accessError)
 		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 	
 	def testGetPlaylistObjectInvalidURL(self):
@@ -32,13 +34,9 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 		
-		title = youtubePlaylist.title()
-		
-		if title:
-			# sometimes, Youtube is not coherent !!
-			self.assertTrue('Hoppla!' in title)
-		else:
-			self.assertIsNone(title)
+		self.assertIsNotNone(accessError)
+		self.assertEqual(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, accessError.errorType)
+		self.assertEqual("The URL obtained from clipboard is not pointing to a playlist.\nWrong URL: https://www.youtube.com/playlist?list=invalid\nProgram will be closed.", accessError.errorMsg)
 	
 	def testGetPlaylistObjectEmptyURL(self):
 		guiOutput = GuiOutputStub()
@@ -47,13 +45,11 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 		
-		title = youtubePlaylist.title()
-		
-		if title:
-			# sometimes, Youtube is not coherent !!
-			self.assertTrue('Hoppla!' in title)
-		else:
-			self.assertIsNone(title)
+		self.assertIsNotNone(accessError)
+		self.assertEqual(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, accessError.errorType)
+		self.assertEqual(
+			"The URL obtained from clipboard is not pointing to a playlist.\nWrong URL: https://www.youtube.com/playlist?list=invalid\nProgram will be closed.",
+			accessError.errorMsg)
 	
 	def testGetPlaylistObjectNoneURL(self):
 		guiOutput = GuiOutputStub()
@@ -68,9 +64,12 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual("The URL obtained from clipboard is not pointing to a playlist.\nError msg: 'NoneType' object has no attribute 'split'\nProgram will be closed.", accessError.errorMsg)
-		self.assertIsNone(youtubePlaylist)
-		
+		self.assertIsNotNone(accessError)
+		self.assertEqual(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, accessError.errorType)
+		self.assertEqual(
+			"The URL obtained from clipboard is not pointing to a playlist.\nWrong URL: https://www.youtube.com/playlist?list=invalid\nProgram will be closed.",
+			accessError.errorMsg)
+	
 	def testGetPlaylistObject_one_time_frame_extract(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeAudioDownloader(guiOutput)
@@ -79,6 +78,7 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
+		self.assertIsNone(accessError)
 		self.assertEqual(expectedPlaylistTitle, playlistTitle,)	
 		
 	def testGetPlaylistObject_one_time_frame_suppress(self):
@@ -89,7 +89,8 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
-		self.assertEqual(expectedPlaylistTitle, playlistTitle,)	
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		
 	def testGetPlaylistObject_one_time_frame_extract_suppress(self):
 		guiOutput = GuiOutputStub()
@@ -99,7 +100,8 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
-		self.assertEqual(expectedPlaylistTitle, playlistTitle,)	
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		
 	def testGetPlaylistObject_one_time_frame_suppress_extract(self):
 		guiOutput = GuiOutputStub()
@@ -109,7 +111,8 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
-		self.assertEqual(expectedPlaylistTitle, playlistTitle,)	
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		
 	def testGetPlaylistObject_multiple_time_frame_extract_suppress(self):
 		guiOutput = GuiOutputStub()
@@ -119,7 +122,8 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 
 		youtubePlaylist, playlistTitle, accessError = youtubeAccess.getPlaylistObject(playlistUrl)
 
-		self.assertEqual(expectedPlaylistTitle, playlistTitle,)	
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 
 
 if __name__ == '__main__':

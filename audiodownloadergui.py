@@ -2,7 +2,6 @@ import os
 import threading
 from os.path import sep
 
-from configmanager import ConfigManager
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.config import Config
@@ -27,8 +26,14 @@ from kivy.uix.settings import SettingsWithTabbedPanel
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.utils import platform
+from kivy.core.clipboard import Clipboard
 
-from audiocontrollertemp import AudioControllerTemp
+# new AudioDownloaderGUI import statements
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+
+from configmanager import ConfigManager
+from audiocontroller import AudioController
 from guiutil import GuiUtil
 
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
@@ -236,7 +241,7 @@ class AudioDownloaderGUI(BoxLayout):
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows version !
 
 		self.configMgr = ConfigManager(configFilePathName)
-		self.controller = AudioControllerTemp(self.configMgr)
+		self.audioController = AudioController(self.configMgr)
 		self.dataPath = self.configMgr.dataPath
 		self.histoListItemHeight = int(self.configMgr.histoListItemHeight)
 		self.histoListMaxVisibleItems = int(self.configMgr.histoListVisibleSize)
@@ -252,56 +257,6 @@ class AudioDownloaderGUI(BoxLayout):
 		self.applyAppPosAndSize()
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
-
-	def ensureDataPathExist(self, dataPath, message):
-		'''
-		Display a warning in a popup if the data path defined in the settings
-		does not exist and return False. If path ok, returns True. This prevents
-		exceptions at load or save or settings save time.
-		:return:
-		'''
-		if not (os.path.isdir(dataPath)):
-			popupSize = None
-
-			if platform == 'android':
-				popupSize = (980, 450)
-			elif platform == 'win':
-				popupSize = (300, 150)
-
-			popup = Popup(title='AudioDownloader WARNING', content=Label(
-				text=message),
-						  auto_dismiss=True, size_hint=(None, None),
-						  size=popupSize)
-			popup.open()
-
-			return False
-		else:
-			return True
-
-	def ensureDataPathFileNameExist(self, dataPathFileName, message):
-		'''
-		Display a warning in a popup if the passed data path file name
-		does not exist and return False. If dataPathFileName ok, returns True.
-		This prevents exceptions at load or save or settings save time.
-		:return:
-		'''
-		if not (os.path.isfile(dataPathFileName)):
-			popupSize = None
-
-			if platform == 'android':
-				popupSize = (980, 450)
-			elif platform == 'win':
-				popupSize = (300, 150)
-
-			popup = Popup(title='AudioDownloader WARNING', content=Label(
-				text=message),
-						  auto_dismiss=True, size_hint=(None, None),
-						  size=popupSize)
-			popup.open()
-
-			return False
-		else:
-			return True
 
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
@@ -370,7 +325,7 @@ class AudioDownloaderGUI(BoxLayout):
 		#   fullRequestStr - for the request history list
 		#   fullRequestStrWithOptions - for the status bar
 		#   fullRequestStrWithSaveModeOptions - for the request history list
-		outputResultStr, fullRequestStr, fullRequestStrWithOptions, fullRequestStrWithSaveModeOptions, fullCommandStrForStatusBar = self.controller.getPrintableResultForInput(
+		outputResultStr, fullRequestStr, fullRequestStrWithOptions, fullRequestStrWithSaveModeOptions, fullCommandStrForStatusBar = self.audioController.getPrintableResultForInput(
 			requestStr)
 
 		self.outputResult(outputResultStr)
@@ -593,7 +548,7 @@ class AudioDownloaderGUI(BoxLayout):
 
 		for listEntry in self.requestListRV.data:
 			outputResultStr, fullRequestStr, fullRequestStrWithOptions, fullRequestStrWithSaveModeOptions, fullCommandStrForStatusBar = \
-				self.controller.getPrintableResultForInput(listEntry['text'], copyResultToClipboard=False)
+				self.audioController.getPrintableResultForInput(listEntry['text'], copyResultToClipboard=False)
 			self.outputResult(outputResultStr)
 
 		self.replayAllButton.disabled = False
@@ -723,7 +678,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.refocusOnRequestInput()
 
 	def saveHistoryToFile(self, path, filename, isLoadAtStart):
-		dataPathNotExistMessage = self.buildDataPathNotExistMessage(path)
+		dataPathNotExistMessage = self.buildDownloadPlaylistConfirmationMsg(path)
 		pathFileName = os.path.join(path, filename)
 
 		if not filename or not self.ensureDataPathExist(path, dataPathNotExistMessage):
@@ -751,24 +706,58 @@ class AudioDownloaderGUI(BoxLayout):
 
 	# --- end file chooser code ---
 
-	def buildDataPathNotExistMessage(self, path):
-		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+	def buildDownloadPlaylistConfirmationMsg(self, playlistTitle, maxLineWidth):
+		resizedText = GuiUtil.splitLineToLines(playlistTitle, maxLineWidth, replaceUnderscoreBySpace=True)
+		
+		return resizedText
 
 	def isLoadAtStart(self, filePathName):
 		return self.configMgr.loadAtStartPathFilename == filePathName
-
-	def buildFileNotFoundMessage(self, filePathFilename):
-		return 'Data file\n' + filePathFilename + '\nnot found. No history loaded.'
 
 	def statusBarTextChanged(self):
 		width_calc = self.statusBarScrollView.width
 		for line_label in self.statusBarTextInput._lines_labels:
 			width_calc = max(width_calc, line_label.width + 20)   # add 20 to avoid automatically creating a new line
 		self.statusBarTextInput.width = width_calc
+		
+	# --- start AudioDownloaderGUI new code ---
+	
+	
+	def getPlaylistTitle(self, url):
+		return self.audioController.getPlaylistTitle(url)
+		
+	# --- end AudioDownloaderGUI new code ---
+	
+Builder.load_string('''
+<ConfirmPopup>:
+	cols:1
+	Label:
+		text: root.text
+	GridLayout:
+		cols: 2
+		size_hint_y: None
+		height: '28dp'
+		Button:
+			text: 'Yes'
+			on_release: root.dispatch('on_answer','yes')
+		Button:
+			text: 'No'
+			on_release: root.dispatch('on_answer', 'no')
+''')
+
+class ConfirmPopup(GridLayout):
+	text = StringProperty()
+	
+	def __init__(self, **kwargs):
+		self.register_event_type('on_answer')
+		super(ConfirmPopup, self).__init__(**kwargs)
+	
+	def on_answer(self, *args):
+		pass
 
 class AudioDownloaderGUIApp(App):
 	settings_cls = SettingsWithTabbedPanel
-	cryptoPricerGUI = None
+	audioDownloaderGUI = None
 
 	def build(self): # implicitely looks for a kv file of name audiodownloadergui.kv which is
 					 # class name without App, in lowercases
@@ -781,9 +770,9 @@ class AudioDownloaderGUIApp(App):
 			Config.set('graphics', 'height', '500')
 			Config.write()
 
-		self.cryptoPricerGUI = AudioDownloaderGUI()
+		self.audioDownloaderGUI = AudioDownloaderGUI()
 
-		return self.cryptoPricerGUI
+		return self.audioDownloaderGUI
 
 	def on_pause(self):
 		# Here you can save data if needed
@@ -940,21 +929,42 @@ class AudioDownloaderGUIApp(App):
 
 	def on_start(self):
 		'''
-		Testing at app start if data path defined in settings does exist
-		and if history file loaded at start app does exist. Since a warning popup
-		is displayed in case of invalid data, this must be performed here and
-		not in AudioDownloaderGUI.__init__ where no popup could be displayed.
+		Testing at app start if the clipboard contains a valid playlist url.
+		If it is th case, the videos referenced in the playlist will be downloaded and
+		if we are on Windows, their audio will be extracted.
+		
+		Since a information popup is displayed in case of valid url, this must be performed
+		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
+		
 		:return:
 		'''
-		dataPathNotExistMessage = self.cryptoPricerGUI.buildDataPathNotExistMessage(self.cryptoPricerGUI.dataPath)
-
-		if self.cryptoPricerGUI.ensureDataPathExist(self.cryptoPricerGUI.dataPath, dataPathNotExistMessage):
-			# loading the load at start history file if defined
-			historyFilePathFilename = self.cryptoPricerGUI.configMgr.loadAtStartPathFilename
-			dataFileNotFoundMessage = self.cryptoPricerGUI.buildFileNotFoundMessage(historyFilePathFilename)
-
-			if historyFilePathFilename != '' and self.cryptoPricerGUI.ensureDataPathFileNameExist(historyFilePathFilename, dataFileNotFoundMessage):
-				self.cryptoPricerGUI.loadHistoryFromPathFilename(historyFilePathFilename)
+		playlistUrl = Clipboard.paste()
+		playlistTitle = self.audioDownloaderGUI.getPlaylistTitle(playlistUrl)
+		
+		if playlistTitle is not None:
+			
+			if platform == 'android':
+				popupSize = (980, 1200)
+				width = 45
+			elif platform == 'win':
+				popupSize = (400, 450)
+				width = 54
+			
+			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
+			
+			content = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
+			content.bind(on_answer=self.onPopupAnswer)
+			
+			self.popup = Popup(title="Answer Question",
+			                   content=content,
+			                   size_hint=(None, None),
+			                   size=popupSize,
+			                   auto_dismiss=False)
+			self.popup.open()
+	
+	def onPopupAnswer(self, instance, answer):
+		print("USER ANSWER: ", repr(answer))
+		self.popup.dismiss()
 
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIApp()

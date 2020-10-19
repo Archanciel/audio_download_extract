@@ -81,21 +81,21 @@ class YoutubeAudioDownloader(AudioDownloader):
 	def getPlaylistObject(self, playlistUrl):
 		"""
 		Returns the pytube.Playlist object corresponding to the passed playlistUrl the
-		playlist title and None if no problem happened.
+		playlistObject title and None if no problem happened.
 		
 		:param playlistUrl:
-		:return: playlist - Playlist object
+		:return: playlistObject - Playlist object
 				 playlistTitle
 				 accessError in case of problem, None otherwise
 		"""
-		playlist = None
+		playlistObject = None
 		playlistTitle = None
 		accessError = None
 		
 		try:
-			playlist = Playlist(playlistUrl)
-			playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-			playlistTitle = playlist.title()
+			playlistObject = Playlist(playlistUrl)
+			playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
+			playlistTitle = playlistObject.title()
 		except http.client.InvalidURL as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
@@ -106,4 +106,4 @@ class YoutubeAudioDownloader(AudioDownloader):
 		if accessError is None and (playlistTitle is None or 'Oops' in playlistTitle):
 			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, playlistUrl)
 
-		return playlist, playlistTitle, accessError
+		return playlistObject, playlistTitle, accessError

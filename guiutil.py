@@ -10,6 +10,43 @@ PAGE_BREAK_CODE_REGEXP = '\[p\].*' # regexp version
 
 class GuiUtil:
     @staticmethod
+    def splitLineToLines(longLine, maxLineLen, replaceUnderscoreBySpace=False):
+        '''
+		Splits the oneLineNote string into lines not exceeding maxLineLen and
+		returns the lines into a list.
+
+		:param longLine:
+		:param maxLineLen:
+		:param replaceUnderscoreBySpace
+		:return:
+		'''
+        if longLine == '':
+            return []
+        
+        if replaceUnderscoreBySpace:
+            longLine = longLine.replace('_', ' ')
+        
+        noteWordList = longLine.split(' ')
+        noteLine = noteWordList[0]
+        noteLineLen = len(noteLine)
+        noteLineList = []
+        
+        for word in noteWordList[1:]:
+            wordLen = len(word)
+            
+            if noteLineLen + wordLen + 1 > maxLineLen:
+                noteLineList.append(noteLine)
+                noteLine = word
+                noteLineLen = wordLen
+            else:
+                noteLine += ' ' + word
+                noteLineLen += wordLen + 1
+        
+        noteLineList.append(noteLine)
+        
+        return '\n'.join(noteLineList)
+    
+    @staticmethod
     def _splitLongLineToShorterLines(longLine, shorterLinesMaxLen):
         '''
         Splits the longLine string into lines not exceeding shorterLinesMaxLen and returns the lines
