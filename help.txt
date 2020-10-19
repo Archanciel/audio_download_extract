@@ -1,4 +1,4 @@
-[b][cg]CryptoPricer purpose[/b][/c]
+[b][cg]AudioDownloader purpose[/b][/c]
 
 The CryptoPricer application offers a handy way to obtain real time (RT) and historical
 cryptocurrency prices.

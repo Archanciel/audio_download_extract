@@ -229,10 +229,10 @@ class AudioDownloaderGUI(BoxLayout):
 		requestListRVSpacing = 0.5
 
 		if os.name == 'posix':
-			configFilePathName = '/sdcard/audiodownload.ini'
+			configFilePathName = '/sdcard/audiodownloader.ini'
 			requestListRVSpacing = 2
 		else:
-			configFilePathName = 'c:\\temp\\audiodownload.ini'
+			configFilePathName = 'c:\\temp\\audiodownloader.ini'
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows version !
 
 		self.configMgr = ConfigManager(configFilePathName)

@@ -18,9 +18,9 @@ class AudioController:
 		"""
 
 		if os.name == 'posix':
-			configFilePathName = '/sdcard/audiodownload.ini'
+			configFilePathName = '/sdcard/audiodownloader.ini'
 		else:
-			configFilePathName = 'c:\\temp\\audiodownload.ini'
+			configFilePathName = 'c:\\temp\\audiodownloader.ini'
 
 		self.configMgr = ConfigManager(configFilePathName)
 		self.requester = Requester(self.configMgr)
