@@ -229,7 +229,7 @@ class AudioDownloaderGUI(BoxLayout):
 		requestListRVSpacing = 0.5
 
 		if os.name == 'posix':
-			configFilePathName = '/sdcard/audiodownloader.ini'
+			configFilePathName = '/storage/emulated/0/audiodownloader.ini'
 			requestListRVSpacing = 2
 		else:
 			configFilePathName = 'c:\\temp\\audiodownloader.ini'
@@ -929,7 +929,7 @@ class AudioDownloaderGUIApp(App):
 		:return:
 		'''
 		if platform == 'android':
-			defaultpath = '/sdcard/.%(appname)s.ini'
+			defaultpath = '/sdcard/%(appname)s.ini'
 		elif platform == 'ios':
 			defaultpath = '~/Documents/%(appname)s.ini'
 		elif platform == 'win':
