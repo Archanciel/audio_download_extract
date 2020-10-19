@@ -18,7 +18,7 @@ class AudioController:
 		"""
 
 		if os.name == 'posix':
-			configFilePathName = '/sdcard/audiodownloader.ini'
+			configFilePathName = '/storage/emulated/0/audiodownloader.ini'
 		else:
 			configFilePathName = 'c:\\temp\\audiodownloader.ini'
 

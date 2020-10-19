@@ -254,7 +254,7 @@ class ConfigManager:
 
 if __name__ == '__main__':
 	if os.name == 'posix':
-		FILE_PATH = '/sdcard/audiodownloader.ini'
+		FILE_PATH = '/storage/emulated/0/audiodownloader.ini'
 	else:
 		FILE_PATH = 'c:\\temp\\audiodownloader.ini'
 	
