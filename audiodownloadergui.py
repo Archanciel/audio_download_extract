@@ -931,7 +931,7 @@ class AudioDownloaderGUIApp(App):
 				popupSize = (980, 600)
 				width = 45
 			elif platform == 'win':
-				popupSize = (400, 250)
+				popupSize = (350, 200)
 				width = 54
 			
 			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
@@ -939,10 +939,11 @@ class AudioDownloaderGUIApp(App):
 			content.bind(on_answer=self.onPopupAnswer)
 			
 			self.popup = Popup(title="Answer Question",
-			                   content=content,
-			                   size_hint=(None, None),
-			                   size=popupSize,
-			                   auto_dismiss=False)
+							   content=content,
+							   size_hint=(None, None),
+							   pos_hint={'top': 0.8},
+							   size=popupSize,
+							   auto_dismiss=False)
 			self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
