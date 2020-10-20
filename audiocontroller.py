@@ -8,13 +8,12 @@ from downloadedvideoinfodic import DownloadedVideoInfoDic
 from guioutput import GuiOutput
 from youtubeaudiodownloader import YoutubeAudioDownloader
 from audioextractor import AudioExtractor
-from accesserror import AccessError
 
 class AudioController:
-	def __init__(self, guiOutputStub=None):
+	def __init__(self, gui, configMgr=None):
 		"""
 		
-		:param guiOutputStub: used for unit testing only !
+		:param gui: used for unit testing only !
 		"""
 
 		if os.name == 'posix':
@@ -22,40 +21,35 @@ class AudioController:
 		else:
 			configFilePathName = 'c:\\temp\\audiodownloader.ini'
 
-		self.configMgr = ConfigManager(configFilePathName)
+		if configMgr == None:
+			self.configMgr = ConfigManager(configFilePathName)
+		else:
+			self.configMgr = configMgr
+
 		self.requester = Requester(self.configMgr)
 		
 		# Tk must be instanciated in AudioController: class, not in
 		# GuyOutput class !
-		if guiOutputStub is None:
+		if gui is None:
 			# we are not unit testing !
 			self.guiOutput = GuiOutput(Tk())
 		else:
-			self.guiOutput = guiOutputStub
+			self.guiOutput = gui
 
 		self.audioDownloader = YoutubeAudioDownloader(self.guiOutput)
 		
-	def downloadPlaylistAudio(self):
+	def downloadPlaylistAudio(self, playlistObject, playlistTitle):
 		'''
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end" !
 
-		:return:
+		:param playlistObject
+		
+		:return: downloadedVideoInfoDictionary
 		'''
-		# obtaining the playlist url from the clipboard
-		playlistUrl = self.guiOutput.getPlaylistUrlFromClipboard()
-		
-		if playlistUrl == None:
-			accessError = AccessError(AccessError.ERROR_TYPE_CLIPBOARD_EMPTY, playlistUrl)
-			self.guiOutput.displayError(accessError.errorMsg)
-
-			# returning accessError is useful for unit testing only,
-			# otherwise return alone is sufficient !
-			return accessError
-		
 		# downloading the audio track of the videos referenced in the playlist
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylist(playlistUrl)
+		targetAudioDir, downloadedVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylist(playlistObject, playlistTitle)
 
 		if accessError:
 			# playlist url invalid (error msg was displayed !) or download problem
@@ -106,13 +100,13 @@ class AudioController:
 		audioExtractor = AudioExtractor(self.guiOutput, audioFileDir, downloadedVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadedVideoInfoDic)
 	
-	def getPlaylistTitle(self, url):
+	def getPlaylistData(self, url):
 		playlistObject, playlistTitle, accessError = self.audioDownloader.getPlaylistObject(url)
 		
 		if accessError is None:
-			return playlistTitle
+			return playlistObject, playlistTitle
 		else:
-			return None
+			return None, None
 		
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):

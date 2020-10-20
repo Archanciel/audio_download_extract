@@ -12,7 +12,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 	def __init__(self, guiOutput):
 		super().__init__(guiOutput)
 
-	def downloadVideosReferencedInPlaylist(self, playlistUrl):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):
 		'''
 		
 		:param playlistUrl:
@@ -22,7 +22,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		targetAudioDir = None
 		downloadedVideoInfoDic = None
 
-		playlist, playlistTitle, accessError = self.getPlaylistObject(playlistUrl)
+		playlistObject, playlistTitle, accessError = self.getPlaylistObject(playlistUrl)
 		
 		if accessError:
 			self.guiOutput.displayError(accessError.errorMsg)
@@ -42,7 +42,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		try:
 			videoIndex = 1
 			
-			for video in playlist.videos:
+			for video in playlistObject.videos:
 				videoTitle = video.title
 
 				if downloadedVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
@@ -68,6 +68,66 @@ class YoutubeAudioDownloader(AudioDownloader):
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
 					downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
+					downloadedVideoInfoDic.saveDic()
+				videoIndex += 1
+		except:
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, playlistName)
+			self.msgText = self.msgText + accessError.errorMsg
+			self.guiOutput.setMessage(self.msgText)
+			return targetAudioDir, downloadedVideoInfoDic, accessError
+		
+		return targetAudioDir, downloadedVideoInfoDic, None
+
+	def downloadVideosReferencedInPlaylist(self, playlistObject, playlistTitle):
+		'''
+
+		:param playlistObject:
+		:param playlistUrl:
+
+		:return: targetAudioDir, downloadedVideoInfoDic
+		'''
+		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		
+		if not os.path.isdir(targetAudioDir):
+			targetAudioDirList = targetAudioDir.split(DIR_SEP)
+			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
+			
+			if not self.guiOutput.getConfirmation(
+					"Directory\n{}\nwill be created.\n\nContinue with download ?".format(targetAudioDirShort)):
+				return targetAudioDir, downloadedVideoInfoDic
+			
+			os.makedirs(targetAudioDir)
+		
+		try:
+			videoIndex = 1
+			
+			for video in playlistObject.videos:
+				videoTitle = video.title
+				
+				if downloadedVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
+					# the video was already downloaded
+					self.msgText = self.msgText + videoTitle + ' already downloaded. Video skipped.\n'
+					self.guiOutput.setMessage(self.msgText)
+					videoIndex += 1
+					continue
+				
+				try:
+					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
+					videoUrl = video.watch_url
+					self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
+					self.guiOutput.setMessage(self.msgText)
+					audioStream.download(output_path=targetAudioDir)
+					downloadedVideoFileName = audioStream.default_filename
+				except:
+					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
+					self.msgText = self.msgText + accessError.errorMsg
+					self.guiOutput.setMessage(self.msgText)
+					return targetAudioDir, downloadedVideoInfoDic, accessError
+				else:
+					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
+					self.guiOutput.setMessage(self.msgText)
+					downloadedVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl,
+					                                                 downloadedVideoFileName)
 					downloadedVideoInfoDic.saveDic()
 				videoIndex += 1
 		except:

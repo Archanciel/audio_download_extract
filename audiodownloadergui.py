@@ -241,7 +241,7 @@ class AudioDownloaderGUI(BoxLayout):
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows version !
 
 		self.configMgr = ConfigManager(configFilePathName)
-		self.audioController = AudioController(self.configMgr)
+		self.audioController = AudioController(self, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
 		self.histoListItemHeight = int(self.configMgr.histoListItemHeight)
 		self.histoListMaxVisibleItems = int(self.configMgr.histoListVisibleSize)
@@ -724,9 +724,18 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	
 	def getPlaylistTitle(self, url):
-		return self.audioController.getPlaylistTitle(url)
-		
-	# --- end AudioDownloaderGUI new code ---
+		return self.audioController.getPlaylistData(url)
+	
+	def downloadPlaylistAudio(self, playlistObject, playlistTitle):
+		self.audioController.downloadPlaylistAudio(playlistObject, playlistTitle)
+	
+	def setMessage(self, msgText):
+		pass
+	
+	def displayError(self, msg):
+		pass
+	
+# --- end AudioDownloaderGUI new code ---
 	
 class ConfirmPopup(GridLayout):
 	text = StringProperty()
@@ -922,9 +931,12 @@ class AudioDownloaderGUIApp(App):
 		:return:
 		'''
 		playlistUrl = Clipboard.paste()
-		playlistTitle = self.audioDownloaderGUI.getPlaylistTitle(playlistUrl)
+		playlistObject, playlistTitle = self.audioDownloaderGUI.getPlaylistTitle(playlistUrl)
 		
 		if playlistTitle is not None:
+			self.playlistObject = playlistObject
+			self.playlistTitle = playlistTitle
+			
 			popupSize = None
 			
 			if platform == 'android':
@@ -935,11 +947,11 @@ class AudioDownloaderGUIApp(App):
 				width = 54
 			
 			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
-			content = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
-			content.bind(on_answer=self.onPopupAnswer)
+			confirmPopup = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
+			confirmPopup.bind(on_answer=self.onPopupAnswer)
 			
-			self.popup = Popup(title="Answer Question",
-							   content=content,
+			self.popup = Popup(title="Go on with processing playlist ?",
+							   content=confirmPopup,
 							   size_hint=(None, None),
 							   pos_hint={'top': 0.8},
 							   size=popupSize,
@@ -947,7 +959,9 @@ class AudioDownloaderGUIApp(App):
 			self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
-		print("USER ANSWER: ", repr(answer))
+		if answer == 'yes':
+			self.audioDownloaderGUI.downloadPlaylistAudio(self.playlistObject, self.playlistTitle)
+
 		self.popup.dismiss()
 
 if __name__ == '__main__':

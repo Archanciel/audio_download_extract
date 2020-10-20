@@ -7,20 +7,10 @@ parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
 from constants import *
-from configmanager import ConfigManager
 from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 			
 class TestAudioController(unittest.TestCase):
-	def testErrorMsgEmptyClipboard(self):
-		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput)
-		audioController.guiOutput.clearClipboard()
-		accessError = audioController.downloadPlaylistAudio()
-		
-		self.assertIsNotNone(accessError)
-		self.assertEqual("The clipboard is empty (not containing a playlist url).\nProgram will be closed.", accessError.errorMsg)
-
 	def testTrimAudioFile(self):
 		playListName = 'test_audio_controller'
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
