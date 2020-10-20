@@ -728,23 +728,6 @@ class AudioDownloaderGUI(BoxLayout):
 		
 	# --- end AudioDownloaderGUI new code ---
 	
-Builder.load_string('''
-<ConfirmPopup>:
-	cols:1
-	Label:
-		text: root.text
-	GridLayout:
-		cols: 2
-		size_hint_y: None
-		height: '28dp'
-		Button:
-			text: 'Yes'
-			on_release: root.dispatch('on_answer','yes')
-		Button:
-			text: 'No'
-			on_release: root.dispatch('on_answer', 'no')
-''')
-
 class ConfirmPopup(GridLayout):
 	text = StringProperty()
 	
@@ -942,16 +925,16 @@ class AudioDownloaderGUIApp(App):
 		playlistTitle = self.audioDownloaderGUI.getPlaylistTitle(playlistUrl)
 		
 		if playlistTitle is not None:
+			popupSize = None
 			
 			if platform == 'android':
-				popupSize = (980, 1200)
+				popupSize = (980, 600)
 				width = 45
 			elif platform == 'win':
-				popupSize = (400, 450)
+				popupSize = (400, 250)
 				width = 54
 			
 			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
-			
 			content = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
 			content.bind(on_answer=self.onPopupAnswer)
 			
