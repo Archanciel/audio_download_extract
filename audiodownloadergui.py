@@ -722,12 +722,14 @@ class AudioDownloaderGUI(BoxLayout):
 		
 	# --- start AudioDownloaderGUI new code ---
 	
-	
 	def getPlaylistTitle(self, url):
 		return self.audioController.getPlaylistData(url)
 	
-	def downloadPlaylistAudio(self, playlistObject, playlistTitle):
-		self.audioController.downloadPlaylistAudio(playlistObject, playlistTitle)
+	def getDownloadVideoInfoDicForPlaylistUrl(self, playlistUrl):
+		return self.audioController.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+	
+	def downloadPlaylistAudio(self, playlistUrl):
+		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
 	
 	def setMessage(self, msgText):
 		pass
@@ -921,21 +923,21 @@ class AudioDownloaderGUIApp(App):
 
 	def on_start(self):
 		'''
-		Testing at app start if the clipboard contains a valid playlist url.
+		Testing at app start if the clipboard contains a valid playlist playlistUrl.
 		If it is th case, the videos referenced in the playlist will be downloaded and
 		if we are on Windows, their audio will be extracted.
 		
-		Since a information popup is displayed in case of valid url, this must be performed
+		Since a information popup is displayed in case of valid playlistUrl, this must be performed
 		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
 		
 		:return:
 		'''
-		playlistUrl = Clipboard.paste()
-		playlistObject, playlistTitle = self.audioDownloaderGUI.getPlaylistTitle(playlistUrl)
+		self.playlistUrl = Clipboard.paste()
 		
-		if playlistTitle is not None:
-			self.playlistObject = playlistObject
-			self.playlistTitle = playlistTitle
+		downloadVideoInfoDic = self.audioDownloaderGUI.getDownloadVideoInfoDicForPlaylistUrl(self.playlistUrl)
+		
+		if downloadVideoInfoDic is not None:
+			playlistName = downloadVideoInfoDic.playlistName
 			
 			popupSize = None
 			
@@ -946,7 +948,7 @@ class AudioDownloaderGUIApp(App):
 				popupSize = (350, 200)
 				width = 54
 			
-			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
+			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistName, width)
 			confirmPopup = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
 			confirmPopup.bind(on_answer=self.onPopupAnswer)
 			
@@ -960,7 +962,7 @@ class AudioDownloaderGUIApp(App):
 	
 	def onPopupAnswer(self, instance, answer):
 		if answer == 'yes':
-			self.audioDownloaderGUI.downloadPlaylistAudio(self.playlistObject, self.playlistTitle)
+			self.audioDownloaderGUI.downloadPlaylistAudio(self.playlistUrl)
 
 		self.popup.dismiss()
 

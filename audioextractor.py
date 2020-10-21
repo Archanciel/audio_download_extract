@@ -8,29 +8,29 @@ else:
 	import moviepy.editor as mp  # not working on Android
 
 class AudioExtractor:
-	def __init__(self, guiOutput, targetAudioDir, downloadedVideoInfoDictionary):
+	def __init__(self, guiOutput, targetAudioDir, downloadVideoInfoDictionary):
 		self.guiOutput = guiOutput
 		self.targetAudioDir = targetAudioDir
-		self.downloadedVideoInfoDictionary = downloadedVideoInfoDictionary
+		self.downloadVideoInfoDictionary = downloadVideoInfoDictionary
 
-	def extractPlaylistAudio(self, downloadedVideoInfoDic):
-		for videoIndex in downloadedVideoInfoDic.getVideoIndexes():
-			videoFileName = downloadedVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
-			if downloadedVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
-				self.extractAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
+	def extractPlaylistAudio(self, downloadVideoInfoDic):
+		for videoIndex in downloadVideoInfoDic.getVideoIndexes():
+			videoFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
+				self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
-			if downloadedVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
-				self.suppressAudioPortions(videoIndex, videoFileName, downloadedVideoInfoDic)
+			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
+				self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 				
-			if not downloadedVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex) and \
-			   not downloadedVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
+			if not downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex) and \
+			   not downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				self.convertVideoToAudio(videoFileName)
 			else:
 				self.convertVideoToAudio(videoFileName, 'full')
 
-	def extractAudioPortions(self, videoIndex, videoFileName, downloadedVideoInfoDic):
+	def extractAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
-		extractStartEndSecondsLists = downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
+		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
@@ -52,15 +52,15 @@ class AudioExtractor:
 			clip.write_audiofile(mp3FilePathName)
 			clip.close()
 			HHMMSS_TimeFrameList = self.convertStartEndSecondsListTo_HHMMSS_TimeFrameList(extractStartEndSecondsList)
-			downloadedVideoInfoDic.addExtractedFileInfoForVideoIndexTimeFrameIndex(videoIndex,
+			downloadVideoInfoDic.addExtractedFileInfoForVideoIndexTimeFrameIndex(videoIndex,
 			                                                                       timeFrameIndex,
 			                                                                       mp3FileName,
 			                                                                       HHMMSS_TimeFrameList)
 			timeFrameIndex += 1
 	
-	def suppressAudioPortions(self, videoIndex, videoFileName, downloadedVideoInfoDic):
+	def suppressAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
-		suppressStartEndSecondsLists = downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(videoIndex)
+		suppressStartEndSecondsLists = downloadVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(videoIndex)
 		suppressFrameNb = len(suppressStartEndSecondsLists)
 		videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
 		duration = videoAudioFrame.duration
@@ -103,7 +103,7 @@ class AudioExtractor:
 		videoAudioFrame.close()
 		HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(suppressStartEndSecondsLists)
 		HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(keptStartEndSecondsLists)
-		downloadedVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
+		downloadVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
                                                                   mp3FileName,
                                                                   HHMMSS_suppressedTimeFramesList,
 		                                                          HHMMSS_keptTimeFramesList)

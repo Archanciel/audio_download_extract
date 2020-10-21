@@ -4,7 +4,7 @@ from tkinter import Tk
 from constants import *
 from configmanager import ConfigManager
 from requester import Requester
-from downloadedvideoinfodic import DownloadedVideoInfoDic
+from downloadvideoinfodic import DownloadVideoInfoDic
 from guioutput import GuiOutput
 from youtubeaudiodownloader import YoutubeAudioDownloader
 from audioextractor import AudioExtractor
@@ -38,7 +38,7 @@ class AudioController:
 
 		self.audioDownloader = YoutubeAudioDownloader(self.guiOutput)
 		
-	def downloadPlaylistAudio(self, playlistObject, playlistTitle):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):
 		'''
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
@@ -46,29 +46,30 @@ class AudioController:
 
 		:param playlistObject
 		
-		:return: downloadedVideoInfoDictionary
+		:return: downloadVideoInfoDictionary
 		'''
 		# downloading the audio track of the videos referenced in the playlist
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylist(playlistObject, playlistTitle)
+		downloadVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.downloadDir
 
 		if accessError:
-			# playlist url invalid (error msg was displayed !) or download problem
+			# playlist playlistUrl invalid (error msg was displayed !) or download problem
 			
-			# reloading the DownloadedVideoInfoDic will enable to obtain which videos have been
+			# reloading the DownloadVideoInfoDic will enable to obtain which videos have been
 			# successfully downloaded
-			reloaded_downloadedVideoInfoDictionary = DownloadedVideoInfoDic(targetAudioDir)
+			reloaded_downloadVideoInfoDictionary = DownloadVideoInfoDic(targetAudioDir)
 			
-			return reloaded_downloadedVideoInfoDictionary
+			return reloaded_downloadVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
-		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadedVideoInfoDictionary)
-		audioExtractor.extractPlaylistAudio(downloadedVideoInfoDictionary)
+		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadVideoInfoDictionary)
+		audioExtractor.extractPlaylistAudio(downloadVideoInfoDictionary)
 		
-		# saving the content of the downloadedVideoInfoDictionary which has been completed
+		# saving the content of the downloadVideoInfoDictionary which has been completed
 		# by AudioExtractor in the directory containing the extracted audio files
-		downloadedVideoInfoDictionary.saveDic()
+		downloadVideoInfoDictionary.saveDic()
 		
-		return downloadedVideoInfoDictionary
+		return downloadVideoInfoDictionary
 		
 	def trimAudioFile(self, audioFilePathName):
 		"""
@@ -83,25 +84,30 @@ class AudioController:
 		audioFileName = audioFilePathName.split(DIR_SEP)[-1]
 		audioFileDir = audioFilePathName.replace(DIR_SEP + audioFileName, '')
 		
-		# initializing a partially filled DownloadedVideoInfoDic with only the informations
+		# initializing a partially filled DownloadVideoInfoDic with only the informations
 		# required to trim the audio file
-		downloadedVideoInfoDic = DownloadedVideoInfoDic(audioFileDir)
-		downloadedVideoInfoDic.addVideoInfoForVideoIndex(1, audioFileName.split('.')[0],
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioFileDir)
+		downloadVideoInfoDic.addVideoInfoForVideoIndex(1, audioFileName.split('.')[0],
 		                                                 '', audioFileName)
 		
 		# getting the extract time frames specified as command line argument
-		# and adding them to the DownloadedVideoInfoDic
+		# and adding them to the DownloadVideoInfoDic
 		extractStartEndSecondsLists = self.requester.getExtractStartEndSecondsLists()
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
-			downloadedVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
+			downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
 
 		# now trimming the audio file
-		audioExtractor = AudioExtractor(self.guiOutput, audioFileDir, downloadedVideoInfoDic)
-		audioExtractor.extractAudioPortions(1, audioFileName, downloadedVideoInfoDic)
+		audioExtractor = AudioExtractor(self.guiOutput, audioFileDir, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
+
+	def getDownloadVideoInfoDicForPlaylistUrl(self, url):
+		playlistObject, downloadVideoInfoDic = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
+
+		return downloadVideoInfoDic
 	
 	def getPlaylistData(self, url):
-		playlistObject, playlistTitle, accessError = self.audioDownloader.getPlaylistObject(url)
+		playlistObject, playlistTitle, accessError = self.audioDownloader.getPlaylistObjectForPlaylistUrl(url)
 		
 		if accessError is None:
 			return playlistObject, playlistTitle

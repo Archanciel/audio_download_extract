@@ -12,7 +12,7 @@ class AudioDownloader(metaclass=ABCMeta):
 	
 		:param playlistUrl:
 	
-		:return: targetAudioDir, downloadedVideoInfoDic
+		:return: targetAudioDir, downloadVideoInfoDic
 		'''
 		pass
 	
@@ -22,6 +22,6 @@ class AudioDownloader(metaclass=ABCMeta):
 
 		:param playlistUrl:
 
-		:return: targetAudioDir, downloadedVideoInfoDic
+		:return: targetAudioDir, downloadVideoInfoDic
 		'''
 		pass

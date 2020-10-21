@@ -36,7 +36,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
 
 		sys.stdout = stdout
 
@@ -49,12 +49,12 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 						 ''], outputCapturingString.getvalue().split('\n'))
 
 		self.assertEqual(downloadDir, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual(['1'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual(['1'], downloadVideoInfoDictionary.getVideoIndexes())
 
 		if os.name == 'posix':
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test_audio_downloader_one_file',
@@ -136,8 +136,8 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.downloadDir
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -158,19 +158,19 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 						 ''], outputCapturingString.getvalue().split('\n'))
 
 		self.assertEqual(downloadDir, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
-		self.assertEqual('Here to help: Give him what he wants', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help: Give him what he wants', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
 
-		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDictionary.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
@@ -199,7 +199,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
 		
 		sys.stdout = stdout
@@ -229,30 +229,30 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		startEndSecondsList_suppress_secondVideo_secondTimeFrame = [7, 10]
 		
 		self.assertEqual([startEndSecondsList_extract_firstVideo_firstTimeFrame],
-		                 downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertEqual([],
-		                 downloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
 		
 		self.assertEqual([],
-		                 downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
 		self.assertEqual([startEndSecondsList_suppress_secondVideo_firstTimeFrame,
 		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
-		                 downloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
 
 		self.assertEqual(downloadDir, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
-		self.assertEqual('Here to help: Give him what he wants', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help: Give him what he wants', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
 
-		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDictionary.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
@@ -315,7 +315,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
 		
 		sys.stdout = stdout
 
@@ -327,15 +327,15 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 						 '',
 						 ''], outputCapturingString.getvalue().split('\n'))
 
-		self.assertEqual([[5, 10]], downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
+		self.assertEqual([[5, 10]], downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertEqual(downloadDir, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDictionary.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
-		self.assertEqual(['1'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1'], downloadVideoInfoDictionary.getVideoIndexes())
 
 		if os.name == 'posix':
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + playlistName,
@@ -347,7 +347,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Test_title_one_time_frame_extract_dic.txt',
 								 'Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
-		self.assertEqual([[5, 10]], downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
+		self.assertEqual([[5, 10]], downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
@@ -370,7 +370,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
 		
 		sys.stdout = stdout
 
@@ -393,31 +393,31 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
-		                 downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
-		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDictionary.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
@@ -432,7 +432,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, redownloadedVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir, redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
 		
 		sys.stdout = stdout
 
@@ -446,31 +446,31 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 redownloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
-		                 redownloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
-		self.assertEqual(['1', '2'], redownloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], redownloadVideoInfoDictionary.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
@@ -499,7 +499,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadedVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
 		
 		sys.stdout = stdout
@@ -529,43 +529,43 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		startEndSecondsList_suppress_secondVideo_secondTimeFrame = [7, 10]
 		
 		self.assertEqual([startEndSecondsList_extract_firstVideo_firstTimeFrame],
-		                 downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertEqual([],
-		                 downloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
 		
 		self.assertEqual([],
-		                 downloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
 		self.assertEqual([startEndSecondsList_suppress_secondVideo_firstTimeFrame,
 		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
-		                 downloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
-		                 downloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 downloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		                 downloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 downloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 downloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
-		self.assertEqual(['1', '2'], downloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDictionary.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
@@ -581,7 +581,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, redownloadedVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		targetAudioDir, redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
 		
 		sys.stdout = stdout
@@ -595,43 +595,43 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 						 ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual([startEndSecondsList_extract_firstVideo_firstTimeFrame],
-		                 redownloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertEqual([],
-		                 redownloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(1))
 		
 		self.assertEqual([],
-		                 redownloadedVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getExtractStartEndSecondsListsForVideoIndex(2))
 		self.assertEqual([startEndSecondsList_suppress_secondVideo_firstTimeFrame,
 		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
-		                 redownloadedVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getSuppressStartEndSecondsListsForVideoIndex(2))
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 redownloadedVideoInfoDictionary.getVideoTitleForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
-		                 redownloadedVideoInfoDictionary.getVideoTitleForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoTitleForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoIndex(2))
 		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
-		                 redownloadedVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		                 redownloadVideoInfoDictionary.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoIndex(2))
 		self.assertEqual('Here to help Give him what he wants.mp4',
-		                 redownloadedVideoInfoDictionary.getVideoFileNameForVideoTitle(
+		                 redownloadVideoInfoDictionary.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
-		self.assertEqual(['1', '2'], redownloadedVideoInfoDictionary.getVideoIndexes())
+		self.assertEqual(['1', '2'], redownloadVideoInfoDictionary.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(

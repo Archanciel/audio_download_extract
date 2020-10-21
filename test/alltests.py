@@ -5,7 +5,7 @@ from testguioutput import TestGuiOutput
 from testyoutubeaudiodownloaderdownloadmethods import TestYoutubeAudioDownloaderDownloadMethods
 from testyoutubeaudiodownloaderothermethods import TestYoutubeAudioDownloaderOtherMethods
 from testaudioextractor import TestAudioExtractor
-from testdownloadedvideoinfodic import TestDownloadedVideoInfoDic
+from testdownloadvideoinfodic import TestDownloadVideoInfoDic
 from testplaylisttitleparser import TestPlaylistTitleParser
 from testaudiocontroller import TestAudioController
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         # running TestAudioController on Android is not possible !
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
-                           loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
+                           loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
                            ))
     else:
@@ -26,7 +26,7 @@ if __name__ == "__main__":
                     	   loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
                            loader.loadTestsFromTestCase(TestAudioExtractor),
-                           loader.loadTestsFromTestCase(TestDownloadedVideoInfoDic),
+                           loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
                            loader.loadTestsFromTestCase(TestAudioController),
                            ))
