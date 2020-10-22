@@ -36,7 +36,8 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
 
 		sys.stdout = stdout
 
@@ -137,7 +138,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		targetAudioDir = downloadVideoInfoDictionary.downloadDir
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -199,9 +200,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
-		
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
@@ -315,8 +317,9 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -370,8 +373,9 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -432,8 +436,9 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		
+		redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -499,9 +504,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		downloadVideoInfoDictionary, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
-		
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
@@ -581,9 +587,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		targetAudioDir, redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
+		redownloadVideoInfoDictionary, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
 			playlistUrl)
-		
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)

@@ -20,7 +20,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		:return: downloadVideoInfoDic, accessError
 		'''
 		playlistObject, downloadVideoInfoDic = self.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
-		targetAudioDir = downloadVideoInfoDic.downloadDir
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
 		if not os.path.isdir(targetAudioDir):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)
@@ -55,7 +55,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
 					self.msgText = self.msgText + accessError.errorMsg
 					self.guiOutput.setMessage(self.msgText)
-					return targetAudioDir, downloadVideoInfoDic, accessError
+					return downloadVideoInfoDic, accessError
 				else:
 					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
 					self.guiOutput.setMessage(self.msgText)
@@ -66,7 +66,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.playlistName)
 			self.msgText = self.msgText + accessError.errorMsg
 			self.guiOutput.setMessage(self.msgText)
-			return targetAudioDir, downloadVideoInfoDic, accessError
+			return downloadVideoInfoDic, accessError
 		
 		return downloadVideoInfoDic, None
 

@@ -6,7 +6,7 @@ from downloadvideoinfodic import DownloadVideoInfoDic
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def splitPlaylistTitle(playlistTitle):
+	def createDownloadVideoInfoDic(playlistTitle):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -17,7 +17,7 @@ class PlaylistTitleParser:
 		The title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end"
 		
-		@:return playlistName, targetAudioDir, downloadedVideoInfoDic
+		@:return downloadVideoInfoDic
 		"""
 		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
 		
@@ -26,15 +26,15 @@ class PlaylistTitleParser:
 		videoTimeFramesInfo = match.group(2)
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
 		
-		downloadedVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistName)
 		
 		if videoTimeFramesInfo is not None:
-			PlaylistTitleParser.extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo)
+			PlaylistTitleParser.addTimeInfoToDownloadVideoInfoDic(downloadVideoInfoDic, videoTimeFramesInfo)
 		
-		return playlistName, targetAudioDir, downloadedVideoInfoDic
+		return downloadVideoInfoDic
 	
 	@staticmethod
-	def extractTimeInfo(downloadedVideoInfoDic, videoTimeFramesInfo):
+	def addTimeInfoToDownloadVideoInfoDic(downloadVideoInfoDic, videoTimeFramesInfo):
 		videoTimeFramesPattern = r'(\([sSeE\d:\- ]*\) ?)'
 		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
 		videoIndex = 1
@@ -42,22 +42,22 @@ class PlaylistTitleParser:
 		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, videoTimeFramesInfo):
 			# print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
 
-			# in case the playlist is redownloaded, the time frame in seconds data
+			# in case the playlist is re-downloaded, the time frame in seconds data
 			# must be purged. Otherwise, the time frames in seconds will be added
 			# to the existing time frames set at the first download !
-			downloadedVideoInfoDic.removeTimeFrameInSecondsDataIfExistForVideoIndex(videoIndex)
+			downloadVideoInfoDic.removeTimeFrameInSecondsDataIfExistForVideoIndex(videoIndex)
 	
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
 				startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])
 				if startEndTimeFrame[0].upper() == 'E':
-					downloadedVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
+					downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 				elif startEndTimeFrame[0].upper() == 'S':
-					downloadedVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
+					downloadVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 			# print(startEndTimeFrame)
 			videoIndex += 1
 		
-		return downloadedVideoInfoDic
+		return downloadVideoInfoDic
 	
 	@staticmethod
 	def convertToStartEndSeconds(startEndTimeFrame):

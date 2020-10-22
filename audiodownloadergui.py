@@ -931,6 +931,9 @@ class AudioDownloaderGUIApp(App):
 		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
 		
 		:return:
+
+		# test url: https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
+		# multiple videos with time frames
 		'''
 		self.playlistUrl = Clipboard.paste()
 		
