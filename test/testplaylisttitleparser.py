@@ -10,7 +10,7 @@ from playlisttitleparser import PlaylistTitleParser
 
 class TestPlaylistTitleParser(unittest.TestCase):
 		
-	def testSplitPlayListTitle_one_time_frame_extract(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_extract(self):
 		expectedPlayListName = 'Test_title_one_time_frame_extract'
 		timeInfo = '(e01:05:52-01:07:23)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -26,13 +26,13 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_one_time_frame_extract_to_end(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_extract_to_end(self):
 		expectedPlayListName = 'Test_title_one_time_frame_extract'
 		timeInfo = '(e01:05:52-e)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -48,15 +48,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_two_time_frame_extract_last_to_end(self):
+	def testCreateDownloadVideoInfoDic_two_time_frame_extract_last_to_end(self):
 		expectedPlayListName = 'Test_title_one_time_frame_extract'
 		timeInfo = '(e01:05:02-01:05:05 e01:05:52-e)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -72,15 +72,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_one_time_frame_extract_upper(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_extract_upper(self):
 		expectedPlayListName = 'Test_title_one_time_frame_extract'
 		timeInfo = '(E01:05:52-01:07:23)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -96,15 +96,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_one_time_frame_suppress(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_suppress(self):
 		expectedPlayListName = 'Test_title_one_time_frame_suppress'
 		timeInfo = '(s0:05:52-0:07:23)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -120,13 +120,13 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_one_time_frame_suppress_to_end(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_suppress_to_end(self):
 		expectedPlayListName = 'Test_title_one_time_frame_suppress'
 		timeInfo = '(s0:05:52-e)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -142,15 +142,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_one_time_frame_suppress_upper(self):
+	def testCreateDownloadVideoInfoDic_one_time_frame_suppress_upper(self):
 		expectedPlayListName = 'Test_title_one_time_frame_suppress'
 		timeInfo = '(S0:05:52-0:07:23)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -166,15 +166,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_no_time_frame(self):
+	def testCreateDownloadVideoInfoDic_no_time_frame(self):
 		expectedPlayListName = 'Test_title_no_time_frame'
 		playlistTitle = expectedPlayListName
 		
@@ -186,11 +186,11 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		
-	def testSplitPlayListTitle_two_time_frames_suppress(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_suppress(self):
 		expectedPlayListName = 'Test_title_two_time_frame_suppress'
 		timeInfo = '(s0:05:52-0:07:23 s0:10:52-0:10:53)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -206,13 +206,13 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_two_time_frames_suppress_last_to_end(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_suppress_last_to_end(self):
 		expectedPlayListName = 'Test_title_two_time_frame_suppress'
 		timeInfo = '(s0:05:52-0:07:23 s0:10:52-e)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -228,15 +228,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_two_time_frames_one_extract_one_suppress(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress(self):
 		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress'
 		timeInfo = '(e0:05:52-0:07:23 s0:10:52-0:10:53)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -252,13 +252,13 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
 		
-	def testSplitPlayListTitle_two_time_frames_one_extract_one_suppress_two_videos(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos(self):
 		# Example of playlist title: playlist_title (s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress_two_videos'
 		timeInfo = '(E0:05:52-0:07:23 S0:10:52-0:10:53) (e1:05:52-1:07:23 s1:10:52-1:10:53)'
@@ -278,15 +278,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideo1ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideo1SuppressTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2), expectedVideo2ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2), expectedVideo2SuppressTimeFramesList)
 	
-	def testSplitPlayListTitle_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end(self):
 		# Example of playlist title: playlist_title (s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress_two_videos'
 		timeInfo = '(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)'
@@ -306,9 +306,9 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		playlistName, targetAudioDir, downloadedVideoInfoDic = PlaylistTitleParser.splitPlaylistTitle(playlistTitle)
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		self.assertEqual(expectedPlayListName, playlistName)
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
@@ -322,4 +322,4 @@ class TestPlaylistTitleParser(unittest.TestCase):
 if __name__ == '__main__':
 	unittest.main()
 	# tst = TestYoutubeAudioDownloaderOtherMethods()
-	# tst.testSplitPlayListTitle_one_time_frame_extract()
+	# tst.testCreateDownloadVideoInfoDic_one_time_frame_extract()

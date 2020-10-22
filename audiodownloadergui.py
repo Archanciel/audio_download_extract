@@ -940,7 +940,7 @@ class AudioDownloaderGUIApp(App):
 		downloadVideoInfoDic = self.audioDownloaderGUI.getDownloadVideoInfoDicForPlaylistUrl(self.playlistUrl)
 		
 		if downloadVideoInfoDic is not None:
-			playlistName = downloadVideoInfoDic.playlistName
+			playlistTitle = downloadVideoInfoDic.getPlaylistTitle()
 			
 			popupSize = None
 			
@@ -951,7 +951,7 @@ class AudioDownloaderGUIApp(App):
 				popupSize = (350, 200)
 				width = 54
 			
-			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistName, width)
+			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
 			confirmPopup = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
 			confirmPopup.bind(on_answer=self.onPopupAnswer)
 			

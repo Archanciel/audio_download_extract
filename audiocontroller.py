@@ -50,7 +50,7 @@ class AudioController:
 		'''
 		# downloading the audio track of the videos referenced in the playlist
 		downloadVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		targetAudioDir = downloadVideoInfoDictionary.downloadDir
+		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
 
 		if accessError:
 			# playlist playlistUrl invalid (error msg was displayed !) or download problem
