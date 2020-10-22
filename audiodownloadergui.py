@@ -753,6 +753,10 @@ class AudioDownloaderGUIApp(App):
 	settings_cls = SettingsWithTabbedPanel
 	audioDownloaderGUI = None
 
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.playlistUrl = None
+	
 	def build(self): # implicitely looks for a kv file of name audiodownloadergui.kv which is
 					 # class name without App, in lowercases
 		global fromAppBuilt
