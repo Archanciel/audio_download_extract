@@ -15,13 +15,3 @@ class AudioDownloader(metaclass=ABCMeta):
 		:return: targetAudioDir, downloadVideoInfoDic
 		'''
 		pass
-	
-	@abstractmethod
-	def downloadVideosReferencedInPlaylist(self, playlistObject):
-		'''
-
-		:param playlistUrl:
-
-		:return: targetAudioDir, downloadVideoInfoDic
-		'''
-		pass

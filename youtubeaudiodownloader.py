@@ -85,66 +85,6 @@ class YoutubeAudioDownloader(AudioDownloader):
 		
 		return playlistObject, downloadVideoInfoDic
 	
-	def downloadVideosReferencedInPlaylist(self, playlistObject, playlistTitle):
-		'''
-
-		:param playlistObject:
-		:param playlistUrl:
-
-		:return: targetAudioDir, downloadVideoInfoDic
-		'''
-		playlistName, targetAudioDir, downloadVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
-		
-		if not os.path.isdir(targetAudioDir):
-			targetAudioDirList = targetAudioDir.split(DIR_SEP)
-			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
-			
-			if not self.guiOutput.getConfirmation(
-					"Directory\n{}\nwill be created.\n\nContinue with download ?".format(targetAudioDirShort)):
-				return targetAudioDir, downloadVideoInfoDic
-			
-			os.makedirs(targetAudioDir)
-		
-		try:
-			videoIndex = 1
-			
-			for video in playlistObject.videos:
-				videoTitle = video.title
-				
-				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
-					# the video was already downloaded
-					self.msgText = self.msgText + videoTitle + ' already downloaded. Video skipped.\n'
-					self.guiOutput.setMessage(self.msgText)
-					videoIndex += 1
-					continue
-				
-				try:
-					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
-					videoUrl = video.watch_url
-					self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
-					self.guiOutput.setMessage(self.msgText)
-					audioStream.download(output_path=targetAudioDir)
-					downloadedVideoFileName = audioStream.default_filename
-				except:
-					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
-					self.msgText = self.msgText + accessError.errorMsg
-					self.guiOutput.setMessage(self.msgText)
-					return targetAudioDir, downloadVideoInfoDic, accessError
-				else:
-					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
-					self.guiOutput.setMessage(self.msgText)
-					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl,
-					                                                 downloadedVideoFileName)
-					downloadVideoInfoDic.saveDic()
-				videoIndex += 1
-		except:
-			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, playlistName)
-			self.msgText = self.msgText + accessError.errorMsg
-			self.guiOutput.setMessage(self.msgText)
-			return targetAudioDir, downloadVideoInfoDic, accessError
-		
-		return targetAudioDir, downloadVideoInfoDic, None
-	
 	def getPlaylistObjectForPlaylistUrl(self, playlistUrl):
 		"""
 		Returns the pytube.Playlist object corresponding to the passed playlistUrl the
