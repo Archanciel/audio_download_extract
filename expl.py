@@ -22,7 +22,7 @@ def getPlaylistObjectForPlaylistUrl(playlistUrl):
 	
 	try:
 		playlistObject = Playlist(playlistUrl)
-		playlistObject._video_regex = re.compile(r"\"playlistUrl\":\"(/watch\?v=[\w-]*)")
+		playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
 		playlistTitle = playlistObject.title()
 	except http.client.InvalidURL as e:
 		accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
