@@ -38,7 +38,7 @@ class AudioController:
 
 		self.audioDownloader = YoutubeAudioDownloader(self.guiOutput)
 		
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):
+	def downloadVideosReferencedInPlaylistForPlaylistObject(self, playlistUrl, downloadVideoInfoDic):
 		'''
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
@@ -46,14 +46,14 @@ class AudioController:
 
 		:param playlistObject
 		
-		:return: downloadVideoInfoDictionary
+		:return: downloadVideoInfoDic
 		'''
 		# downloading the audio track of the videos referenced in the playlist
-		downloadVideoInfoDictionary, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
-		targetAudioDir = downloadVideoInfoDictionary.getPlaylistDownloadDir()
+		accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
 		if accessError:
-			# playlist playlistUrl invalid (error msg was displayed !) or download problem
+			# playlist playlistObject invalid (error msg was displayed !) or download problem
 			
 			# reloading the DownloadVideoInfoDic will enable to obtain which videos have been
 			# successfully downloaded
@@ -62,14 +62,14 @@ class AudioController:
 			return reloaded_downloadVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
-		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadVideoInfoDictionary)
-		audioExtractor.extractPlaylistAudio(downloadVideoInfoDictionary)
+		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadVideoInfoDic)
+		audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 		
-		# saving the content of the downloadVideoInfoDictionary which has been completed
+		# saving the content of the downloadVideoInfoDic which has been completed
 		# by AudioExtractor in the directory containing the extracted audio files
-		downloadVideoInfoDictionary.saveDic()
+		downloadVideoInfoDic.saveDic()
 		
-		return downloadVideoInfoDictionary
+		return downloadVideoInfoDic
 		
 	def trimAudioFile(self, audioFilePathName):
 		"""
@@ -102,18 +102,15 @@ class AudioController:
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
 
 	def getDownloadVideoInfoDicForPlaylistUrl(self, url):
-		playlistObject, downloadVideoInfoDic = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
-
+		"""
+		
+		:param url:
+		:return: downloadVideoInfoDic
+		"""
+		_, downloadVideoInfoDic = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
+		
 		return downloadVideoInfoDic
 	
-	def getPlaylistData(self, url):
-		playlistObject, playlistTitle, accessError = self.audioDownloader.getPlaylistObjectForPlaylistUrl(url)
-		
-		if accessError is None:
-			return playlistObject, playlistTitle
-		else:
-			return None, None
-		
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):
 		'''

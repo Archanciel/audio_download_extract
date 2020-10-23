@@ -257,6 +257,8 @@ class AudioDownloaderGUI(BoxLayout):
 		self.applyAppPosAndSize()
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
+		
+		self.downloadVideoInfoDic = None
 
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
@@ -722,14 +724,24 @@ class AudioDownloaderGUI(BoxLayout):
 		
 	# --- start AudioDownloaderGUI new code ---
 	
-	def getPlaylistTitle(self, url):
-		return self.audioController.getPlaylistData(url)
-	
 	def getDownloadVideoInfoDicForPlaylistUrl(self, playlistUrl):
-		return self.audioController.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		"""
+		
+		:param playlistUrl:
+		:return: playlistObject, downloadVideoInfoDic
+		"""
+		self.downloadVideoInfoDic = self.audioController.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+	
+		return self.downloadVideoInfoDic
 	
 	def downloadPlaylistAudio(self, playlistUrl):
-		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl)
+		"""
+		
+		:param playlistObject:
+		:param downloadVideoInfoDic:
+		:return:
+		"""
+		self.audioController.downloadVideosReferencedInPlaylistForPlaylistObject(playlistUrl, self.downloadVideoInfoDic)
 	
 	def setMessage(self, msgText):
 		pass
@@ -755,8 +767,9 @@ class AudioDownloaderGUIApp(App):
 
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
+
 		self.playlistUrl = None
-	
+
 	def build(self): # implicitely looks for a kv file of name audiodownloadergui.kv which is
 					 # class name without App, in lowercases
 		global fromAppBuilt
@@ -927,11 +940,11 @@ class AudioDownloaderGUIApp(App):
 
 	def on_start(self):
 		'''
-		Testing at app start if the clipboard contains a valid playlist playlistUrl.
+		Testing at app start if the clipboard contains a valid playlist playlistObject.
 		If it is th case, the videos referenced in the playlist will be downloaded and
 		if we are on Windows, their audio will be extracted.
 		
-		Since a information popup is displayed in case of valid playlistUrl, this must be performed
+		Since a information popup is displayed in case of valid playlistObject, this must be performed
 		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
 		
 		:return:

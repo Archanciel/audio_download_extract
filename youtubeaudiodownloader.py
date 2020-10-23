@@ -12,17 +12,17 @@ class YoutubeAudioDownloader(AudioDownloader):
 	def __init__(self, guiOutput):
 		super().__init__(guiOutput)
 
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
 		
 		:param playlistUrl:
 		
 		:return: downloadVideoInfoDic, accessError
 		'''
-		playlistObject, downloadVideoInfoDic = self.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		playlistObject, _, accessError = self.getPlaylistObjectForPlaylistUrl(playlistUrl)
 
-		if downloadVideoInfoDic is None:
-			return None, AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, playlistUrl)
+		if accessError:
+			return None, accessError
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -66,7 +66,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 					downloadVideoInfoDic.saveDic()
 				videoIndex += 1
-		except:
+		except Exception as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.getPlaylistName())
 			self.msgText = self.msgText + accessError.errorMsg
 			self.guiOutput.setMessage(self.msgText)
@@ -87,7 +87,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 	
 	def getPlaylistObjectForPlaylistUrl(self, playlistUrl):
 		"""
-		Returns the pytube.Playlist object corresponding to the passed playlistUrl the
+		Returns the pytube.Playlist object corresponding to the passed playlistObject the
 		playlistObject title and None if no problem happened.
 		
 		:param playlistUrl:
@@ -107,7 +107,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
-		except URLError:
+		except URLError as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 
 		if accessError is None and (playlistTitle is None or 'Oops' in playlistTitle):

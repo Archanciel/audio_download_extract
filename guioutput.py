@@ -25,7 +25,7 @@ class GuiOutput:
 		try:
 			playlistUrl = self.root.clipboard_get()
 		except TclError:
-			# playlistUrl remains None
+			# playlistObject remains None
 			pass
 
 		return playlistUrl
