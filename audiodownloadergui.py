@@ -741,7 +741,7 @@ class AudioDownloaderGUI(BoxLayout):
 		:param downloadVideoInfoDic:
 		:return:
 		"""
-		self.audioController.downloadVideosReferencedInPlaylistForPlaylistObject(playlistUrl, self.downloadVideoInfoDic)
+		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, self.downloadVideoInfoDic)
 	
 	def setMessage(self, msgText):
 		pass

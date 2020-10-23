@@ -38,7 +38,7 @@ class AudioController:
 
 		self.audioDownloader = YoutubeAudioDownloader(self.guiOutput)
 		
-	def downloadVideosReferencedInPlaylistForPlaylistObject(self, playlistUrl, downloadVideoInfoDic):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
@@ -49,17 +49,17 @@ class AudioController:
 		:return: downloadVideoInfoDic
 		'''
 		# downloading the audio track of the videos referenced in the playlist
-		accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
-		if accessError:
-			# playlist playlistObject invalid (error msg was displayed !) or download problem
-			
-			# reloading the DownloadVideoInfoDic will enable to obtain which videos have been
-			# successfully downloaded
-			reloaded_downloadVideoInfoDictionary = DownloadVideoInfoDic(targetAudioDir)
-			
-			return reloaded_downloadVideoInfoDictionary
+		# if accessError:
+		# 	# playlist playlistObject invalid (error msg was displayed !) or download problem
+		#
+		# 	# reloading the DownloadVideoInfoDic will enable to obtain which videos have been
+		# 	# successfully downloaded
+		# 	reloaded_downloadVideoInfoDictionary = DownloadVideoInfoDic(targetAudioDir)
+		#
+		# 	return reloaded_downloadVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadVideoInfoDic)

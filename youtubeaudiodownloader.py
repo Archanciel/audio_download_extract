@@ -107,7 +107,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
-		except URLError as e:
+		except URLError:
 			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 
 		if accessError is None and (playlistTitle is None or 'Oops' in playlistTitle):

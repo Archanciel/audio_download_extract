@@ -16,6 +16,9 @@ class AudioExtractor:
 	def extractPlaylistAudio(self, downloadVideoInfoDic):
 		for videoIndex in downloadVideoInfoDic.getVideoIndexes():
 			videoFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+			if videoFileName is None:
+				# downloading the video failed
+				continue
 			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
 				self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
