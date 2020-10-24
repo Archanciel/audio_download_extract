@@ -259,7 +259,8 @@ class AudioDownloaderGUI(BoxLayout):
 		self.movingRequest = False
 		
 		self.downloadVideoInfoDic = None
-
+		self.playlistUrl = None
+	
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			self.appSize = self.configMgr.APP_SIZE_FULL
@@ -741,7 +742,19 @@ class AudioDownloaderGUI(BoxLayout):
 		:param downloadVideoInfoDic:
 		:return:
 		"""
-		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, self.downloadVideoInfoDic)
+		self.playlistUrl = playlistUrl
+		t = threading.Thread(target=self.downloadPlaylistAudioOnNewThread, args=())
+		t.daemon = True
+		t.start()
+	
+	def downloadPlaylistAudioOnNewThread(self):
+		"""
+
+		:param playlistObject:
+		:param downloadVideoInfoDic:
+		:return:
+		"""
+		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(self.playlistUrl, self.downloadVideoInfoDic)
 	
 	def setMessage(self, msgText):
 		pass

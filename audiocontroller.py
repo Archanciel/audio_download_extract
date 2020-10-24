@@ -5,15 +5,14 @@ from constants import *
 from configmanager import ConfigManager
 from requester import Requester
 from downloadvideoinfodic import DownloadVideoInfoDic
-from guioutput import GuiOutput
 from youtubeaudiodownloader import YoutubeAudioDownloader
 from audioextractor import AudioExtractor
 
 class AudioController:
-	def __init__(self, gui, configMgr=None):
+	def __init__(self, audioDownloaderGUI, configMgr=None):
 		"""
 		
-		:param gui: used for unit testing only !
+		:param audioDownloaderGUI: used for unit testing only !
 		"""
 
 		if os.name == 'posix':
@@ -27,16 +26,8 @@ class AudioController:
 			self.configMgr = configMgr
 
 		self.requester = Requester(self.configMgr)
-		
-		# Tk must be instanciated in AudioController: class, not in
-		# GuyOutput class !
-		if gui is None:
-			# we are not unit testing !
-			self.guiOutput = GuiOutput(Tk())
-		else:
-			self.guiOutput = gui
-
-		self.audioDownloader = YoutubeAudioDownloader(self.guiOutput)
+		self.audioDownloaderGUI = audioDownloaderGUI
+		self.audioDownloader = YoutubeAudioDownloader(self)
 		
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
@@ -62,7 +53,7 @@ class AudioController:
 		# 	return reloaded_downloadVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
-		audioExtractor = AudioExtractor(self.guiOutput, targetAudioDir, downloadVideoInfoDic)
+		audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
 		audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 		
 		# saving the content of the downloadVideoInfoDic which has been completed
@@ -98,7 +89,7 @@ class AudioController:
 			downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
 
 		# now trimming the audio file
-		audioExtractor = AudioExtractor(self.guiOutput, audioFileDir, downloadVideoInfoDic)
+		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
 
 	def getDownloadVideoInfoDicForPlaylistUrl(self, url):
@@ -110,6 +101,12 @@ class AudioController:
 		_, downloadVideoInfoDic = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
 		
 		return downloadVideoInfoDic
+	
+	def setMessage(self, msgText):
+		self.audioDownloaderGUI.outputResult(msgText)
+	
+	def displayError(self, msg):
+		self.audioDownloaderGUI.outputResult(msg)
 	
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):

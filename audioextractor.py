@@ -96,7 +96,7 @@ class AudioExtractor:
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
 				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 
-		self.guiOutput.setMessage('Time frames kept {}'.format(keptStartEndSecondsLists))
+		self.guiOutput.setMessage('time frames kept {}'.format(keptStartEndSecondsLists))
 		clip = mp.concatenate_audioclips(clips)
 		mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
 		mp3FilePathName = os.path.join(self.targetAudioDir,

@@ -10,17 +10,17 @@ class AccessError:
 		
 		if errorType == AccessError.ERROR_TYPE_NOT_PLAYLIST_URL:
 			if errorMsg == '':
-				self.errorMsg = "The URL obtained from clipboard is empty.\nProgram will be closed."
+				self.errorMsg = "the URL obtained from clipboard is empty.\nprogram will be closed."
 			else:
-				self.errorMsg = "The URL obtained from clipboard is not pointing to a playlist.\nWrong URL: {}\nProgram will be closed.".format(errorMsg)
+				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: {}\nprogram will be closed.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_NO_INTERNET:
-			self.errorMsg = "{}\nProgram will be closed.".format(errorMsg)
+			self.errorMsg = "{}\nprogram will be closed.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\nDownloading playlist interrupted.\nRetry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\nDownloading playlist interrupted.\nRetry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
 		else:
 			if errorMsg == '':
-				self.errorMsg = "The URL obtained from clipboard is empty.\nProgram will be closed."
+				self.errorMsg = "the URL obtained from clipboard is empty.\nprogram will be closed."
 			else:
-				self.errorMsg = "The URL obtained from clipboard is not pointing to a playlist.\nError msg: {}\nProgram will be closed.".format(errorMsg)
+				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nerror msg: {}\nprogram will be closed.".format(errorMsg)

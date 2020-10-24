@@ -43,33 +43,31 @@ class YoutubeAudioDownloader(AudioDownloader):
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
-					self.msgText = self.msgText + videoTitle + ' already downloaded. Video skipped.\n'
-					self.guiOutput.setMessage(self.msgText)
+					msgText = videoTitle + ' already downloaded. Video skipped.\n'
+					self.guiOutput.setMessage(msgText)
 					videoIndex += 1
 					continue
 					
 				try:
 					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
 					videoUrl = video.watch_url
-					self.msgText = self.msgText + 'downloading ' + videoTitle + '\n'
-					self.guiOutput.setMessage(self.msgText)
+					msgText = 'downloading ' + videoTitle + '\n'
+					self.guiOutput.setMessage(msgText)
 					audioStream.download(output_path=targetAudioDir)
 					downloadedVideoFileName = audioStream.default_filename
 				except:
 					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
-					self.msgText = self.msgText + accessError.errorMsg
-					self.guiOutput.setMessage(self.msgText)
+					self.guiOutput.setMessage(accessError.errorMsg)
 					return downloadVideoInfoDic, accessError
 				else:
-					self.msgText = self.msgText + videoTitle + ' downloaded.\n'
-					self.guiOutput.setMessage(self.msgText)
+					msgText = videoTitle + ' downloaded.\n'
+					self.guiOutput.setMessage(msgText)
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 					downloadVideoInfoDic.saveDic()
 				videoIndex += 1
 		except:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.getPlaylistName())
-			self.msgText = self.msgText + accessError.errorMsg
-			self.guiOutput.setMessage(self.msgText)
+			self.guiOutput.setMessage(accessError.errorMsg)
 			return downloadVideoInfoDic, accessError
 		
 		return downloadVideoInfoDic, None
