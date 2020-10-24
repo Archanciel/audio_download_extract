@@ -1,5 +1,4 @@
-import os
-from tkinter import Tk
+import traceback
 
 from constants import *
 from configmanager import ConfigManager
@@ -58,7 +57,11 @@ class AudioController:
 		
 		# saving the content of the downloadVideoInfoDic which has been completed
 		# by AudioExtractor in the directory containing the extracted audio files
-		downloadVideoInfoDic.saveDic()
+		try:
+			downloadVideoInfoDic.saveDic()
+		except TypeError as e:
+			print(e)
+			traceback.print_exc()
 		
 		return downloadVideoInfoDic
 		
