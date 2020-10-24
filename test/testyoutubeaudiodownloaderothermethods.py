@@ -36,7 +36,7 @@ class TestYoutubeAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		self.assertIsNotNone(accessError)
 		self.assertEqual(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, accessError.errorType)
-		self.assertEqual("The URL obtained from clipboard is not pointing to a playlist.\nWrong URL: https://www.youtube.com/playlist?list=invalid\nProgram will be closed.", accessError.errorMsg)
+		self.assertEqual("the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: https://www.youtube.com/playlist?list=invalid\nprogram will be closed.", accessError.errorMsg)
 	
 	def testGetPlaylistObjectForPlaylistUrl_one_time_frame_extract(self):
 		guiOutput = GuiOutputStub()
