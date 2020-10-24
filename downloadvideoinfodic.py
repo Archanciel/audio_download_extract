@@ -310,6 +310,7 @@ class DownloadVideoInfoDic:
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		extractedFilesSubDic = {}
+		timeFrameIndex = str(timeFrameIndex)
 		
 		if KEY_VIDEO_EXTRACTED_FILES not in videoInfoDic.keys():
 			videoInfoDic[KEY_VIDEO_EXTRACTED_FILES] = extractedFilesSubDic
