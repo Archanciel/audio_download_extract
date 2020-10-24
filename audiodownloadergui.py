@@ -962,8 +962,11 @@ class AudioDownloaderGUIApp(App):
 		
 		:return:
 
-		# test url: https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
-		# multiple videos with time frames
+		test urls:
+		multiple videos with time frames (test audio downloader two files with time frames)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
+		2 videos no time frames (test audio downloader two files)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
 		'''
 		self.playlistUrl = Clipboard.paste()
 		
