@@ -681,7 +681,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.refocusOnRequestInput()
 
 	def saveHistoryToFile(self, path, filename, isLoadAtStart):
-		dataPathNotExistMessage = self.buildDownloadPlaylistConfirmationMsg(path)
+		dataPathNotExistMessage = self.formatPopupConfirmMsg(path)
 		pathFileName = os.path.join(path, filename)
 
 		if not filename or not self.ensureDataPathExist(path, dataPathNotExistMessage):
@@ -708,11 +708,6 @@ class AudioDownloaderGUI(BoxLayout):
 		self.refocusOnRequestInput()
 
 	# --- end file chooser code ---
-
-	def buildDownloadPlaylistConfirmationMsg(self, playlistTitle, maxLineWidth):
-		resizedText = GuiUtil.splitLineToLines(playlistTitle, maxLineWidth, replaceUnderscoreBySpace=True)
-		
-		return resizedText
 
 	def isLoadAtStart(self, filePathName):
 		return self.configMgr.loadAtStartPathFilename == filePathName
@@ -974,27 +969,49 @@ class AudioDownloaderGUIApp(App):
 		
 		if downloadVideoInfoDic is not None:
 			playlistTitle = downloadVideoInfoDic.getPlaylistTitle()
+			confirmPopupTitle = "Go on with processing playlist ?"
+			confirmPopupCallbackFunction = self.onPopupAnswer
 			
-			popupSize = None
-			
-			if platform == 'android':
-				popupSize = (980, 600)
-				width = 45
-			elif platform == 'win':
-				popupSize = (350, 200)
-				width = 54
-			
-			downloadPlaylistConfirmationMsg = self.audioDownloaderGUI.buildDownloadPlaylistConfirmationMsg(playlistTitle, width)
-			confirmPopup = ConfirmPopup(text=downloadPlaylistConfirmationMsg)
-			confirmPopup.bind(on_answer=self.onPopupAnswer)
-			
-			self.popup = Popup(title="Go on with processing playlist ?",
-							   content=confirmPopup,
-							   size_hint=(None, None),
-							   pos_hint={'top': 0.8},
-							   size=popupSize,
-							   auto_dismiss=False)
+			self.popup = self.createConfirmPopup(confirmPopupTitle, playlistTitle, confirmPopupCallbackFunction)
 			self.popup.open()
+	
+	def createConfirmPopup(self, confirmPopupTitle,
+	                       playlistTitle,
+	                       confirmPopupCallbackFunction):
+		"""
+		
+		:param confirmPopupTitle:
+		:param playlistTitle:
+		:param confirmPopupCallbackFunction: function called when the user click on
+											 yes or no button
+		:return:
+		"""
+		popupSize = None
+		msgWidth = 100
+		
+		if platform == 'android':
+			popupSize = (980, 600)
+			msgWidth = 45
+		elif platform == 'win':
+			popupSize = (350, 200)
+			msgWidth = 54
+			
+		confirmPopupMsg = self.formatPopupConfirmMsg(playlistTitle, msgWidth, replaceUnderscoreBySpace=True)
+		confirmPopup = ConfirmPopup(text=confirmPopupMsg)
+		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
+		popup = Popup(title=confirmPopupTitle,
+		              content=confirmPopup,
+		              size_hint=(None, None),
+		              pos_hint={'top': 0.8},
+		              size=popupSize,
+		              auto_dismiss=False)
+		
+		return popup
+	
+	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace):
+		resizedMsg = GuiUtil.splitLineToLines(rawMsg, maxLineWidth, replaceUnderscoreBySpace)
+		
+		return resizedMsg
 	
 	def onPopupAnswer(self, instance, answer):
 		if answer == 'yes':
