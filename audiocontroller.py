@@ -110,7 +110,12 @@ class AudioController:
 	
 	def displayError(self, msg):
 		self.audioDownloaderGUI.outputResult(msg)
-	
+		
+	def getConfirmation(self, msg):
+		self.audioDownloaderGUI.outputResult(msg)
+		
+		return True
+
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):
 		'''
