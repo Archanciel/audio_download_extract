@@ -19,7 +19,7 @@ class PlaylistTitleParser:
 		
 		@:return playlistName, targetAudioDir, downloadVideoInfoDic
 		"""
-		playlistNamePattern = r'([a-zaA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
+		playlistNamePattern = r'([a-zA-Z_\d]+)(?: ([\(sSeE\d:\- \)]*))?'
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
