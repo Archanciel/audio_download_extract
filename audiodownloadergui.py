@@ -762,8 +762,6 @@ class AudioDownloaderGUI(BoxLayout):
 	def displayError(self, msg):
 		pass
 	
-# --- end AudioDownloaderGUI new code ---
-	
 class ConfirmPopup(GridLayout):
 	text = StringProperty()
 	
@@ -773,6 +771,8 @@ class ConfirmPopup(GridLayout):
 	
 	def on_answer(self, *args):
 		pass
+
+# --- end AudioDownloaderGUI new code ---
 
 class AudioDownloaderGUIApp(App):
 	settings_cls = SettingsWithTabbedPanel
