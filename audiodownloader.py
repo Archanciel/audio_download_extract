@@ -2,9 +2,8 @@ from abc import ABCMeta, abstractmethod
 
 
 class AudioDownloader(metaclass=ABCMeta):
-	def __init__(self, guiOutput):
-		self.guiOutput = guiOutput
-		self.msgText = ''
+	def __init__(self, audioController):
+		self.audioController = audioController
 	
 	@abstractmethod
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):

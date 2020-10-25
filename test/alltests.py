@@ -1,7 +1,6 @@
 import os
 from unittest import TestLoader, TextTestRunner, TestSuite
 
-from testguioutput import TestGuiOutput
 from testyoutubeaudiodownloaderdownloadmethods import TestYoutubeAudioDownloaderDownloadMethods
 from testyoutubeaudiodownloaderothermethods import TestYoutubeAudioDownloaderOtherMethods
 from testaudioextractor import TestAudioExtractor
@@ -22,8 +21,7 @@ if __name__ == "__main__":
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
                            ))
     else:
-        suite = TestSuite((loader.loadTestsFromTestCase(TestGuiOutput),
-                    	   loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderDownloadMethods),
+        suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderDownloadMethods),
                            loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
                            loader.loadTestsFromTestCase(TestAudioExtractor),
                            loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),

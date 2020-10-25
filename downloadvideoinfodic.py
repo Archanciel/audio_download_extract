@@ -29,7 +29,7 @@ class DownloadVideoInfoDic:
 
 	def __init__(self, downloadDir, playlistTitle='', playlistName=''):
 		# self.downloadDir = downloadDir
-		# self.playlistTitle = playlistTitle
+		# self.confirmPopupMsg = confirmPopupMsg
 		# self.playlistName = playlistName
 		self._loadDicIfExist(downloadDir, playlistTitle, playlistName)
 		

@@ -754,14 +754,24 @@ class AudioDownloaderGUI(BoxLayout):
 	def setMessage(self, msgText):
 		pass
 	
+	def getConfirmation(self, title, msgText):
+		self.popup = self.createConfirmPopup(title, msgText, self.onPopupAnswer)
+		self.popup.open()
+	
+	def onPopupAnswer(self, instance, answer):
+		answer = answer == 'yes'
+		self.popup.dismiss()
+		
+		return answer
+	
 	def createConfirmPopup(self,
 	                       confirmPopupTitle,
-	                       playlistTitle,
+	                       confirmPopupMsg,
 	                       confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
-		:param playlistTitle:
+		:param confirmPopupMsg:
 		:param confirmPopupCallbackFunction: function called when the user click on
 											 yes or no button
 		:return:
@@ -776,8 +786,8 @@ class AudioDownloaderGUI(BoxLayout):
 			popupSize = (350, 200)
 			msgWidth = 54
 		
-		confirmPopupMsg = self.formatPopupConfirmMsg(playlistTitle, msgWidth, replaceUnderscoreBySpace=True)
-		confirmPopup = ConfirmPopup(text=confirmPopupMsg)
+		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth, replaceUnderscoreBySpace=True)
+		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
 		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		popup = Popup(title=confirmPopupTitle,
 		              content=confirmPopup,

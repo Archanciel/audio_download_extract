@@ -101,16 +101,15 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 							  '',
 							  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['Directory',
-							  'Audiobooks\\test_audio_downloader_one_file',
-							  'will be created.',
-							  '',
-							  'Continue with download ?',
-							  'downloading Wear a mask. Help slow the spread of Covid-19.',
-			                  '',
-							  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-							  '',
-							  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual(['Go on with playlist download ?',
+ 'Directory',
+ 'Audiobooks\\test_audio_downloader_one_file',
+ 'does not exist and will be created.',
+ 'downloading Wear a mask. Help slow the spread of Covid-19.',
+ '',
+ 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
@@ -144,20 +143,14 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
-						 '',
-						 'downloading Wear a mask. Help slow the spread of Covid-19.',
-						 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-						 '',
-						 'downloading Wear a mask. Help slow the spread of Covid-19.',
-						 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-						 'downloading Here to help: Give him what he wants',
-						 '',
-						 'downloading Wear a mask. Help slow the spread of Covid-19.',
-						 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-						 'downloading Here to help: Give him what he wants',
-						 'Here to help: Give him what he wants downloaded.',
-						 '',
-						 ''], outputCapturingString.getvalue().split('\n'))
+ '',
+ 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '',
+ 'downloading Here to help: Give him what he wants',
+ '',
+ 'Here to help: Give him what he wants downloaded.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
@@ -209,20 +202,14 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
-		                  '',
-		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
-		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-		                  '',
-		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
-		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-		                  'downloading Here to help: Give him what he wants',
-		                  '',
-		                  'downloading Wear a mask. Help slow the spread of Covid-19.',
-		                  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
-		                  'downloading Here to help: Give him what he wants',
-		                  'Here to help: Give him what he wants downloaded.',
-		                  '',
-		                  ''], outputCapturingString.getvalue().split('\n'))
+ '',
+ 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '',
+ 'downloading Here to help: Give him what he wants',
+ '',
+ 'Here to help: Give him what he wants downloaded.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		# playlist title: test_audio_downloader_two_files_with_time_frames
 		# (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)

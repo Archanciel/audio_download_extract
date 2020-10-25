@@ -40,7 +40,6 @@ class AudioController:
 		'''
 		# downloading the audio track of the videos referenced in the playlist
 		_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
 		# if accessError:
 		# 	# playlist playlistObject invalid (error msg was displayed !) or download problem
@@ -52,17 +51,20 @@ class AudioController:
 		# 	return reloaded_downloadVideoInfoDictionary
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
-		audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-		audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
-		
-		# saving the content of the downloadVideoInfoDic which has been completed
-		# by AudioExtractor in the directory containing the extracted audio files
-		try:
-			downloadVideoInfoDic.saveDic()
-		except TypeError as e:
-			print(e)
-			traceback.print_exc()
-		
+
+		if accessError is None:
+			targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+			audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+			audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+			
+			# saving the content of the downloadVideoInfoDic which has been completed
+			# by AudioExtractor in the directory containing the extracted audio files
+			try:
+				downloadVideoInfoDic.saveDic()
+			except TypeError as e:
+				print(e)
+				traceback.print_exc()
+			
 		return downloadVideoInfoDic
 		
 	def trimAudioFile(self, audioFilePathName):
@@ -111,10 +113,8 @@ class AudioController:
 	def displayError(self, msg):
 		self.audioDownloaderGUI.outputResult(msg)
 		
-	def getConfirmation(self, msg):
-		self.audioDownloaderGUI.outputResult(msg)
-		
-		return True
+	def getConfirmation(self, title, msg):
+		return self.audioDownloaderGUI.getConfirmation(title, msg)
 
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):

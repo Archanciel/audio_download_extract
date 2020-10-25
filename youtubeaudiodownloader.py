@@ -9,8 +9,8 @@ from playlisttitleparser import PlaylistTitleParser
 from accesserror import AccessError
 
 class YoutubeAudioDownloader(AudioDownloader):
-	def __init__(self, guiOutput):
-		super().__init__(guiOutput)
+	def __init__(self, audioController):
+		super().__init__(audioController)
 
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
@@ -30,8 +30,8 @@ class YoutubeAudioDownloader(AudioDownloader):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
-			if not self.guiOutput.getConfirmation("Directory\n{}\nwill be created.\n\nContinue with download ?".format(targetAudioDirShort)):
-				return targetAudioDir, downloadVideoInfoDic
+			if not self.audioController.getConfirmation("Go on with playlist download ?", "Directory\n{}\ndoes not exist and will be created.".format(targetAudioDirShort)):
+				return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST, "Creating {} was refused.".format(targetAudioDirShort))
 			
 			os.makedirs(targetAudioDir)
 		
@@ -44,7 +44,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
 					msgText = videoTitle + ' already downloaded. Video skipped.\n'
-					self.guiOutput.setMessage(msgText)
+					self.audioController.setMessage(msgText)
 					videoIndex += 1
 					continue
 					
@@ -52,22 +52,22 @@ class YoutubeAudioDownloader(AudioDownloader):
 					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
 					videoUrl = video.watch_url
 					msgText = 'downloading ' + videoTitle + '\n'
-					self.guiOutput.setMessage(msgText)
+					self.audioController.setMessage(msgText)
 					audioStream.download(output_path=targetAudioDir)
 					downloadedVideoFileName = audioStream.default_filename
 				except:
 					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
-					self.guiOutput.setMessage(accessError.errorMsg)
+					self.audioController.setMessage(accessError.errorMsg)
 					return downloadVideoInfoDic, accessError
 				else:
 					msgText = videoTitle + ' downloaded.\n'
-					self.guiOutput.setMessage(msgText)
+					self.audioController.setMessage(msgText)
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 					downloadVideoInfoDic.saveDic()
 				videoIndex += 1
 		except:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.getPlaylistName())
-			self.guiOutput.setMessage(accessError.errorMsg)
+			self.audioController.setMessage(accessError.errorMsg)
 			return downloadVideoInfoDic, accessError
 		
 		return downloadVideoInfoDic, None
@@ -76,7 +76,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		playlistObject, playlistTitle, accessError = self.getPlaylistObjectForPlaylistUrl(playlistUrl)
 		
 		if accessError:
-			self.guiOutput.displayError(accessError.errorMsg)
+			self.audioController.displayError(accessError.errorMsg)
 			return None, None
 		
 		downloadVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
@@ -90,7 +90,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		
 		:param playlistUrl:
 		:return: playlistObject - Playlist object
-				 playlistTitle
+				 confirmPopupMsg
 				 accessError in case of problem, None otherwise
 		"""
 		playlistObject = None
