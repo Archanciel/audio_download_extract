@@ -317,6 +317,70 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		                 expectedVideo2ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
 		                 expectedVideo2SuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDic_no_time_frame_bug(self):
+		expectedPlayListName = '21_leçons_pour_le_XXIe_siècle'
+		playlistTitle = expectedPlayListName
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+	
+	def testCreateDownloadVideoInfoDic_no_time_frame_playlistTitle_with_spaces(self):
+		expectedPlayListName = '21 leçons pour le XXIe siècle'
+		playlistTitle = expectedPlayListName
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+	
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end_playlistTitle_with_spaces(self):
+		# Example of playlist title: playlist_title (s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
+		expectedPlayListName = 'Test_title two time_frame_one extract one_suppress_two_videos'
+		timeInfo = '(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)'
+		playlistTitle = expectedPlayListName + ' ' + timeInfo
+		
+		expectedVideo1ExtractTimeFramesList = [[352, 443]]
+		expectedVideo1SuppressTimeFramesList = [[652, 'end']]
+		
+		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
+		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2SuppressTimeFramesList)
 
 
 if __name__ == '__main__':

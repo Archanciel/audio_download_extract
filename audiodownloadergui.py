@@ -786,7 +786,7 @@ class AudioDownloaderGUI(BoxLayout):
 			popupSize = (350, 200)
 			msgWidth = 54
 		
-		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth, replaceUnderscoreBySpace=True)
+		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
 		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		popup = Popup(title=confirmPopupTitle,
@@ -798,7 +798,7 @@ class AudioDownloaderGUI(BoxLayout):
 		
 		return popup
 	
-	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace):
+	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace=False):
 		resizedMsg = GuiUtil.splitLineToLines(rawMsg, maxLineWidth, replaceUnderscoreBySpace)
 
 		return resizedMsg

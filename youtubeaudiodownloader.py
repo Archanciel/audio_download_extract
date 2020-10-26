@@ -30,10 +30,8 @@ class YoutubeAudioDownloader(AudioDownloader):
 			targetAudioDirList = targetAudioDir.split(DIR_SEP)
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
-			if not self.audioController.getConfirmation("Go on with playlist download ?", "Directory\n{}\ndoes not exist and will be created.".format(targetAudioDirShort)):
-				return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST, "Creating {} was refused.".format(targetAudioDirShort))
-			
 			os.makedirs(targetAudioDir)
+			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
 		try:
 			videoIndex = 1
