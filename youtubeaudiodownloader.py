@@ -63,7 +63,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 					downloadVideoInfoDic.saveDic()
 				videoIndex += 1
-		except:
+		except KeyError as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.getPlaylistName())
 			self.audioController.setMessage(accessError.errorMsg)
 			return downloadVideoInfoDic, accessError
