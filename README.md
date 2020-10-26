@@ -77,3 +77,4 @@ Note that any number of extract options can be specified !
 - pytube3
 - moviepy (not working on Android !)
 - mutagen
+- kivy
