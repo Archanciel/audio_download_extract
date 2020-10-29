@@ -88,7 +88,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 		
 		:param playlistUrl:
 		:return: playlistObject - Playlist object
-				 confirmPopupMsg
+				 playlistTitle
 				 accessError in case of problem, None otherwise
 		"""
 		playlistObject = None
