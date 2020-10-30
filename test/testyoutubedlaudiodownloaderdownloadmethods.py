@@ -89,17 +89,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		if os.name == 'posix':
-			self.assertEqual(['Directory',
-							  'Audiobooks/test_audio_downloader_one_file',
-							  'will be created.',
-							  '',
-							  'Continue with download ?',
-							  'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
-			                  '',
-							  'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
-							  '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
-							  '',
-							  ''], outputCapturingString.getvalue().split('\n'))
+			self.assertEqual(['directory',
+ 'Audiobooks/test_audio_downloader_one_file',
+ 'was created.',
+ 'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
+ '',
+ '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
  'Audiobooks\\test_audio_downloader_one_file',
