@@ -52,7 +52,8 @@ class AudioController:
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 
-		if accessError is None:
+		if accessError is None and os.name != 'posix':
+			# extraction/suppression possible only on Windows !
 			targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 			audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
 			audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)

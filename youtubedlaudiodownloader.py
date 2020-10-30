@@ -59,8 +59,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
-				meta = ydl.extract_info(videoUrl)
-				videoTitle = meta['title']
+				videoTitle = ''
+				try:
+					meta = ydl.extract_info(videoUrl, download=False)
+					videoTitle = meta['title']
+				except AttributeError as e:
+					print(e)
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
@@ -72,12 +76,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				msgText = 'downloading ' + videoTitle + '\n'
 				self.audioController.setMessage(msgText)
 
-				ydl.download([videoUrl])
+				try:
+					ydl.download([videoUrl])
+				except AttributeError as e:
+					print(e)				
 
 				msgText = videoTitle + ' downloaded.\n'
 				self.audioController.setMessage(msgText)
 				
 				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)
+				
+				if videoTitle == '':
+					# the case if ydl.extract_info() raised an AttributeError
+					videoTitle = downloadedVideoFileName.replace('.mp3', '')
+					
 				downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 				downloadVideoInfoDic.saveDic()
 
