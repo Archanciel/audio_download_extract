@@ -8,9 +8,9 @@ sys.path.insert(0, parentDir)
 
 from constants import *
 from guioutputstub import GuiOutputStub
-from youtubeaudiodownloader import YoutubeAudioDownloader
+from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 
-class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
+class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	"""
 	Since testing download consume band width, it is placed in a specific test class.
 	"""
@@ -29,7 +29,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -51,10 +51,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 		self.assertEqual(['1'], downloadVideoInfoDic.getVideoIndexes())
 
 		if os.name == 'posix':
@@ -64,7 +64,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test_audio_downloader_one_file', downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
 	def testDownloadVideoReferencedInPlaylist_targetFolder_not_exist(self):
@@ -76,7 +76,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -111,7 +111,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
 	def testDownloadAudioFromPlaylistMultipleVideo(self):
@@ -128,7 +128,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -153,22 +153,22 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
 		self.assertEqual('Here to help: Give him what he wants', downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help - Give him what he wants.mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help - Give him what he wants.mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
 
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
-								 'Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
+								 'Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames(self):
@@ -186,7 +186,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -230,28 +230,28 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
 		self.assertEqual('Here to help: Give him what he wants', downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help - Give him what he wants.mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help - Give him what he wants.mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Here to help: Give him what he wants'))
 
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
-			sorted(['Here to help Give him what he wants.mp4',
-					'Wear a mask Help slow the spread of Covid-19.mp4',
+			sorted(['Here to help - Give him what he wants.mp3',
+					'Wear a mask. Help slow the spread of Covid-19..mp3',
 					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 	
 	def testDownloadVideoReferencedInPlaylist_invalid_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
 		
 		stdout = sys.stdout
@@ -270,7 +270,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideoReferencedInPlaylist_empty_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = ""
 		
 		stdout = sys.stdout
@@ -299,7 +299,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -322,10 +322,10 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual([[5, 10]], downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.', downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk', downloadVideoInfoDic.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3', downloadVideoInfoDic.getVideoFileNameForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
 
 		self.assertEqual(['1'], downloadVideoInfoDic.getVideoIndexes())
 
@@ -338,7 +338,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Test_title_one_time_frame_extract_dic.txt',
-								 'Wear a mask Help slow the spread of Covid-19.mp4']), sorted(fileNameLst))
+								 'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		self.assertEqual([[5, 10]], downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_redownloading_the_playlist(self):
@@ -355,7 +355,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -382,39 +382,39 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 downloadVideoInfoDic.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
-		                         'Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
+		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
 		# redownloading the playlist
 	
-		youtubeAccess_redownload = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -427,44 +427,44 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',
-						 '',
-						 'Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',
-						 'Here to help: Give him what he wants already downloaded. Video skipped.',
-						 '',
-						 ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video '
+ 'skipped.',
+ '',
+ 'Here to help: Give him what he wants already downloaded. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Here to help Give him what he wants.mp4',
-		                         'Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
+		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
 	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
@@ -482,7 +482,7 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -527,26 +527,26 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 downloadVideoInfoDic.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
@@ -554,13 +554,13 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
-			sorted(['Here to help Give him what he wants.mp4',
-			        'Wear a mask Help slow the spread of Covid-19.mp4',
+			sorted(['Here to help - Give him what he wants.mp3',
+			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 
 		# redownloading the playlist
 		
-		youtubeAccess_redownload = YoutubeAudioDownloader(guiOutput)
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -573,12 +573,12 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',
-						 '',
-						 'Wear a mask. Help slow the spread of Covid-19. already downloaded. Video skipped.',
-						 'Here to help: Give him what he wants already downloaded. Video skipped.',
-						 '',
-						 ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video '
+ 'skipped.',
+ '',
+ 'Here to help: Give him what he wants already downloaded. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual([startEndSecondsList_extract_firstVideo_firstTimeFrame],
 		                 redownloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
@@ -594,26 +594,26 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('Wear a mask Help slow the spread of Covid-19.mp4',
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Wear a mask. Help slow the spread of Covid-19.'))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(2))
-		self.assertEqual('https://youtube.com/watch?v=Eqy6M6qLWGw',
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('Here to help Give him what he wants.mp4',
+		self.assertEqual('Here to help - Give him what he wants.mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Here to help: Give him what he wants'))
 		
@@ -621,13 +621,13 @@ class TestYoutubeAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(
-			sorted(['Here to help Give him what he wants.mp4',
-			        'Wear a mask Help slow the spread of Covid-19.mp4',
+			sorted(['Here to help - Give him what he wants.mp3',
+			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		self.fail("Implement test !")
 
 if __name__ == '__main__':
 #	unittest.main()
-	tst = TestYoutubeAudioDownloaderDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
+	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
+	tst.testDownloadVideoReferencedInPlaylist_empty_url()

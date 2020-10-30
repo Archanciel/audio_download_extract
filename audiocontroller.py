@@ -4,7 +4,7 @@ from constants import *
 from configmanager import ConfigManager
 from requester import Requester
 from downloadvideoinfodic import DownloadVideoInfoDic
-from youtubeaudiodownloader import YoutubeAudioDownloader
+from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from audioextractor import AudioExtractor
 
 class AudioController:
@@ -26,7 +26,7 @@ class AudioController:
 
 		self.requester = Requester(self.configMgr)
 		self.audioDownloaderGUI = audioDownloaderGUI
-		self.audioDownloader = YoutubeAudioDownloader(self)
+		self.audioDownloader = YoutubeDlAudioDownloader(self)
 		
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
