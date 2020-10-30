@@ -74,7 +74,8 @@ Note that any number of extract options can be specified !
 </p>
 
 ## Required libraries
-- pytube4
+- pytube3
+- youtube_dl
 - moviepy (not working on Android !)
 - mutagen
 - kivy
