@@ -32,6 +32,7 @@ from kivy.core.clipboard import Clipboard
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 
+from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
 from guiutil import GuiUtil
@@ -170,9 +171,9 @@ class CustomDropDown(DropDown):
 		self.owner = owner
 
 	def showLoad(self):
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+		message = 'Audio dir ' + AUDIO_DIR + '\nas defined in the settings does not exist !\nEither create the directory or change the\naudio dir value using the Settings menu.'
 
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
+		if self.owner.ensureDataPathExist(AUDIO_DIR + 'aa', message):
 			self.owner.openLoadHistoryFileChooser()
 
 	def showSave(self):
@@ -260,7 +261,32 @@ class AudioDownloaderGUI(BoxLayout):
 		
 		self.downloadVideoInfoDic = None
 		self.playlistUrl = None
-	
+
+	def ensureDataPathExist(self, dataPath, message):
+		'''
+		Display a warning in a popup if the data path defined in the settings
+		does not exist and return False. If path ok, returns True. This prevents
+		exceptions at load or save or settings save time.
+		:return:
+		'''
+		if not (os.path.isdir(dataPath)):
+			popupSize = None
+
+			if platform == 'android':
+				popupSize = (980, 450)
+			elif platform == 'win':
+				popupSize = (500, 150)
+
+			popup = Popup(title='CryptoPricer WARNING', content=Label(
+				text=message),
+						  auto_dismiss=True, size_hint=(None, None),
+						  size=popupSize)
+			popup.open()
+
+			return False
+		else:
+			return True
+
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			self.appSize = self.configMgr.APP_SIZE_FULL
@@ -783,7 +809,7 @@ class AudioDownloaderGUI(BoxLayout):
 			popupSize = (980, 600)
 			msgWidth = 45
 		elif platform == 'win':
-			popupSize = (350, 200)
+			popupSize = (500, 200)
 			msgWidth = 54
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
@@ -834,7 +860,7 @@ class AudioDownloaderGUIApp(App):
 
 		if os.name != 'posix':
 			# running app om Windows
-			Config.set('graphics', 'width', '400')
+			Config.set('graphics', 'width', '600')
 			Config.set('graphics', 'height', '500')
 			Config.write()
 
@@ -917,9 +943,15 @@ class AudioDownloaderGUIApp(App):
 				},
 				{"type": "path",
 					"title": "Data files location",
-					"desc": "Set the directory where the app data files like history files are stored",
+					"desc": "Set the directory where the app data files like ... are stored",
 					"section": "General",
 					"key": "dataPath"
+				},
+				{"type": "path",
+					"title": "Audiobook files location",
+					"desc": "Set the directory where the extracted audio files will be stored",
+					"section": "General",
+					"key": "audioPath"
 				}
 			]""" % TIME_ZONE_LIST)
 								)
