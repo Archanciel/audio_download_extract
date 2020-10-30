@@ -43,9 +43,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
  '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -94,19 +94,19 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 							  'will be created.',
 							  '',
 							  'Continue with download ?',
-							  'downloading Wear a mask. Help slow the spread of Covid-19.',
+							  'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
 			                  '',
-							  'downloading Wear a mask. Help slow the spread of Covid-19.',
-							  'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+							  'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
+							  '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
 							  '',
 							  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
  'Audiobooks\\test_audio_downloader_one_file',
  'was created.',
- 'downloading Wear a mask. Help slow the spread of Covid-19.',
+ 'downloading "Wear a mask. Help slow the spread of Covid-19." ...',
  '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -141,13 +141,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
  '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
  '',
- 'downloading Here to help: Give him what he wants',
+ 'downloading "Here to help: Give him what he wants" ...',
  '',
- 'Here to help: Give him what he wants downloaded.',
+ '"Here to help: Give him what he wants" downloaded.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -200,15 +200,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
- '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
- '',
- 'downloading Here to help: Give him what he wants',
- '',
- 'Here to help: Give him what he wants downloaded.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(
+			['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
+			 '',
+			 '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
+			 '',
+			 'downloading "Here to help: Give him what he wants" ...',
+			 '',
+			 '"Here to help: Give him what he wants" downloaded.',
+			 '',
+			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		# playlist title: test_audio_downloader_two_files_with_time_frames
 		# (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -265,7 +266,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['the URL obtained from clipboard is not pointing to a playlist.',
  'wrong URL: https://www.youtube.com/playlist?list=invalid',
- 'program will be closed.',
+ 'nothing to download.',
  ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testDownloadVideoReferencedInPlaylist_empty_url(self):
@@ -282,7 +283,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual('the URL obtained from clipboard is empty.\nprogram will be closed.\n', outputCapturingString.getvalue())
+		self.assertEqual('the URL obtained from clipboard is empty.\nnothing to download.\n', outputCapturingString.getvalue())
 	
 	def testDownloadVideoReferencedInPlaylist_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
@@ -313,9 +314,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
+		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
  '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
+ '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -369,15 +370,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
- '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
- '',
- 'downloading Here to help: Give him what he wants',
- '',
- 'Here to help: Give him what he wants downloaded.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(
+			['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
+			 '',
+			 '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
+			 '',
+			 'downloading "Here to help: Give him what he wants" ...',
+			 '',
+			 '"Here to help: Give him what he wants" downloaded.',
+			 '',
+			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(downloadDir, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
@@ -427,10 +429,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video '
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." already downloaded. Video '
  'skipped.',
  '',
- 'Here to help: Give him what he wants already downloaded. Video skipped.',
+ '"Here to help: Give him what he wants" already downloaded. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -496,15 +498,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19.',
- '',
- 'Wear a mask. Help slow the spread of Covid-19. downloaded.',
- '',
- 'downloading Here to help: Give him what he wants',
- '',
- 'Here to help: Give him what he wants downloaded.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(
+			['downloading "Wear a mask. Help slow the spread of Covid-19." ...',
+			 '',
+			 '"Wear a mask. Help slow the spread of Covid-19." downloaded.',
+			 '',
+			 'downloading "Here to help: Give him what he wants" ...',
+			 '',
+			 '"Here to help: Give him what he wants" downloaded.',
+			 '',
+			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		# playlist title: test_audio_downloader_two_files_with_time_frames
 		# (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -573,10 +576,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19. already downloaded. Video '
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." already downloaded. Video '
  'skipped.',
  '',
- 'Here to help: Give him what he wants already downloaded. Video skipped.',
+ '"Here to help: Give him what he wants" already downloaded. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		

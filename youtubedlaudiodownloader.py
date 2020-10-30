@@ -68,12 +68,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
-					msgText = videoTitle + ' already downloaded. Video skipped.\n'
+					msgText = '"{}" already downloaded. Video skipped.\n'.format(videoTitle)
 					self.audioController.setMessage(msgText)
 					videoIndex += 1
 					continue
 
-				msgText = 'downloading ' + videoTitle + '\n'
+				msgText = 'downloading "{}" ...\n'.format(videoTitle)
 				self.audioController.setMessage(msgText)
 
 				try:
@@ -81,7 +81,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					print(e)				
 
-				msgText = videoTitle + ' downloaded.\n'
+				msgText = '"{}" downloaded.\n'.format(videoTitle)
 				self.audioController.setMessage(msgText)
 				
 				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)

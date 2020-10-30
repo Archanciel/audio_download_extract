@@ -9,7 +9,10 @@ class GuiOutputStub:
 	
 	def setMessage(self, msgText):
 		print(msgText)
-			
+	
+	def outputResult(self, msgText):
+		print(msgText)
+	
 	def displayError(self, msg):
 		print(msg)
 		

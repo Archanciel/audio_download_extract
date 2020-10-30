@@ -8,8 +8,8 @@ else:
 	import moviepy.editor as mp  # not working on Android
 
 class AudioExtractor:
-	def __init__(self, guiOutput, targetAudioDir, downloadVideoInfoDictionary):
-		self.guiOutput = guiOutput
+	def __init__(self, audioController, targetAudioDir, downloadVideoInfoDictionary):
+		self.audioController = audioController
 		self.targetAudioDir = targetAudioDir
 		self.downloadVideoInfoDictionary = downloadVideoInfoDictionary
 
@@ -24,17 +24,17 @@ class AudioExtractor:
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
-				
-			if not downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex) and \
-			   not downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
-				self.convertVideoToAudio(videoFileName)
-			else:
-				self.convertVideoToAudio(videoFileName, 'full')
 
 	def extractAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
+
+		msgText = 'extracting portions of "{}" ...\n'.format(videoFileName)
+		self.audioController.setMessage(msgText)
+		
+		msgText = '\ttime frames extracted'
+		self.audioController.setMessage(msgText)
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
 			timeStartSec = extractStartEndSecondsList[0]
@@ -59,6 +59,10 @@ class AudioExtractor:
 			                                                                       timeFrameIndex,
 			                                                                       mp3FileName,
 			                                                                       HHMMSS_TimeFrameList)
+
+			msgText = '\t\t{}-{}'.format(HHMMSS_TimeFrameList[0], HHMMSS_TimeFrameList[1])
+			self.audioController.setMessage(msgText)
+
 			timeFrameIndex += 1
 	
 	def suppressAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
@@ -69,6 +73,9 @@ class AudioExtractor:
 		duration = videoAudioFrame.duration
 		clips = []
 		keptStartEndSecondsLists = []
+		
+		msgText = '\nsuppressing portions of "{}" ...\n'.format(videoFileName)
+		self.audioController.setMessage(msgText)
 		
 		for extractIdx in range(suppressFrameNb + 1):
 			if extractIdx == 0:
@@ -96,7 +103,6 @@ class AudioExtractor:
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
 				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 
-		self.guiOutput.setMessage('time frames kept {}'.format(keptStartEndSecondsLists))
 		clip = mp.concatenate_audioclips(clips)
 		mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
 		mp3FilePathName = os.path.join(self.targetAudioDir,
@@ -110,8 +116,25 @@ class AudioExtractor:
                                                                   mp3FileName,
                                                                   HHMMSS_suppressedTimeFramesList,
 		                                                          HHMMSS_keptTimeFramesList)
-
+		
+		self.displayFramesMsg('\ttime frames suppressed:', HHMMSS_suppressedTimeFramesList)
+		self.displayFramesMsg('\n\ttime frames kept:', HHMMSS_keptTimeFramesList)
+	
+	def displayFramesMsg(self, startMsgText, HHMMSS_timeFramesList):
+		self.audioController.setMessage(startMsgText)
+		
+		for HHMMSS_timeFrame in HHMMSS_timeFramesList:
+			msgText = '\t\t{}-{}'.format(HHMMSS_timeFrame[0], HHMMSS_timeFrame[1])
+			self.audioController.setMessage(msgText)
+	
 	def convertVideoToAudio(self, videoFileName, fileNameSuffix = ''):
+		"""
+		No longer used since youtube_dl replaces pytube for downloading video audio tracks.
+		
+		:param videoFileName:
+		:param fileNameSuffix:
+		:return:
+		"""
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 		
 		if fileNameSuffix != '':

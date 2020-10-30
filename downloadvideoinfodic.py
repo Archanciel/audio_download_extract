@@ -306,7 +306,7 @@ class DownloadVideoInfoDic:
 		:param videoIndex:
 		:param timeFrameIndex:
 		:param extractedFileName:
-		:param HHMMSS_suppressedTimeFramesList. Example: ['0:23:45', '0:24:54']
+		:param HHMMSS_timeFramesList. Example: ['0:23:45', '0:24:54']
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		extractedFilesSubDic = {}

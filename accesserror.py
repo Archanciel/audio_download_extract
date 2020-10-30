@@ -11,9 +11,9 @@ class AccessError:
 		
 		if errorType == AccessError.ERROR_TYPE_NOT_PLAYLIST_URL:
 			if errorMsg == '':
-				self.errorMsg = "the URL obtained from clipboard is empty.\nprogram will be closed."
+				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."
 			else:
-				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: {}\nprogram will be closed.".format(errorMsg)
+				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: {}\nnothing to download.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_NO_INTERNET:
 			self.errorMsg = "{}\nprogram will be closed.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE:
@@ -25,6 +25,6 @@ class AccessError:
 
 		else:
 			if errorMsg == '':
-				self.errorMsg = "the URL obtained from clipboard is empty.\nprogram will be closed."
+				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."
 			else:
-				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nerror msg: {}\nprogram will be closed.".format(errorMsg)
+				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nerror msg: {}\nnothing to download.".format(errorMsg)

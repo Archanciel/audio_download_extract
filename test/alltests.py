@@ -1,8 +1,8 @@
 import os
 from unittest import TestLoader, TextTestRunner, TestSuite
 
-from testyoutubeaudiodownloaderdownloadmethods import TestYoutubeDlAudioDownloaderDownloadMethods
-from testyoutubeaudiodownloaderothermethods import TestYoutubeAudioDownloaderOtherMethods
+from testyoutubedlaudiodownloaderdownloadmethods import TestYoutubeDlAudioDownloaderDownloadMethods
+from testyoutubedlaudiodownloaderothermethods import YoutubeDlAudioDownloader
 from testaudioextractor import TestAudioExtractor
 from testdownloadvideoinfodic import TestDownloadVideoInfoDic
 from testplaylisttitleparser import TestPlaylistTitleParser
@@ -16,13 +16,13 @@ if __name__ == "__main__":
         # running TestAudioExtractor on Android is not possible !
         # running TestAudioController on Android is not possible !
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeDlAudioDownloaderDownloadMethods),
-                           loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
+                           loader.loadTestsFromTestCase(YoutubeDlAudioDownloader),
                            loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
                            ))
     else:
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeDlAudioDownloaderDownloadMethods),
-                           loader.loadTestsFromTestCase(TestYoutubeAudioDownloaderOtherMethods),
+                           loader.loadTestsFromTestCase(YoutubeDlAudioDownloader),
                            loader.loadTestsFromTestCase(TestAudioExtractor),
                            loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
