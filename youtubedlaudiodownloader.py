@@ -16,7 +16,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		super().__init__(audioController)
 	
 		if os.name == 'posix':
-			#on AndroidAndroid, FFmpegExtractAudio not available !
+			# on AndroidAndroid, FFmpegExtractAudio not available !
 			self.ydlOutTmplFormat = '%(title)s.mp3'
 
 			self.ydl_opts = {
