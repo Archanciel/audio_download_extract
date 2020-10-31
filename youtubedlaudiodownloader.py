@@ -52,8 +52,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			os.makedirs(targetAudioDir)
 			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
-
-		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + '%(title)s.' + YOUTUBE_DL_FILE_EXT
+		
+		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + '%(title)s.%(ext)s'
 
 		videoIndex = 1
 			

@@ -126,10 +126,33 @@ class AudioExtractor:
 		for HHMMSS_timeFrame in HHMMSS_timeFramesList:
 			msgText = '\t\t{}-{}'.format(HHMMSS_timeFrame[0], HHMMSS_timeFrame[1])
 			self.audioController.setMessage(msgText)
+
+	def convertDownloadedMp3ToKivySoundLoaderCompliantMp3(self, downloadedAudioFileName):
+		"""
+		No longer necessary since youtube_dl option 'outtmpl' was fixed !
+		:param downloadedAudioFileName:
+		:return:
+		"""
+		msgText = '\nconverting "{}" to compliant mp3 ...\n'.format(downloadedAudioFileName)
+		self.audioController.setMessage(msgText)
+
+		downloadedAudioFilePathName = os.path.join(self.targetAudioDir,
+		                                 downloadedAudioFileName)
+		compliantAudioFileName = os.path.splitext(downloadedAudioFileName)[0] + '_full' + '.mp3'
+		compliantAudioFilePathName = os.path.join(self.targetAudioDir,
+		                               compliantAudioFileName)
+		clip = mp.AudioFileClip(downloadedAudioFilePathName).subclip()
+		clip.write_audiofile(compliantAudioFilePathName)
+		clip.close()
+
+		msgText = '"{}" converted to {}\n'.format(downloadedAudioFileName, compliantAudioFileName)
+		self.audioController.setMessage(msgText)
 	
 	def convertVideoToAudio(self, videoFileName, fileNameSuffix = ''):
 		"""
 		No longer used since youtube_dl replaces pytube for downloading video audio tracks.
+		THIS IS NOT COMPATIBLE WITH USING Kivy SoundLoader !!!!! Renaming mp4 file to mp3
+		file makes SoundLoader fail with 'Unrecognized audio format' error !
 		
 		:param videoFileName:
 		:param fileNameSuffix:
