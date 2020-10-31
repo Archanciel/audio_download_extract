@@ -43,19 +43,23 @@ class AudioController:
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 
-		if accessError is None and os.name != 'posix':
-			# extraction/suppression possible only on Windows !
-			targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
-			audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-			audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+		if accessError is None:
+			if os.name == 'posix':
+				msgText = 'skipping extraction/suppression on Android.\n'
+				self.setMessage(msgText)
+			else:
+				# extraction/suppression possible only on Windows !
+				targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+				audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+				audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 			
-			# saving the content of the downloadVideoInfoDic which has been completed
-			# by AudioExtractor in the directory containing the extracted audio files
-			try:
-				downloadVideoInfoDic.saveDic()
-			except TypeError as e:
-				print(e)
-				traceback.print_exc()
+				# saving the content of the downloadVideoInfoDic which has been completed
+				# by AudioExtractor in the directory containing the extracted audio files
+				try:
+					downloadVideoInfoDic.saveDic()
+				except TypeError as e:
+					print(e)
+					traceback.print_exc()
 			
 		return downloadVideoInfoDic
 		
