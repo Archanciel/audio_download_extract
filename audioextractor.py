@@ -130,6 +130,10 @@ class AudioExtractor:
 	def convertDownloadedMp3ToKivySoundLoaderCompliantMp3(self, downloadedAudioFileName):
 		"""
 		No longer necessary since youtube_dl option 'outtmpl' was fixed !
+		Additionaly, moviepy being not usable on Android, this method
+		can not be used on Android to make the mp3 files downloaded by
+		youtube_dl compliant with kivy SoundLoader !
+		
 		:param downloadedAudioFileName:
 		:return:
 		"""

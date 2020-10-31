@@ -16,12 +16,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		super().__init__(audioController)
 	
 		if os.name == 'posix':
+			#on AndroidAndroid, FFmpegExtractAudio not available !
+			self.ydlOutTmplFormat = '%(title)s.mp3'
 
 			self.ydl_opts = {
 				'format': 'bestaudio/best',
 				'quiet': YOUTUBE_DL_QUIET
 			}
 		else:
+			self.ydlOutTmplFormat = '%(title)s.%(ext)s'
+			
 			self.ydl_opts = {
 				'format': 'bestaudio/best',
 				'postprocessors': [{
@@ -53,7 +57,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			os.makedirs(targetAudioDir)
 			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
-		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + '%(title)s.%(ext)s'
+		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + self.ydlOutTmplFormat
 
 		videoIndex = 1
 			
