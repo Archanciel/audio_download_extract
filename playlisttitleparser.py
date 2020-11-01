@@ -2,6 +2,7 @@ import re
 
 from constants import *
 from downloadvideoinfodic import DownloadVideoInfoDic
+from accesserror import AccessError
 
 class PlaylistTitleParser:
 	
@@ -17,7 +18,8 @@ class PlaylistTitleParser:
 		The title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end"
 		
-		@:return playlistName, targetAudioDir, downloadVideoInfoDic
+		@:return downloadVideoInfoDic
+				 accessError in case of problem, None otherwise
 		"""
 		playlistNamePattern = r'([\w_ ]+)((\([\d:\-eEsS ]*\)))?'
 
@@ -28,37 +30,52 @@ class PlaylistTitleParser:
 		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
 		
 		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
+		accessError = None
 		
 		if videoTimeFramesInfo is not None:
-			PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo)
+			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle)
 		
-		return downloadVideoInfoDic
+		return downloadVideoInfoDic, accessError
 	
 	@staticmethod
-	def extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo):
+	def extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle):
+		"""
+		
+		:param downloadVideoInfoDic:
+		:param videoTimeFramesInfo:
+		:param playlistTitle: used only in case of time frame syntax error
+
+		@:return downloadVideoInfoDic
+				 accessError in case of problem, None otherwise
+		"""
 		videoTimeFramesPattern = r'(\([sSeE\d:\- ]*\) ?)'
 		startEndTimeFramePattern = r'([\dsSeE:\-]+)'
 		videoIndex = 1
+		accessError = None
 		
 		for videoTimeFramesGroup in re.finditer(videoTimeFramesPattern, videoTimeFramesInfo):
-			# print('video {} timeFrames'.format(videoIndex), videoTimeFramesGroup.group(0))
-
-			# in case the playlist is redownloaded, the time frame in seconds data
+			# in case the playlist is re-downloaded, the time frame in seconds data
 			# must be purged. Otherwise, the time frames in seconds will be added
 			# to the existing time frames set at the first download !
 			downloadVideoInfoDic.removeTimeFrameInSecondsDataIfExistForVideoIndex(videoIndex)
 	
 			for startEndTimeFrameGroup in re.finditer(startEndTimeFramePattern, videoTimeFramesGroup.group(0)):
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
-				startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])
+				try:
+					startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])
+				except ValueError as e:
+					accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR, 'time frame syntax error "{}" detected in playlist title: "{}".'.format(startEndTimeFrame, playlistTitle))
+					
+					return downloadVideoInfoDic, accessError
+				
 				if startEndTimeFrame[0].upper() == 'E':
 					downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
 				elif startEndTimeFrame[0].upper() == 'S':
 					downloadVideoInfoDic.addSuppressStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
-			# print(startEndTimeFrame)
+
 			videoIndex += 1
 		
-		return downloadVideoInfoDic
+		return downloadVideoInfoDic, accessError
 	
 	@staticmethod
 	def convertToStartEndSeconds(startEndTimeFrame):

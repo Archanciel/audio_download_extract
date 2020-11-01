@@ -108,15 +108,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		return files[0].split(DIR_SEP)[-1]
 		
 	def getDownloadVideoInfoDicForPlaylistUrl(self, playlistUrl):
+		"""
+		
+		:param playlistUrl:
+		
+		:return: playlistObject, downloadVideoInfoDic, accessError
+		"""
 		playlistObject, playlistTitle, accessError = self.getPlaylistObjectForPlaylistUrl(playlistUrl)
 		
 		if accessError:
-			self.audioController.displayError(accessError.errorMsg)
-			return None, None
+			return None, None, accessError
 		
-		downloadVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
+		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
 		
-		return playlistObject, downloadVideoInfoDic
+		return playlistObject, downloadVideoInfoDic, accessError
 	
 	def getPlaylistObjectForPlaylistUrl(self, playlistUrl):
 		"""

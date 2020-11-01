@@ -216,6 +216,9 @@ class DownloadVideoInfoDic:
 	def getExtractStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
 
+		if not videoIndex in self.dic[KEY_VIDEOS].keys():
+			return None
+
 		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[KEY_VIDEOS][videoIndex].keys():
 			return self.dic[KEY_VIDEOS][videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_EXTRACT]
 		else:
@@ -223,6 +226,9 @@ class DownloadVideoInfoDic:
 	
 	def getSuppressStartEndSecondsListsForVideoIndex(self, videoIndex):
 		videoIndex = str(videoIndex)
+
+		if not videoIndex in self.dic[KEY_VIDEOS].keys():
+			return None
 
 		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[KEY_VIDEOS][videoIndex].keys():
 			return self.dic[KEY_VIDEOS][videoIndex][KEY_VIDEO_TIME_FRAMES_IN_SECONDS][KEY_TIMEFRAME_SUPPRESS]

@@ -99,7 +99,11 @@ class AudioController:
 		:param url:
 		:return: downloadVideoInfoDic
 		"""
-		_, downloadVideoInfoDic = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
+		_, downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
+		
+		if accessError:
+			self.setMessage(accessError.errorMsg)
+			return None
 		
 		return downloadVideoInfoDic
 	

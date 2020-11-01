@@ -5,6 +5,7 @@ class AccessError:
 	ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE = 5
 	ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE = 6
 	ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST = 7
+	ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR = 8
 
 	def __init__(self, errorType, errorMsg):
 		self.errorType = errorType
@@ -22,7 +23,8 @@ class AccessError:
 			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
-
+		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR:
+			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		else:
 			if errorMsg == '':
 				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."
