@@ -30,7 +30,7 @@ class AudioExtractor:
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
 
-		msgText = 'extracting portions of "{}" ...\n'.format(videoFileName)
+		msgText = '\nextracting portions of "{}" ...\n'.format(videoFileName)
 		self.audioController.setMessage(msgText)
 		
 		msgText = '\ttime frames extracted'
