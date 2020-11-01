@@ -127,7 +127,10 @@ class DownloadVideoInfoDic:
 	def getVideoUrlForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
+		if videoIndex:
+			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
+		else:
+			return None
 	
 	def getVideoFileNameForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
@@ -139,8 +142,11 @@ class DownloadVideoInfoDic:
 	
 	def getVideoFileNameForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
-		
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
+
+		if videoIndex:
+			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
+		else:
+			return None
 	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
@@ -153,7 +159,10 @@ class DownloadVideoInfoDic:
 	def getVideoDownloadTimeForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
-		return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME]
+		if videoIndex:
+			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME]
+		else:
+			return None
 
 	def isExtractTimeFrameDataAvailableForVideoIndex(self, videoIndex):
 		if KEY_VIDEO_TIME_FRAMES_IN_SECONDS in self.dic[KEY_VIDEOS][videoIndex].keys():
@@ -268,6 +277,13 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_FILENAME] = downloadedFileName
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
+
+	def removeVideoInfoForVideoTitle(self,
+	                              videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+
+		if videoIndex:
+			del self.dic[KEY_VIDEOS][videoIndex]
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
 		'''
@@ -325,7 +341,20 @@ class DownloadVideoInfoDic:
 			
 		extractedFilesSubDic[timeFrameIndex] = {KEY_FILENAME: extractedFileName,
 		                                        KEY_FILE_TIMEFRAME_HHMMSS: startEndHHMMSS_TimeFramesList}
+	
+	def isExtractedFileInfoAvailableForVideoIndex(self, videoIndex):
+		"""
+		Returns True if extract info for the passed video index exist. This means
+		that the audio portions for the concerned video were already extracted.
 
+		:param videoIndex:
+		
+		:return True or False
+		"""
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		return KEY_VIDEO_EXTRACTED_FILES in videoInfoDic.keys()
+	
 	def getStartEndHHMMSS_TimeFrameForExtractedFileName(self, videoIndex, extractedFileName):
 		"""
 		Returns the time frame in HH:MM:SS format for the passed extracted file name
@@ -382,6 +411,20 @@ class DownloadVideoInfoDic:
 		suppressedFileSubDic[KEY_FILENAME] = suppressedFileName
 		suppressedFileSubDic[KEY_TIMEFRAMES_HHMMSS_SUPPRESSED] = HHMMSS_suppressedTimeFramesList
 		suppressedFileSubDic[KEY_TIMEFRAMES_HHMMSS_KEPT] = HHMMSS_keptTimeFramesList
+	
+	def isSuppressedFileInfoAvailableForVideoIndex(self, videoIndex):
+		"""
+		Returns True if suppress info for the passed video index exist. This means
+		that the audio without the suppressed portions for the concerned video
+		was already created.
+
+		:param videoIndex:
+
+		:return True or False
+		"""
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		return KEY_VIDEO_SUPPRESS_FILE in videoInfoDic.keys()
 	
 	def getSuppressedFileNameForVideoIndex(self, videoIndex):
 		"""

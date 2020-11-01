@@ -128,6 +128,77 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertIsNone(newReloadedDvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=3))
 		self.assertIsNone(newReloadedDvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=3))
 	
+	def testRemoveVideoInfoForVideoIndex_existing_info_dic_file(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic file
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		# creating new video info dic file and saving it
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
+		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
+		
+		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
+		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoTitle('title 2'))
+		
+		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 1'))
+		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 2'))
+		
+		self.assertEqual('title 1', dvi.getVideoTitleForVideoIndex(1))
+		
+		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
+		
+		dvi.saveDic()
+		
+		# reloading newly created video info dic file
+		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi.removeVideoInfoForVideoTitle('title 1')
+		self.assertIsNone(reloadedDvi.getVideoUrlForVideoTitle('title 1'))
+		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', reloadedDvi.getVideoUrlForVideoTitle('title 2'))
+		
+		self.assertIsNone(reloadedDvi.getVideoDownloadTimeForVideoTitle('title 1'))
+		self.assertEqual(additionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 2'))
+		time.sleep(1)
+		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+
+		# adding supplementary video info entry
+		reloadedDvi.addVideoInfoForVideoIndex(3, 'title 3', 'https://youtube.com/watch?v=9iPvL1111', 'title 3.mp4')
+
+		self.assertEqual(newAdditionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 3'))
+		
+		self.assertEqual('title 3', reloadedDvi.getVideoTitleForVideoIndex(3))
+		
+		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
+		
+		reloadedDvi.saveDic()
+		
+		# creating new extended video info dic, reloading newly created video info dic file
+		newReloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		self.assertIsNone(newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
+		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', newReloadedDvi.getVideoUrlForVideoTitle('title 2'))
+		self.assertEqual('https://youtube.com/watch?v=9iPvL1111', newReloadedDvi.getVideoUrlForVideoTitle('title 3'))
+		
+		self.assertIsNone(newReloadedDvi.getVideoDownloadTimeForVideoTitle('title 1'))
+		self.assertEqual(additionTimeStr, newReloadedDvi.getVideoDownloadTimeForVideoTitle('title 2'))
+		self.assertEqual(newAdditionTimeStr, newReloadedDvi.getVideoDownloadTimeForVideoTitle('title 3'))
+		
+		self.assertEqual('title 3', newReloadedDvi.getVideoTitleForVideoIndex(3))
+		
+		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
+	
 	def testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 
