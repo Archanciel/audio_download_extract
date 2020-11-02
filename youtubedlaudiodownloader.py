@@ -59,7 +59,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + self.ydlOutTmplFormat
 
-		videoIndex = 1
+		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:

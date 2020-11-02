@@ -4,33 +4,33 @@ from datetime import datetime
 from constants import *
 
 KEY_PLAYLIST = 'playlist'
-KEY_PLAYLIST_TITLE = 'title'
-KEY_PLAYLIST_NAME = 'name'
-KEY_PLAYLIST_DOWNLOAD_DIR = 'downloadDir'
+KEY_PLAYLIST_TITLE = 'pl_title'
+KEY_PLAYLIST_NAME = 'pl_name'
+KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
+KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
 KEY_VIDEOS = 'videos'
-KEY_VIDEO_TITLE = 'title'
-KEY_VIDEO_URL = 'url'
-KEY_VIDEO_DOWNLOAD_FILENAME = 'downloadedFileName'
-KEY_VIDEO_DOWNLOAD_TIME = 'downloadTime'
-KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'startEndTimeFramesInSeconds'
-KEY_TIMEFRAME_EXTRACT = 'extract'
-KEY_TIMEFRAME_SUPPRESS = 'suppress'
-KEY_VIDEO_EXTRACTED_FILES = 'extracted files'
-KEY_FILENAME = 'fileName'
-KEY_FILE_TIMEFRAME_HHMMSS = 'startEndTimeFrameHHMMSS'
-KEY_VIDEO_SUPPRESS_FILE = 'suppressed file'
-KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'startEndTimeFramesHHMMSS_suppressed'
-KEY_TIMEFRAMES_HHMMSS_KEPT = 'startEndTimeFramesHHMMSS_kept'
+KEY_VIDEO_TITLE = 'vd_title'
+KEY_VIDEO_URL = 'vd_url'
+KEY_VIDEO_DOWNLOAD_FILENAME = 'vd_downloadedFileName'
+KEY_VIDEO_DOWNLOAD_TIME = 'vd_downloadTime'
+KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'vd_startEndTimeFramesInSeconds'
+
+KEY_TIMEFRAME_EXTRACT = 'vd_extract'
+KEY_VIDEO_EXTRACTED_FILES = 'vd_extractedFiles'
+KEY_FILENAME = 'ex_fileName'
+KEY_FILE_TIMEFRAME_HHMMSS = 'ex_startEndTimeFrameHHMMSS'
+
+KEY_TIMEFRAME_SUPPRESS = 'vd_suppress'
+KEY_VIDEO_SUPPRESS_FILE = 'sp_fileName'
+KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
+KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
 class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
 	def __init__(self, downloadDir, playlistTitle='', playlistName=''):
-		# self.downloadDir = downloadDir
-		# self.confirmPopupMsg = confirmPopupMsg
-		# self.playlistName = playlistName
 		self._loadDicIfExist(downloadDir, playlistTitle, playlistName)
 		
 	def __str__(self):
@@ -61,6 +61,7 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME] = playlistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = downloadDir
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
 	def saveDic(self):
@@ -73,7 +74,13 @@ class DownloadVideoInfoDic:
 			except Exception as e:
 				print(self)
 				print(e)
-	
+
+	def getNextVideoIndex(self):
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX]
+		else:
+			return None
+		
 	def getPlaylistTitle(self):
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE]
@@ -263,13 +270,13 @@ class DownloadVideoInfoDic:
 		if not KEY_VIDEOS in self.dic.keys():
 			self.dic[KEY_VIDEOS] = {}
 			
-		videoIndex = str(videoIndex)
+		videoIndexKey = str(videoIndex)
 		
-		if not videoIndex in self.dic[KEY_VIDEOS].keys():
+		if not videoIndexKey in self.dic[KEY_VIDEOS].keys():
 			videoIndexDic = {}
-			self.dic[KEY_VIDEOS][videoIndex] = videoIndexDic
+			self.dic[KEY_VIDEOS][videoIndexKey] = videoIndexDic
 		else:
-			videoIndexDic = self.dic[KEY_VIDEOS][videoIndex]
+			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
 			
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
@@ -277,6 +284,8 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_FILENAME] = downloadedFileName
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
+
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
 
 	def removeVideoInfoForVideoTitle(self,
 	                              videoTitle):
@@ -287,7 +296,7 @@ class DownloadVideoInfoDic:
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
 		'''
-		Returns the video info dic associated to the passedkey videoIndex.
+		Returns the video info dic associated to the passedkey videoIndexKey.
 		Protected method used internally only.
 
 		:param videoIndex:
@@ -358,7 +367,7 @@ class DownloadVideoInfoDic:
 	def getStartEndHHMMSS_TimeFrameForExtractedFileName(self, videoIndex, extractedFileName):
 		"""
 		Returns the time frame in HH:MM:SS format for the passed extracted file name
-		extracted from the video videoIndex.
+		extracted from the video videoIndexKey.
 
 		Unlike suppressing audio portions which produces only one mp3 file per
 		video, extracting audio portions produces potentially more than one

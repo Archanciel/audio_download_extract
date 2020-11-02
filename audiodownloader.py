@@ -6,7 +6,7 @@ class AudioDownloader(metaclass=ABCMeta):
 		self.audioController = audioController
 	
 	@abstractmethod
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		'''
 	
 		:param playlistUrl:

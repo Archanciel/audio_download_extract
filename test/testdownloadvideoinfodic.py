@@ -27,8 +27,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi = DownloadVideoInfoDic(downloadDir, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
-		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
-		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
+		videoIndex = dvi.getNextVideoIndex()
+		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
+		videoIndex += 1
+		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoIndex(1))
@@ -49,6 +51,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertIsNone(dvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=1))
 		self.assertIsNone(dvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=2))
 		self.assertIsNone(dvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=2))
+		
+		self.assertEqual(3, dvi.getNextVideoIndex())
 
 	def testAddVideoInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
@@ -68,8 +72,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		dvi = DownloadVideoInfoDic(downloadDir, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
-		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
-		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
+		videoIndex = dvi.getNextVideoIndex()
+		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
+		videoIndex += 1
+		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoTitle('title 2'))
@@ -90,7 +96,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
 		# adding supplementary video info entry
-		reloadedDvi.addVideoInfoForVideoIndex(3, 'title 3', 'https://youtube.com/watch?v=9iPvL1111', 'title 3.mp4')
+		videoIndex = reloadedDvi.getNextVideoIndex()
+		reloadedDvi.addVideoInfoForVideoIndex(videoIndex, 'title 3', 'https://youtube.com/watch?v=9iPvL1111', 'title 3.mp4')
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', reloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -101,8 +108,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(newAdditionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 3'))
 
 		self.assertEqual('title 3', reloadedDvi.getVideoTitleForVideoIndex(3))
-
 		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
+		self.assertEqual(4, reloadedDvi.getNextVideoIndex())
 
 		reloadedDvi.saveDic()
 
@@ -127,7 +134,9 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertIsNone(newReloadedDvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=2))
 		self.assertIsNone(newReloadedDvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=3))
 		self.assertIsNone(newReloadedDvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=3))
-	
+
+		self.assertEqual(4, newReloadedDvi.getNextVideoIndex())
+
 	def testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 
