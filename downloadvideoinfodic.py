@@ -293,6 +293,8 @@ class DownloadVideoInfoDic:
 
 		if videoIndex:
 			del self.dic[KEY_VIDEOS][videoIndex]
+			nextVideoIndex = self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX]
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = nextVideoIndex - 1
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
 		'''

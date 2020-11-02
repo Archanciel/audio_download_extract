@@ -74,7 +74,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# the video was already downloaded
 					msgText = '"{}" already downloaded. Video skipped.\n'.format(videoTitle)
 					self.audioController.setMessage(msgText)
-					videoIndex += 1
 					continue
 
 				msgText = 'downloading "{}" ...\n'.format(videoTitle)

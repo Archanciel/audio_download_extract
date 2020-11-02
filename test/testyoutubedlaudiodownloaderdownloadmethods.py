@@ -648,7 +648,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl,
 		                                                                                                   downloadVideoInfoDic)
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
 		sys.stdout = stdout
 		
@@ -684,8 +683,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		for f in files:
 			if 'Funny suspicious looking dog' in f:
 				os.remove(f)
-		
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -761,4 +758,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo()
+	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
