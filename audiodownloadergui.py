@@ -942,16 +942,10 @@ class AudioDownloaderGUIApp(App):
 					"options": ["dd/mm/yy hh:mm"]
 				},
 				{"type": "path",
-					"title": "Data files location",
-					"desc": "Set the directory where the app data files like ... are stored",
+					"title": "Audiobook files root location",
+					"desc": "Set the directory where the downloaded playlists are stored",
 					"section": "General",
 					"key": "dataPath"
-				},
-				{"type": "path",
-					"title": "Audiobook files location",
-					"desc": "Set the directory where the extracted audio files will be stored",
-					"section": "General",
-					"key": "audioPath"
 				}
 			]""" % TIME_ZONE_LIST)
 								)
