@@ -77,7 +77,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			self.audioController.displayError(accessError.errorMsg)
 			return None, None
 		
-		downloadVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
+		downloadVideoInfoDic = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle)
 		
 		return playlistObject, downloadVideoInfoDic
 	

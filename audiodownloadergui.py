@@ -260,7 +260,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.movingRequest = False
 		
 		self.downloadVideoInfoDic = None
-		self.playlistUrl = None
+		self.playlistOrSingleVideoUrl = None
 
 	def ensureDataPathExist(self, dataPath, message):
 		'''
@@ -746,36 +746,38 @@ class AudioDownloaderGUI(BoxLayout):
 		
 	# --- start AudioDownloaderGUI new code ---
 	
-	def getDownloadVideoInfoDicForPlaylistUrl(self, playlistUrl):
+	def getDownloadVideoInfoDicFortUrl(self, url):
 		"""
 		
-		:param playlistUrl:
-		:return: playlistObject, downloadVideoInfoDic
+		:param url: playlist or single video url
+		:return: downloadVideoInfoDic, videoTitle
 		"""
-		self.downloadVideoInfoDic = self.audioController.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		self.downloadVideoInfoDic, videoTitle = self.audioController.getDownloadVideoInfoDicForUrl(url)
 	
-		return self.downloadVideoInfoDic
+		return self.downloadVideoInfoDic, videoTitle
 	
-	def downloadPlaylistAudio(self, playlistUrl):
+	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl, singleVideoTitle):
 		"""
 		
 		:param playlistObject:
 		:param downloadVideoInfoDic:
 		:return:
 		"""
-		self.playlistUrl = playlistUrl
-		t = threading.Thread(target=self.downloadPlaylistAudioOnNewThread, args=())
+		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
+		self.singleVideoTitle = singleVideoTitle
+		
+		t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
 		t.daemon = True
 		t.start()
 	
-	def downloadPlaylistAudioOnNewThread(self):
+	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
 
 		:param playlistObject:
 		:param downloadVideoInfoDic:
 		:return:
 		"""
-		self.audioController.downloadVideosReferencedInPlaylistForPlaylistUrl(self.playlistUrl, self.downloadVideoInfoDic)
+		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl, self.downloadVideoInfoDic, self.singleVideoTitle)
 	
 	def setMessage(self, msgText):
 		pass
@@ -851,7 +853,8 @@ class AudioDownloaderGUIApp(App):
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 
-		self.playlistUrl = None
+		self.playlistOrSingleVideoUrl = None
+		self.singleVideoTitle = None
 
 	def build(self): # implicitely looks for a kv file of name audiodownloadergui.kv which is
 					 # class name without App, in lowercases
@@ -1038,21 +1041,30 @@ class AudioDownloaderGUIApp(App):
 		2 videos no time frames (test audio downloader two files)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
 		'''
-		self.playlistUrl = Clipboard.paste()
+		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		downloadVideoInfoDic = self.audioDownloaderGUI.getDownloadVideoInfoDicForPlaylistUrl(self.playlistUrl)
+		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicFortUrl(self.playlistOrSingleVideoUrl)
+		self.singleVideoTitle = videoTitle
 		
 		if downloadVideoInfoDic is not None:
-			playlistTitle = downloadVideoInfoDic.getPlaylistTitle()
+			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ?"
-			confirmPopupCallbackFunction = self.onPopupAnswer
+		elif videoTitle is not None:
+			downloadObjectTitle = videoTitle
+			confirmPopupTitle = "Go on with downloading audio for video ?"
+		else:
+			# the case if the url is neither pointing to a playlist nor to a
+			# single video
+			return
 			
-			self.popup = self.audioDownloaderGUI.createConfirmPopup(confirmPopupTitle, playlistTitle, confirmPopupCallbackFunction)
-			self.popup.open()
+		confirmPopupCallbackFunction = self.onPopupAnswer
+		
+		self.popup = self.audioDownloaderGUI.createConfirmPopup(confirmPopupTitle, downloadObjectTitle, confirmPopupCallbackFunction)
+		self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
 		if answer == 'yes':
-			self.audioDownloaderGUI.downloadPlaylistAudio(self.playlistUrl)
+			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl, self.singleVideoTitle)
 
 		self.popup.dismiss()
 

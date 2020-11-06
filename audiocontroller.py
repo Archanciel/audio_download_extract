@@ -28,39 +28,43 @@ class AudioController:
 		self.audioDownloaderGUI = audioDownloaderGUI
 		self.audioDownloader = YoutubeDlAudioDownloader(self)
 		
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
+	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
 		'''
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end" !
 
-		:param playlistObject
+		:param url: playlist or single video url
 		
 		:return: downloadVideoInfoDic
 		'''
-		# downloading the audio track of the videos referenced in the playlist
-		_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
-		
-		# extracting/suppressing the audio portions for the downloaded audio tracks
+		if downloadVideoInfoDic:
+			# downloading the audio track of the videos referenced in the playlist
+			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(url, downloadVideoInfoDic)
+			
+			# extracting/suppressing the audio portions for the downloaded audio tracks
+	
+			if accessError is None:
+				if os.name == 'posix':
+					msgText = 'skipping extraction/suppression on Android.\n'
+					self.setMessage(msgText)
+				else:
+					# extraction/suppression possible only on Windows !
+					targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+				
+					# saving the content of the downloadVideoInfoDic which has been completed
+					# by AudioExtractor in the directory containing the extracted audio files
+					try:
+						downloadVideoInfoDic.saveDic()
+					except TypeError as e:
+						print(e)
+						traceback.print_exc()
+		else:
+			# downloading a single video
+			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, SINGLE_VIDEO_AUDIO_DIR)
 
-		if accessError is None:
-			if os.name == 'posix':
-				msgText = 'skipping extraction/suppression on Android.\n'
-				self.setMessage(msgText)
-			else:
-				# extraction/suppression possible only on Windows !
-				targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
-				audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-				audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
-			
-				# saving the content of the downloadVideoInfoDic which has been completed
-				# by AudioExtractor in the directory containing the extracted audio files
-				try:
-					downloadVideoInfoDic.saveDic()
-				except TypeError as e:
-					print(e)
-					traceback.print_exc()
-			
 		return downloadVideoInfoDic
 		
 	def trimAudioFile(self, audioFilePathName):
@@ -93,19 +97,19 @@ class AudioController:
 		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
 
-	def getDownloadVideoInfoDicForPlaylistUrl(self, url):
+	def getDownloadVideoInfoDicForUrl(self, url):
 		"""
 		
-		:param url:
-		:return: downloadVideoInfoDic
+		:param url: playlist or single video url
+		:return: downloadVideoInfoDic, videoTitle
 		"""
-		_, downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicForPlaylistUrl(url)
+		_, downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicForUrl(url)
 		
 		if accessError:
 			self.setMessage(accessError.errorMsg)
-			return None
+			return None, None
 		
-		return downloadVideoInfoDic
+		return downloadVideoInfoDic, videoTitle
 	
 	def setMessage(self, msgText):
 		self.audioDownloaderGUI.outputResult(msgText)

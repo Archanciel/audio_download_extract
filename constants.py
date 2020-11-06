@@ -6,6 +6,7 @@ DATE_TIME_FORMAT_VIDEO_INFO_FILE = '%d/%m/%Y %H:%M:%S'
 if os.name == 'posix':
 	CONVERT = False
 	AUDIO_DIR = '/storage/emulated/0/Download/Audiobooks'
+	SINGLE_VIDEO_AUDIO_DIR = '/storage/emulated/0/Download/Audiobooks/Various'
 	YOUTUBE_DL_FILE_EXT = 'mp3'
 	DIR_SEP = '/'
 	WIN_WIDTH_RATIO = 1
@@ -13,7 +14,7 @@ if os.name == 'posix':
 else:
 	CONVERT = False # can be set to True on Windows only
 	AUDIO_DIR = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks'
-#	YOUTUBE_DL_FILE_EXT = '%(ext)s'
+	SINGLE_VIDEO_AUDIO_DIR = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various'
 	YOUTUBE_DL_FILE_EXT = 'mp3'
 	DIR_SEP = '\\'
 	WIN_WIDTH_RATIO = 0.8

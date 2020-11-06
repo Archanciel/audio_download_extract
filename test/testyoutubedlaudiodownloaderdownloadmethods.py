@@ -36,7 +36,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -83,7 +83,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
 		sys.stdout = stdout
@@ -132,7 +132,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		sys.stdout = stdout
@@ -190,7 +190,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -256,7 +256,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
@@ -272,7 +272,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
@@ -301,7 +301,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -357,7 +357,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -416,7 +416,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		redownloadVideoInfoDic, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -485,7 +485,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -563,7 +563,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, redownloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, redownloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -645,7 +645,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl,
 		                                                                                                   downloadVideoInfoDic)
 		
@@ -688,7 +688,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, redownloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistUrl(playlistUrl)
+		_, redownloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
 		redownloadVideoInfoDic.removeVideoInfoForVideoTitle('Funny suspicious looking dog')
 		
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(

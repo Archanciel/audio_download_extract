@@ -1,6 +1,8 @@
 import os, glob, re
 from urllib.error import URLError
 from pytube import Playlist
+from pytube import YouTube
+from pytube.exceptions import RegexMatchError
 import http.client
 import youtube_dl
 
@@ -43,7 +45,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, accessError
 		'''
-		playlistObject, _, accessError = self.getPlaylistObjectForPlaylistUrl(playlistUrl)
+		playlistObject, _, _, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(playlistUrl)
 
 		if accessError:
 			return None, accessError
@@ -76,7 +78,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					self.audioController.setMessage(msgText)
 					continue
 
-				msgText = 'downloading "{}" ...\n'.format(videoTitle)
+				msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
 				self.audioController.setMessage(msgText)
 
 				try:
@@ -84,7 +86,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					print(e)				
 
-				msgText = '"{}" downloaded.\n'.format(videoTitle)
+				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
 				self.audioController.setMessage(msgText)
 				
 				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)
@@ -106,38 +108,51 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return files[0].split(DIR_SEP)[-1]
 		
-	def getDownloadVideoInfoDicForPlaylistUrl(self, playlistUrl):
+	def getDownloadVideoInfoDicForUrl(self, url):
 		"""
 		
-		:param playlistUrl:
+		:param url: playlist or single video url
 		
-		:return: playlistObject, downloadVideoInfoDic, accessError
+		:return: playlistObject, downloadVideoInfoDic, videoTitle, accessError
 		"""
-		playlistObject, playlistTitle, accessError = self.getPlaylistObjectForPlaylistUrl(playlistUrl)
+		playlistObject, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
 		
 		if accessError:
-			return None, None, accessError
+			return None, None, None, accessError
 		
-		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDic(playlistTitle)
-		
-		return playlistObject, downloadVideoInfoDic, accessError
+		if playlistTitle:
+			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle)
+		else:
+			downloadVideoInfoDic = None
+
+		return playlistObject, downloadVideoInfoDic, videoTitle, accessError
 	
-	def getPlaylistObjectForPlaylistUrl(self, playlistUrl):
+	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""
-		Returns the pytube.Playlist object corresponding to the passed playlistUrl, the
-		playlist title and None if no problem happened.
+		The passed url can either point to a Youtube playlist or to a Youtube
+		single video.
 		
-		:param playlistUrl:
-		:return: playlistObject - Playlist object
-				 playlistTitle
+		In case of playlist url, the method returns the pytube.Playlist object
+		corresponding to the passed url, the playlist title, None for the video
+		title and None for the access error if no problem occured.
+		
+		In case of video url, the method returns the None for the playlist object,
+		None for the playlist title, the video title and None for the access error
+		if no problem occured.
+		
+		:param url: playlist or single video url
+		:return: playlistObject - Playlist object or None
+				 playlistTitle - playlist title or None
+				 videoTitle - video title or None
 				 accessError in case of problem, None otherwise
 		"""
 		playlistObject = None
 		playlistTitle = None
+		videoTitle = None
 		accessError = None
 		
 		try:
-			playlistObject = Playlist(playlistUrl)
+			playlistObject = Playlist(url)
 			playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
 			playlistTitle = playlistObject.title()
 		except http.client.InvalidURL as e:
@@ -147,7 +162,38 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		except URLError:
 			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 
-		if accessError is None and (playlistTitle is None or 'Oops' in playlistTitle or 'Hoppla' in playlistTitle):
-			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, playlistUrl)
+		if accessError is None and playlistTitle is None:
+			# the case if the url points to a single video instead of a playlist
+			try:
+				youtube = YouTube(url)
+				video = youtube.streams.first()
+				videoTitle = video.title
+			except RegexMatchError as e:
+				accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
+		
+		if accessError is None and playlistTitle is None and videoTitle is None:
+			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
 
-		return playlistObject, playlistTitle, accessError
+		if accessError is None and playlistTitle is not None and ('Oops' in playlistTitle or 'Hoppla' in playlistTitle):
+			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
+
+		return playlistObject, playlistTitle, videoTitle, accessError
+
+	def downloadSingleVideoForUrl(self, singleVideoUrl, videoTitle, targetAudioDir):
+		targetAudioDirList = targetAudioDir.split(DIR_SEP)
+		targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
+
+		if not os.path.isdir(targetAudioDir):
+			os.makedirs(targetAudioDir)
+			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+
+		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + self.ydlOutTmplFormat
+		
+		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
+			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
+			self.audioController.setMessage(msgText)
+
+			ydl.download([singleVideoUrl])
+
+			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
+			self.audioController.setMessage(msgText)
