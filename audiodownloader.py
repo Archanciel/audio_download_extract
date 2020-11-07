@@ -7,10 +7,21 @@ class AudioDownloader(metaclass=ABCMeta):
 	
 	@abstractmethod
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
-		'''
-	
+		"""
+		
 		:param playlistUrl:
-	
-		:return: targetAudioDir, downloadVideoInfoDic
-		'''
+		:param downloadVideoInfoDic:
+		:return:
+		"""
+		pass
+
+	@abstractmethod
+	def downloadSingleVideoForUrl(self, singleVideoUrl, videoTitle, targetAudioDir):
+		"""
+		
+		:param singleVideoUrl:
+		:param videoTitle:
+		:param targetAudioDir:
+		:return:
+		"""
 		pass
