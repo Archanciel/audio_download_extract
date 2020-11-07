@@ -19,14 +19,17 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	
 		if os.name == 'posix':
 			# on AndroidAndroid, FFmpegExtractAudio not available !
-			self.ydlOutTmplFormat = '%(title)s.mp3'
+			self.ydlOutTmplFormat = '/%(title)s.mp3'
 
 			self.ydl_opts = {
-				'format': 'bestaudio/best',
+				#'format': 'bestaudio/best', # for unknown reason, not working on
+											 # Android when used by AudioDownloaderGUI !
+				'format': 'worstaudio/worst',# this fixes the error AttributeError:
+											 # 'str' object has no attribute 'write'
 				'quiet': YOUTUBE_DL_QUIET
 			}
 		else:
-			self.ydlOutTmplFormat = '%(title)s.%(ext)s'
+			self.ydlOutTmplFormat = '\\%(title)s.%(ext)s'
 			
 			self.ydl_opts = {
 				'format': 'bestaudio/best',
@@ -59,7 +62,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			os.makedirs(targetAudioDir)
 			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
-		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + self.ydlOutTmplFormat
+		self.ydl_opts['outtmpl'] = targetAudioDir + + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
 			
@@ -187,12 +190,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			os.makedirs(targetAudioDir)
 			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 
-		self.ydl_opts['outtmpl'] = targetAudioDir + DIR_SEP + self.ydlOutTmplFormat
+		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 		
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
 			self.audioController.setMessage(msgText)
 
+			meta = ydl.extract_info(singleVideoUrl, download=False)
 			ydl.download([singleVideoUrl])
 
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
