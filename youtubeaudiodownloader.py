@@ -31,7 +31,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
 			os.makedirs(targetAudioDir)
-			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
 		try:
 			videoIndex = 1
@@ -42,7 +42,7 @@ class YoutubeAudioDownloader(AudioDownloader):
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
 					msgText = videoTitle + ' already downloaded. Video skipped.\n'
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 					videoIndex += 1
 					continue
 					
@@ -50,22 +50,22 @@ class YoutubeAudioDownloader(AudioDownloader):
 					audioStream = video.streams.get_by_itag(YOUTUBE_STREAM_AUDIO)
 					videoUrl = video.watch_url
 					msgText = 'downloading ' + videoTitle + '\n'
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 					audioStream.download(output_path=targetAudioDir)
 					downloadedVideoFileName = audioStream.default_filename
 				except:
 					accessError = AccessError(AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE, videoTitle)
-					self.audioController.setMessage(accessError.errorMsg)
+					self.audioController.displayMessage(accessError.errorMsg)
 					return downloadVideoInfoDic, accessError
 				else:
 					msgText = videoTitle + ' downloaded.\n'
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
 					downloadVideoInfoDic.saveDic()
 				videoIndex += 1
 		except KeyError as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, downloadVideoInfoDic.getPlaylistName())
-			self.audioController.setMessage(accessError.errorMsg)
+			self.audioController.displayMessage(accessError.errorMsg)
 			return downloadVideoInfoDic, accessError
 		
 		return downloadVideoInfoDic, None

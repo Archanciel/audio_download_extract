@@ -22,14 +22,14 @@ class AudioExtractor:
 			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isExtractedFileInfoAvailableForVideoIndex(videoIndex):
 					msgText = '\nextracting portions for "{}" was already performed. Extraction skipped.\n'.format(videoFileName)
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 				else:
 					self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isSuppressedFileInfoAvailableForVideoIndex(videoIndex):
 					msgText = '\nsuppressing portions for "{}" was already performed. Suppression skipped.\n'.format(videoFileName)
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 				else:
 					self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
@@ -39,10 +39,10 @@ class AudioExtractor:
 		timeFrameIndex = 1
 
 		msgText = '\nextracting portions of "{}" ...\n'.format(videoFileName)
-		self.audioController.setMessage(msgText)
+		self.audioController.displayMessage(msgText)
 		
 		msgText = '\ttime frames extracted'
-		self.audioController.setMessage(msgText)
+		self.audioController.displayMessage(msgText)
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
 			timeStartSec = extractStartEndSecondsList[0]
@@ -69,7 +69,7 @@ class AudioExtractor:
 			                                                                       HHMMSS_TimeFrameList)
 
 			msgText = '\t\t{}-{}'.format(HHMMSS_TimeFrameList[0], HHMMSS_TimeFrameList[1])
-			self.audioController.setMessage(msgText)
+			self.audioController.displayMessage(msgText)
 
 			timeFrameIndex += 1
 	
@@ -83,7 +83,7 @@ class AudioExtractor:
 		keptStartEndSecondsLists = []
 		
 		msgText = '\nsuppressing portions of "{}" ...\n'.format(videoFileName)
-		self.audioController.setMessage(msgText)
+		self.audioController.displayMessage(msgText)
 		
 		for extractIdx in range(suppressFrameNb + 1):
 			if extractIdx == 0:
@@ -129,11 +129,11 @@ class AudioExtractor:
 		self.displayFramesMsg('\n\ttime frames kept:', HHMMSS_keptTimeFramesList)
 	
 	def displayFramesMsg(self, startMsgText, HHMMSS_timeFramesList):
-		self.audioController.setMessage(startMsgText)
+		self.audioController.displayMessage(startMsgText)
 		
 		for HHMMSS_timeFrame in HHMMSS_timeFramesList:
 			msgText = '\t\t{}-{}'.format(HHMMSS_timeFrame[0], HHMMSS_timeFrame[1])
-			self.audioController.setMessage(msgText)
+			self.audioController.displayMessage(msgText)
 
 	def convertDownloadedMp3ToKivySoundLoaderCompliantMp3(self, downloadedAudioFileName):
 		"""
@@ -146,7 +146,7 @@ class AudioExtractor:
 		:return:
 		"""
 		msgText = '\nconverting "{}" to compliant mp3 ...\n'.format(downloadedAudioFileName)
-		self.audioController.setMessage(msgText)
+		self.audioController.displayMessage(msgText)
 
 		downloadedAudioFilePathName = os.path.join(self.targetAudioDir,
 		                                 downloadedAudioFileName)
@@ -158,7 +158,7 @@ class AudioExtractor:
 		clip.close()
 
 		msgText = '"{}" converted to {}\n'.format(downloadedAudioFileName, compliantAudioFileName)
-		self.audioController.setMessage(msgText)
+		self.audioController.displayMessage(msgText)
 	
 	def convertVideoToAudio(self, videoFileName, fileNameSuffix = ''):
 		"""

@@ -1,4 +1,4 @@
-import os, glob, re
+import glob, re
 from pathlib import Path
 from urllib.error import URLError
 from pytube import Playlist
@@ -61,9 +61,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
 			
 			os.makedirs(targetAudioDir)
-			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
-		self.ydl_opts['outtmpl'] = targetAudioDir + + self.ydlOutTmplFormat
+		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
 			
@@ -79,11 +79,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
 					msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
-					self.audioController.setMessage(msgText)
+					self.audioController.displayMessage(msgText)
 					continue
 
 				msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
-				self.audioController.setMessage(msgText)
+				self.audioController.displayMessage(msgText)
 
 				try:
 					ydl.download([videoUrl])
@@ -91,7 +91,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					print(e)				
 
 				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
-				self.audioController.setMessage(msgText)
+				self.audioController.displayMessage(msgText)
 				
 				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)
 				
@@ -189,22 +189,22 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		if not os.path.isdir(targetAudioDir):
 			os.makedirs(targetAudioDir)
-			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
 		audioFile = Path(targetAudioDir + DIR_SEP + videoTitle + '.mp3')
 		
 		if audioFile.is_file():
 			msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
-			self.audioController.setMessage(msgText)
+			self.audioController.displayMessage(msgText)
 			return
 		
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 		
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
-			self.audioController.setMessage(msgText)
+			self.audioController.displayMessage(msgText)
 
 			ydl.download([singleVideoUrl])
 
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
-			self.audioController.setMessage(msgText)
+			self.audioController.displayMessage(msgText)

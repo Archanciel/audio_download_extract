@@ -47,7 +47,7 @@ class AudioController:
 			if accessError is None:
 				if os.name == 'posix':
 					msgText = 'skipping extraction/suppression on Android.\n'
-					self.setMessage(msgText)
+					self.displayMessage(msgText)
 				else:
 					# extraction/suppression possible only on Windows !
 					targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
@@ -106,12 +106,12 @@ class AudioController:
 		_, downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicForUrl(url)
 		
 		if accessError:
-			self.setMessage(accessError.errorMsg)
+			self.displayMessage(accessError.errorMsg)
 			return None, None
 		
 		return downloadVideoInfoDic, videoTitle
 	
-	def setMessage(self, msgText):
+	def displayMessage(self, msgText):
 		self.audioDownloaderGUI.outputResult(msgText)
 	
 	def displayError(self, msg):
