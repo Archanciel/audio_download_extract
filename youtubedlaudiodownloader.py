@@ -1,4 +1,5 @@
 import os, glob, re
+from pathlib import Path
 from urllib.error import URLError
 from pytube import Playlist
 from pytube import YouTube
@@ -77,7 +78,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
-					msgText = '"{}" already downloaded. Video skipped.\n'.format(videoTitle)
+					msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
 					self.audioController.setMessage(msgText)
 					continue
 
@@ -189,7 +190,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		if not os.path.isdir(targetAudioDir):
 			os.makedirs(targetAudioDir)
 			self.audioController.setMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
-
+		
+		audioFile = Path(targetAudioDir + DIR_SEP + videoTitle + '.mp3')
+		
+		if audioFile.is_file():
+			msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
+			self.audioController.setMessage(msgText)
+			return
+		
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 		
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
