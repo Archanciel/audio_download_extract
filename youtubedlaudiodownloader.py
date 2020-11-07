@@ -173,7 +173,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				video = youtube.streams.first()
 				videoTitle = video.title
 			except RegexMatchError as e:
-				accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
+				accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
 		
 		if accessError is None and playlistTitle is None and videoTitle is None:
 			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)

@@ -7,7 +7,7 @@ class GuiOutputStub:
 	def getPlaylistUrlFromClipboard(self):
 		pass
 	
-	def setMessage(self, msgText):
+	def displayMessage(self, msgText):
 		print(msgText)
 	
 	def outputResult(self, msgText):
