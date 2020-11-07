@@ -68,8 +68,8 @@ files are ending at different positions.*
 
 Note that any number of extract options can be specified !
 
-### Downloading a specific video audio
-This automatically done if the url in the clipboard points to a
+### Downloading the audio of a single video
+This is done automatically if the url in the clipboard points to a
 video and not to a playlist. In this case, the audio track is 
 downloaded to a directory specified in the app settings.
 
