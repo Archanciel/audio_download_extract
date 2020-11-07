@@ -196,7 +196,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
 			self.audioController.setMessage(msgText)
 
-			meta = ydl.extract_info(singleVideoUrl, download=False)
 			ydl.download([singleVideoUrl])
 
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
