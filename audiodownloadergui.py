@@ -1048,10 +1048,10 @@ class AudioDownloaderGUIApp(App):
 		
 		if downloadVideoInfoDic is not None:
 			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
-			confirmPopupTitle = "Go on with processing playlist ?"
+			confirmPopupTitle = "Go on with processing playlist ..."
 		elif videoTitle is not None:
 			downloadObjectTitle = videoTitle
-			confirmPopupTitle = "Go on with downloading audio for video ?"
+			confirmPopupTitle = "Go on with downloading audio for video ... "
 		else:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video
