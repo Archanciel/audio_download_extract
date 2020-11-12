@@ -74,8 +74,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
 				except AttributeError as e:
-					print(e)
-
+					msgText = 'Obtaining video title failed with error {}.\n'.format(e)
+					self.audioController.displayMessage(msgText)
+				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
 					msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
@@ -88,10 +89,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				try:
 					ydl.download([videoUrl])
 				except AttributeError as e:
-					print(e)				
-
-				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
-				self.audioController.displayMessage(msgText)
+					msgText = '"{}" audio download failed with error {}.\n'.format(videoTitle, e)
+					self.audioController.displayMessage(msgText)
+				else:
+					msgText = '"{}" audio downloaded.\n'.format(videoTitle)
+					self.audioController.displayMessage(msgText)
 				
 				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)
 				
