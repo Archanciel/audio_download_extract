@@ -33,11 +33,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.ydlOutTmplFormat = '\\%(title)s.%(ext)s'
 			
 			self.ydl_opts = {
-				'format': 'bestaudio/best',
+				'format': 'worstaudio/worst',
 				'postprocessors': [{
 					'key': 'FFmpegExtractAudio',
 					'preferredcodec': 'mp3',
-					'preferredquality': '128',
+					'preferredquality': '64',
 				}],
 				'quiet': YOUTUBE_DL_QUIET
 			}
