@@ -204,7 +204,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
 			self.audioController.displayMessage(msgText)
 
-			ydl.download([singleVideoUrl])
-
-			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
-			self.audioController.displayMessage(msgText)
+			try:
+				ydl.download([singleVideoUrl])
+			except AttributeError as e:
+				msgText = '"{}" audio download failed with error {}.\n'.format(videoTitle, e)
+				self.audioController.displayMessage(msgText)
+			else:
+				msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
+				self.audioController.displayMessage(msgText)
