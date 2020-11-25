@@ -1,5 +1,6 @@
 import glob, re
-from pathlib import Path
+from os import listdir
+from os.path import isfile, join
 from urllib.error import URLError
 from pytube import Playlist
 from pytube import YouTube
@@ -106,6 +107,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				videoIndex += 1
 		
+			msgText = '"{}" playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
+			self.audioController.displayMessage(msgText)
+		
 		return downloadVideoInfoDic, None
 
 	def getLastCreatedFileName(self, dir):
@@ -168,14 +172,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		except URLError:
 			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 
-		if accessError is None and playlistTitle is None:
+		if url != '' and accessError is None and playlistTitle is None:
 			# the case if the url points to a single video instead of a playlist
+			# or if the URL obtained from the clipboard is invalid.
 			try:
 				youtube = YouTube(url)
 				video = youtube.streams.first()
 				videoTitle = video.title
 			except (RegexMatchError, KeyError) as e:
-				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, e)
+				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
+				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
 		
 		if accessError is None and playlistTitle is None and videoTitle is None:
 			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
@@ -193,9 +199,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			os.makedirs(targetAudioDir)
 			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
 		
-		audioFile = Path(targetAudioDir + DIR_SEP + videoTitle + '.mp3')
+		targetAudioDirFileNameList = self.getFileNamesInDir(targetAudioDir)
+		purgedVideoTitle = self.purgeIllegalWinFileNameChar(videoTitle)
 		
-		if audioFile.is_file():
+		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
 			msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
 			self.audioController.displayMessage(msgText)
 			return
@@ -214,3 +221,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			else:
 				msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
 				self.audioController.displayMessage(msgText)
+	
+	def purgeIllegalWinFileNameChar(self, videoTitle):
+		"""
+		This method eliminates the characters which are not accepted in file names
+		on Windows.
+		
+		:param videoTitle:
+		:return:
+		"""
+		return videoTitle.replace('/', '_').replace(':', '_').replace('?', '')
+	
+	def getFileNamesInDir(self, targetAudioDir):
+		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]

@@ -27,7 +27,7 @@ class AccessError:
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM:
-			self.errorMsg = "trying to get the video title for the URL obtained from clipboard failed.\nerror msg: {}\nnothing to download.".format(errorMsg)
+			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed.\n{}\nnothing to download.".format(errorMsg)
 		else:
 			if errorMsg == '':
 				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."

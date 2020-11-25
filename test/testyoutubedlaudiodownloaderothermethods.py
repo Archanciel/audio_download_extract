@@ -36,8 +36,8 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		youtubePlaylist, playlistTitle, videoTitle, accessError = youtubeAccess.getPlaylistObjectOrVideoTitleFortUrl(playlistUrl)
 		
 		self.assertIsNotNone(accessError)
-		self.assertEqual(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, accessError.errorType)
-		self.assertEqual("the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: https://www.youtube.com/playlist?list=invalid\nnothing to download.", accessError.errorMsg)
+		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
+		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: regex_search: could not find match for (?:v=|\/)([0-9A-Za-z_-]{11}).*\nnothing to download.', accessError.errorMsg)
 		self.assertIsNone(videoTitle)
 
 	def testGetPlaylistObjectOrVideoTitleFortUrl_one_time_frame_extract(self):

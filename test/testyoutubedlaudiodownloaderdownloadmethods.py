@@ -47,6 +47,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
  '',
+ '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
+ '',
  ''], outputCapturingString.getvalue().split('\n'))
 
 		self.assertEqual(downloadDir, targetAudioDir)
@@ -84,7 +86,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
-		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
 		sys.stdout = stdout
 
@@ -104,6 +106,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
  '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ '',
+ '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -145,6 +149,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Here to help: Give him what he wants" audio ...',
  '',
  '"Here to help: Give him what he wants" audio downloaded.',
+ '',
+ '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -206,6 +212,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '',
 			 '"Here to help: Give him what he wants" audio downloaded.',
 			 '',
+			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
+			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		# playlist title: test_audio_downloader_two_files_with_time_frames
@@ -261,7 +269,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual('the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: https://www.youtube.com/playlist?list=invalid\nnothing to download.', accessError.errorMsg)
+		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: regex_search: could not find match for (?:v=|\/)([0-9A-Za-z_-]{11}).*\nnothing to download.', accessError.errorMsg)
 	
 	def testDownloadVideoReferencedInPlaylist_empty_url(self):
 		guiOutput = GuiOutputStub()
@@ -311,6 +319,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
  '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ '',
+ '"Test_title_one_time_frame_extract" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -373,6 +383,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '',
 			 '"Here to help: Give him what he wants" audio downloaded.',
 			 '',
+			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(downloadDir, targetAudioDir)
@@ -428,6 +440,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  '"Here to help: Give him what he wants" audio already downloaded. Video '
  'skipped.',
+ '',
+ '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -501,6 +515,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
 			 '"Here to help: Give him what he wants" audio downloaded.',
+			 '',
+			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -576,6 +592,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  '"Here to help: Give him what he wants" audio already downloaded. Video '
  'skipped.',
+ '',
+ '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -667,6 +686,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '',
 			 '"Funny suspicious looking dog" audio downloaded.',
 			 '',
+			 '"Test 3 short videos" playlist audio(s) download terminated.',
+			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -709,6 +730,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Funny suspicious looking dog" audio ...',
  '',
  '"Funny suspicious looking dog" audio downloaded.',
+ '',
+ '"Test 3 short videos" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -761,4 +784,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
+	tst.testDownloadVideoReferencedInPlaylist_invalid_url()
