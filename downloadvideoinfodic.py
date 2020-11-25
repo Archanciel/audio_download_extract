@@ -82,12 +82,24 @@ class DownloadVideoInfoDic:
 			return None
 		
 	def getPlaylistTitle(self):
+		"""
+		Return the play list title, which is the playlist name + the optional extract
+		or suppress time frames definitions.
+	
+		:return:
+		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE]
 		else:
 			return None
 	
 	def getPlaylistName(self):
+		"""
+		Return the play list name, which is the playlist title without the optional
+		extract or suppress time frames definitions.
+	
+		:return:
+		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME]
 		else:
@@ -339,7 +351,7 @@ class DownloadVideoInfoDic:
 		:param videoIndex:
 		:param timeFrameIndex:
 		:param extractedFileName:
-		:param HHMMSS_timeFramesList. Example: ['0:23:45', '0:24:54']
+		:param HHMMSS_timeFramesList. Example ['0:23:45', '0:24:54']
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		extractedFilesSubDic = {}
