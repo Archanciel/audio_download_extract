@@ -15,7 +15,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	Since testing download consume band width, it is placed in a specific test class.
 	"""
 
-	def testDownloadVideoReferencedInPlaylist_targetFolder_exist(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
@@ -36,7 +36,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -69,7 +69,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
-	def testDownloadVideoReferencedInPlaylist_targetFolder_not_exist(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
@@ -85,7 +85,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
 		sys.stdout = stdout
@@ -115,7 +115,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
-	def testDownloadAudioFromPlaylistMultipleVideo(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 
@@ -136,7 +136,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		sys.stdout = stdout
@@ -174,7 +174,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 								 'Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
-	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
@@ -196,7 +196,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -255,7 +255,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 					'Wear a mask. Help slow the spread of Covid-19..mp3',
 					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 	
-	def testDownloadVideoReferencedInPlaylist_invalid_url(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_invalid_url(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
@@ -264,14 +264,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
 		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: regex_search: could not find match for (?:v=|\/)([0-9A-Za-z_-]{11}).*\nnothing to download.', accessError.errorMsg)
 	
-	def testDownloadVideoReferencedInPlaylist_empty_url(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
 		playlistUrl = ""
@@ -280,14 +280,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
 		self.assertEqual('the URL obtained from clipboard is empty.\nnothing to download.', accessError.errorMsg)
 	
-	def testDownloadVideoReferencedInPlaylist_with_timeFrame(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 		# timeInfo = '(e0:0:5-0:0:10)'
@@ -309,7 +309,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -346,7 +346,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 								 'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		self.assertEqual([[5, 10]], downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
 	
-	def testDownloadAudioFromPlaylistMultipleVideo_redownloading_the_playlist(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
 		
@@ -367,7 +367,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -428,7 +428,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		redownloadVideoInfoDic, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -478,7 +478,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
-	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
 		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
@@ -500,7 +500,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -580,7 +580,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, redownloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, redownloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -643,7 +643,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 
-	def testDownloadAudioFromPlaylistMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'Test 3 short videos'
@@ -666,7 +666,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl,
 		                                                                                                   downloadVideoInfoDic)
 		
@@ -711,7 +711,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		_, redownloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForUrl(playlistUrl)
+		_, redownloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistUrl)
 		redownloadVideoInfoDic.removeVideoInfoForVideoTitle('Funny suspicious looking dog')
 		
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
@@ -784,4 +784,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideoReferencedInPlaylist_invalid_url()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrl_invalid_url()

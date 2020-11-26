@@ -21,17 +21,20 @@ class AudioExtractor:
 				continue
 			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isExtractedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nextracting portions for "{}" was already performed. Extraction skipped.\n'.format(videoFileName)
+					msgText = '\nextracting portions for "{}" was already performed. Extraction skipped.'.format(videoFileName)
 					self.audioController.displayMessage(msgText)
 				else:
 					self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isSuppressedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nsuppressing portions for "{}" was already performed. Suppression skipped.\n'.format(videoFileName)
+					msgText = '\nsuppressing portions for "{}" was already performed. Suppression skipped.'.format(videoFileName)
 					self.audioController.displayMessage(msgText)
 				else:
 					self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+
+		msgText = '\n"{}" playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
+		self.audioController.displayMessage(msgText)
 
 	def extractAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)

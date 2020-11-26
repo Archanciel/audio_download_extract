@@ -745,22 +745,29 @@ class AudioDownloaderGUI(BoxLayout):
 		
 	# --- start AudioDownloaderGUI new code ---
 	
-	def getDownloadVideoInfoDicFortUrl(self, url):
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""
+		As the passed URL points either to a playlist or to a single video, the
+		method returns either a DownloadVideoInfoDic in case of playlist URL or
+		None and a video title in case of single video URL.
 		
 		:param url: playlist or single video url
 		:return: downloadVideoInfoDic, videoTitle
 		"""
-		self.downloadVideoInfoDic, videoTitle = self.audioController.getDownloadVideoInfoDicForUrl(url)
+		self.downloadVideoInfoDic, videoTitle = self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
 	
 		return self.downloadVideoInfoDic, videoTitle
 	
 	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl, singleVideoTitle):
 		"""
+		This method launch downloading audios for the videos referenced in the playlist
+		URL or the audio of the single video if the URL points to a video, this in a
+		new thread.
 		
-		:param playlistObject:
-		:param downloadVideoInfoDic:
-		:return:
+		:param playlistOrSingleVideoUrl: URL pointing to a playlist or to a single
+										 video
+		:param singleVideoTitle: None in case of playlist, not None in case of single
+								 video. Avoids re-obtaining the single video title.
 		"""
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
@@ -771,10 +778,8 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
-
-		:param playlistObject:
-		:param downloadVideoInfoDic:
-		:return:
+		This method executed on a separated thread launch downloading audios for
+		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl, self.downloadVideoInfoDic, self.singleVideoTitle)
 	
@@ -1042,7 +1047,7 @@ class AudioDownloaderGUIApp(App):
 		'''
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicFortUrl(self.playlistOrSingleVideoUrl)
+		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
 		self.singleVideoTitle = videoTitle
 		
 		if downloadVideoInfoDic is not None:
@@ -1053,7 +1058,7 @@ class AudioDownloaderGUIApp(App):
 			confirmPopupTitle = "Go on with downloading audio for video ... "
 		else:
 			# the case if the url is neither pointing to a playlist nor to a
-			# single video
+			# single video. Here, an error message was displayed in the UI !
 			return
 			
 		confirmPopupCallbackFunction = self.onPopupAnswer

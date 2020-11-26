@@ -118,8 +118,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return files[0].split(DIR_SEP)[-1]
 		
-	def getDownloadVideoInfoDicForUrl(self, url):
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""
+		As the passed URL points either to a playlist or to a single video, the
+		method returns either pytube.Playlist object and a DownloadVideoInfoDic in
+		case of playlist URL or an invalid Playlist object and a video title in case
+		of single video URL.
 		
 		:param url: playlist or single video url
 		
@@ -144,11 +148,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		In case of playlist url, the method returns the pytube.Playlist object
 		corresponding to the passed url, the playlist title, None for the video
-		title and None for the access error if no problem occured.
+		title and None for the access error if no problem happened.
 		
-		In case of video url, the method returns the None for the playlist object,
+		In case of video url, the method returns an invalid playlist object,
 		None for the playlist title, the video title and None for the access error
-		if no problem occured.
+		if no problem happened.
 		
 		:param url: playlist or single video url
 		:return: playlistObject - Playlist object or None

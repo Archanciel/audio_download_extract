@@ -30,13 +30,21 @@ class AudioController:
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
 		'''
+		In case we are downloading videos referenced in a playlist, this method first
+		execute the download of the audio of the videos and then execute the extraction
+		or suppression of audio parts as specified in the playlist title, this,
+		provided we are on Windows (extraction/suppression are not supported on Android).
+		
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end" !
 
+		If we are downloading a single video audio, no extraction/suppression will
+		be performed.
+
 		:param url: playlist or single video url
-		
-		:return: downloadVideoInfoDic
+		:param downloadVideoInfoDic: if url points to a playlist
+		:param singleVideoTitle: if the url points to a single video
 		'''
 		if downloadVideoInfoDic:
 			# downloading the audio track of the videos referenced in the playlist
@@ -64,8 +72,6 @@ class AudioController:
 		else:
 			# downloading a single video
 			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, SINGLE_VIDEO_AUDIO_DIR)
-
-		return downloadVideoInfoDic
 		
 	def trimAudioFile(self, audioFilePathName):
 		"""
@@ -97,13 +103,16 @@ class AudioController:
 		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
 
-	def getDownloadVideoInfoDicForUrl(self, url):
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""
+		As the passed URL points either to a playlist or to a single video, the
+		method returns either a DownloadVideoInfoDic in case of playlist URL or
+		None and a video title in case of single video URL.
 		
 		:param url: playlist or single video url
 		:return: downloadVideoInfoDic, videoTitle
 		"""
-		_, downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicForUrl(url)
+		_, downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
 		
 		if accessError:
 			self.displayMessage(accessError.errorMsg)
