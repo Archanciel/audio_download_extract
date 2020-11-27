@@ -780,7 +780,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Test 3 short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 
-
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()

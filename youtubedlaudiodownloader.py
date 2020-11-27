@@ -44,12 +44,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			}
 	
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
-		'''
-		
+		"""
+		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
+		the passed downloadVideoInfoDic the downloaded videos information as well as the
+		playlist download dir.
+
 		:param playlistUrl:
+		:param downloadVideoInfoDic:
 		
 		:return: downloadVideoInfoDic, accessError
-		'''
+		"""
 		playlistObject, _, _, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(playlistUrl)
 
 		if accessError:
@@ -57,12 +61,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
-		if not os.path.isdir(targetAudioDir):
-			targetAudioDirList = targetAudioDir.split(DIR_SEP)
-			targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
-			
-			os.makedirs(targetAudioDir)
-			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+		self.createTargetDirIfNotExist(targetAudioDir)
 		
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
@@ -121,7 +120,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""
 		As the passed URL points either to a playlist or to a single video, the
-		method returns either pytube.Playlist object and a DownloadVideoInfoDic in
+		method returns either a pytube.Playlist object and a DownloadVideoInfoDic in
 		case of playlist URL or an invalid Playlist object and a video title in case
 		of single video URL.
 		
@@ -196,12 +195,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		return playlistObject, playlistTitle, videoTitle, accessError
 
 	def downloadSingleVideoForUrl(self, singleVideoUrl, videoTitle, targetAudioDir):
-		targetAudioDirList = targetAudioDir.split(DIR_SEP)
-		targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
-
-		if not os.path.isdir(targetAudioDir):
-			os.makedirs(targetAudioDir)
-			self.audioController.displayMessage("directory\n{}\nwas created.".format(targetAudioDirShort))
+		"""
+		Downloads in the passed targetAudioDir the single video referenced in the passed
+		singleVideoUrl.
+		
+		:param singleVideoUrl:
+		:param videoTitle:
+		:param targetAudioDir:
+		"""
+		targetAudioDirShort = self.createTargetDirIfNotExist(targetAudioDir)
 		
 		targetAudioDirFileNameList = self.getFileNamesInDir(targetAudioDir)
 		purgedVideoTitle = self.purgeIllegalWinFileNameChar(videoTitle)
@@ -225,6 +227,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			else:
 				msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
 				self.audioController.displayMessage(msgText)
+	
+	def createTargetDirIfNotExist(self, targetAudioDir):
+		targetAudioDirList = targetAudioDir.split(DIR_SEP)
+		targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
+		
+		if not os.path.isdir(targetAudioDir):
+			os.makedirs(targetAudioDir)
+			self.audioController.displayMessage("directory\n{}\nwas created.\n".format(targetAudioDirShort))
+
+		return targetAudioDirShort
 	
 	def purgeIllegalWinFileNameChar(self, videoTitle):
 		"""

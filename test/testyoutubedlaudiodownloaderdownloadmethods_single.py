@@ -1,0 +1,216 @@
+import unittest
+import os, sys, inspect, shutil, glob
+from io import StringIO
+
+currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentDir = os.path.dirname(currentDir)
+sys.path.insert(0, parentDir)
+
+from constants import *
+from guioutputstub import GuiOutputStub
+from youtubedlaudiodownloader import YoutubeDlAudioDownloader
+
+class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
+	
+	def testDownloadSingleVideoForUrl_targetFolder_exist(self):
+		expectedVideoTitle = 'Funny suspicious looking dog'
+		audioSubDirName = 'Various_test'
+		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			videoUrl)
+
+		self.assertIsNone(downloadVideoInfoDic)
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedVideoTitle, videoTitle)
+
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
+ '',
+ '"Funny suspicious looking dog" audio downloaded in Audiobooks\\Various_test '
+ 'directory.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		if os.name == 'posix':
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			                 downloadDir)
+		else:
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			                 downloadDir)
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Funny suspicious looking dog.mp3']), sorted(fileNameLst))
+	
+	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
+		expectedVideoTitle = 'Funny suspicious looking dog'
+		audioSubDirName = 'Various_test_new'
+		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			videoUrl)
+		
+		self.assertIsNone(downloadVideoInfoDic)
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedVideoTitle, videoTitle)
+		
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['directory',
+ 'Audiobooks\\Various_test_new',
+ 'was created.',
+ '',
+ 'downloading "Funny suspicious looking dog" audio ...',
+ '',
+ '"Funny suspicious looking dog" audio downloaded in '
+ 'Audiobooks\\Various_test_new directory.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		if os.name == 'posix':
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			                 downloadDir)
+		else:
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			                 downloadDir)
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Funny suspicious looking dog.mp3']), sorted(fileNameLst))
+	
+	def testDownloadSingleVideoForUrl_redownloading_video(self):
+		expectedVideoTitle = 'Funny suspicious looking dog'
+		audioSubDirName = 'Various_test'
+		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
+		
+		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			videoUrl)
+		
+		self.assertIsNone(downloadVideoInfoDic)
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedVideoTitle, videoTitle)
+		
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+
+		sys.stdout = stdout
+		
+		self.assertEqual(['"Funny suspicious looking dog" audio already downloaded. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+	
+	def testDownloadSingleVideoForUrl_succeed_on_Windows_only(self):
+		expectedVideoTitle = 'Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀'
+		audioSubDirName = 'Various_test'
+		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		videoUrl = "https://youtu.be/LhH9uX3kgTI"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			videoUrl)
+		
+		self.assertIsNone(downloadVideoInfoDic)
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedVideoTitle, videoTitle)
+		
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['downloading "Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio '
+			                  '...',
+			                  '',
+			                  '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio download failed with error \'str\' object has no attribute \'write\'',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading "Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio '
+	 '...',
+	 '',
+	 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
+	 'Audiobooks\\Various_test directory.',
+	 '',
+	 ''], outputCapturingString.getvalue().split('\n'))
+		
+		if os.name == 'posix':
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			                 downloadDir)
+		else:
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			                 downloadDir)
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀.mp3']), sorted(fileNameLst))
+
+
+if __name__ == '__main__':
+#	unittest.main()
+	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
+	tst.testDownloadSingleVideoForUrl_succeed_on_Windows_only()
