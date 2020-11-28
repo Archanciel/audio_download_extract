@@ -45,17 +45,23 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
- '',
- '"Funny suspicious looking dog" audio downloaded in Audiobooks\\Various_test '
- 'directory.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
 		
 		if os.name == 'posix':
+			self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
+ 							'',
+							 '"Funny suspicious looking dog" audio downloaded in Audiobooks/Various_test '
+							 'directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
 			                 downloadDir)
 		else:
+			self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
+ 							'',
+							 '"Funny suspicious looking dog" audio downloaded in Audiobooks\\Various_test '
+							 'directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
 			                 downloadDir)
 		
@@ -90,21 +96,31 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['directory',
- 'Audiobooks\\Various_test_new',
- 'was created.',
- '',
- 'downloading "Funny suspicious looking dog" audio ...',
- '',
- '"Funny suspicious looking dog" audio downloaded in '
- 'Audiobooks\\Various_test_new directory.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
 		
 		if os.name == 'posix':
+			self.assertEqual(['directory',
+ 							'Audiobooks/Various_test_new',
+ 							'was created.',
+							 '',
+							 'downloading "Funny suspicious looking dog" audio ...',
+							 '',
+							 '"Funny suspicious looking dog" audio downloaded in '
+							 'Audiobooks/Various_test_new directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
 			                 downloadDir)
 		else:
+			self.assertEqual(['directory',
+ 							'Audiobooks\\Various_test_new',
+ 							'was created.',
+							 '',
+							 'downloading "Funny suspicious looking dog" audio ...',
+							 '',
+							 '"Funny suspicious looking dog" audio downloaded in '
+							 'Audiobooks\\Various_test_new directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
 			                 downloadDir)
 		
@@ -216,6 +232,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 
 if __name__ == '__main__':
-#	unittest.main()
-	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadSingleVideoForUrl_succeed_on_Windows_only()
+	unittest.main()
