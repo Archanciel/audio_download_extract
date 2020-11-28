@@ -7,6 +7,7 @@ from testaudioextractor import TestAudioExtractor
 from testdownloadvideoinfodic import TestDownloadVideoInfoDic
 from testplaylisttitleparser import TestPlaylistTitleParser
 from testaudiocontroller import TestAudioController
+from testyoutubedlaudiodownloaderdownloadmethodssinglevideo import TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo
 
 if __name__ == "__main__":
     loader = TestLoader()
@@ -19,6 +20,7 @@ if __name__ == "__main__":
                            loader.loadTestsFromTestCase(YoutubeDlAudioDownloader),
                            loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
+                           loader.loadTestsFromTestCase(TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo),
                            ))
     else:
         suite = TestSuite((loader.loadTestsFromTestCase(TestYoutubeDlAudioDownloaderDownloadMethods),
@@ -27,6 +29,7 @@ if __name__ == "__main__":
                            loader.loadTestsFromTestCase(TestDownloadVideoInfoDic),
                            loader.loadTestsFromTestCase(TestPlaylistTitleParser),
                            loader.loadTestsFromTestCase(TestAudioController),
+                           loader.loadTestsFromTestCase(TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo),
                            ))
         
     runner = TextTestRunner(verbosity = 2)

@@ -10,7 +10,7 @@ from constants import *
 from guioutputstub import GuiOutputStub
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 
-class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
+class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	
 	def testDownloadSingleVideoForUrl_targetFolder_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
@@ -151,6 +151,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testDownloadSingleVideoForUrl_succeed_on_Windows_only(self):
+		"""
+		As unit test, works on Android although the downloaded file is not fully valid:
+		can be played, but without setting position.
+		"""
 		expectedVideoTitle = 'Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀'
 		audioSubDirName = 'Various_test'
 		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
@@ -185,19 +189,20 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		if os.name == 'posix':
 			self.assertEqual(['downloading "Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio '
-			                  '...',
-			                  '',
-			                  '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio download failed with error \'str\' object has no attribute \'write\'',
-			                  '',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+							 '...',
+							 '',
+							 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
+							 'Audiobooks/Various_test directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['downloading "Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio '
-	 '...',
-	 '',
-	 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
-	 'Audiobooks\\Various_test directory.',
-	 '',
-	 ''], outputCapturingString.getvalue().split('\n'))
+							 '...',
+							 '',
+							 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
+							 'Audiobooks\\Various_test directory.',
+							 '',
+							 ''], outputCapturingString.getvalue().split('\n'))
 		
 		if os.name == 'posix':
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
