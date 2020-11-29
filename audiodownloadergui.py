@@ -871,6 +871,7 @@ class AudioDownloaderGUIApp(App):
 			Config.set('graphics', 'height', '500')
 			Config.write()
 
+		self.title = 'AudioDownloader GUI'
 		self.audioDownloaderGUI = AudioDownloaderGUI()
 
 		return self.audioDownloaderGUI
