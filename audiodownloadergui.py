@@ -584,43 +584,6 @@ class AudioDownloaderGUI(BoxLayout):
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
 		self.refocusOnRequestInput()
 
-	def moveUpRequest(self):
-		oldIndex = self.recycleViewCurrentSelIndex
-
-		if oldIndex == -1:                                  #<<------
-			return
-		
-		newIndex = oldIndex - 1
-		requestTotalNumber = len(self.requestListRV.data)
-
-		if newIndex < 0:
-			# if first line request is moved up, it is moved at the end of the
-			# request history list
-			newIndex = requestTotalNumber - 1
-
-		self.moveItemInList(list=self.requestListRV.data, oldIndex=oldIndex, newIndex=newIndex)
-		self.recycleViewCurrentSelIndex = newIndex          #<<------
-		
-	def moveDownRequest(self):
-		oldIndex = self.recycleViewCurrentSelIndex
-		
-		if oldIndex == -1:                                  #<<------
-			return
-		
-		newIndex = oldIndex + 1
-		requestTotalNumber = len(self.requestListRV.data)
-
-		if newIndex == requestTotalNumber:
-			# if first line request is moved up, it is moved at the end of the
-			# request history list
-			newIndex = 0
-
-		self.moveItemInList(list=self.requestListRV.data, oldIndex=oldIndex, newIndex=newIndex)
-		self.recycleViewCurrentSelIndex = newIndex          #<<------
-		
-	def moveItemInList(self, list, oldIndex, newIndex):
-		list.insert(newIndex, list.pop(oldIndex))
-
 	def openDropDownMenu(self, widget):
 		self.dropDownMenu.open(widget)
 
