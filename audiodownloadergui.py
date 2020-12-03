@@ -600,7 +600,6 @@ class AudioDownloaderGUI(BoxLayout):
 			width = 54
 
 		popup = ScrollablePopup(title=AUDIODOWNLOADER_VERSION, size_hint=(None, None), size=popupSize)
-		formatedHelpTextPageList = ''
 
 		with open('help.txt') as helpFile:
 			formatedHelpTextPageList = GuiUtil.sizeParagraphsForKivyLabelFromFile(helpFile, width)
