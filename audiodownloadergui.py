@@ -38,6 +38,8 @@ from guiutil import GuiUtil
 
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.0'
+FILE_LOADED = 0
+FILE_SAVED = 1
 fromAppBuilt = False
 
 
@@ -135,11 +137,11 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 				self.parent.data.pop(movedItemNewSeIndex)
 				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
 		
-		cryptoPricerGUI = self.parent.parent.parent
+		audioDownloaderGUI = self.parent.parent.parent
 		
-		# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-		# deleteRequest() and updateRequest() cryptoPricerGUI methods
-		cryptoPricerGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
+		# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
+		# deleteRequest() and updateRequest() audioDownloaderGUI methods
+		audioDownloaderGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
@@ -159,16 +161,16 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 	def on_touch_down(self, touch):
 		''' Add selection on touch down '''
 		
-		cryptoPricerGUI = self.rv.parent.parent
+		audioDownloaderGUI = self.rv.parent.parent
 		
-		if cryptoPricerGUI.isLineSelected:
+		if audioDownloaderGUI.isLineSelected:
 			# here, the user manually deselects the selected item
-			cryptoPricerGUI.requestInput.text = ''
-			cryptoPricerGUI.isLineSelected = False
+			audioDownloaderGUI.requestInput.text = ''
+			audioDownloaderGUI.isLineSelected = False
 			
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+			# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() audioDownloaderGUI methods
+			audioDownloaderGUI.recycleViewCurrentSelIndex = -1
 		
 		if super(SelectableLabel, self).on_touch_down(touch):
 			return True
@@ -180,30 +182,30 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		# color !
 		self.selected = is_selected
 		
-		cryptoPricerGUI = rv.parent.parent
+		audioDownloaderGUI = rv.parent.parent
 		
 		if is_selected:
 			selItemValue = rv.data[index]['text']
 			
 			# since apply_selection() is called for all the visible items,
 			# if one item is selected, this state must be stored in
-			# cryptoPricerGUI. The isLineSelected flag is set to False
+			# audioDownloaderGUI. The isLineSelected flag is set to False
 			# when the user deselects the selected item. This is done
 			# in on_touch_down()
-			cryptoPricerGUI.isLineSelected = True
+			audioDownloaderGUI.isLineSelected = True
 			
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			cryptoPricerGUI.recycleViewCurrentSelIndex = index
-			cryptoPricerGUI.requestInput.text = selItemValue
+			# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() audioDownloaderGUI methods
+			audioDownloaderGUI.recycleViewCurrentSelIndex = index
+			audioDownloaderGUI.requestInput.text = selItemValue
 		
-		self.updateStateOfRequestListSingleItemButtons(cryptoPricerGUI)
+		self.updateStateOfRequestListSingleItemButtons(audioDownloaderGUI)
 	
-	def updateStateOfRequestListSingleItemButtons(self, cryptoPricerGUI):
-		if cryptoPricerGUI.isLineSelected:
-			cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
+	def updateStateOfRequestListSingleItemButtons(self, audioDownloaderGUI):
+		if audioDownloaderGUI.isLineSelected:
+			audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 		else:
-			cryptoPricerGUI.disableStateOfRequestListSingleItemButtons()
+			audioDownloaderGUI.disableStateOfRequestListSingleItemButtons()
 
 class SettingScrollOptions(SettingOptions):
 	'''
@@ -829,6 +831,15 @@ class AudioDownloaderGUI(BoxLayout):
 
 	# --- end file chooser code ---
 
+	def buildDataPathNotExistMessage(self, path):
+		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+
+	def isLoadAtStart(self, filePathName):
+		return self.configMgr.loadAtStartPathFilename == filePathName
+
+	def buildFileNotFoundMessage(self, filePathFilename):
+		return 'Data file\n' + filePathFilename + '\nnot found. No history loaded.'
+
 	def isLoadAtStart(self, filePathName):
 		return self.configMgr.loadAtStartPathFilename == filePathName
 
@@ -837,7 +848,16 @@ class AudioDownloaderGUI(BoxLayout):
 		for line_label in self.statusBarTextInput._lines_labels:
 			width_calc = max(width_calc, line_label.width + 20)   # add 20 to avoid automatically creating a new line
 		self.statusBarTextInput.width = width_calc
-		
+
+	def displayFileActionOnStatusBar(self, pathFileName, actionType, isLoadAtStart=None):
+		if actionType == FILE_LOADED:
+			self.updateStatusBar('History file loaded:\n{}'.format(pathFileName))
+		else:
+			if isLoadAtStart:
+				self.updateStatusBar('History saved to file: {}.\nLoad at start activated.'.format(pathFileName))
+			else:
+				self.updateStatusBar('History saved to file: {}'.format(pathFileName))
+
 	# --- start AudioDownloaderGUI new code ---
 	
 	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
@@ -1141,6 +1161,7 @@ class AudioDownloaderGUIApp(App):
 		2 videos no time frames (test audio downloader two files)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
 		'''
+		self.loadHistoryDataIfSet()
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
@@ -1167,6 +1188,25 @@ class AudioDownloaderGUIApp(App):
 			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl, self.singleVideoTitle)
 
 		self.popup.dismiss()
+		
+	def loadHistoryDataIfSet(self):
+		'''
+		Testing at app start if data path defined in settings does exist
+		and if history file loaded at start app does exist. Since a warning popup
+		is displayed in case of invalid data, this must be performed here and
+		not in audioDownloaderGUI.__init__ where no popup could be displayed.
+		:return:
+		'''
+		dataPathNotExistMessage = self.audioDownloaderGUI.buildDataPathNotExistMessage(self.audioDownloaderGUI.dataPath)
+
+		if self.audioDownloaderGUI.ensureDataPathExist(self.audioDownloaderGUI.dataPath, dataPathNotExistMessage):
+			# loading the load at start history file if defined
+			historyFilePathFilename = self.audioDownloaderGUI.configMgr.loadAtStartPathFilename
+			dataFileNotFoundMessage = self.audioDownloaderGUI.buildFileNotFoundMessage(historyFilePathFilename)
+
+			if historyFilePathFilename != '' and self.audioDownloaderGUI.ensureDataPathFileNameExist(historyFilePathFilename, dataFileNotFoundMessage):
+				self.audioDownloaderGUI.loadHistoryFromPathFilename(historyFilePathFilename)
+				self.audioDownloaderGUI.displayFileActionOnStatusBar(historyFilePathFilename, FILE_LOADED)
 
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIApp()
