@@ -40,59 +40,170 @@ from guiutil import GuiUtil
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.0'
 fromAppBuilt = False
 
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-								 RecycleBoxLayout):
-	''' Adds selection and focus behaviour to the view. '''
 
+class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+	''' Adds selection and focus behaviour to the view. '''
+	
+	MOVE_DIRECTION_UP = 'moveItemUp'
+	MOVE_DIRECTION_DOWN = 'moveItemDown'
+	
 	# required to authorise unselecting a selected item
 	touch_deselect_last = BooleanProperty(True)
+	
+	def get_nodes(self):
+		nodes = self.get_selectable_nodes()
+		
+		if self.nodes_order_reversed:
+			nodes = nodes[::-1]
+		
+		if not nodes:
+			return None, None
+		
+		selected = self.selected_nodes
+		
+		if not selected:  # nothing selected
+			return None, None
+		
+		if len(nodes) == 1:  # the only selectable node is selected already
+			return None, None
+		
+		currentSelIdx = nodes.index(selected[-1])
+		self.clear_selection()
+		
+		return currentSelIdx, nodes
+	
+	def moveItemUp(self):
+		currentSelIdx, nodes = self.get_nodes()
+		
+		if not nodes:
+			return
+		
+		if not currentSelIdx:
+			# currentSelIdx == 0 --> first item is moved up
+			# which means it will become the last item !
+			newSelIdx = -1
+		else:
+			newSelIdx = currentSelIdx - 1
+		
+		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
+		self.select_node(nodes[newSelIdx])
+	
+	def moveItemDown(self):
+		currentSelIdx, nodes = self.get_nodes()
+		
+		if not nodes:
+			return
+		
+		if currentSelIdx == len(nodes) - 1:
+			# moving down last item puts it at first item position
+			newSelIdx = 0
+		else:
+			newSelIdx = currentSelIdx + 1
+		
+		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
+		self.select_node(nodes[newSelIdx])
+	
+	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
+		movedValue = self.parent.data[movedItemSelIndex]['text']
+		
+		if moveDirection == SelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
+			if movedItemSelIndex > movedItemNewSeIndex:
+				# we are moving down the last list item. The item will be inserted at top
+				# of the list
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(0, {'text': movedValue, 'selectable': True})
+			else:
+				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				
+				self.parent.data.pop(movedItemNewSeIndex)
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+		else:
+			# handling moving up
+			if movedItemSelIndex == 0:
+				# we are moving up the first item. The first item will be appended to the
+				# end of the list
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.append({'text': movedValue, 'selectable': True})
+			else:
+				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				
+				self.parent.data.pop(movedItemNewSeIndex)
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+		
+		cryptoPricerGUI = self.parent.parent.parent
+		
+		# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
+		# deleteRequest() and updateRequest() cryptoPricerGUI methods
+		cryptoPricerGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
+
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
 	''' Add selection support to the Label '''
 	index = None
 	selected = BooleanProperty(False)
 	selectable = BooleanProperty(True)
-
+	
 	def refresh_view_attrs(self, rv, index, data):
 		''' Catch and handle the view changes '''
-		self.rv = rv                            #<<------
+		self.rv = rv
 		self.index = index
+		
 		return super(SelectableLabel, self).refresh_view_attrs(
 			rv, index, data)
-
+	
 	def on_touch_down(self, touch):
 		''' Add selection on touch down '''
+		
+		cryptoPricerGUI = self.rv.parent.parent
+		
+		if cryptoPricerGUI.isLineSelected:
+			# here, the user manually deselects the selected item
+			cryptoPricerGUI.requestInput.text = ''
+			cryptoPricerGUI.isLineSelected = False
+			
+			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+		
 		if super(SelectableLabel, self).on_touch_down(touch):
 			return True
 		if self.collide_point(*touch.pos) and self.selectable:
-			if self.rv.parent.parent.recycleViewCurrentSelIndex == self.index: #<<------
-				self.selected = False                                          #<<------
-				self.rv.parent.parent.recycleViewCurrentSelIndex = -1          #<<------
-			else:                                                              #<<------
-				self.rv.parent.parent.recycleViewCurrentSelIndex = self.index  #<<------
-
 			return self.parent.select_with_touch(self.index, touch)
-
+	
 	def apply_selection(self, rv, index, is_selected):
-		''' Respond to the selection of items in the view. '''
-		if rv.parent.parent.recycleViewCurrentSelIndex == index: #<<------
-			is_selected = True                                   #<<------
-			self.selected = False                                #<<------
-		else:                                                    #<<------
-			is_selected = False                                  #<<------
-			self.selected = True                                 #<<------
-
-		if not self.selected and not is_selected:
-			# case when adding a new list item
-			return
-		elif self.selected and not is_selected:
-			# toggling from selected to unselected
-			self.selected = False
-			rv.parent.parent.recycleViewSelectItem(index, self.selected)
+		# instance variable used in .kv file to change the selected item
+		# color !
+		self.selected = is_selected
+		
+		cryptoPricerGUI = rv.parent.parent
+		
+		if is_selected:
+			selItemValue = rv.data[index]['text']
+			
+			# since apply_selection() is called for all the visible items,
+			# if one item is selected, this state must be stored in
+			# cryptoPricerGUI. The isLineSelected flag is set to False
+			# when the user deselects the selected item. This is done
+			# in on_touch_down()
+			cryptoPricerGUI.isLineSelected = True
+			
+			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			cryptoPricerGUI.recycleViewCurrentSelIndex = index
+			cryptoPricerGUI.requestInput.text = selItemValue
+		
+		self.updateStateOfRequestListSingleItemButtons(cryptoPricerGUI)
+	
+	def updateStateOfRequestListSingleItemButtons(self, cryptoPricerGUI):
+		if cryptoPricerGUI.isLineSelected:
+			cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
 		else:
-			# toggling from unselected to selected
-			self.selected = not self.selected
-			rv.parent.parent.recycleViewSelectItem(index, self.selected)
+			cryptoPricerGUI.disableStateOfRequestListSingleItemButtons()
 
 class SettingScrollOptions(SettingOptions):
 	'''
@@ -258,6 +369,8 @@ class AudioDownloaderGUI(BoxLayout):
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
 		
+		self.isLineSelected = False
+		
 		self.downloadVideoInfoDic = None
 		self.playlistOrSingleVideoUrl = None
 
@@ -383,7 +496,7 @@ class AudioDownloaderGUI(BoxLayout):
 
 		self.outputResult(outputResultStr)
 
-		fullRequestListEntry = {'text': fullRequestStr}
+		fullRequestListEntry = {'text': fullRequestStr, 'selectable': True}
 
 		if fullRequestStrWithSaveModeOptions != None:
 			if fullRequestListEntry in self.requestListRV.data:
@@ -392,7 +505,7 @@ class AudioDownloaderGUI(BoxLayout):
 				# to the list. Otherwise, this would engender a duplicate !
 				self.requestListRV.data.remove(fullRequestListEntry)
 
-			fullRequestStrWithSaveModeOptionsListEntry = {'text': fullRequestStrWithSaveModeOptions}
+			fullRequestStrWithSaveModeOptionsListEntry = {'text': fullRequestStrWithSaveModeOptions, 'selectable': True}
 
 			if not fullRequestStrWithSaveModeOptionsListEntry in self.requestListRV.data:
 				self.requestListRV.data.append(fullRequestStrWithSaveModeOptionsListEntry)
@@ -564,25 +677,20 @@ class AudioDownloaderGUI(BoxLayout):
 		requestStr = self.requestInput.text
 
 		# Add the updated data to the list if not already in
-		requestListEntry = {'text': requestStr}
+		requestListEntry = {'text': requestStr, 'selectable': True}
 
 		if not requestListEntry in self.requestListRV.data:
-			self.requestListRV.data.append(requestListEntry)
-
-		# Clear selection
-		self.requestListRV._get_layout_manager().clear_selection()
-		self.requestInput.text = ''
-		self.disableRequestListItemButtons()
+			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 
 		self.refocusOnRequestInput()
 
-	def enableRequestListItemButtons(self):
+	def enableStateOfRequestListSingleItemButtons(self):
 		self.deleteButton.disabled = False
 		self.replaceButton.disabled = False
 		self.moveUpButton.disabled = False
 		self.moveDownButton.disabled = False
 
-	def disableRequestListItemButtons(self):
+	def disableStateOfRequestListSingleItemButtons(self):
 		self.deleteButton.disabled = True
 		self.replaceButton.disabled = True
 		self.moveUpButton.disabled = True
@@ -683,7 +791,7 @@ class AudioDownloaderGUI(BoxLayout):
 			lines = stream.readlines()
 
 		lines = list(map(lambda line: line.strip('\n'), lines))
-		histoLines = [{'text' : val} for val in lines]
+		histoLines = [{'text' : val, 'selectable': True} for val in lines]
 		self.requestListRV.data = histoLines
 
 		# Reset the ListView
