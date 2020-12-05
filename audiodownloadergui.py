@@ -172,7 +172,7 @@ class CustomDropDown(DropDown):
 	def showLoad(self):
 		message = 'Audio dir ' + AUDIO_DIR + '\nas defined in the settings does not exist !\nEither create the directory or change the\naudio dir value using the Settings menu.'
 
-		if self.owner.ensureDataPathExist(AUDIO_DIR + 'aa', message):
+		if self.owner.ensureDataPathExist(AUDIO_DIR, message):
 			self.owner.openLoadHistoryFileChooser()
 
 	def showSave(self):
@@ -275,6 +275,31 @@ class AudioDownloaderGUI(BoxLayout):
 				popupSize = (980, 450)
 			elif platform == 'win':
 				popupSize = (500, 150)
+
+			popup = Popup(title='CryptoPricer WARNING', content=Label(
+				text=message),
+						  auto_dismiss=True, size_hint=(None, None),
+						  size=popupSize)
+			popup.open()
+
+			return False
+		else:
+			return True
+
+	def ensureDataPathFileNameExist(self, dataPathFileName, message):
+		'''
+		Display a warning in a popup if the passed data path file name
+		does not exist and return False. If dataPathFileName ok, returns True.
+		This prevents exceptions at load or save or settings save time.
+		:return:
+		'''
+		if not (os.path.isfile(dataPathFileName)):
+			popupSize = None
+
+			if platform == 'android':
+				popupSize = (980, 450)
+			elif platform == 'win':
+				popupSize = (300, 150)
 
 			popup = Popup(title='CryptoPricer WARNING', content=Label(
 				text=message),
