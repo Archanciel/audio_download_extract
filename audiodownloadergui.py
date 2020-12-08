@@ -137,12 +137,9 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 				self.parent.data.pop(movedItemNewSeIndex)
 				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
 		
-		audioDownloaderGUI = self.parent.parent.parent
-		
 		# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
 		# deleteRequest() and updateRequest() audioDownloaderGUI methods
-		audioDownloaderGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
-
+		self.audioDownloaderGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
 	''' Add selection support to the Label '''
@@ -163,10 +160,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		
 		audioDownloaderGUI = self.rv.parent.parent
 		
-		if audioDownloaderGUI.isLineSelected:
-			# here, the user manually deselects the selected item
+		if len(audioDownloaderGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
+			# here, the user manually deselects the selected item. When
+			# on_touch_down is called, if the item is selected, the
+			# requestListRVSelBoxLayout.selected_nodes list has one element !
 			audioDownloaderGUI.requestInput.text = ''
-			audioDownloaderGUI.isLineSelected = False
 			
 			# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() audioDownloaderGUI methods
@@ -187,25 +185,12 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		if is_selected:
 			selItemValue = rv.data[index]['text']
 			
-			# since apply_selection() is called for all the visible items,
-			# if one item is selected, this state must be stored in
-			# audioDownloaderGUI. The isLineSelected flag is set to False
-			# when the user deselects the selected item. This is done
-			# in on_touch_down()
-			audioDownloaderGUI.isLineSelected = True
-			
 			# audioDownloaderGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() audioDownloaderGUI methods
 			audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			audioDownloaderGUI.requestInput.text = selItemValue
 		
-		self.updateStateOfRequestListSingleItemButtons(audioDownloaderGUI)
-	
-	def updateStateOfRequestListSingleItemButtons(self, audioDownloaderGUI):
-		if audioDownloaderGUI.isLineSelected:
-			audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
-		else:
-			audioDownloaderGUI.disableStateOfRequestListSingleItemButtons()
+		audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 
 class SettingScrollOptions(SettingOptions):
 	'''
@@ -371,8 +356,6 @@ class AudioDownloaderGUI(BoxLayout):
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
 		
-		self.isLineSelected = False
-		
 		self.downloadVideoInfoDic = None
 		self.playlistOrSingleVideoUrl = None
 
@@ -454,25 +437,31 @@ class AudioDownloaderGUI(BoxLayout):
 			self.size_hint_y = 1
 			self.pos_hint = {'x': 0, 'y': 0}
 			self.toggleAppSizeButton.text = 'Half'
-
+	
 	def toggleRequestList(self):
 		'''
 		called by 'History' toggle button to toggle the display of the history
 		request list.
 		'''
 		if self.showRequestList:
-			# hiding RecycleView list
+			# RecycleView request history list is currently displayed and
+			# will be hidden
 			self.boxLayoutContainingRV.height = '0dp'
-
-			self.disableRequestListItemButtons()
+			
+			# when hidding the history request list, an item can be selected.
+			# For this reason, the disableStateOfRequestListSingleItemButtons()
+			# must be called explicitely called, otherwise the history request
+			# list items specific buttons remain active !
+			self.disableStateOfRequestListSingleItemButtons()
 			self.showRequestList = False
 		else:
-			# showing RecycleView list
+			# RecycleView request history list is currently hidden and
+			# will be displayed
 			self.adjustRequestListSize()
 			self.showRequestList = True
 			self.resetListViewScrollToEnd()
 			self.refocusOnRequestInput()
-
+	
 	def adjustRequestListSize(self):
 		listItemNumber = len(self.requestListRV.data)
 		self.boxLayoutContainingRV.height = min(listItemNumber * self.histoListItemHeight, self.maxHistoListHeight)
@@ -528,7 +517,7 @@ class AudioDownloaderGUI(BoxLayout):
 		if self.showRequestList:
 			self.adjustRequestListSize()
 
-		self.manageStateOfRequestListButtons()
+		self.manageStateOfGlobalRequestListButtons()
 		self.requestInput.text = ''
 
 		# displaying request in status bar
@@ -602,12 +591,19 @@ class AudioDownloaderGUI(BoxLayout):
 				if listItemNumber == 0:
 					self.showRequestList = False
 					self.manageStateOfRequestListButtons()
-
-	def manageStateOfRequestListButtons(self):
+	
+	def manageStateOfGlobalRequestListButtons(self):
 		'''
 		Enable or disable history request list related controls according to
 		the status of the list: filled with items or empty.
-		:return:
+
+		Only handles state of the request history list buttons which
+		operates on the list globally, not on specific items of the list.
+
+		Those buttons are:
+			Display/hide request history list button
+			Replay all button
+			Save request history list menu item button
 		'''
 		if len(self.requestListRV.data) == 0:
 			# request list is empty
@@ -620,7 +616,7 @@ class AudioDownloaderGUI(BoxLayout):
 			self.toggleHistoButton.disabled = False
 			self.replayAllButton.disabled = False
 			self.dropDownMenu.saveButton.disabled = False
-
+	
 	def outputResult(self, resultStr):
 		if len(self.resultOutput.text) == 0:
 			self.resultOutput.text = resultStr
@@ -645,32 +641,35 @@ class AudioDownloaderGUI(BoxLayout):
 		:return:
 		'''
 		self.requestInput.focus = True
-
+	
 	def deleteRequest(self, *args):
-		# deleting from RecycleView list
+		# deleting selected item from RecycleView list
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
-		self.requestListRV._get_layout_manager().clear_selection()
 		
-		requestNb = len(self.requestListRV.data)
+		remainingItemNb = len(self.requestListRV.data)
 		
-		if requestNb == 0:
-			self.disableRequestListItemButtons()
+		if remainingItemNb == 0:
+			# no more item in RecycleView list
+			self.disableStateOfRequestListSingleItemButtons()
 			self.toggleHistoButton.disabled = True
 			self.showRequestList = False
-			self.requestInput.text = ''
 		
-		# fixing crash when deleting last item of history list
-		if requestNb == self.recycleViewCurrentSelIndex:
-			self.recycleViewCurrentSelIndex -= 1
-		# fixing crash when deleting last item of history list
-
+		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
+		
+		if currentSelItemIdx >= remainingItemNb:
+			# the case if the last item was deleted. Then, the new last item
+			# is selected
+			lastItemIdx = remainingItemNb - 1
+			self.requestListRVSelBoxLayout.selected_nodes = [lastItemIdx]
+			self.recycleViewCurrentSelIndex = lastItemIdx
+		
 		if self.showRequestList:
 			self.adjustRequestListSize()
-
-		self.manageStateOfRequestListButtons()
-
+		
+		self.manageStateOfGlobalRequestListButtons()
+		
 		self.refocusOnRequestInput()
-
+	
 	def replaceRequest(self, *args):
 		# Remove the selected item
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
@@ -685,19 +684,29 @@ class AudioDownloaderGUI(BoxLayout):
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 
 		self.refocusOnRequestInput()
-
+	
 	def enableStateOfRequestListSingleItemButtons(self):
-		self.deleteButton.disabled = False
-		self.replaceButton.disabled = False
-		self.moveUpButton.disabled = False
-		self.moveDownButton.disabled = False
-
+		"""
+		This method handles the states of the single items of the request
+		history list.
+		"""
+		if len(self.requestListRVSelBoxLayout.selected_nodes):
+			# here, a request list item is selected and the
+			# requestListRVSelBoxLayout.selected_nodes list has one
+			# element !
+			self.deleteButton.disabled = False
+			self.replaceButton.disabled = False
+			self.moveUpButton.disabled = False
+			self.moveDownButton.disabled = False
+		else:
+			self.disableStateOfRequestListSingleItemButtons()
+	
 	def disableStateOfRequestListSingleItemButtons(self):
 		self.deleteButton.disabled = True
 		self.replaceButton.disabled = True
 		self.moveUpButton.disabled = True
 		self.moveDownButton.disabled = True
-
+	
 	def replayAllRequests(self):
 		self.replayAllButton.disabled = True
 
@@ -799,7 +808,7 @@ class AudioDownloaderGUI(BoxLayout):
 		# Reset the ListView
 		self.resetListViewScrollToEnd()
 
-		self.manageStateOfRequestListButtons()
+		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnRequestInput()
 
 	def saveHistoryToFile(self, path, filename, isLoadAtStart):
