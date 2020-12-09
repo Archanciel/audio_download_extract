@@ -785,4 +785,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrl_invalid_url()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo()

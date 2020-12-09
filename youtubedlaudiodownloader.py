@@ -70,6 +70,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
 				videoTitle = ''
+				
 				try:
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
@@ -167,7 +168,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		try:
 			playlistObject = Playlist(url)
 			playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-			playlistTitle = playlistObject.title()
+			playlistTitle = playlistObject.title
 		except http.client.InvalidURL as e:
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
 		except AttributeError as e:
@@ -175,6 +176,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		except URLError:
 			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
 		except KeyError as e:
+			# this happens if the url in the clipboard points to a single video !
 			pass
 
 		if url != '' and accessError is None and playlistTitle is None:
