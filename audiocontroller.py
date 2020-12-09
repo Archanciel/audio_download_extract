@@ -163,7 +163,7 @@ class AudioController:
 					 3/ None (no value command in effect)
 					 4/ None (no value command save option in effect)
 		'''
-		return 'printResult', 'fullCommandStrNoOptions', 'fullCommandStrWithOptions', 'fullCommandStrWithSaveModeOptions', 'fullCommandStrForStatusBar'
+		return inputStr, inputStr, inputStr, inputStr, inputStr
 
 
 if __name__ == "__main__":

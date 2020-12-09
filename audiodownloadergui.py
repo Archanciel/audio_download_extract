@@ -804,6 +804,7 @@ class AudioDownloaderGUI(BoxLayout):
 		lines = list(map(lambda line: line.strip('\n'), lines))
 		histoLines = [{'text' : val, 'selectable': True} for val in lines]
 		self.requestListRV.data = histoLines
+		self.requestListRVSelBoxLayout.clear_selection()
 
 		# Reset the ListView
 		self.resetListViewScrollToEnd()
