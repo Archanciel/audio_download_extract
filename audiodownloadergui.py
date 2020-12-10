@@ -850,9 +850,6 @@ class AudioDownloaderGUI(BoxLayout):
 	def buildFileNotFoundMessage(self, filePathFilename):
 		return 'Data file\n' + filePathFilename + '\nnot found. No history loaded.'
 
-	def isLoadAtStart(self, filePathName):
-		return self.configMgr.loadAtStartPathFilename == filePathName
-
 	def statusBarTextChanged(self):
 		width_calc = self.statusBarScrollView.width
 		for line_label in self.statusBarTextInput._lines_labels:
@@ -962,9 +959,6 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	def displayError(self, msg):
 		pass
-	
-	def buildDataPathNotExistMessage(self, path):
-		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
 class ConfirmPopup(GridLayout):
 	text = StringProperty()
