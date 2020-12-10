@@ -813,7 +813,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.refocusOnRequestInput()
 
 	def saveHistoryToFile(self, path, filename, isLoadAtStart):
-		dataPathNotExistMessage = self.formatPopupConfirmMsg(path)
+		dataPathNotExistMessage = self.buildDataPathNotExistMessage(path)
 		pathFileName = os.path.join(path, filename)
 
 		if not filename or not self.ensureDataPathExist(path, dataPathNotExistMessage):
@@ -963,6 +963,9 @@ class AudioDownloaderGUI(BoxLayout):
 	def displayError(self, msg):
 		pass
 	
+	def buildDataPathNotExistMessage(self, path):
+		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+
 class ConfirmPopup(GridLayout):
 	text = StringProperty()
 	
