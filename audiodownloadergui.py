@@ -44,7 +44,7 @@ fromAppBuilt = False
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
+								 RecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
 	MOVE_DIRECTION_UP = 'moveItemUp'
@@ -919,9 +919,9 @@ class AudioDownloaderGUI(BoxLayout):
 		return answer
 	
 	def createConfirmPopup(self,
-	                       confirmPopupTitle,
-	                       confirmPopupMsg,
-	                       confirmPopupCallbackFunction):
+						   confirmPopupTitle,
+						   confirmPopupMsg,
+						   confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
@@ -944,11 +944,11 @@ class AudioDownloaderGUI(BoxLayout):
 		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
 		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		popup = Popup(title=confirmPopupTitle,
-		              content=confirmPopup,
-		              size_hint=(None, None),
-		              pos_hint={'top': 0.8},
-		              size=popupSize,
-		              auto_dismiss=False)
+					  content=confirmPopup,
+					  size_hint=(None, None),
+					  pos_hint={'top': 0.8},
+					  size=popupSize,
+					  auto_dismiss=False)
 		
 		return popup
 	
@@ -1077,8 +1077,10 @@ class AudioDownloaderGUIApp(App):
 					"section": "General",
 					"key": "dataPath"
 				}
-			]""" % TIME_ZONE_LIST)
-								)
+			]""" % TIME_ZONE_LIST)  # "key": "dataPath" above is the key in the app config file.
+								)   # To use another drive, simply define it as datapath value
+									# in the app config file
+		
 		# add 'Layout' settings pannel
 		settings.add_json_panel("Layout", self.config, data=("""
 			[
@@ -1138,6 +1140,7 @@ class AudioDownloaderGUIApp(App):
 		'''
 		Redefining super class method to control the name and location of the application
 		settings ini file
+		
 		:param defaultpath: used under Windows
 		:return:
 		'''
