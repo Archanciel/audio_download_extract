@@ -36,8 +36,11 @@ from configmanager import ConfigManager
 from audiocontroller import AudioController
 from guiutil import GuiUtil
 
-# global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
-AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.0'
+# global var in order tco avoid multiple call to AudioDownloaderGUI __init__ !
+RV_LIST_ITEM_SPACING_ANDROID = 2
+RV_LIST_ITEM_SPACING_WINDOWS = 0.5
+
+AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 FILE_LOADED = 0
 FILE_SAVED = 1
 fromAppBuilt = False
@@ -329,25 +332,22 @@ class AudioDownloaderGUI(BoxLayout):
 
 		super(AudioDownloaderGUI, self).__init__(**kwargs)
 		self.dropDownMenu = CustomDropDown(owner=self)
-		requestListRVSpacing = 0.5
 
 		if os.name == 'posix':
-			configFilePathName = '/storage/emulated/0/audiodownloader.ini'
-			requestListRVSpacing = 2
+			configPath = '/storage/emulated/0/audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
-			configFilePathName = 'c:\\temp\\audiodownloader.ini'
-			self.toggleAppSizeButton.text = 'Half'  # correct on Windows version !
+			configPath = 'c:\\temp\\audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 
-		self.configMgr = ConfigManager(configFilePathName)
+		self.configMgr = ConfigManager(configPath)
 		self.audioController = AudioController(self, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
-		self.histoListItemHeight = int(self.configMgr.histoListItemHeight)
-		self.histoListMaxVisibleItems = int(self.configMgr.histoListVisibleSize)
-		self.maxHistoListHeight = self.histoListMaxVisibleItems * self.histoListItemHeight
 
-		# setting RecycleView list item height from config
-		self.requestListRVSelBoxLayout.default_size = None, self.histoListItemHeight
-		self.requestListRVSelBoxLayout.spacing = requestListRVSpacing
+		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
+		                        int(self.configMgr.histoListVisibleSize),
+		                        requestListRVSpacing)
 
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
@@ -358,7 +358,31 @@ class AudioDownloaderGUI(BoxLayout):
 		
 		self.downloadVideoInfoDic = None
 		self.playlistOrSingleVideoUrl = None
-
+	
+	def rvListSizeSettingsChanged(self):
+		if os.name == 'posix':
+			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
+		else:
+			rvListItemSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+		
+		self.setRVListSizeParms(self.rvListItemHeight,
+		                        self.rvListMaxVisibleItems,
+		                        rvListItemSpacing)
+		if self.showRequestList:
+			self.adjustRequestListSize()
+	
+	def setRVListSizeParms(self,
+	                       rvListItemHeight,
+	                       rvListMaxVisibleItems,
+	                       rvListItemSpacing):
+		self.rvListItemHeight = rvListItemHeight
+		self.rvListMaxVisibleItems = rvListMaxVisibleItems
+		self.maxRvListHeight = self.rvListMaxVisibleItems * self.rvListItemHeight
+		
+		# setting RecycleView list item height from config
+		self.requestListRVSelBoxLayout.default_size = None, self.rvListItemHeight
+		self.requestListRVSelBoxLayout.spacing = rvListItemSpacing
+	
 	def ensureDataPathExist(self, dataPath, message):
 		'''
 		Display a warning in a popup if the data path defined in the settings
@@ -464,7 +488,7 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	def adjustRequestListSize(self):
 		listItemNumber = len(self.requestListRV.data)
-		self.boxLayoutContainingRV.height = min(listItemNumber * self.histoListItemHeight, self.maxHistoListHeight)
+		self.boxLayoutContainingRV.height = min(listItemNumber * self.rvListItemHeight, self.maxRvListHeight)
 
 		return listItemNumber
 
@@ -578,7 +602,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.refocusOnRequestInput()
 
 	def resetListViewScrollToEnd(self):
-		maxVisibleItemNumber = self.histoListMaxVisibleItems
+		maxVisibleItemNumber = self.rvListMaxVisibleItems
 		listLength = len(self.requestListRV.data)
 
 		if listLength > maxVisibleItemNumber:
@@ -1123,9 +1147,11 @@ class AudioDownloaderGUIApp(App):
 
 				self.root.applyAppPosAndSize()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT:
-				self.root.histoListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
+				self.root.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
+				self.root.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
-				self.root.histoListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
+				self.root.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
+				self.root.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
 				self.root.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.root.applyAppPosAndSize()
