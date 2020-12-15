@@ -93,7 +93,12 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		
 		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-	
+
+		# supplements the refocusOnRequestInput() called in the
+		# SelectableLabel.apply_selection() method, but is useful when
+		# the moved item is no longer visible !
+		self.audioDownloaderGUI.refocusOnRequestInput()
+
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
 		
@@ -108,7 +113,12 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		
 		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-	
+
+		# supplements the refocusOnRequestInput() called in the
+		# SelectableLabel.apply_selection() method, but is useful when
+		# the moved item is no longer visible !
+		self.audioDownloaderGUI.refocusOnRequestInput()
+
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedValue = self.parent.data[movedItemSelIndex]['text']
 		
@@ -192,7 +202,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 			# deleteRequest() and updateRequest() audioDownloaderGUI methods
 			audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			audioDownloaderGUI.requestInput.text = selItemValue
-		
+			audioDownloaderGUI.refocusOnRequestInput()
+
 		audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 
 class SettingScrollOptions(SettingOptions):
@@ -484,7 +495,8 @@ class AudioDownloaderGUI(BoxLayout):
 			self.adjustRequestListSize()
 			self.showRequestList = True
 			self.resetListViewScrollToEnd()
-			self.refocusOnRequestInput()
+		
+		self.refocusOnRequestInput()
 	
 	def adjustRequestListSize(self):
 		listItemNumber = len(self.requestListRV.data)
@@ -652,11 +664,11 @@ class AudioDownloaderGUI(BoxLayout):
 		self.clearResultOutputButton.disabled = False
 
 	def refocusOnRequestInput(self):
-		# defining a delay of 0.1 sec ensure the
-		# refocus works in all situations. Leaving
-		# it empty (== next frame) does not work
-		# when pressing a button !
-		Clock.schedule_once(self._refocusTextInput, 0.1)
+		# defining a delay of 0.5 sec ensure the
+		# refocus works in all situations, moving
+		# up and down comprised (0.1 sec was not
+		# sufficient for item move ...)
+		Clock.schedule_once(self._refocusTextInput, 0.5)
 
 	def _refocusTextInput(self, *args):
 		'''
