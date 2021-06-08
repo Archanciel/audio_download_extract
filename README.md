@@ -79,8 +79,7 @@ downloaded to a directory specified in the app settings.
 </p>
 
 ## Required libraries
-- pytube3
+- pytube
 - youtube_dl
 - moviepy (not working on Android !)
-- mutagen
 - kivy
