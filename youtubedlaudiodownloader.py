@@ -2,6 +2,7 @@ import glob, re
 from os import listdir
 from os.path import isfile, join
 from urllib.error import URLError
+from urllib.error import HTTPError
 from pytube import Playlist
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
@@ -186,7 +187,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				youtube = YouTube(url)
 				video = youtube.streams.first()
 				videoTitle = video.title
-			except (RegexMatchError, KeyError) as e:
+			except (RegexMatchError, KeyError, HTTPError) as e:
 				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
 				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
 		
