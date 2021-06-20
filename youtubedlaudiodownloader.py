@@ -17,8 +17,8 @@ from accesserror import AccessError
 YOUTUBE_DL_QUIET = True
 
 class YoutubeDlAudioDownloader(AudioDownloader):
-	def __init__(self, audioController):
-		super().__init__(audioController)
+	def __init__(self, audioController, audioDir):
+		super().__init__(audioController, audioDir)
 	
 		if os.name == 'posix':
 			# on AndroidAndroid, FFmpegExtractAudio not available !
@@ -136,7 +136,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			return None, None, None, accessError
 		
 		if playlistTitle:
-			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle)
+			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
 		else:
 			downloadVideoInfoDic = None
 

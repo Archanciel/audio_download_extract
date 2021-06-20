@@ -353,7 +353,7 @@ class AudioDownloaderGUI(BoxLayout):
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 
 		self.configMgr = ConfigManager(configPath)
-		self.audioController = AudioController(self, self.configMgr)
+		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
 
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),

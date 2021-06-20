@@ -7,38 +7,7 @@ from accesserror import AccessError
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(playlistTitle):
-		"""
-		Returns the playlist name and a dictionary whose key is the video index
-		and value is a list of two lists, one containing the start and
-		end extract positions in seconds, the second list containing the start
-		and end suppress positions in seconds.
-		
-		Example of playlist title:
-		The title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
-		-e or -E means "to end"
-		
-		@:return downloadVideoInfoDic
-				 accessError in case of problem, None otherwise
-		"""
-		playlistNamePattern = r'([\w_ ]+)((\([\d:\-eEsS ]*\)))?'
-
-		match = re.match(playlistNamePattern, playlistTitle)
-		playlistName = match.group(1)
-		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
-		playlistName = playlistName.strip()
-		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
-		
-		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
-		accessError = None
-		
-		if videoTimeFramesInfo is not None:
-			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle)
-		
-		return downloadVideoInfoDic, accessError
-	
-	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(playlistTitle):
+	def createDownloadVideoInfoDicForPlaylist(playlistTitle, audioDir):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -58,7 +27,7 @@ class PlaylistTitleParser:
 		playlistName = match.group(1)
 		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
 		playlistName = playlistName.strip()
-		targetAudioDir = AUDIO_DIR + DIR_SEP + playlistName
+		targetAudioDir = audioDir + DIR_SEP + playlistName
 		
 		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
 		accessError = None

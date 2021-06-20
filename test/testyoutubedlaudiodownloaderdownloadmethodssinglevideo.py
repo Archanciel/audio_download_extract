@@ -15,7 +15,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_targetFolder_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test'
-		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -27,7 +27,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -49,20 +49,20 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		if os.name == 'posix':
 			self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
  							'',
-							 '"Funny suspicious looking dog" audio downloaded in Audiobooks/Various_test '
+							 '"Funny suspicious looking dog" audio downloaded in test/Various_test '
 							 'directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
 			self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
  							'',
-							 '"Funny suspicious looking dog" audio downloaded in Audiobooks\\Various_test '
+							 '"Funny suspicious looking dog" audio downloaded in test\\Various_test '
 							 'directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\' + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -71,14 +71,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test_new'
-		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + audioSubDirName
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -105,23 +105,23 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 'downloading "Funny suspicious looking dog" audio ...',
 							 '',
 							 '"Funny suspicious looking dog" audio downloaded in '
-							 'Audiobooks/Various_test_new directory.',
+							 'test/Various_test_new directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
 			self.assertEqual(['directory',
- 							'Audiobooks\\Various_test_new',
+ 							'test\\Various_test_new',
  							'was created.',
 							 '',
 							 'downloading "Funny suspicious looking dog" audio ...',
 							 '',
 							 '"Funny suspicious looking dog" audio downloaded in '
-							 'Audiobooks\\Various_test_new directory.',
+							 'test\\Various_test_new directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\' + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -130,7 +130,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_redownloading_video(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test'
-		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -142,8 +142,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
+		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
 		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
 			videoUrl)
@@ -173,7 +174,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		"""
 		expectedVideoTitle = 'Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀'
 		audioSubDirName = 'Various_test'
-		downloadDir = AUDIO_DIR + DIR_SEP + audioSubDirName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -185,7 +186,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		videoUrl = "https://youtu.be/LhH9uX3kgTI"
 		
 		stdout = sys.stdout
@@ -208,7 +209,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '...',
 							 '',
 							 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
-							 'Audiobooks/Various_test directory.',
+							 'test/Various_test directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
@@ -216,15 +217,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '...',
 							 '',
 							 '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
-							 'Audiobooks\\Various_test directory.',
+							 'test\\Various_test directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		
 		if os.name == 'posix':
-			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + audioSubDirName,
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + audioSubDirName,
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\' + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]

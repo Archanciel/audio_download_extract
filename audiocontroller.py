@@ -8,7 +8,7 @@ from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from audioextractor import AudioExtractor
 
 class AudioController:
-	def __init__(self, audioDownloaderGUI, configMgr=None):
+	def __init__(self, audioDownloaderGUI, audioDir, configMgr=None):
 		"""
 		
 		:param audioDownloaderGUI: used for unit testing only !
@@ -26,7 +26,7 @@ class AudioController:
 
 		self.requester = Requester(self.configMgr)
 		self.audioDownloaderGUI = audioDownloaderGUI
-		self.audioDownloader = YoutubeDlAudioDownloader(self)
+		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDir)
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
 		'''

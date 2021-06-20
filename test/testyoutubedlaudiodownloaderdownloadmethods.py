@@ -17,7 +17,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -29,7 +29,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -63,7 +63,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test_audio_downloader_one_file',
 			                 downloadDir)
 		else:
-			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test_audio_downloader_one_file', downloadDir)
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\test_audio_downloader_one_file', downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
@@ -71,14 +71,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -92,7 +92,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		if os.name == 'posix':
 			self.assertEqual(['directory',
- 'Audiobooks/test_audio_downloader_one_file',
+ 'test/test_audio_downloader_one_file',
  'was created.',
  '',
  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
@@ -102,7 +102,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'Audiobooks\\test_audio_downloader_one_file',
+ 'test\\test_audio_downloader_one_file',
  'was created.',
  '',
  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
@@ -119,8 +119,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
-
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
+		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 		
@@ -131,7 +131,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -179,7 +179,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -191,7 +191,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -259,7 +259,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_invalid_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
 		
 		stdout = sys.stdout
@@ -275,7 +275,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = ""
 		
 		stdout = sys.stdout
@@ -291,7 +291,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 		# timeInfo = '(e0:0:5-0:0:10)'
 
 		if not os.path.exists(downloadDir):
@@ -304,7 +304,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -337,10 +337,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(['1'], downloadVideoInfoDic.getVideoIndexes())
 
 		if os.name == 'posix':
-			self.assertEqual('/storage/emulated/0/Download/Audiobooks/' + playlistName,
+			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + playlistName,
 			                 downloadDir)
 		else:
-			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\' + playlistName,
+			self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\' + playlistName,
 			                 downloadDir)
 
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -350,7 +350,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -362,7 +362,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -424,7 +424,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		# re-downloading the playlist
 	
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -483,7 +483,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -495,7 +495,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -576,7 +576,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		# re-downloading the playlist
 		
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -649,7 +649,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'Test 3 short videos'
-		downloadDir = AUDIO_DIR + DIR_SEP + playlistName
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playlistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -661,7 +661,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput)
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = 'https://www.youtube.com/playlist?list=PLzwWSJNcZTMShenMgwyjHC8o5bU8QUPbn'
 		
 		stdout = sys.stdout

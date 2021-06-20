@@ -13,7 +13,7 @@ from audiocontroller import AudioController
 class TestAudioController(unittest.TestCase):
 	def testTrimAudioFile(self):
 		playListName = 'test_audio_controller'
-		targetAudioDir = AUDIO_DIR + DIR_SEP + playListName
+		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
 		audioFileName = 'LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3'
 		audioFilePathName = targetAudioDir + DIR_SEP + audioFileName
 
@@ -35,7 +35,7 @@ class TestAudioController(unittest.TestCase):
 		            targetAudioDir + '\\' + audioFileName)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput)
+		audioController = AudioController(guiOutput, AUDIO_DIR_TEST)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
