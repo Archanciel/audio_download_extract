@@ -11,7 +11,7 @@ from kivy.uix.behaviors import FocusBehavior
 from kivy.utils import platform
 
 from gui.abstractpopup import AbstractPopup
-from guiutil import GuiUtil
+from gui.guiutil import GuiUtil
 
 LOAD_AT_START_MSG = ' (load at start activated)'
 

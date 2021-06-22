@@ -31,11 +31,15 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.utils import platform
 
+# new AudioDownloaderGUI import statements
+from kivy.properties import StringProperty
+from kivy.core.clipboard import Clipboard
+
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup
 from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
-from guiutil import GuiUtil
+from gui.guiutil import GuiUtil
 from helppopup import HelpPopup
 
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
@@ -45,7 +49,7 @@ RV_LIST_ITEM_SPACING_WINDOWS = 0.5
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_LOADED = 0
 FILE_SAVED = 1
-CRYPTOPRICER_VERSION = 'CryptoPricer 2.1'
+AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
 
@@ -312,15 +316,11 @@ class AudioDownloaderGUI(BoxLayout):
 			self.boxLayoutContainingStatusBar.height = "63dp"
 
 		self.configMgr = ConfigManager(configPath)
-		
-		self.controller = AudioController(self, AUDIO_DIR, self.configMgr)
-
+		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
-
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
 								int(self.configMgr.histoListVisibleSize),
 								requestListRVSpacing)
-		
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
@@ -384,7 +384,7 @@ class AudioDownloaderGUI(BoxLayout):
 		sizingLabel = Label(text=message)
 		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
 		
-		popup = Popup(title='CryptoPricer WARNING', content=sizingLabel,
+		popup = Popup(title='AudioDownloader WARNING', content=sizingLabel,
 		              auto_dismiss=True, size_hint=(None, None),
 		              size=popupSize)
 		popup.open()
@@ -491,7 +491,7 @@ class AudioDownloaderGUI(BoxLayout):
 			#   fullRequestStrNoOptions - for the request history list
 			#   fullRequestStrWithNoSaveModeOptions - for the status bar
 			#   fullCommandStrWithSaveModeOptionsForHistoryList - for the request history list
-			outputResultStr, fullRequestStrNoOptions, fullRequestStrWithNoSaveModeOptions, fullRequestStrWithSaveModeOptionsForHistoryList, fullCommandStrForStatusBar = self.controller.getPrintableResultForInput(
+			outputResultStr, fullRequestStrNoOptions, fullRequestStrWithNoSaveModeOptions, fullRequestStrWithSaveModeOptionsForHistoryList, fullCommandStrForStatusBar = self.audioController.getPrintableResultForInput(
 				requestStr)
 		except Exception as e:
 			outputResultStr = "ERROR - request '{}' could not be executed. Error info: {}.".format(requestStr, e)
@@ -761,7 +761,7 @@ class AudioDownloaderGUI(BoxLayout):
 			requestStr = listEntry['text']
 
 			try:
-				outputResultStr, _, _, _, _ = self.controller.getPrintableResultForInput(requestStr)
+				outputResultStr, _, _, _, _ = self.audioController.getPrintableResultForInput(requestStr)
 			except Exception as e:
 				outputResultStr = "ERROR - request '{}' could not be executed. Error info: {}.".format(requestStr, e)
 
@@ -791,7 +791,7 @@ class AudioDownloaderGUI(BoxLayout):
 	def displayHelp(self):
 		self.dropDownMenu.dismiss()
 
-		popup = HelpPopup(title=CRYPTOPRICER_VERSION)
+		popup = HelpPopup(title=AUDIODOWNLOADER_VERSION)
 		popup.open()
 
 	def updateStatusBar(self, messageStr):
@@ -933,6 +933,9 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	# --- end file chooser code ---
 
+	def buildDataPathNotExistMessage(self, path):
+		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+
 	def buildDataPathDefinedInSettingsNotExistMessage(self, path):
 		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
@@ -953,6 +956,118 @@ class AudioDownloaderGUI(BoxLayout):
 		for line_label in self.statusBarTextInput._lines_labels:
 			width_calc = max(width_calc, line_label.width + 20)   # add 20 to avoid automatically creating a new line
 		self.statusBarTextInput.width = width_calc
+	
+	# --- start AudioDownloaderGUI new code ---
+	
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
+		"""
+		As the passed URL points either to a playlist or to a single video, the
+		method returns either a DownloadVideoInfoDic in case of playlist URL or
+		None and a video title in case of single video URL.
+
+		:param url: playlist or single video url
+		:return: downloadVideoInfoDic, videoTitle
+		"""
+		self.downloadVideoInfoDic, videoTitle = self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			url)
+		
+		return self.downloadVideoInfoDic, videoTitle
+	
+	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl, singleVideoTitle):
+		"""
+		This method launch downloading audios for the videos referenced in the playlist
+		URL or the audio of the single video if the URL points to a video, this in a
+		new thread.
+
+		:param playlistOrSingleVideoUrl: URL pointing to a playlist or to a single
+										 video
+		:param singleVideoTitle: None in case of playlist, not None in case of single
+								 video. Avoids re-obtaining the single video title.
+		"""
+		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
+		self.singleVideoTitle = singleVideoTitle
+		
+		t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
+		t.daemon = True
+		t.start()
+	
+	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
+		"""
+		This method executed on a separated thread launch downloading audios for
+		the videos referenced in a playlist or the audio of a single video.
+		"""
+		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
+		                                                                     self.downloadVideoInfoDic,
+		                                                                     self.singleVideoTitle)
+	
+	def setMessage(self, msgText):
+		pass
+	
+	def getConfirmation(self, title, msgText):
+		self.popup = self.createConfirmPopup(title, msgText, self.onPopupAnswer)
+		self.popup.open()
+	
+	def onPopupAnswer(self, instance, answer):
+		answer = answer == 'yes'
+		self.popup.dismiss()
+		
+		return answer
+	
+	def createConfirmPopup(self,
+	                       confirmPopupTitle,
+	                       confirmPopupMsg,
+	                       confirmPopupCallbackFunction):
+		"""
+
+		:param confirmPopupTitle:
+		:param confirmPopupMsg:
+		:param confirmPopupCallbackFunction: function called when the user click on
+											 yes or no button
+		:return:
+		"""
+		popupSize = None
+		msgWidth = 100
+		
+		if platform == 'android':
+			popupSize = (980, 600)
+			msgWidth = 45
+		elif platform == 'win':
+			popupSize = (500, 200)
+			msgWidth = 54
+		
+		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
+		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
+		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
+		popup = Popup(title=confirmPopupTitle,
+		              content=confirmPopup,
+		              size_hint=(None, None),
+		              pos_hint={'top': 0.8},
+		              size=popupSize,
+		              auto_dismiss=False)
+		
+		return popup
+	
+	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace=False):
+		resizedMsg = GuiUtil.splitLineToLines(rawMsg, maxLineWidth, replaceUnderscoreBySpace)
+		
+		return resizedMsg
+	
+	def displayError(self, msg):
+		pass
+
+
+class ConfirmPopup(GridLayout):
+	text = StringProperty()
+	
+	def __init__(self, **kwargs):
+		self.register_event_type('on_answer')
+		super(ConfirmPopup, self).__init__(**kwargs)
+	
+	def on_answer(self, *args):
+		pass
+
+
+# --- end AudioDownloaderGUI new code ---
 
 
 class AudioDownloaderGUIApp(App):
@@ -967,7 +1082,7 @@ class AudioDownloaderGUIApp(App):
 			Config.set('graphics', 'height', '500')
 			Config.write()
 
-		self.title = 'CryptoPricer GUI'
+		self.title = 'AudioDownloader GUI'
 		self.audioDownloaderGUI = AudioDownloaderGUI()
 
 		return self.audioDownloaderGUI
@@ -1148,25 +1263,76 @@ class AudioDownloaderGUIApp(App):
 			defaultpath = defaultpath.replace('/', sep)
 
 		return os.path.expanduser(defaultpath) % {
-			'appname': 'cryptopricer', 'appdir': self.directory}
-
+			'appname': 'audiodownloader', 'appdir': self.directory}
+	
 	def on_start(self):
+		'''
+		Testing at app start if the clipboard contains a valid playlist playlistObject.
+		If it is th case, the videos referenced in the playlist will be downloaded and
+		if we are on Windows, their audio will be extracted.
+
+		Since a information popup is displayed in case of valid playlistObject, this must be performed
+		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
+
+		:return:
+
+		test urls:
+		multiple videos with time frames (test audio downloader two files with time frames)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
+		2 videos no time frames (test audio downloader two files)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
+		'''
+		self.loadHistoryDataIfSet()
+		self.playlistOrSingleVideoUrl = Clipboard.paste()
+		
+		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			self.playlistOrSingleVideoUrl)
+		self.singleVideoTitle = videoTitle
+		
+		if downloadVideoInfoDic is not None:
+			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
+			confirmPopupTitle = "Go on with processing playlist ..."
+		elif videoTitle is not None:
+			downloadObjectTitle = videoTitle
+			confirmPopupTitle = "Go on with downloading audio for video ... "
+		else:
+			# the case if the url is neither pointing to a playlist nor to a
+			# single video. Here, an error message was displayed in the UI !
+			return
+		
+		confirmPopupCallbackFunction = self.onPopupAnswer
+		
+		self.popup = self.audioDownloaderGUI.createConfirmPopup(confirmPopupTitle, downloadObjectTitle,
+		                                                        confirmPopupCallbackFunction)
+		self.popup.open()
+	
+	def onPopupAnswer(self, instance, answer):
+		if answer == 'yes':
+			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
+			                                                           self.singleVideoTitle)
+		
+		self.popup.dismiss()
+	
+	def loadHistoryDataIfSet(self):
 		'''
 		Testing at app start if data path defined in settings does exist
 		and if history file loaded at start app does exist. Since a warning popup
 		is displayed in case of invalid data, this must be performed here and
-		not in CryptoPricerGUI.__init__ where no popup could be displayed.
+		not in audioDownloaderGUI.__init__ where no popup could be displayed.
 		:return:
 		'''
-		dataPathNotExistMessage = self.audioDownloaderGUI.buildDataPathDefinedInSettingsNotExistMessage(self.audioDownloaderGUI.dataPath)
-
+		dataPathNotExistMessage = self.audioDownloaderGUI.buildDataPathNotExistMessage(self.audioDownloaderGUI.dataPath)
+		
 		if self.audioDownloaderGUI.ensureDataPathExist(self.audioDownloaderGUI.dataPath, dataPathNotExistMessage):
 			# loading the load at start history file if defined
 			historyFilePathFilename = self.audioDownloaderGUI.configMgr.loadAtStartPathFilename
-
-			if historyFilePathFilename != '':
+			dataFileNotFoundMessage = self.audioDownloaderGUI.buildFileNotFoundMessage(historyFilePathFilename)
+			
+			if historyFilePathFilename != '' and self.audioDownloaderGUI.ensureDataPathFileNameExist(
+					historyFilePathFilename, dataFileNotFoundMessage):
 				self.audioDownloaderGUI.loadHistoryFromPathFilename(historyFilePathFilename)
 				self.audioDownloaderGUI.displayFileActionOnStatusBar(historyFilePathFilename, FILE_LOADED)
+
 
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIApp()

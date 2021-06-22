@@ -28,7 +28,6 @@ from kivy.utils import platform
 from kivy.core.clipboard import Clipboard
 
 # new AudioDownloaderGUI import statements
-from kivy.lang import Builder
 from kivy.properties import StringProperty
 
 from constants import *
