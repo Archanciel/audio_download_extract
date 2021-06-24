@@ -1014,9 +1014,10 @@ class AudioDownloaderGUI(BoxLayout):
 		return answer
 	
 	def createConfirmPopup(self,
-	                       confirmPopupTitle,
-	                       confirmPopupMsg,
-	                       confirmPopupCallbackFunction):
+	                       isPayListToDownload,
+						   confirmPopupTitle,
+						   confirmPopupMsg,
+						   confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
@@ -1037,6 +1038,11 @@ class AudioDownloaderGUI(BoxLayout):
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
+		if isPayListToDownload:
+			confirmPopup.ids.set_folder_btn.disabled = True
+		else:
+			confirmPopup.ids.set_folder_btn.disabled = False
+			
 		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		popup = Popup(title=confirmPopupTitle,
 		              content=confirmPopup,
@@ -1288,11 +1294,15 @@ class AudioDownloaderGUIApp(App):
 		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
 			self.playlistOrSingleVideoUrl)
 		self.singleVideoTitle = videoTitle
+		isPayListToDownload = False
 		
 		if downloadVideoInfoDic is not None:
+			# playlist url obtained from clipboard
 			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ..."
+			isPayListToDownload = True
 		elif videoTitle is not None:
+			# single video url obtained from clipboard
 			downloadObjectTitle = videoTitle
 			confirmPopupTitle = "Go on with downloading audio for video ... "
 		else:
@@ -1302,8 +1312,8 @@ class AudioDownloaderGUIApp(App):
 		
 		confirmPopupCallbackFunction = self.onPopupAnswer
 		
-		self.popup = self.audioDownloaderGUI.createConfirmPopup(confirmPopupTitle, downloadObjectTitle,
-		                                                        confirmPopupCallbackFunction)
+		self.popup = self.audioDownloaderGUI.createConfirmPopup(isPayListToDownload, confirmPopupTitle,
+		                                                        downloadObjectTitle, confirmPopupCallbackFunction)
 		self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):

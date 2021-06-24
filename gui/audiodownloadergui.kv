@@ -470,7 +470,7 @@
 	Label:
 		text: root.text
 	GridLayout:
-		cols: 2
+		cols: 3
 		size_hint_y: None
 		height: '28dp'
 		Button:
@@ -479,3 +479,7 @@
 		Button:
 			text: 'No'
 			on_release: root.dispatch('on_answer', 'no')
+		Button:
+		    id: set_folder_btn
+			text: 'Set folder'
+			on_release: root.dispatch('on_answer', 'folder')
