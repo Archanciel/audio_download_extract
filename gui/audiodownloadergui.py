@@ -1108,13 +1108,7 @@ class AudioDownloaderGUIApp(App):
 		:param config:
 		:return:
 		'''
-		config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL,
-						   {ConfigManager.CONFIG_KEY_TIME_ZONE: ConfigManager.DEFAULT_TIME_ZONE})
-		config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL,
-						   {ConfigManager.CONFIG_KEY_DATE_TIME_FORMAT: ConfigManager.DEFAULT_DATE_TIME_FORMAT})
-
 		from kivy.utils import platform
-
 
 		if platform == 'android':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
@@ -1194,36 +1188,24 @@ class AudioDownloaderGUIApp(App):
 								)
 	def on_config_change(self, config, section, key, value):
 		if config is self.config:
-			if key == ConfigurationManager.CONFIG_KEY_APP_SIZE:
-				appSize = config.getdefault(ConfigurationManager.CONFIG_SECTION_LAYOUT, ConfigurationManager.CONFIG_KEY_APP_SIZE, "Half").upper()
+			if key == ConfigManager.CONFIG_KEY_APP_SIZE:
+				appSize = config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE, "Half").upper()
 
 				if appSize == "HALF":
-					self.root.appSize = ConfigurationManager.APP_SIZE_HALF
+					self.root.appSize = ConfigManager.APP_SIZE_HALF
 				else:
-					self.root.appSize = ConfigurationManager.APP_SIZE_FULL
+					self.root.appSize = ConfigManager.APP_SIZE_FULL
 
 				self.root.applyAppPosAndSize()
-			elif key == ConfigurationManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT:
-				self.root.rvListItemHeight = int(config.getdefault(ConfigurationManager.CONFIG_SECTION_LAYOUT, ConfigurationManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigurationManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
+			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT:
+				self.root.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
 				self.root.rvListSizeSettingsChanged()
-			elif key == ConfigurationManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
-				self.root.rvListMaxVisibleItems = int(config.getdefault(ConfigurationManager.CONFIG_SECTION_LAYOUT, ConfigurationManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigurationManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
+			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
+				self.root.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
 				self.root.rvListSizeSettingsChanged()
-			elif key == ConfigurationManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
-				self.root.appSizeHalfProportion = float(config.getdefault(ConfigurationManager.CONFIG_SECTION_LAYOUT, ConfigurationManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigurationManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
+			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
+				self.root.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.root.applyAppPosAndSize()
-			elif key == ConfigurationManager.CONFIG_KEY_TIME_ZONE:
-				self.root.configMgr.localTimeZone = config.getdefault(ConfigurationManager.CONFIG_SECTION_GENERAL, ConfigurationManager.CONFIG_KEY_TIME_ZONE, ConfigurationManager.DEFAULT_TIME_ZONE)
-				self.root.configMgr.storeConfig()
-			elif key == ConfigurationManager.CONFIG_KEY_DATE_TIME_FORMAT:
-				self.root.configMgr.dateTimeFormat = config.getdefault(ConfigurationManager.CONFIG_SECTION_GENERAL, ConfigurationManager.CONFIG_KEY_DATE_TIME_FORMAT, ConfigurationManager.DEFAULT_DATE_TIME_FORMAT)
-				self.root.configMgr.storeConfig()
-			elif key == ConfigurationManager.CONFIG_KEY_DATE_ONLY_FORMAT:
-				self.root.configMgr.dateOnlyFormat = config.getdefault(ConfigurationManager.CONFIG_SECTION_GENERAL, ConfigurationManager.CONFIG_KEY_DATE_ONLY_FORMAT, ConfigurationManager.DEFAULT_DATE_ONLY_FORMAT)
-				self.root.configMgr.storeConfig()
-			elif key == ConfigurationManager.CONFIG_KEY_REFERENCE_CURRENCY:
-				self.root.configMgr.referenceCurrency = config.getdefault(ConfigurationManager.CONFIG_SECTION_GENERAL, ConfigurationManager.CONFIG_KEY_REFERENCE_CURRENCY, ConfigurationManager.DEFAULT_REFERENCE_CURRENCY)
-				self.root.configMgr.storeConfig()
 
 	def get_application_config(self, defaultpath="c:/temp/%(appname)s.ini"):
 		'''

@@ -9,12 +9,6 @@ class ConfigManager:
 	CONFIG_SECTION_LAYOUT = 'Layout'
 	CONFIG_SECTION_MAILTO = 'mailTo'
 	
-	CONFIG_KEY_TIME_ZONE = 'timezone'
-	DEFAULT_TIME_ZONE = 'Europe/Zurich'
-	
-	CONFIG_KEY_DATE_TIME_FORMAT = 'datetimeformat'
-	DEFAULT_DATE_TIME_FORMAT = 'dd/mm/yy hh:mm:ss'
-	
 	CONFIG_KEY_DATA_PATH = 'datapath'
 	DEFAULT_DATA_PATH_ANDROID = '/storage/emulated/0/audiodownload_data'
 	DEFAULT_DATA_PATH_IOS = '~/Documents'
@@ -43,18 +37,6 @@ class ConfigManager:
 		
 		if len(self.config) == 0:
 			self._setAndStoreDefaultConf()
-		
-		try:
-			self.__localTimeZone = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_TIME_ZONE]
-		except KeyError:
-			self.__localTimeZone = self.DEFAULT_TIME_ZONE
-			self._updated = True
-		
-		try:
-			self.__dateTimeFormat = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_TIME_FORMAT]
-		except KeyError:
-			self.__dateTimeFormat = self.DEFAULT_DATE_TIME_FORMAT
-			self._updated = True
 		
 		try:
 			self.__dataPath = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH]
@@ -121,20 +103,18 @@ class ConfigManager:
 		return emailLst
 	
 	def _setAndStoreDefaultConf(self):
-		'''
+		"""
 		In case no config file exists or if config file is empty,
 		defines default values for config properties. Then creates
 		or updates the config file.
 		:return: nothing
-		'''
+		"""
 		self.config[self.CONFIG_SECTION_GENERAL] = {}
 		self.config.comments[self.CONFIG_SECTION_GENERAL] = ["Contains app general parameters"]
 		self.config[self.CONFIG_SECTION_LAYOUT] = {}
 		self.config.comments[self.CONFIG_SECTION_LAYOUT] = ["Contains GUI layout parameters"]
 		self.config[self.CONFIG_SECTION_MAILTO] = {}
 		self.config.comments[self.CONFIG_SECTION_MAILTO] = ["Emails to which the audio file can be sent. Format: key = Field order, value list = person name, person email. Example: 1 = Joe Bidden, jbd@gmail.com"]
-		self.localTimeZone = self.DEFAULT_TIME_ZONE
-		self.dateTimeFormat = self.DEFAULT_DATE_TIME_FORMAT
 		
 		if os.name == 'posix':
 			self.dataPath = self.DEFAULT_DATA_PATH_ANDROID
@@ -151,24 +131,6 @@ class ConfigManager:
 		self._updated = True
 		
 		self.storeConfig()
-	
-	@property
-	def localTimeZone(self):
-		return self.__localTimeZone
-	
-	@localTimeZone.setter
-	def localTimeZone(self, timezoneStr):
-		self.__localTimeZone = timezoneStr
-		self._updated = True
-	
-	@property
-	def dateTimeFormat(self):
-		return self.__dateTimeFormat
-	
-	@dateTimeFormat.setter
-	def dateTimeFormat(self, dateTimeFormatStr):
-		self.__dateTimeFormat = dateTimeFormatStr
-		self._updated = True
 	
 	@property
 	def dataPath(self):
@@ -224,21 +186,10 @@ class ConfigManager:
 		self.__appSizeHalfProportion = appSizeHalfProportionStr
 		self._updated = True
 	
-	@property
-	def referenceCurrency(self):
-		return self.__referenceCurrency
-	
-	@referenceCurrency.setter
-	def referenceCurrency(self, referenceCurrencyStr):
-		self.__referenceCurrency = referenceCurrencyStr
-		self._updated = True
-	
 	def storeConfig(self):
 		if not self._updated:
 			return
 		
-		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_TIME_ZONE] = self.localTimeZone
-		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATE_TIME_FORMAT] = self.dateTimeFormat
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
 		self.config[self.CONFIG_SECTION_GENERAL][
 			self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME] = self.loadAtStartPathFilename
