@@ -302,7 +302,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.dropDownMenu = CustomDropDown(owner=self)
 
 		if os.name == 'posix':
-			configPath = '/sdcard/sbyield.ini'
+			configPath = '/sdcard/audiodownloader.ini'
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 			if GuiUtil.onSmartPhone():
 				self.boxLayoutContainingStatusBar.height = "73dp"
@@ -310,7 +310,7 @@ class AudioDownloaderGUI(BoxLayout):
 				self.boxLayoutContainingStatusBar.height = "43dp"
 
 		else:
-			configPath = 'c:\\temp\\sbyield.ini'
+			configPath = 'c:\\temp\\audiodownloader.ini'
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
@@ -1150,44 +1150,15 @@ class AudioDownloaderGUIApp(App):
 		settings.register_type('scrolloptions', SettingScrollOptions)
 
 		# add 'General' settings pannel
-		TIME_ZONE_LIST = """["Europe/Amsterdam", "Europe/Andorra", "Europe/Astrakhan", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Kirov", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Saratov", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Ulyanovsk", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GMT", "GMT+1", "GMT+2", "GMT+3", "GMT+4", "GMT+5", "GMT+6", "GMT+7", "GMT+8", "GMT+9", "GMT+10", "GMT+11", "GMT+12", "GMT+13", "GMT+14", "GMT+15", "GMT+16", "GMT+17", "GMT+18", "GMT+19", "GMT+20", "GMT+21", "GMT+22", "GMT+23", "GMT-1", "GMT-2", "GMT-3", "GMT-4", "GMT-5", "GMT-6", "GMT-7", "GMT-8", "GMT-9", "GMT-10", "GMT-11", "GMT-12", "GMT-13", "GMT-14", "GMT-15", "GMT-16", "GMT-17", "GMT-18", "GMT-19", "GMT-20", "GMT-21", "GMT-22", "GMT-23"]"""
 		settings.add_json_panel("General", self.config, data=("""
 			[
-				{"type": "scrolloptions",
-					"title": "Time zone",
-					"desc": "Set the local time zone",
-					"section": "General",
-					"key": "timezone",
-					"options": %s
-				},
-				{"type": "options",
-					"title": "Date/time format",
-					"desc": "Set the full date/time format",
-					"section": "General",
-					"key": "datetimeformat",
-					"options": ["DD/MM/YY HH:mm"]
-				},
-				{"type": "options",
-					"title": "Date format",
-					"desc": "Set the date only format",
-					"section": "General",
-					"key": "dateonlyformat",
-					"options": ["DD/MM/YY"]
-				},
-				{"type": "options",
-					"title": "Reference currency",
-					"desc": "Set the reference currency in which all the returned crypto prices will be converted",
-					"section": "General",
-					"key": "referencecurrency",
-					"options": ["USD", "EURO", "CHF", "GBP"]
-				},
 				{"type": "path",
 					"title": "Data files location",
 					"desc": "Set the directory where the app data files like history files are stored",
 					"section": "General",
 					"key": "dataPath"
 				}
-			]""" % TIME_ZONE_LIST)  # "key": "dataPath" above is the key in the app config file.
+			]""")  # "key": "dataPath" above is the key in the app config file.
 								)   # To use another drive, simply define it as datapath value
 									# in the app config file
 
