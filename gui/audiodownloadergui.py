@@ -1,7 +1,5 @@
 import os,sys,inspect
 
-from gui.confirmpopup import ConfirmPopup
-
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
@@ -36,14 +34,9 @@ from kivy.utils import platform
 # new AudioDownloaderGUI import statements
 from kivy.core.clipboard import Clipboard
 
-# Builder is a global Kivy instance used
-# in widgets that you can use to load other
-# kv files in addition to the default ones.
-from kivy.lang import Builder
-
-# Loading Multiple .kv files
-
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup
+from gui.confirmpopup import ConfirmPopup
+
 from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
@@ -1079,6 +1072,13 @@ class AudioDownloaderGUIApp(App):
 	
 	def build(self): # implicitely looks for a kv file of name cryptopricergui.kv which is
 					 # class name without App, in lowercases
+					
+		# Builder is a global Kivy instance used
+		# in widgets that you can use to load other
+		# kv files in addition to the default ones.
+		from kivy.lang import Builder
+		
+		# Loading Multiple .kv files
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('confirmpopup.kv')
 	
