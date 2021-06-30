@@ -29,6 +29,9 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertIsNone(videoTitle)
 		
 	def testGetPlaylistObjectOrVideoTitleFortUrlInvalidURL(self):
+		"""
+		pytube.exceptions.RegexMatchError was raised here ...
+		"""
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
@@ -39,7 +42,27 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
 		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: regex_search: could not find match for (?:v=|\/)([0-9A-Za-z_-]{11}).*\nnothing to download.', accessError.errorMsg)
 		self.assertIsNone(videoTitle)
-
+	
+	def testGetPlaylistObjectOrVideoTitleFortUrlInvalidURL_GeeksForGeeks(self):
+		"""
+		When starting AudioDownloader after having copied a geeksforgeeks url, the
+		exception raised was pytube.exceptions.VideoUnavailable instead of
+		pytube.exceptions.RegexMatchError !
+		"""
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
+		playlistUrl = "https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/"
+		
+		youtubePlaylist, playlistTitle, videoTitle, accessError = youtubeAccess.getPlaylistObjectOrVideoTitleFortUrl(
+			playlistUrl)
+		
+		self.assertIsNotNone(accessError)
+		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
+		self.assertEqual(
+			"trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: {}\nerror info: python-how- is unavailable\nnothing to download.".format(playlistUrl),
+			accessError.errorMsg)
+		self.assertIsNone(videoTitle)
+	
 	def testGetPlaylistObjectOrVideoTitleFortUrl_one_time_frame_extract(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
@@ -102,6 +125,6 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 
 
 if __name__ == '__main__':
-	unittest.main()
-	# tst = TestYoutubeDlAudioDownloaderOtherMethods()
-	# tst.testSplitPlayListTitle_one_time_frame_extract()
+	#unittest.main()
+	tst = TestYoutubeDlAudioDownloaderOtherMethods()
+	tst.testGetPlaylistObjectOrVideoTitleFortUrlInvalidURL_GeeksForGeeks()
