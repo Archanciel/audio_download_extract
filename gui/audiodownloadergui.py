@@ -1242,9 +1242,11 @@ class AudioDownloaderGUIApp(App):
 		self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
-		if answer == 'yes':
+		if answer == 'yes': # 'yes' is set in confirmpopup.kv file
 			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 			                                                           self.singleVideoTitle)
+		elif answer == 'set_folder': # 'set_folder' is set in confirmpopup.kv file
+			pass
 		
 		self.popup.dismiss()
 	
