@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 from pytube import Playlist
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
+from pytube.exceptions import VideoUnavailable
 import http.client
 import youtube_dl
 
@@ -187,7 +188,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				youtube = YouTube(url)
 				video = youtube.streams.first()
 				videoTitle = video.title
-			except (RegexMatchError, KeyError, HTTPError) as e:
+			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError) as e:
 				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
 				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
 		
