@@ -15,7 +15,6 @@ from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
@@ -257,39 +256,6 @@ class SettingScrollOptions(SettingOptions):
 		content.add_widget(btn)
 
 
-class CustomDropDown(DropDown):
-	saveButton = ObjectProperty(None)
-	statusToRequestInputButton = ObjectProperty(None)
-	
-	def __init__(self, owner):
-		super().__init__()
-		self.owner = owner
-
-	def showLoad(self):
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
-
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
-			self.owner.openFileLoadPopup()
-
-	def showSave(self):
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
-
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
-			self.owner.openFileSavePopup()
-
-	def help(self):
-		self.owner.displayHelp()
-	
-	def copyStatusBarStrToRequestEntry(self):
-		statusBarStr = self.owner.statusBarTextInput.text
-		
-		self.owner.requestInput.text = statusBarStr.replace(STATUS_BAR_ERROR_SUFFIX, '')
-		self.owner.statusBarTextInput.text = ''
-		self.statusToRequestInputButton.disabled = True
-		self.owner.refocusOnRequestInput()
-		self.dismiss()
-
-
 class AudioDownloaderGUI(BoxLayout):
 	requestInput = ObjectProperty()
 	resultOutput = ObjectProperty()
@@ -300,6 +266,11 @@ class AudioDownloaderGUI(BoxLayout):
 
 	def __init__(self, **kwargs):
 		super(AudioDownloaderGUI, self).__init__(**kwargs)
+
+		# due to separate customdropdown kv file, import
+		# can not be placed elsewhere with other import
+		# sentences.
+		from gui.customdropdown import CustomDropDown
 		self.dropDownMenu = CustomDropDown(owner=self)
 
 		if os.name == 'posix':
@@ -1081,6 +1052,7 @@ class AudioDownloaderGUIApp(App):
 		# Loading Multiple .kv files
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('confirmpopup.kv')
+		Builder.load_file('customdropdown.kv')
 	
 		if os.name != 'posix':
 			# running app om Windows
