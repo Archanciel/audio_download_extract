@@ -297,22 +297,3 @@
 			Button:
 				text: "Close"
 				on_press: root.dismiss()
-
-<ConfirmPopup>:
-	cols:1
-	Label:
-		text: root.text
-	GridLayout:
-		cols: 3
-		size_hint_y: None
-		height: '28dp'
-		Button:
-			text: 'Yes'
-			on_release: root.dispatch('on_answer','yes')
-		Button:
-			text: 'No'
-			on_release: root.dispatch('on_answer', 'no')
-		Button:
-		    id: set_folder_btn
-			text: 'Set folder'
-			on_release: root.dispatch('on_answer', 'folder')

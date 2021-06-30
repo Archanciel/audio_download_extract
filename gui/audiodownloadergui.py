@@ -1,5 +1,7 @@
 import os,sys,inspect
 
+from gui.confirmpopup import ConfirmPopup
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
@@ -32,7 +34,6 @@ from kivy.uix.widget import Widget
 from kivy.utils import platform
 
 # new AudioDownloaderGUI import statements
-from kivy.properties import StringProperty
 from kivy.core.clipboard import Clipboard
 
 # Builder is a global Kivy instance used
@@ -1069,17 +1070,6 @@ class AudioDownloaderGUI(BoxLayout):
 		pass
 
 
-class ConfirmPopup(GridLayout):
-	text = StringProperty()
-	
-	def __init__(self, **kwargs):
-		self.register_event_type('on_answer')
-		super(ConfirmPopup, self).__init__(**kwargs)
-	
-	def on_answer(self, *args):
-		pass
-
-
 # --- end AudioDownloaderGUI new code ---
 
 
@@ -1090,6 +1080,7 @@ class AudioDownloaderGUIApp(App):
 	def build(self): # implicitely looks for a kv file of name cryptopricergui.kv which is
 					 # class name without App, in lowercases
 		Builder.load_file('filechooser.kv')
+		Builder.load_file('confirmpopup.kv')
 	
 		if os.name != 'posix':
 			# running app om Windows
