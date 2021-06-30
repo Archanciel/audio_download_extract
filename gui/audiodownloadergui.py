@@ -35,6 +35,13 @@ from kivy.utils import platform
 from kivy.properties import StringProperty
 from kivy.core.clipboard import Clipboard
 
+# Builder is a global Kivy instance used
+# in widgets that you can use to load other
+# kv files in addition to the default ones.
+from kivy.lang import Builder
+
+# Loading Multiple .kv files
+
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup
 from constants import *
 from configmanager import ConfigManager
@@ -1082,6 +1089,8 @@ class AudioDownloaderGUIApp(App):
 	
 	def build(self): # implicitely looks for a kv file of name cryptopricergui.kv which is
 					 # class name without App, in lowercases
+		Builder.load_file('filechooser.kv')
+	
 		if os.name != 'posix':
 			# running app om Windows
 			Config.set('graphics', 'width', '600')
