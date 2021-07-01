@@ -66,6 +66,7 @@ class FileChooserPopup(AbstractPopup):
 	LOAD_FILE_POPUP_TITLE = 'Select history file to load'
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
 	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
+	SELECT_FILE_TO_SPLIT = 'Select audio file to split'
 
 	load = ObjectProperty(None)
 #	save = OLOAD_FILE_POPUP_TITLEbjectProperty(None)
@@ -271,4 +272,4 @@ class FileToSplitLoadFileChooserPopup(LoadFileChooserPopup):
 		super(FileToSplitLoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
 	def loadFile(self, path, selection):
-		print('FileToSplitLoadFileChooserPopup.loadFile()',selection)
+		print('FileToSplitLoadFileChooserPopup.loadFile()', selection)

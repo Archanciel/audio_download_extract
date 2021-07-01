@@ -50,6 +50,7 @@ STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_LOAD = 0
 FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
+FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
@@ -814,7 +815,7 @@ class AudioDownloaderGUI(BoxLayout):
 
 	def openFileToSplitLoadPopup(self):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SPLIT)
 		self.popup = FileToSplitLoadFileChooserPopup(title=popupTitle,
 													 rootGUI=self,
 													 load=self.load,
@@ -826,11 +827,14 @@ class AudioDownloaderGUI(BoxLayout):
 			popupTitleAction = LoadFileChooserPopup.LOAD_FILE_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SAVE:
 			popupTitleAction = SaveFileChooserPopup.SAVE_FILE_POPUP_TITLE
-		else:
-			# fileAction == FILE_ACTION_SELECT_OR_CREATE_DIR
+		elif fileAction == FILE_ACTION_SELECT_OR_CREATE_DIR:
 			popupTitle = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
 			return popupTitle
-		
+		else:
+			# fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT
+			popupTitle = SaveFileChooserPopup.SELECT_FILE_TO_SPLIT
+			return popupTitle
+
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		
 		if loadAtStartFilePathName == self.currentLoadedFathFileName:

@@ -1,5 +1,6 @@
 from kivy.properties import ObjectProperty
 from kivy.uix.dropdown import DropDown
+from kivy.utils import platform
 
 from gui.audiodownloadergui import STATUS_BAR_ERROR_SUFFIX
 
@@ -25,6 +26,10 @@ class CustomDropDown(DropDown):
 			self.owner.openFileSavePopup()
 
 	def showSplitAudioFile(self):
+		if platform == 'android':
+			self.owner.displayPopupWarning('Audio file split is not possible on Android')
+			return
+		
 		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
 		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
