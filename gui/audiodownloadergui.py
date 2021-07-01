@@ -33,7 +33,7 @@ from kivy.utils import platform
 # new AudioDownloaderGUI import statements
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup
+from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 
 from constants import *
@@ -47,9 +47,9 @@ from helppopup import HelpPopup
 RV_LIST_ITEM_SPACING_ANDROID = 2
 RV_LIST_ITEM_SPACING_WINDOWS = 0.5
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
-FILE_LOADED = 0
-FILE_SAVED = 1
-SELECT_OR_CREATE_DIR = 2
+FILE_ACTION_LOAD = 0
+FILE_ACTION_SAVE = 1
+FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
@@ -781,7 +781,7 @@ class AudioDownloaderGUI(BoxLayout):
 
 	def openFileLoadPopup(self):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_LOADED)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
 		self.popup = LoadFileChooserPopup(title=popupTitle,
 										  rootGUI=self,
 										  load=self.load,
@@ -790,7 +790,7 @@ class AudioDownloaderGUI(BoxLayout):
 	
 	def openFileSavePopup(self):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_SAVED)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SAVE)
 		self.popup = SaveFileChooserPopup(title=popupTitle,
 										  rootGUI=self,
 										  load=self.load,
@@ -803,7 +803,7 @@ class AudioDownloaderGUI(BoxLayout):
 	                               playlistOrSingleVideoUrl,
 			                       singleVideoTitle):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(SELECT_OR_CREATE_DIR)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR)
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
 													   playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
@@ -812,14 +812,25 @@ class AudioDownloaderGUI(BoxLayout):
 													   cancel=self.dismissPopup)
 		self.popup.open()
 
+	def openFileToSplitLoadPopup(self):
+		self.dropDownMenu.dismiss()
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
+		self.popup = FileToSplitLoadFileChooserPopup(title=popupTitle,
+													 rootGUI=self,
+													 load=self.load,
+													 cancel=self.dismissPopup)
+		self.popup.open()
+
 	def buildFileChooserPopupTitle(self, fileAction):
-		if fileAction == FILE_LOADED:
+		if fileAction == FILE_ACTION_LOAD:
 			popupTitleAction = LoadFileChooserPopup.LOAD_FILE_POPUP_TITLE
-		elif fileAction == FILE_SAVED:
+		elif fileAction == FILE_ACTION_SAVE:
 			popupTitleAction = SaveFileChooserPopup.SAVE_FILE_POPUP_TITLE
 		else:
-			popupTitleAction = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
-
+			# fileAction == FILE_ACTION_SELECT_OR_CREATE_DIR
+			popupTitle = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
+			return popupTitle
+		
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		
 		if loadAtStartFilePathName == self.currentLoadedFathFileName:
@@ -842,10 +853,10 @@ class AudioDownloaderGUI(BoxLayout):
 		currentLoadedFathFileName = os.path.join(path, filename[0])
 		self.loadHistoryFromPathFilename(currentLoadedFathFileName)
 		self.dismissPopup()
-		self.displayFileActionOnStatusBar(currentLoadedFathFileName, FILE_LOADED)
+		self.displayFileActionOnStatusBar(currentLoadedFathFileName, FILE_ACTION_LOAD)
 
 	def displayFileActionOnStatusBar(self, pathFileName, actionType, isLoadAtStart=None):
-		if actionType == FILE_LOADED:
+		if actionType == FILE_ACTION_LOAD:
 			self.updateStatusBar('History file loaded:\n{}'.format(pathFileName))
 		else:
 			if isLoadAtStart:
@@ -917,7 +928,7 @@ class AudioDownloaderGUI(BoxLayout):
 				self.configMgr.loadAtStartPathFilename = ''
 
 		self.configMgr.storeConfig()
-		self.displayFileActionOnStatusBar(savingPathFileName, FILE_SAVED, isLoadAtStart)
+		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnRequestInput()
 
 	# --- end file chooser code ---
@@ -1286,7 +1297,7 @@ class AudioDownloaderGUIApp(App):
 			if historyFilePathFilename != '' and self.audioDownloaderGUI.ensureDataPathFileNameExist(
 					historyFilePathFilename, dataFileNotFoundMessage):
 				self.audioDownloaderGUI.loadHistoryFromPathFilename(historyFilePathFilename)
-				self.audioDownloaderGUI.displayFileActionOnStatusBar(historyFilePathFilename, FILE_LOADED)
+				self.audioDownloaderGUI.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
 
 
 if __name__ == '__main__':

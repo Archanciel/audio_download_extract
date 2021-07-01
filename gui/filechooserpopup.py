@@ -65,10 +65,8 @@ class SelectableRecycleBoxLayoutFileChooser(FocusBehavior, LayoutSelectionBehavi
 class FileChooserPopup(AbstractPopup):
 	LOAD_FILE_POPUP_TITLE = 'Select history file to load'
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
-	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory'
-	"""
-	
-	"""
+	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
+
 	load = ObjectProperty(None)
 #	save = OLOAD_FILE_POPUP_TITLEbjectProperty(None)
 	cancel = ObjectProperty(None)
@@ -137,6 +135,9 @@ class LoadFileChooserPopup(FileChooserPopup):
 	"""
 	def __init__(self, rootGUI, **kwargs):
 		super(LoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+	def loadFile(self, path, selection):
+		self.load(path, selection)
 
 
 class SaveFileChooserPopup(FileChooserPopup):
@@ -245,11 +246,12 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		:return:
 		"""
 		if os.path.isdir(pathFileName):
-			print("{} dir was selected".format(pathFileName))
+			pass
+			#print("{} dir was selected".format(pathFileName))
 		else:
 			try:
 				os.mkdir(pathFileName)
-				print("{} dir was created".format(pathFileName))
+				#print("{} dir was created".format(pathFileName))
 			except FileExistsError as e:
 				print("{} dir already exists".format(pathFileName))
 		
@@ -257,3 +259,16 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 		                                                self.singleVideoTitle)
 		self.rootGUI.dismissPopup()
+
+
+class FileToSplitLoadFileChooserPopup(LoadFileChooserPopup):
+	"""
+	This file chooser popup is used to select the file which will be transmitted to the
+	split audio file class.
+	"""
+	
+	def __init__(self, rootGUI, **kwargs):
+		super(FileToSplitLoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+	def loadFile(self, path, selection):
+		print('FileToSplitLoadFileChooserPopup.loadFile()',selection)
