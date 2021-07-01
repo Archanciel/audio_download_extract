@@ -24,6 +24,12 @@ class CustomDropDown(DropDown):
 		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
 			self.owner.openFileSavePopup()
 
+	def showSelectOrCreateDir(self):
+		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+
+		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
+			self.owner.openSelectOrCreateDirPopup()
+
 	def help(self):
 		self.owner.displayHelp()
 	

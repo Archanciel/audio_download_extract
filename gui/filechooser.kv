@@ -151,6 +151,80 @@
 					text: "Save"
 					on_release: root.save(file_chooser.path, path_file_name_text_input.text, load_at_start_chk_box.active)
 
+<SelectOrCreateDirFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
+						             # AbstractPopup, which derives from Popup
+	popupBoxLayout: popup_boxlayout
+	diskRecycleBoxLayout: disc_mem_RB_layout
+	fileChooser: file_chooser
+	pathList: path_mem_list
+	gridLayoutPathField: grid_layout_path_field
+	currentPathField: text_path_sel_create_dir
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			id: popup_boxlayout
+			orientation: 'vertical'
+			#size_hint_y: 0.17 # value for Windows 10
+			#size_hint_y: 0.11 # value for Android tablet
+			size_hint_y: 0.16 # value for Android smartphone
+			RecycleView:
+				id: path_mem_list
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				viewclass: 'SelectableLabelFileChooser'
+				scroll_type: ['bars', 'content']
+				scroll_wheel_distance: dp(114)
+				bar_width: dp(10)
+				scroll_y: 1 # 0 forces scrolling to list bottom after adding
+							# an item, 1 forces scrolling to list top
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				SelectableRecycleBoxLayoutFileChooser:
+					id: disc_mem_RB_layout
+					key_selection: 'selectable' # required so that 'selectable'
+												# key/value can be added to
+												# RecycleView data items
+					default_size: None, dp(28)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					orientation: 'vertical'
+					multiselect: False
+					touch_multiselect: False
+					spacing: dp(2)
+
+		BoxLayout:
+			orientation: 'vertical'
+
+			FileChooserListView:
+				id: file_chooser
+				dirselect: True
+    			filters: [lambda folder, filename: not filename.endswith('')]
+				on_selection: text_path_sel_create_dir.text = self.selection and self.selection[0] or ''
+
+			GridLayout:
+				id: grid_layout_path_field
+				#size_hint_y: 0.023 # tablet
+				#size_hint_y: 0.035 # smartphone
+				size_hint_y: 0.12 # Windows
+				cols: 2
+				GridLayout:
+					rows: 1
+					TextInput:
+						id: text_path_sel_create_dir
+						font_size: '15sp'
+						multiline: False
+						readonly: False
+
+			GridLayout:
+				cols: 2
+				size_hint_y: None
+				height: '28dp'
+				Button:
+					text: "Cancel"
+					on_release: root.cancel()
+				Button:
+					text: "Select or create dir"
+					on_release: root.selOrCreateDir(text_path_sel_create_dir.text)
+
 <SelectableLabelFileChooser>:
 	# Draw a background to indicate selection
 	canvas.before:

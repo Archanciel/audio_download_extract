@@ -65,11 +65,12 @@ class SelectableRecycleBoxLayoutFileChooser(FocusBehavior, LayoutSelectionBehavi
 class FileChooserPopup(AbstractPopup):
 	LOAD_FILE_POPUP_TITLE = 'Select history file to load'
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
+	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory'
 	"""
 	
 	"""
 	load = ObjectProperty(None)
-#	save = ObjectProperty(None)
+#	save = OLOAD_FILE_POPUP_TITLEbjectProperty(None)
 	cancel = ObjectProperty(None)
 	
 	def __init__(self, rootGUI, **kwargs):
@@ -218,3 +219,32 @@ class SaveFileChooserPopup(FileChooserPopup):
 		:param active:
 		"""
 		self._updateSaveFileChooserPopupTitle(self.currentPathField.text, active)
+
+
+class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
+	"""
+
+	"""
+	
+	def __init__(self, rootGUI, **kwargs):
+		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+	def selOrCreateDir(self, pathFileName):
+		"""
+
+		:param pathOnly:
+		:param pathFileName:
+		:param isLoadAtStart:
+		:return:
+		"""
+		if os.path.isdir(pathFileName):
+			print("{} dir was selected".format(pathFileName))
+		else:
+			try:
+				os.mkdir(pathFileName)
+				print("{} dir was created".format(pathFileName))
+			except FileExistsError as e:
+				print("{} dir already exists".format(pathFileName))
+		
+#		self.rootGUI.saveHistoryToFile(pathOnly, pathFileName, isLoadAtStart)
+		self.rootGUI.dismissPopup()

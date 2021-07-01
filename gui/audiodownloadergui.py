@@ -33,7 +33,7 @@ from kivy.utils import platform
 # new AudioDownloaderGUI import statements
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup
+from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 
 from constants import *
@@ -49,6 +49,7 @@ RV_LIST_ITEM_SPACING_WINDOWS = 0.5
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_LOADED = 0
 FILE_SAVED = 1
+SELECT_OR_CREATE_DIR = 2
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
@@ -796,13 +797,24 @@ class AudioDownloaderGUI(BoxLayout):
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
 		self.popup.open()
-	
+
+	def openSelectOrCreateDirPopup(self):
+		self.dropDownMenu.dismiss()
+		popupTitle = self.buildFileChooserPopupTitle(SELECT_OR_CREATE_DIR)
+		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
+													   rootGUI=self,
+													   load=self.load,
+													   cancel=self.dismissPopup)
+		self.popup.open()
+
 	def buildFileChooserPopupTitle(self, fileAction):
 		if fileAction == FILE_LOADED:
 			popupTitleAction = LoadFileChooserPopup.LOAD_FILE_POPUP_TITLE
-		else:
+		elif fileAction == FILE_SAVED:
 			popupTitleAction = SaveFileChooserPopup.SAVE_FILE_POPUP_TITLE
-		
+		else:
+			popupTitleAction = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
+
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		
 		if loadAtStartFilePathName == self.currentLoadedFathFileName:
@@ -902,7 +914,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.configMgr.storeConfig()
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_SAVED, isLoadAtStart)
 		self.refocusOnRequestInput()
-	
+
 	# --- end file chooser code ---
 
 	def buildDataPathNotExistMessage(self, path):

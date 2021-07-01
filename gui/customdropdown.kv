@@ -14,6 +14,13 @@
 		disabled: True
 		on_release: root.showSave()
 	Button:
+		id: selOrCreateDir_Button
+		text: 'Sel/Cr dir'
+		size_hint_y: None
+		height: '28dp'
+		disabled: False
+		on_release: root.showSelectOrCreateDir()
+	Button:
 		id: status_to_request_input_Button
 		text: 'Status >'
 		size_hint_y: None
