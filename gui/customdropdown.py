@@ -27,7 +27,8 @@ class CustomDropDown(DropDown):
 
 	def showSplitAudioFile(self):
 		if platform == 'android':
-			self.owner.displayPopupWarning('Audio file split is not possible on Android')
+			self.owner.displayPopupWarning('Audio file split is not possible on Android !')
+			self.dismiss()
 			return
 		
 		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
