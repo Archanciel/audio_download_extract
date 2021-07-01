@@ -226,8 +226,15 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 
 	"""
 	
-	def __init__(self, rootGUI, **kwargs):
+	def __init__(self,
+	             rootGUI,
+	             playlistOrSingleVideoUrl,
+			     singleVideoTitle,
+			     **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
+		self.singleVideoTitle = singleVideoTitle
 		
 	def selOrCreateDir(self, pathFileName):
 		"""
@@ -246,5 +253,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			except FileExistsError as e:
 				print("{} dir already exists".format(pathFileName))
 		
-#		self.rootGUI.saveHistoryToFile(pathOnly, pathFileName, isLoadAtStart)
+		self.rootGUI.singleVideoDownloadDir = pathFileName
+		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
+		                                                self.singleVideoTitle)
 		self.rootGUI.dismissPopup()

@@ -71,7 +71,7 @@ class AudioController:
 						traceback.print_exc()
 		else:
 			# downloading a single video
-			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, SINGLE_VIDEO_AUDIO_DIR)
+			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.audioDownloaderGUI.singleVideoDownloadDir)
 		
 	def trimAudioFile(self, audioFilePathName):
 		"""

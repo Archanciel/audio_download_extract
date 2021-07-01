@@ -302,6 +302,7 @@ class AudioDownloaderGUI(BoxLayout):
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
+		self.singleVideoDownloadDir = SINGLE_VIDEO_AUDIO_DIR
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
@@ -798,11 +799,15 @@ class AudioDownloaderGUI(BoxLayout):
 		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
 		self.popup.open()
 
-	def openSelectOrCreateDirPopup(self):
+	def openSelectOrCreateDirPopup(self,
+	                               playlistOrSingleVideoUrl,
+			                       singleVideoTitle):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(SELECT_OR_CREATE_DIR)
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
+													   playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+													   singleVideoTitle=singleVideoTitle,
 													   load=self.load,
 													   cancel=self.dismissPopup)
 		self.popup.open()
@@ -998,10 +1003,10 @@ class AudioDownloaderGUI(BoxLayout):
 		return answer
 	
 	def createConfirmPopup(self,
-	                       isPayListToDownload,
-						   confirmPopupTitle,
-						   confirmPopupMsg,
-						   confirmPopupCallbackFunction):
+	                       isPlayListToDownload,
+	                       confirmPopupTitle,
+	                       confirmPopupMsg,
+	                       confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
@@ -1022,7 +1027,7 @@ class AudioDownloaderGUI(BoxLayout):
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
-		if isPayListToDownload:
+		if isPlayListToDownload:
 			confirmPopup.ids.set_folder_btn.disabled = True
 		else:
 			confirmPopup.ids.set_folder_btn.disabled = False
@@ -1231,13 +1236,13 @@ class AudioDownloaderGUIApp(App):
 		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
 			self.playlistOrSingleVideoUrl)
 		self.singleVideoTitle = videoTitle
-		isPayListToDownload = False
+		isPlayListToDownload = False
 		
 		if downloadVideoInfoDic is not None:
 			# playlist url obtained from clipboard
 			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ..."
-			isPayListToDownload = True
+			isPlayListToDownload = True
 		elif videoTitle is not None:
 			# single video url obtained from clipboard
 			downloadObjectTitle = videoTitle
@@ -1249,7 +1254,7 @@ class AudioDownloaderGUIApp(App):
 		
 		confirmPopupCallbackFunction = self.onPopupAnswer
 		
-		self.popup = self.audioDownloaderGUI.createConfirmPopup(isPayListToDownload, confirmPopupTitle,
+		self.popup = self.audioDownloaderGUI.createConfirmPopup(isPlayListToDownload, confirmPopupTitle,
 		                                                        downloadObjectTitle, confirmPopupCallbackFunction)
 		self.popup.open()
 	
@@ -1258,7 +1263,8 @@ class AudioDownloaderGUIApp(App):
 			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 			                                                           self.singleVideoTitle)
 		elif answer == 'set_folder': # 'set_folder' is set in confirmpopup.kv file
-			pass
+			self.audioDownloaderGUI.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
+			                                                   self.singleVideoTitle)
 		
 		self.popup.dismiss()
 	
