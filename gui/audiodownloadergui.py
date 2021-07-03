@@ -13,7 +13,7 @@ from kivy.config import Config
 from kivy.metrics import dp
 from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -173,6 +173,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 	def refresh_view_attrs(self, rv, index, data):
 		''' Catch and handle the view changes '''
 		self.rv = rv
+		self.cryptoPricerGUI = rv.parent.parent.parent
 		self.index = index
 		
 		return super(SelectableLabel, self).refresh_view_attrs(
@@ -180,18 +181,15 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 	
 	def on_touch_down(self, touch):
 		''' Add selection on touch down '''
-		
-		cryptoPricerGUI = self.rv.parent.parent
-		
-		if len(cryptoPricerGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
+		if len(self.cryptoPricerGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
 			# here, the user manually deselects the selected item. When
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
-			cryptoPricerGUI.requestInput.text = ''
+			self.cryptoPricerGUI.requestInput.text = ''
 
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+			self.cryptoPricerGUI.recycleViewCurrentSelIndex = -1
 
 		if super(SelectableLabel, self).on_touch_down(touch):
 			return True
@@ -203,18 +201,16 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		# color !
 		self.selected = is_selected
 		
-		cryptoPricerGUI = rv.parent.parent
-		
 		if is_selected:
 			selItemValue = rv.data[index]['text']
 
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			cryptoPricerGUI.recycleViewCurrentSelIndex = index
-			cryptoPricerGUI.requestInput.text = selItemValue
+			self.cryptoPricerGUI.recycleViewCurrentSelIndex = index
+			self.cryptoPricerGUI.requestInput.text = selItemValue
 		
-		cryptoPricerGUI.refocusOnRequestInput()
-		cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
+		self.cryptoPricerGUI.refocusOnRequestInput()
+		self.cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
 
 
 class SettingScrollOptions(SettingOptions):
@@ -258,7 +254,7 @@ class SettingScrollOptions(SettingOptions):
 		content.add_widget(btn)
 
 
-class AudioDownloaderGUI(BoxLayout):
+class AudioDownloaderGUI(Screen):
 	requestInput = ObjectProperty()
 	resultOutput = ObjectProperty()
 	statusBarScrollView = ObjectProperty()
