@@ -1,5 +1,6 @@
 <AudioSplitterGUI>: # sub-class of Screen
 	name: "audioSplitterScreen"
+	sourceAudioFilePathName: source_file_path_name
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -14,9 +15,12 @@
 					valign: 'bottom'
 					text: '  Source file name'
 				TextInput:
+				    id: source_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
-					text: 'd:/download/audiobooks/gary_renard/audio file.mp3'
+					multiline: False
+					readonly: True
+					text: ''
 			GridLayout:
 				cols: 3
 				size_hint: (1, 0.6)
@@ -68,7 +72,7 @@
 									text: '|>'
 						GridLayout:
 							cols: 1
-							rows: 1
+							rows: 2
 							size_hint_y: 0.5
 							Slider:
 								id: slider
@@ -77,6 +81,16 @@
 								step: 1
 								value: 0
 								on_value: root.change_pos(self.value)
+							GridLayout:
+							    cols: 3
+							    rows: 1
+							    GridLayout:
+							        cols: 1
+							    Button:
+							        text: 'Play'
+							        on_press: root.playAudioFile()
+							    GridLayout:
+							        cols: 1
 
 				GridLayout:
 					cols: 1

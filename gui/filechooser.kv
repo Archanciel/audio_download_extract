@@ -6,6 +6,7 @@
 	pathList: path_mem_list
 	gridLayoutPathField: grid_layout_path_field
 	currentPathField: text_path_load
+	loadButton: btn_load
 	BoxLayout:
 		orientation: 'vertical'
 		BoxLayout:
@@ -68,6 +69,7 @@
 					text: "Cancel"
 					on_release: root.cancel()
 				Button:
+				    id: btn_load
 					text: "Load"
 					on_release: root.loadFile(file_chooser.path, file_chooser.selection)
 

@@ -42,6 +42,12 @@ from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
 from helppopup import HelpPopup
 
+# WARNING: without importing AudioSplitterGUI, the AudioSplitterGUI methods
+# called when pressing a button defined in the audiosplittergui.kv file
+# raises an error AttributeError: 'AudioSplitterGUI' object has no attribute
+# <method name>
+from audiosplittergui import AudioSplitterGUI
+
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
 
 RV_LIST_ITEM_SPACING_ANDROID = 2
@@ -285,9 +291,21 @@ class AudioDownloaderGUI(Screen):
 		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
 
+		# WARNING: accessing MainWindow fields defined in kv file
+		# in the __init__ ctor is no longer possible when using
+		# ScreenManager. Here's the solution:
+		# (https://stackoverflow.com/questions/26916262/why-cant-i-access-the-screen-ids)
 		Clock.schedule_once(self._finish_init)
 	
 	def _finish_init(self, dt):
+		"""
+		Due to using WindowManager for managing multiple screns, the ontent of
+		this method can no longer be locatedin the __init__ ctor method, but must
+		be called by Clock.schedule_once().
+		
+		:param dt:
+		:return:
+		"""
 		if os.name == 'posix':
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 			if GuiUtil.onSmartPhone():
@@ -349,9 +367,23 @@ class AudioDownloaderGUI(Screen):
 			# single video url obtained from clipboard
 			downloadObjectTitle = videoTitle
 			confirmPopupTitle = "Go on with downloading audio for video ... "
-		else:
+		elif 'mp3' in self.playlistOrSingleVideoUrl:
+			# This is useful in order to facilitate opening the AudioSplitterGUI
+			# screen
+			from kivy.uix.screenmanager import FadeTransition
+			from kivy.uix.screenmanager import SwapTransition
+			# example:
+			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
+			audioSplitterScreen = self.manager.get_screen('audioSplitterScreen')
+			audioSplitterScreen.sourceAudioFilePathName.text = self.playlistOrSingleVideoUrl
+			self.manager.switch_to(audioSplitterScreen, transition=SwapTransition())
+			# self.parent.current = "audioSplitterScreen"
+			# self.manager.transition.direction = "left"
+			
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
+			return
+		else:
 			return
 		
 		confirmPopupCallbackFunction = self.onPopupAnswer
