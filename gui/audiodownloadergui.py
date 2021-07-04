@@ -312,6 +312,83 @@ class AudioDownloaderGUI(Screen):
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
 		self.singleVideoDownloadDir = SINGLE_VIDEO_AUDIO_DIR
+		
+		self._doOnStart()
+	
+	def _doOnStart(self):
+		'''
+		Testing at app start if the clipboard contains a valid playlist playlistObject.
+		If it is th case, the videos referenced in the playlist will be downloaded and
+		if we are on Windows, their audio will be extracted.
+
+		Since a information popup is displayed in case of valid playlistObject, this must be performed
+		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
+
+		:return:
+
+		test urls:
+		multiple videos with time frames (test audio downloader two files with time frames)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
+		2 videos no time frames (test audio downloader two files)
+		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
+		'''
+		self.loadHistoryDataIfSet()
+		self.playlistOrSingleVideoUrl = Clipboard.paste()
+		
+		downloadVideoInfoDic, videoTitle = self.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			self.playlistOrSingleVideoUrl)
+		self.singleVideoTitle = videoTitle
+		isPlayListToDownload = False
+		
+		if downloadVideoInfoDic is not None:
+			# playlist url obtained from clipboard
+			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
+			confirmPopupTitle = "Go on with processing playlist ..."
+			isPlayListToDownload = True
+		elif videoTitle is not None:
+			# single video url obtained from clipboard
+			downloadObjectTitle = videoTitle
+			confirmPopupTitle = "Go on with downloading audio for video ... "
+		else:
+			# the case if the url is neither pointing to a playlist nor to a
+			# single video. Here, an error message was displayed in the UI !
+			return
+		
+		confirmPopupCallbackFunction = self.onStartPopupAnswer
+		
+		self.popup = self.createConfirmPopup(isPlayListToDownload, confirmPopupTitle,
+																downloadObjectTitle, confirmPopupCallbackFunction)
+		self.popup.open()
+	
+	def loadHistoryDataIfSet(self):
+		'''
+		Testing at app start if data path defined in settings does exist
+		and if history file loaded at start app does exist. Since a warning popup
+		is displayed in case of invalid data, this must be performed here and
+		not in audioDownloaderGUI.__init__ where no popup could be displayed.
+		:return:
+		'''
+		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.dataPath)
+		
+		if self.ensureDataPathExist(self.dataPath, dataPathNotExistMessage):
+			# loading the load at start history file if defined
+			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
+			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
+			
+			if historyFilePathFilename != '' and self.ensureDataPathFileNameExist(
+					historyFilePathFilename, dataFileNotFoundMessage):
+				self.loadHistoryFromPathFilename(historyFilePathFilename)
+				self.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
+	
+	def onStartPopupAnswer(self, instance, answer):
+		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
+			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
+			                                        self.singleVideoTitle)
+		elif answer == 'set_folder':  # 'set_folder' is set in confirmpopup.kv file
+			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
+			                                self.singleVideoTitle)
+		
+		self.popup.dismiss()
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
@@ -368,8 +445,8 @@ class AudioDownloaderGUI(Screen):
 		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
 		
 		popup = Popup(title='AudioDownloader WARNING', content=sizingLabel,
-		              auto_dismiss=True, size_hint=(None, None),
-		              size=popupSize)
+					  auto_dismiss=True, size_hint=(None, None),
+					  size=popupSize)
 		popup.open()
 	
 	def ensureDataPathFileNameExist(self, dataPathFileName, message):
@@ -809,8 +886,8 @@ class AudioDownloaderGUI(Screen):
 		self.popup.open()
 
 	def openSelectOrCreateDirPopup(self,
-	                               playlistOrSingleVideoUrl,
-			                       singleVideoTitle):
+								   playlistOrSingleVideoUrl,
+								   singleVideoTitle):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR)
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
@@ -1009,8 +1086,8 @@ class AudioDownloaderGUI(Screen):
 		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
-		                                                                     self.downloadVideoInfoDic,
-		                                                                     self.singleVideoTitle)
+																			 self.downloadVideoInfoDic,
+																			 self.singleVideoTitle)
 	
 	def setMessage(self, msgText):
 		pass
@@ -1026,10 +1103,10 @@ class AudioDownloaderGUI(Screen):
 		return answer
 	
 	def createConfirmPopup(self,
-	                       isPlayListToDownload,
-	                       confirmPopupTitle,
-	                       confirmPopupMsg,
-	                       confirmPopupCallbackFunction):
+						   isPlayListToDownload,
+						   confirmPopupTitle,
+						   confirmPopupMsg,
+						   confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
@@ -1057,11 +1134,11 @@ class AudioDownloaderGUI(Screen):
 			
 		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		popup = Popup(title=confirmPopupTitle,
-		              content=confirmPopup,
-		              size_hint=(None, None),
-		              pos_hint={'top': 0.8},
-		              size=popupSize,
-		              auto_dismiss=False)
+					  content=confirmPopup,
+					  size_hint=(None, None),
+					  pos_hint={'top': 0.8},
+					  size=popupSize,
+					  auto_dismiss=False)
 		
 		return popup
 	
@@ -1104,7 +1181,7 @@ class AudioDownloaderGUIApp(App):
 			Config.write()
 
 		self.title = 'AudioDownloader GUI'
-		self.audioDownloaderGUI = AudioDownloaderGUI()
+		#self.audioDownloaderGUI = AudioDownloaderGUI()
 
 		return windowManagerKvFile
 
@@ -1238,82 +1315,6 @@ class AudioDownloaderGUIApp(App):
 
 		return os.path.expanduser(defaultpath) % {
 			'appname': 'audiodownloader', 'appdir': self.directory}
-	
-	def on_start(self):
-		'''
-		Testing at app start if the clipboard contains a valid playlist playlistObject.
-		If it is th case, the videos referenced in the playlist will be downloaded and
-		if we are on Windows, their audio will be extracted.
-
-		Since a information popup is displayed in case of valid playlistObject, this must be performed
-		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
-
-		:return:
-
-		test urls:
-		multiple videos with time frames (test audio downloader two files with time frames)
-		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
-		2 videos no time frames (test audio downloader two files)
-		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
-		'''
-		return
-		self.loadHistoryDataIfSet()
-		self.playlistOrSingleVideoUrl = Clipboard.paste()
-		
-		downloadVideoInfoDic, videoTitle = self.audioDownloaderGUI.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
-			self.playlistOrSingleVideoUrl)
-		self.singleVideoTitle = videoTitle
-		isPlayListToDownload = False
-		
-		if downloadVideoInfoDic is not None:
-			# playlist url obtained from clipboard
-			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
-			confirmPopupTitle = "Go on with processing playlist ..."
-			isPlayListToDownload = True
-		elif videoTitle is not None:
-			# single video url obtained from clipboard
-			downloadObjectTitle = videoTitle
-			confirmPopupTitle = "Go on with downloading audio for video ... "
-		else:
-			# the case if the url is neither pointing to a playlist nor to a
-			# single video. Here, an error message was displayed in the UI !
-			return
-		
-		confirmPopupCallbackFunction = self.onPopupAnswer
-		
-		self.popup = self.audioDownloaderGUI.createConfirmPopup(isPlayListToDownload, confirmPopupTitle,
-		                                                        downloadObjectTitle, confirmPopupCallbackFunction)
-		self.popup.open()
-	
-	def onPopupAnswer(self, instance, answer):
-		if answer == 'yes': # 'yes' is set in confirmpopup.kv file
-			self.audioDownloaderGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
-			                                                           self.singleVideoTitle)
-		elif answer == 'set_folder': # 'set_folder' is set in confirmpopup.kv file
-			self.audioDownloaderGUI.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
-			                                                   self.singleVideoTitle)
-		
-		self.popup.dismiss()
-	
-	def loadHistoryDataIfSet(self):
-		'''
-		Testing at app start if data path defined in settings does exist
-		and if history file loaded at start app does exist. Since a warning popup
-		is displayed in case of invalid data, this must be performed here and
-		not in audioDownloaderGUI.__init__ where no popup could be displayed.
-		:return:
-		'''
-		dataPathNotExistMessage = self.audioDownloaderGUI.buildDataPathNotExistMessage(self.audioDownloaderGUI.dataPath)
-		
-		if self.audioDownloaderGUI.ensureDataPathExist(self.audioDownloaderGUI.dataPath, dataPathNotExistMessage):
-			# loading the load at start history file if defined
-			historyFilePathFilename = self.audioDownloaderGUI.configMgr.loadAtStartPathFilename
-			dataFileNotFoundMessage = self.audioDownloaderGUI.buildFileNotFoundMessage(historyFilePathFilename)
-			
-			if historyFilePathFilename != '' and self.audioDownloaderGUI.ensureDataPathFileNameExist(
-					historyFilePathFilename, dataFileNotFoundMessage):
-				self.audioDownloaderGUI.loadHistoryFromPathFilename(historyFilePathFilename)
-				self.audioDownloaderGUI.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
 
 
 if __name__ == '__main__':
