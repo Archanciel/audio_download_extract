@@ -35,7 +35,7 @@ from kivy.core.clipboard import Clipboard
 
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
-from audiosplittergui import AudioSplitterGUI
+from audiosplittergui import AudioSplitterGUI # must be kept to avoid Builder error
 
 from constants import *
 from configmanager import ConfigManager
