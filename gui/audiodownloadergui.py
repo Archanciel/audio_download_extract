@@ -368,20 +368,16 @@ class AudioDownloaderGUI(Screen):
 		elif 'mp3' in self.playlistOrSingleVideoUrl:
 			# This is useful in order to facilitate opening the AudioSplitterGUI
 			# screen
-			from kivy.uix.screenmanager import FadeTransition
-			from kivy.uix.screenmanager import SwapTransition
 			# example:
 			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 			audioSplitterScreen = self.manager.get_screen('audioSplitterScreen')
 			audioSplitterScreen.sourceAudioFilePathName.text = self.playlistOrSingleVideoUrl
-			self.manager.switch_to(audioSplitterScreen, transition=SwapTransition())
-			# self.parent.current = "audioSplitterScreen"
-			# self.manager.transition.direction = "left"
-			
-			# the case if the url is neither pointing to a playlist nor to a
-			# single video. Here, an error message was displayed in the UI !
+			self.parent.current = "audioSplitterScreen"
+			self.manager.transition.direction = "left"
 			return
 		else:
+			# the case if the url is neither pointing to a playlist nor to a
+			# single video. Here, an error message was displayed in the UI !
 			return
 		
 		confirmPopupCallbackFunction = self.onPopupAnswer
