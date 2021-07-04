@@ -35,6 +35,7 @@ from kivy.core.clipboard import Clipboard
 
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
+from audiosplittergui import AudioSplitterGUI
 
 from constants import *
 from configmanager import ConfigManager
@@ -59,9 +60,6 @@ FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
-
-class AudioSplitterGUI(Screen):
-	pass
 
 class WindowManager(ScreenManager):
 	pass
@@ -1208,7 +1206,7 @@ class AudioDownloaderGUIApp(App):
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audiosplittergui.kv')
-		windowManagerKvFile = Builder.load_file('windowmanager.kv')
+		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':
 			# running app om Windows
@@ -1219,7 +1217,7 @@ class AudioDownloaderGUIApp(App):
 		self.title = 'AudioDownloader GUI'
 		#self.audioDownloaderGUI = AudioDownloaderGUI()
 
-		return windowManagerKvFile
+		return windowManager
 
 	def on_pause(self):
 		# Here you can save data if needed

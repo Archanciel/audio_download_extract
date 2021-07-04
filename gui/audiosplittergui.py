@@ -13,7 +13,7 @@ class AudioSplitterGUI(Screen):
 		Clock.schedule_once(self._finish_init)
 
 	def _finish_init(self, dt):
-		pass
+		self.sound = None
 
 	def playAudioFile(self):
 		"""
@@ -29,4 +29,5 @@ class AudioSplitterGUI(Screen):
 		"""
 		Executed by pressing the Stop button
 		"""
-		self.sound.stop()
+		if self.sound:
+			self.sound.stop()

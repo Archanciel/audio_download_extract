@@ -1,3 +1,5 @@
+# ---------- audiosplittergui.kv  ----------
+
 <AudioSplitterGUI>: # sub-class of Screen
 	name: "audioSplitterScreen"
 	sourceAudioFilePathName: source_file_path_name
@@ -119,5 +121,6 @@
 				Button:
 					text: 'Cancel'
 					on_release:
+					    root.stopAudioFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
