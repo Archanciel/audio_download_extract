@@ -13,7 +13,7 @@ class AudioSplitterGUI(Screen):
 		Clock.schedule_once(self._finish_init)
 
 	def _finish_init(self, dt):
-		self.sound = None
+		pass
 
 	def playAudioFile(self):
 		"""
@@ -22,7 +22,6 @@ class AudioSplitterGUI(Screen):
 		D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 		"""
 		self.sound = SoundLoader.load(self.sourceAudioFilePathName.text)
-
 		if self.sound:
 			self.sound.play()
 
@@ -30,5 +29,4 @@ class AudioSplitterGUI(Screen):
 		"""
 		Executed by pressing the Stop button
 		"""
-		if self.sound:
-			self.sound.stop()
+		self.sound.stop()
