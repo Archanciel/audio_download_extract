@@ -354,10 +354,12 @@ class AudioDownloaderGUI(Screen):
 			# single video. Here, an error message was displayed in the UI !
 			return
 		
-		confirmPopupCallbackFunction = self.onStartPopupAnswer
+		confirmPopupCallbackFunction = self.onPopupAnswer
 		
-		self.popup = self.createConfirmPopup(isPlayListToDownload, confirmPopupTitle,
-																downloadObjectTitle, confirmPopupCallbackFunction)
+		self.popup = self.createConfirmPopup(isPlayListToDownload,
+											 confirmPopupTitle,
+											 downloadObjectTitle,
+											 confirmPopupCallbackFunction)
 		self.popup.open()
 	
 	def loadHistoryDataIfSet(self):
@@ -380,15 +382,17 @@ class AudioDownloaderGUI(Screen):
 				self.loadHistoryFromPathFilename(historyFilePathFilename)
 				self.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
 	
-	def onStartPopupAnswer(self, instance, answer):
+	def onPopupAnswer(self, instance, answer):
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
-			                                        self.singleVideoTitle)
+													self.singleVideoTitle)
+			self.popup.dismiss()
+		elif answer == 'no':
+			self.popup.dismiss()
 		elif answer == 'set_folder':  # 'set_folder' is set in confirmpopup.kv file
+			self.popup.dismiss()
 			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
-			                                self.singleVideoTitle)
-		
-		self.popup.dismiss()
+											self.singleVideoTitle)
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
@@ -1093,10 +1097,10 @@ class AudioDownloaderGUI(Screen):
 		pass
 	
 	def getConfirmation(self, title, msgText):
-		self.popup = self.createConfirmPopup(title, msgText, self.onPopupAnswer)
+		self.popup = self.createConfirmPopup(title, msgText, self.onConfirmPopupAnswer)
 		self.popup.open()
 	
-	def onPopupAnswer(self, instance, answer):
+	def onConfirmPopupAnswer(self, instance, answer):
 		answer = answer == 'yes'
 		self.popup.dismiss()
 		
