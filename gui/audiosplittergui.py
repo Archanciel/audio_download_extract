@@ -18,9 +18,15 @@ class AudioSplitterGUI(Screen):
 	def playAudioFile(self):
 		"""
 		Executed by pressing the Play button
-		example:
+		example of audio file pathname:
 		D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 		"""
-		sound = SoundLoader.load(self.sourceAudioFilePathName.text)
-		if sound:
-			sound.play()
+		self.sound = SoundLoader.load(self.sourceAudioFilePathName.text)
+		if self.sound:
+			self.sound.play()
+
+	def stopAudioFile(self):
+		"""
+		Executed by pressing the Stop button
+		"""
+		self.sound.stop()

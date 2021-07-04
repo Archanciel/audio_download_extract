@@ -82,13 +82,16 @@
 								value: 0
 								on_value: root.change_pos(self.value)
 							GridLayout:
-							    cols: 3
+							    cols: 4
 							    rows: 1
 							    GridLayout:
 							        cols: 1
 							    Button:
 							        text: 'Play'
 							        on_press: root.playAudioFile()
+							    Button:
+							        text: 'Stop'
+							        on_press: root.stopAudioFile()
 							    GridLayout:
 							        cols: 1
 
