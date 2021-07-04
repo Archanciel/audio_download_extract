@@ -54,6 +54,11 @@ FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
+class AudioSplitterGUI(Screen):
+	pass
+
+class WindowManager(ScreenManager):
+	pass
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 								 RecycleBoxLayout):
@@ -273,6 +278,17 @@ class AudioDownloaderGUI(Screen):
 
 		if os.name == 'posix':
 			configPath = '/sdcard/audiodownloader.ini'
+		else:
+			configPath = 'c:\\temp\\audiodownloader.ini'
+
+		self.configMgr = ConfigManager(configPath)
+		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
+		self.dataPath = self.configMgr.dataPath
+
+		Clock.schedule_once(self._finish_init)
+	
+	def _finish_init(self, dt):
+		if os.name == 'posix':
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 			if GuiUtil.onSmartPhone():
 				self.boxLayoutContainingStatusBar.height = "73dp"
@@ -280,14 +296,10 @@ class AudioDownloaderGUI(Screen):
 				self.boxLayoutContainingStatusBar.height = "43dp"
 
 		else:
-			configPath = 'c:\\temp\\audiodownloader.ini'
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
 
-		self.configMgr = ConfigManager(configPath)
-		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
-		self.dataPath = self.configMgr.dataPath
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
 								int(self.configMgr.histoListVisibleSize),
 								requestListRVSpacing)
@@ -1081,6 +1093,9 @@ class AudioDownloaderGUIApp(App):
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
+		Builder.load_file('audiodownloadergui.kv')
+		Builder.load_file('audiosplittergui.kv')
+		windowManagerKvFile = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':
 			# running app om Windows
@@ -1091,7 +1106,7 @@ class AudioDownloaderGUIApp(App):
 		self.title = 'AudioDownloader GUI'
 		self.audioDownloaderGUI = AudioDownloaderGUI()
 
-		return self.audioDownloaderGUI
+		return windowManagerKvFile
 
 	def on_pause(self):
 		# Here you can save data if needed
@@ -1241,6 +1256,7 @@ class AudioDownloaderGUIApp(App):
 		2 videos no time frames (test audio downloader two files)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
 		'''
+		return
 		self.loadHistoryDataIfSet()
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		

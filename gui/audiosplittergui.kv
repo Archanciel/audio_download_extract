@@ -1,0 +1,106 @@
+<AudioSplitterGUI>: # sub-class of Screen
+	name: "audioSplitterScreen"
+	GridLayout
+		cols: 1
+		GridLayout:
+			cols: 1
+			rows: 5
+			GridLayout:
+				cols: 1
+				rows: 2
+				size_hint: (1, 0.13)
+				Label:
+					size_hint: (None, 0.03)
+					valign: 'bottom'
+					text: '  Source file name'
+				TextInput:
+					size_hint_y: 0.05
+					halign: 'left'
+					text: 'd:/download/audiobooks/gary_renard/audio file.mp3'
+			GridLayout:
+				cols: 3
+				size_hint: (1, 0.6)
+				GridLayout:
+					cols: 1
+					size_hint: (0.3, 0.4)
+				GridLayout:
+					cols: 1
+					rows: 1
+					size_hint: (0.4, 0.4)
+					GridLayout:
+						cols: 1
+						rows: 2
+						size_hint: (0.4, 0.4)
+						GridLayout:
+							cols: 2
+							rows: 3
+							size_hint: (0.6, 1)
+							Label:
+								size_hint: (None, 0.06)
+								halign: 'left'
+								valign: 'bottom'
+								text: 'Start'
+							Label:
+								size_hint: (None, 0.06)
+								valign: 'bottom'
+								text: 'End'
+							TextInput:
+								size_hint_y: 0.1
+								halign: 'right'
+								text: '45'
+							TextInput:
+								size_hint_y: 0.1
+								halign: 'right'
+								text: '75'
+							GridLayout:
+								size_hint_y: 0.15
+								cols: 2
+								Button:
+									text: '<|'
+								Button:
+									text: '<'
+							GridLayout:
+								cols: 2
+								size_hint_y: 0.15
+								Button:
+									text: '>'
+								Button:
+									text: '|>'
+						GridLayout:
+							cols: 1
+							rows: 1
+							size_hint_y: 0.5
+							Slider:
+								id: slider
+								min: 0
+								max: 1
+								step: 1
+								value: 0
+								on_value: root.change_pos(self.value)
+
+				GridLayout:
+					cols: 1
+					size_hint: (0.3, 0.4)
+			GridLayout:
+				cols: 1
+				rows: 2
+				size_hint: (1, 0.17)
+				Label:
+					size_hint: (None, 0.02)
+					valign: 'bottom'
+					text: 'Split file name'
+				TextInput:
+					size_hint_y: 0.02
+					halign: 'left'
+					text: 'd:/download/audiobooks/gary_renard/audio file 1.mp3'
+			BoxLayout:
+				size_hint_y: 0.5
+			BoxLayout:
+				size_hint_y: 0.2
+				Button:
+					text: 'Save'
+				Button:
+					text: 'Cancel'
+					on_release:
+						app.root.current = "audioDownloaderScreen"
+						root.manager.transition.direction = "right"
