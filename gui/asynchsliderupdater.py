@@ -1,14 +1,14 @@
 import time
 
-SLIDER_UPDATE_FRENQUENCY = 1
-
 class AsynchSliderUpdater:
 	def __init__(self,
+	             audioSplitterGUI,
 	             soundloaderMp3Obj,
 	             slider,
 	             stopSliderUpdaterThread):
+		self.audioSplitterGUI = audioSplitterGUI
 		self.soundloaderMp3Obj = soundloaderMp3Obj
-		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - SLIDER_UPDATE_FRENQUENCY
+		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - audioSplitterGUI.sliderUpdateFrequency
 		self.slider = slider
 		self.stopSliderUpdaterThread = stopSliderUpdaterThread
 	
@@ -20,9 +20,16 @@ class AsynchSliderUpdater:
 		:return:
 		"""
 		mp3Pos = self.soundloaderMp3Obj.get_pos()
+		sliderUpdateFrequency = self.audioSplitterGUI.sliderUpdateFrequency
 		
 		while not self.stopSliderUpdaterThread and mp3Pos < self.mp3PosSliderStop:
 			self.slider.value = mp3Pos
+			self.audioSplitterGUI.playButton.disabled = True
 			print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
-			time.sleep(SLIDER_UPDATE_FRENQUENCY)
+			time.sleep(sliderUpdateFrequency)
 			mp3Pos = self.soundloaderMp3Obj.get_pos()
+
+		if not self.stopSliderUpdaterThread:
+			# here, we arrived to the end of the sound file and playing was stopped.
+			# So, it makes sense to enable the play button.
+			self.audioSplitterGUI.playButton.disabled = False

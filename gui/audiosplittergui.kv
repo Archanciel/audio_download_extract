@@ -3,6 +3,8 @@
 <AudioSplitterGUI>: # sub-class of Screen
 	name: "audioSplitterScreen"
 	sourceAudioFilePathName: source_file_path_name
+	audioSlider: slider
+	playButton: button_play
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -82,13 +84,14 @@
 								max: 1
 								step: 1
 								value: 0
-								on_value: root.change_pos(self.value)
+								on_value: root.updateSoundPos(self.value)
 							GridLayout:
 								cols: 4
 								rows: 1
 								GridLayout:
 									cols: 1
 								Button:
+								    id: button_play
 									text: 'Play'
 									on_press: root.playAudioFile()
 								Button:
