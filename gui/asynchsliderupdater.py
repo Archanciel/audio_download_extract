@@ -28,8 +28,3 @@ class AsynchSliderUpdater:
 			#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
 			time.sleep(sliderUpdateFrequency)
 			mp3Pos = self.soundloaderMp3Obj.get_pos()
-
-		if not self.stopSliderUpdaterThread:
-			# here, we arrived to the end of the sound file and playing was stopped.
-			# So, it makes sense to enable the play button.
-			self.audioSplitterGUI.playButton.disabled = False
