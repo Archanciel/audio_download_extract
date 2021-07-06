@@ -274,7 +274,7 @@ class FileToSplitLoadFileChooserPopup(LoadFileChooserPopup):
 		
 	def loadFile(self, path, selection):
 		audioSplitterScreen = self.rootGUI.manager.get_screen('audioSplitterScreen')
-		audioSplitterScreen.sourceAudioFilePathName.text = selection[0]
+		audioSplitterScreen.initSoundFile(sourceAudioFilePathName=selection[0])
 		self.rootGUI.dismissPopup()
 		self.rootGUI.parent.current = "audioSplitterScreen"
 		self.rootGUI.manager.transition.direction = "left"

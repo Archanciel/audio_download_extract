@@ -367,11 +367,12 @@ class AudioDownloaderGUI(Screen):
 			confirmPopupTitle = "Go on with downloading audio for video ... "
 		elif 'mp3' in self.playlistOrSingleVideoUrl:
 			# This is useful in order to facilitate opening the AudioSplitterGUI
-			# screen
+			# screen during its development. Once dev is finished, this code
+			# can be commented out.
 			# example:
 			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 			audioSplitterScreen = self.manager.get_screen('audioSplitterScreen')
-			audioSplitterScreen.sourceAudioFilePathName.text = self.playlistOrSingleVideoUrl
+			audioSplitterScreen.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
 			self.parent.current = "audioSplitterScreen"
 			self.manager.transition.direction = "left"
 			return
