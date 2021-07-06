@@ -40,7 +40,7 @@ class AudioSplitterGUI(Screen):
 		if self.soundloaderMp3Obj is None:
 			self.soundloaderMp3Obj = SoundLoader.load(self.sourceAudioFilePathName.text)
 			soundLength = self.soundloaderMp3Obj.length
-			print('soundLength ', soundLength)
+			#print('soundLength ', soundLength)
 			self.audioSlider.max = soundLength
 			
 			if soundLength < 100:
@@ -77,7 +77,7 @@ class AudioSplitterGUI(Screen):
 		if self.soundloaderMp3Obj is not None:
 			if abs(self.soundloaderMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
 				# test required to avoid mp3 playing perturbation
-				print('AudioSplitterGUI.updateSoundPos: {}'.format(value))
+				#print('AudioSplitterGUI.updateSoundPos: {}'.format(value))
 				self.soundloaderMp3Obj.seek(value)
 				if self.soundloaderMp3Obj.status == 'stop':
 					# here, the mp3 was played until its end
@@ -93,12 +93,13 @@ class AudioSplitterGUI(Screen):
 		Executed by pressing the Stop button
 		"""
 		if self.soundloaderMp3Obj:
-			print('self.audioSlider.value ',self.audioSlider.value)
+			#print('self.audioSlider.value ',self.audioSlider.value)
 			if self.audioSlider.value >= self.soundloaderMp3Obj.length - 2 * self.sliderUpdateFrequency:
 				# here, the stop button is pressed when the sound file is at end. In this
 				# case, pressing stop reposition the slider at sound beginning position.
 				self.audioSlider.value = 0
 			self.soundloaderMp3Obj.stop()
 			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
+			self.sliderUpdaterThread.join()
 			self.playButton.disabled = False
 

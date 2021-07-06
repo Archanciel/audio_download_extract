@@ -15,7 +15,7 @@ class AsynchSliderUpdater:
 	def updateSlider(self):
 		"""
 		This method updates the slider position every
-		SLIDER_UPDATE_FRENQUENCY seconds to reflect the current mp3
+		sliderUpdateFrequency seconds to reflect the current mp3
 		playing position.
 		:return:
 		"""
@@ -25,7 +25,7 @@ class AsynchSliderUpdater:
 		while not self.stopSliderUpdaterThread and mp3Pos < self.mp3PosSliderStop:
 			self.slider.value = mp3Pos
 			self.audioSplitterGUI.playButton.disabled = True
-			print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
+			#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
 			time.sleep(sliderUpdateFrequency)
 			mp3Pos = self.soundloaderMp3Obj.get_pos()
 
