@@ -26,7 +26,6 @@ class AudioSplitterGUI(AudioGUI):
 	def initSoundFile(self, sourceAudioFilePathName):
 		self.soundloaderMp3Obj = None
 		self.sourceAudioFilePathName.text = sourceAudioFilePathName
-		self.splitAudioFilePathName.text = sourceAudioFilePathName[:-4] + '-1' + sourceAudioFilePathName[-4:]
 		self.audioSlider.value = 0
 	
 	def playAudioFile(self):
@@ -126,4 +125,5 @@ class AudioSplitterGUI(AudioGUI):
 			return
 		
 		audioController = AudioController(self, None)
-		audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
+		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
+		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)

@@ -110,10 +110,11 @@ class AudioController:
 	                  trimEndHHMMSS):
 		"""
 		
-		:param audioFilePathName:
+		:param audioFilePathName: the file which will be trimmed
 		:param trimStartHHMMSS:
 		:param trimEndHHMMSS:
-		:return:
+		
+		:return: the trimmed file pathname
 		"""
 		audioFileName = audioFilePathName.split(DIR_SEP)[-1]
 		audioFileDir = audioFilePathName.replace(DIR_SEP + audioFileName, '')
@@ -135,6 +136,8 @@ class AudioController:
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
+		
+		return downloadVideoInfoDic
 	
 	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""

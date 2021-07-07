@@ -404,6 +404,28 @@ class DownloadVideoInfoDic:
 				if extractedFileName == extractedFilesSubDic[key][KEY_FILENAME]:
 					return extractedFilesSubDic[key][KEY_FILE_TIMEFRAME_HHMMSS]
 	
+	def getExtractedFilePathNameForVideoIndexTimeFrameIndex(self,
+	                                                        videoIndex,
+	                                                        timeFrameIndex):
+		"""
+		Returns the extracted file path name for the passed video index and
+		time frame index.
+
+		:param videoIndex:
+		:param timeFrameIndex:
+
+		:return: file path name. Example:
+			     D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audiobooks\\\\Various\\\\Wear a mask. Help slow the spread of Covid-19._1.mp3
+		"""
+		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+		
+		if KEY_VIDEO_EXTRACTED_FILES not in videoInfoDic.keys():
+			return None
+		else:
+			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
+			timeFrameIndexExtractedFileInfo = extractedFilesSubDic[str(timeFrameIndex)]
+			return self.getPlaylistDownloadDir() + DIR_SEP + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
+	
 	def addSuppressedFileInfoForVideoIndex(self,
 	                                       videoIndex,
 	                                       suppressedFileName,
@@ -506,9 +528,9 @@ class DownloadVideoInfoDic:
 
 if __name__ == "__main__":
 	if os.name == 'posix':
-		audioDir = '/storage/emulated/0/Download/Audiobooks'
+		audioDir = '/storage/emulated/0/Download/Audiobooks/various'
 	else:
-		audioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks'
+		audioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\various'
 		
 	dvi = DownloadVideoInfoDic(audioDir, 'essai_vid_info (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e)', 'essai_vid_info')
 	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
@@ -522,7 +544,7 @@ if __name__ == "__main__":
 	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(2, 1, 'title_2_1.mp3', ['0:2:3', '0:4:56'])
 	dvi.addSuppressedFileInfoForVideoIndex(1, 'title_1_s.mp3', ['0:23:45-0:24:54', '1:03:45-1:24:54'], ['0:0:0-0:23:45', '0:24:54-1:03:45', '1:24:54-1:55:12'])
 
-	print(dvi)
+	print(dvi.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1,timeFrameIndex=1))
 	
 	print(dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
 	print(dvi.getSuppressedFileNameForVideoIndex(1))
