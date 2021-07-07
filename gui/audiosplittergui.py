@@ -7,6 +7,7 @@ from datetime import datetime
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
+from constants import *
 
 
 class AudioSplitterGUI(AudioGUI):
@@ -147,16 +148,26 @@ class AudioSplitterGUI(AudioGUI):
 		except ValueError as e:
 			self.outputResult('End position invalid. {}. Value ignored.'.format(e))
 
-	def forwardSeconds(self):
+	def forwardTenSeconds(self):
 		currentPos = self.soundloaderMp3Obj.get_pos()
-		currentPos += 1
+		currentPos += 10
 		self.updateSoundPos(currentPos)
-	
-	def backwardSeconds(self):
+
+	def forwardThirtySeconds(self):
 		currentPos = self.soundloaderMp3Obj.get_pos()
-		currentPos -= 1
+		currentPos += 30
 		self.updateSoundPos(currentPos)
-	
+
+	def backwardTenSeconds(self):
+		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos -= 10
+		self.updateSoundPos(currentPos)
+
+	def backwardThirtySeconds(self):
+		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos -= 30
+		self.updateSoundPos(currentPos)
+
 	def convertTimeStringToSeconds(self, timeString):
 		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
 		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)

@@ -35,7 +35,7 @@
 				size_hint: (1, 0.6)
 				GridLayout:
 					cols: 1
-					size_hint: (0.3, 0.4)
+					size_hint: (0.2, 0.4)
 				GridLayout:
 					cols: 1
 					rows: 1
@@ -44,10 +44,6 @@
 						cols: 1
 						rows: 4
 						size_hint: (0.4, 0.4)
-						GridLayout: # empty GridLayout
-							cols: 1
-							rows: 1
-							size_hint: (0.4, 0.6)
 						GridLayout:
 							cols: 3
 							rows: 2
@@ -83,19 +79,25 @@
 							size_hint: (0.6, 0.5)
 							GridLayout:
 								size_hint_y: 0.15
-								cols: 2
+								cols: 3
 								Button:
 									text: '<|'
 									on_press: root.goToStartPos()
 								Button:
+									text: '<<'
+									on_press: root.backwardThirtySeconds()
+								Button:
 									text: '<'
-									on_press: root.backwardSeconds()
+									on_press: root.backwardTenSeconds()
 							GridLayout:
-								cols: 2
+								cols: 3
 								size_hint_y: 0.15
 								Button:
 									text: '>'
-									on_press: root.forwardSeconds()
+									on_press: root.forwardTenSeconds()
+								Button:
+									text: '>>'
+									on_press: root.forwardThirtySeconds()
 								Button:
 									text: '|>'
 									on_press: root.goToEndPos()
@@ -127,7 +129,7 @@
 
 				GridLayout: # empty GridLayout
 					cols: 1
-					size_hint: (0.3, 0.4)
+					size_hint: (0.2, 0.4)
 			GridLayout:
 				cols: 1
 				rows: 2
