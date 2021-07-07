@@ -5,6 +5,11 @@
 	sourceAudioFilePathName: source_file_path_name
 	audioSlider: slider
 	playButton: button_play
+	startTextInput: text_input_start
+	currentTextInput: text_input_current
+	endTextInput: text_input_end
+	splitAudioFilePathName: split_file_path_name
+	splitOutputLabel: label_output_split
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -37,29 +42,45 @@
 					size_hint: (0.4, 0.4)
 					GridLayout:
 						cols: 1
-						rows: 2
+						rows: 4
 						size_hint: (0.4, 0.4)
+						GridLayout: # empty GridLayout
+							cols: 1
+							rows: 1
+							size_hint: (0.4, 0.6)
 						GridLayout:
-							cols: 2
-							rows: 3
-							size_hint: (0.6, 1)
+							cols: 3
+							rows: 2
+							size_hint: (0.4, 1)
 							Label:
-								size_hint: (None, 0.06)
-								halign: 'left'
+								size_hint_y: 0.01
 								valign: 'bottom'
 								text: 'Start'
 							Label:
-								size_hint: (None, 0.06)
+								size_hint_y: 0.01
+								valign: 'bottom'
+								text: 'Current'
+							Label:
+								size_hint_y: 0.01
 								valign: 'bottom'
 								text: 'End'
 							TextInput:
-								size_hint_y: 0.1
+							    id: text_input_start
+								size_hint_y: 0.01
 								halign: 'right'
-								text: '45'
 							TextInput:
-								size_hint_y: 0.1
+							    id: text_input_current
+								size_hint_y: 0.01
 								halign: 'right'
-								text: '75'
+								readonly: True
+							TextInput:
+							    id: text_input_end
+								size_hint_y: 0.01
+								halign: 'right'
+						GridLayout:
+							cols: 2
+							rows: 1
+							size_hint: (0.6, 0.5)
 							GridLayout:
 								size_hint_y: 0.15
 								cols: 2
@@ -77,7 +98,7 @@
 						GridLayout:
 							cols: 1
 							rows: 2
-							size_hint_y: 0.5
+							size_hint_y: 1.2
 							Slider:
 								id: slider
 								min: 0
@@ -97,10 +118,10 @@
 								Button:
 									text: 'Stop'
 									on_press: root.stopAudioFile()
-								GridLayout:
+								GridLayout: # empty GridLayout
 									cols: 1
 
-				GridLayout:
+				GridLayout: # empty GridLayout
 					cols: 1
 					size_hint: (0.3, 0.4)
 			GridLayout:
@@ -112,18 +133,27 @@
 					valign: 'bottom'
 					text: 'Split file name'
 				TextInput:
+				    id: split_file_path_name
 					size_hint_y: 0.02
 					halign: 'left'
-					text: 'd:/download/audiobooks/gary_renard/audio file 1.mp3'
-			BoxLayout:
+			GridLayout:
+			    cols: 1
+			    rows: 1
 				size_hint_y: 0.5
+				Label:
+				    id: label_output_split
+                    background_color: 0,0,0,0
+                    foreground_color: 1,1,1,1
+                    valign: "top"
+                    markup: True
 			BoxLayout:
 				size_hint_y: 0.2
 				Button:
 					text: 'Save'
+					on_release: root.createSplitFile()
 				Button:
 					text: 'Cancel'
 					on_release:
-						root.stopAudioFile()
+						root.cancelSplitFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"

@@ -143,7 +143,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, AUDIO_DIR_TEST)
-		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
 		_, downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(

@@ -6,12 +6,13 @@ from requester import Requester
 from downloadvideoinfodic import DownloadVideoInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from audioextractor import AudioExtractor
+from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:
-	def __init__(self, audioDownloaderGUI, audioDir, configMgr=None):
+	def __init__(self, audioGUI, audioDir, configMgr=None):
 		"""
 		
-		:param audioDownloaderGUI: used for unit testing only !
+		:param audioGUI: used for unit testing only !
 		"""
 
 		if os.name == 'posix':
@@ -25,7 +26,7 @@ class AudioController:
 			self.configMgr = configMgr
 
 		self.requester = Requester(self.configMgr)
-		self.audioDownloaderGUI = audioDownloaderGUI
+		self.audioGUI = audioGUI
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDir)
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
@@ -71,9 +72,9 @@ class AudioController:
 						traceback.print_exc()
 		else:
 			# downloading a single video
-			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.audioDownloaderGUI.singleVideoDownloadDir)
+			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.audioGUI.singleVideoDownloadDir)
 		
-	def trimAudioFile(self, audioFilePathName):
+	def trimAudioFileCommandLine(self, audioFilePathName):
 		"""
 		Example of command line:
 		
@@ -102,7 +103,39 @@ class AudioController:
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
 		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
-
+	
+	def trimAudioFile(self,
+	                  audioFilePathName,
+	                  trimStartHHMMSS,
+	                  trimEndHHMMSS):
+		"""
+		
+		:param audioFilePathName:
+		:param trimStartHHMMSS:
+		:param trimEndHHMMSS:
+		:return:
+		"""
+		audioFileName = audioFilePathName.split(DIR_SEP)[-1]
+		audioFileDir = audioFilePathName.replace(DIR_SEP + audioFileName, '')
+		
+		# initializing a partially filled DownloadVideoInfoDic with only the informations
+		# required to trim the audio file
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioFileDir)
+		downloadVideoInfoDic.addVideoInfoForVideoIndex(1, audioFileName.split('.')[0],
+		                                               '', audioFileName)
+		
+		# getting the extract time frames specified as command line argument
+		# and adding them to the DownloadVideoInfoDic
+		startEndTimeFrame = trimStartHHMMSS + '-' + trimEndHHMMSS
+		extractStartEndSecondsLists = [PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame)]
+		
+		for extractStartEndSecondsList in extractStartEndSecondsLists:
+			downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
+		
+		# now trimming the audio file
+		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
+	
 	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
 		"""
 		As the passed URL points either to a playlist or to a single video, the
@@ -121,13 +154,13 @@ class AudioController:
 		return downloadVideoInfoDic, videoTitle
 	
 	def displayMessage(self, msgText):
-		self.audioDownloaderGUI.outputResult(msgText)
+		self.audioGUI.outputResult(msgText)
 	
 	def displayError(self, msg):
-		self.audioDownloaderGUI.outputResult(msg)
+		self.audioGUI.outputResult(msg)
 		
 	def getConfirmation(self, title, msg):
-		return self.audioDownloaderGUI.getConfirmation(title, msg)
+		return self.audioGUI.getConfirmation(title, msg)
 
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):

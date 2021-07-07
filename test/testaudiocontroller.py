@@ -11,7 +11,7 @@ from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 			
 class TestAudioController(unittest.TestCase):
-	def testTrimAudioFile(self):
+	def testTrimAudioFileCommandLine(self):
 		playListName = 'test_audio_controller'
 		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
 		audioFileName = 'LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3'
@@ -41,7 +41,7 @@ class TestAudioController(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioController.trimAudioFile(audioFilePathName)
+		audioController.trimAudioFileCommandLine(audioFilePathName)
 		
 		sys.stdout = stdout
 		
@@ -64,6 +64,4 @@ class TestAudioController(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	ts = time.time()
-	tst.testErrorMsgEmptyClipboard()
-	print(time.time() - ts)
+	tst.testTrimAudioFileCommandLine()

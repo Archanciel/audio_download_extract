@@ -371,8 +371,8 @@ class AudioDownloaderGUI(Screen):
 			# can be commented out.
 			# example:
 			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
-			audioSplitterScreen = self.manager.get_screen('audioSplitterScreen')
-			audioSplitterScreen.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
+			audioSplitterGUI = self.manager.get_screen('audioSplitterScreen')
+			audioSplitterGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
 			self.parent.current = "audioSplitterScreen"
 			self.manager.transition.direction = "left"
 			return

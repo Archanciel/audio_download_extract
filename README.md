@@ -82,4 +82,5 @@ downloaded to a directory specified in the app settings.
 - pytube
 - youtube_dl
 - moviepy (not working on Android !)
+- mutagen
 - kivy
