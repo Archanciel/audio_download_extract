@@ -1,14 +1,14 @@
-from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
 import threading, time
 
+from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 
 
-class AudioSplitterGUI(Screen):
+class AudioSplitterGUI(AudioGUI):
 	def __init__(self, **kw):
 		super(AudioSplitterGUI, self).__init__(**kw)
 
@@ -22,7 +22,6 @@ class AudioSplitterGUI(Screen):
 		self.soundloaderMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdateFrequency = 1
-		self.outputLineBold = True
 
 	def initSoundFile(self, sourceAudioFilePathName):
 		self.soundloaderMp3Obj = None
@@ -121,20 +120,10 @@ class AudioSplitterGUI(Screen):
 	def createSplitFile(self):
 		startPos = self.startTextInput.text
 		endPos = self.endTextInput.text
+		
+		if startPos == '' or endPos == '':
+			self.outputResult('Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos, endPos))
+			return
+		
 		audioController = AudioController(self, None)
 		audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
-	
-	def outputResult(self, resultStr):
-		self.outputLineBold = not self.outputLineBold
-
-		if self.outputLineBold:
-			markupBoldStart = '[b]'
-			markupBoldEnd = '[/b]'
-		else:
-			markupBoldStart = ''
-			markupBoldEnd = ''
-		
-		if len(self.splitOutputLabel.text) == 0:
-			self.splitOutputLabel.text = resultStr
-		else:
-			self.splitOutputLabel.text = self.splitOutputLabel.text + '\n' + markupBoldStart + resultStr + markupBoldEnd

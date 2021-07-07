@@ -13,7 +13,7 @@ from kivy.config import Config
 from kivy.metrics import dp
 from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -30,13 +30,13 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.utils import platform
 
-# new AudioDownloaderGUI import statements
 from kivy.core.clipboard import Clipboard
 
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 from audiosplittergui import AudioSplitterGUI # must be kept to avoid Builder error
 
+from audiogui import AudioGUI
 from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
@@ -263,9 +263,9 @@ class SettingScrollOptions(SettingOptions):
 		content.add_widget(btn)
 
 
-class AudioDownloaderGUI(Screen):
+class AudioDownloaderGUI(AudioGUI):
 	requestInput = ObjectProperty()
-	resultOutput = ObjectProperty()
+	outputLabel = ObjectProperty()
 	statusBarScrollView = ObjectProperty()
 	statusBarTextInput = ObjectProperty()
 	showRequestList = False
@@ -672,7 +672,7 @@ class AudioDownloaderGUI(Screen):
 		self.requestInput.text = requestStr.lower()
 
 	def clearOutput(self):
-		self.resultOutput.text = ''
+		self.outputLabel.text = ''
 		
 		if 'History' not in self.statusBarTextInput.text:
 			self.statusBarTextInput.text = ''
@@ -719,23 +719,6 @@ class AudioDownloaderGUI(Screen):
 			self.toggleHistoButton.disabled = False
 			self.replayAllButton.disabled = False
 			self.dropDownMenu.saveButton.disabled = False
-			
-	def outputResult(self, resultStr):
-		self.outputLineBold = not self.outputLineBold
-
-		if self.outputLineBold:
-			markupBoldStart = '[b]'
-			markupBoldEnd = '[/b]'
-		else:
-			markupBoldStart = ''
-			markupBoldEnd = ''
-		
-		if len(self.resultOutput.text) == 0:
-			self.resultOutput.text = resultStr
-		else:
-			self.resultOutput.text = self.resultOutput.text + '\n' + markupBoldStart + resultStr + markupBoldEnd
-			# self.outputResultScrollView.scroll_to(100000)
-			# self.resultOutput.cursor = (10000,0)
 
 	def refocusOnRequestInput(self):
 		# defining a delay of 0.5 sec ensure the

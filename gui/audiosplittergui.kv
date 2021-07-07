@@ -9,7 +9,7 @@
 	currentTextInput: text_input_current
 	endTextInput: text_input_end
 	splitAudioFilePathName: split_file_path_name
-	splitOutputLabel: label_output_split
+	outputLabel: label_output_split
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -140,12 +140,28 @@
 			    cols: 1
 			    rows: 1
 				size_hint_y: 0.5
-				Label:
-				    id: label_output_split
-                    background_color: 0,0,0,0
-                    foreground_color: 1,1,1,1
-                    valign: "top"
-                    markup: True
+                ScrollView:
+                    id: scrlv_out
+                    canvas.before:
+                        Color:
+                            rgb: [0,0,0]
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    effect_cls: "ScrollEffect" #prevents overscrolling
+                    #scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
+                    do_scroll_x: False # limiting to vertical scrolling
+
+                    Label:
+                        id: label_output_split
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: (self.width-20), None
+                        line_height: 0.9
+                        background_color: 0,0,0,0
+                        foreground_color: 1,1,1,1
+                        valign: "top"
+                        markup: True
 			BoxLayout:
 				size_hint_y: 0.2
 				Button:
