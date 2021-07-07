@@ -2,6 +2,7 @@ from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
 import threading, time
+from datetime import datetime
 
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
@@ -113,7 +114,7 @@ class AudioSplitterGUI(AudioGUI):
 	def disablePlayButton(self):
 		self.playButton.disabled = True
 		
-	def updateCurrentSoundPos(self, pos):
+	def updateCurrentSoundPosTextInput(self, pos):
 		self.currentTextInput.text = time.strftime('%H:%M:%S', time.gmtime(int(pos)))
 		
 	def createSplitFile(self):
@@ -127,3 +128,42 @@ class AudioSplitterGUI(AudioGUI):
 		audioController = AudioController(self, None)
 		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
 		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+	
+	def goToStartPos(self):
+		hhmmssStartPos = self.startTextInput.text
+		
+		try:
+			startPos = self.convertTimeStringToSeconds(hhmmssStartPos)
+			self.updateSoundPos(startPos)
+		except ValueError as e:
+			self.outputResult('Start position invalid. {}. Value ignored.'.format(e))
+	
+	def goToEndPos(self):
+		hhmmssEndPos = self.endTextInput.text
+		
+		try:
+			endPos = self.convertTimeStringToSeconds(hhmmssEndPos)
+			self.updateSoundPos(endPos)
+		except ValueError as e:
+			self.outputResult('End position invalid. {}. Value ignored.'.format(e))
+
+	def forwardSeconds(self):
+		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos += 1
+		self.updateSoundPos(currentPos)
+	
+	def backwardSeconds(self):
+		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos -= 1
+		self.updateSoundPos(currentPos)
+	
+	def convertTimeStringToSeconds(self, timeString):
+		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
+		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
+		
+		return dateTimeDelta.total_seconds()
+		
+if __name__ == '__main__':
+	audioGUI = AudioSplitterGUI()
+	time_string = "01:01:09"
+	audioGUI.convertTimeStringToSeconds(time_string)

@@ -86,15 +86,19 @@
 								cols: 2
 								Button:
 									text: '<|'
+									on_press: root.goToStartPos()
 								Button:
 									text: '<'
+									on_press: root.backwardSeconds()
 							GridLayout:
 								cols: 2
 								size_hint_y: 0.15
 								Button:
 									text: '>'
+									on_press: root.forwardSeconds()
 								Button:
 									text: '|>'
+									on_press: root.goToEndPos()
 						GridLayout:
 							cols: 1
 							rows: 2
