@@ -21,12 +21,13 @@ class AudioSplitterGUI(AudioGUI):
 
 		:param dt:
 		"""
-		self.soundloaderMp3Obj = None
+		self.soundloaderSourceMp3Obj = None
+		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdateFrequency = 1
 
 	def initSoundFile(self, sourceAudioFilePathName):
-		self.soundloaderMp3Obj = None
+		self.soundloaderSourceMp3Obj = None
 		self.sourceAudioFilePathName.text = sourceAudioFilePathName
 		self.audioSlider.value = 0
 	
@@ -40,9 +41,9 @@ class AudioSplitterGUI(AudioGUI):
 		# FileToSplitLoadFileChooserPopup.loadFile() or by
 		# AudioDownloaderGUI._doOnStart().
 		
-		if self.soundloaderMp3Obj is None:
-			self.soundloaderMp3Obj = SoundLoader.load(self.sourceAudioFilePathName.text)
-			soundLength = self.soundloaderMp3Obj.length
+		if self.soundloaderSourceMp3Obj is None:
+			self.soundloaderSourceMp3Obj = SoundLoader.load(self.sourceAudioFilePathName.text)
+			soundLength = self.soundloaderSourceMp3Obj.length
 			#print('soundLength ', soundLength)
 			self.audioSlider.max = soundLength
 			
@@ -50,17 +51,31 @@ class AudioSplitterGUI(AudioGUI):
 				self.sliderUpdateFrequency = 1 / soundLength
 				
 		self.startSliderUpdateThread()
-		self.playButton.disabled = True
-		self.soundloaderMp3Obj.play()
+		self.sourceFilePlayButton.disabled = True
+		self.soundloaderSourceMp3Obj.play()
+	
+	def playSplitFile(self):
+		"""
+		Executed by pressing the Play split file button.
+		"""
+		# self.sourceAudioFilePathName.text was set either by
+		# FileToSplitLoadFileChooserPopup.loadFile() or by
+		# AudioDownloaderGUI._doOnStart().
+		
+		if self.soundloaderSplitMp3Obj is None:
+			self.soundloaderSplitMp3Obj = SoundLoader.load(self.splitAudioFilePathName.text)
+
+		self.splitFilePlayButton.disabled = True
+		self.soundloaderSplitMp3Obj.play()
 	
 	def startSliderUpdateThread(self):
 		if self.sliderAsynchUpdater:
 			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
 			
 		self.sliderAsynchUpdater = AsynchSliderUpdater(self,
-		                                               self.soundloaderMp3Obj,
-		                                               self.ids.slider,
-		                                               stopSliderUpdaterThread=False)
+													   self.soundloaderSourceMp3Obj,
+													   self.ids.slider,
+													   stopSliderUpdaterThread=False)
 		self.sliderUpdaterThread = threading.Thread(target=self.sliderAsynchUpdater.updateSlider, args=())
 		self.sliderUpdaterThread.daemon = True
 		self.sliderUpdaterThread.start()
@@ -77,35 +92,43 @@ class AudioSplitterGUI(AudioGUI):
 		:param value:
 		:return:
 		"""
-		if self.soundloaderMp3Obj is not None:
-			if abs(self.soundloaderMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
+		if self.soundloaderSourceMp3Obj is not None:
+			if abs(self.soundloaderSourceMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
 				# test required to avoid mp3 playing perturbation
 				#print('AudioSplitterGUI.updateSoundPos: {}'.format(value))
-				self.soundloaderMp3Obj.seek(value)
-				if self.soundloaderMp3Obj.status == 'stop':
+				self.soundloaderSourceMp3Obj.seek(value)
+				if self.soundloaderSourceMp3Obj.status == 'stop':
 					# here, the mp3 was played until its end
-					self.soundloaderMp3Obj.play()
+					self.soundloaderSourceMp3Obj.play()
 					self.startSliderUpdateThread()
 				else:
 					# here, the user moved the slider to a position before end
 					# of sound
-					self.playButton.disabled = True
+					self.sourceFilePlayButton.disabled = True
 	
 	def stopAudioFile(self):
 		"""
 		Executed by pressing the Stop button
 		"""
-		if self.soundloaderMp3Obj:
+		if self.soundloaderSourceMp3Obj:
 			#print('self.audioSlider.value ',self.audioSlider.value)
-			if self.audioSlider.value >= self.soundloaderMp3Obj.length - 2 * self.sliderUpdateFrequency:
+			if self.audioSlider.value >= self.soundloaderSourceMp3Obj.length - 2 * self.sliderUpdateFrequency:
 				# here, the stop button is pressed when the sound file is at end. In this
 				# case, pressing stop reposition the slider at sound beginning position.
 				self.audioSlider.value = 0
-			self.soundloaderMp3Obj.stop()
+			self.soundloaderSourceMp3Obj.stop()
 			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
 			self.sliderUpdaterThread.join()
-			self.playButton.disabled = False
-
+			self.sourceFilePlayButton.disabled = False
+	
+	def stopSplitFile(self):
+		"""
+		Executed by pressing the Stop button
+		"""
+		if self.soundloaderSplitMp3Obj:
+			self.soundloaderSplitMp3Obj.stop()
+			self.splitFilePlayButton.disabled = False
+	
 	def cancelSplitFile(self):
 		self.stopAudioFile()
 		self.startTextInput.text = ''
@@ -113,7 +136,7 @@ class AudioSplitterGUI(AudioGUI):
 		self.endTextInput.text = ''
 
 	def disablePlayButton(self):
-		self.playButton.disabled = True
+		self.sourceFilePlayButton.disabled = True
 		
 	def updateCurrentSoundPosTextInput(self, pos):
 		self.currentTextInput.text = time.strftime('%H:%M:%S', time.gmtime(int(pos)))
@@ -129,6 +152,8 @@ class AudioSplitterGUI(AudioGUI):
 		audioController = AudioController(self, None)
 		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
 		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+		self.splitFilePlayButton.disabled = False
+		self.soundloaderSplitMp3Obj = None
 	
 	def goToStartPos(self):
 		hhmmssStartPos = self.startTextInput.text
@@ -147,24 +172,35 @@ class AudioSplitterGUI(AudioGUI):
 			self.updateSoundPos(endPos)
 		except ValueError as e:
 			self.outputResult('End position invalid. {}. Value ignored.'.format(e))
+	
+	def goToSplitFileEndPos(self):
+		if self.soundloaderSplitMp3Obj:
+			endPos = self.soundloaderSplitMp3Obj.length
+			self.soundloaderSplitMp3Obj.seek(endPos - 5)
 
+			if self.soundloaderSplitMp3Obj.status == 'stop':
+				# here, the mp3 was played until its end
+				self.soundloaderSplitMp3Obj.play()
+
+			self.sourceFilePlayButton.disabled = True
+		
 	def forwardTenSeconds(self):
-		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos += 10
 		self.updateSoundPos(currentPos)
 
 	def forwardThirtySeconds(self):
-		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos += 30
 		self.updateSoundPos(currentPos)
 
 	def backwardTenSeconds(self):
-		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos -= 10
 		self.updateSoundPos(currentPos)
 
 	def backwardThirtySeconds(self):
-		currentPos = self.soundloaderMp3Obj.get_pos()
+		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos -= 30
 		self.updateSoundPos(currentPos)
 
@@ -173,7 +209,17 @@ class AudioSplitterGUI(AudioGUI):
 		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
 		
 		return dateTimeDelta.total_seconds()
-		
+	
+	def goToStartPosSplitFile(self):
+		if self.soundloaderSplitMp3Obj is not None:
+			self.soundloaderSplitMp3Obj.seek(0)
+
+			if self.soundloaderSplitMp3Obj.status == 'stop':
+				# here, the mp3 was played until its end
+				self.soundloaderSplitMp3Obj.play()
+
+			self.splitFilePlayButton.disabled = True
+
 if __name__ == '__main__':
 	audioGUI = AudioSplitterGUI()
 	time_string = "01:01:09"

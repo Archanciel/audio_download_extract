@@ -4,21 +4,22 @@
 	name: "audioSplitterScreen"
 	sourceAudioFilePathName: source_file_path_name
 	audioSlider: slider
-	playButton: button_play
+	sourceFilePlayButton: button_play_source_file
 	startTextInput: text_input_start
 	currentTextInput: text_input_current
 	endTextInput: text_input_end
 	splitAudioFilePathName: split_file_path_name
+	splitFilePlayButton: button_play_split_file
 	outputLabel: label_output_split
 	GridLayout
 		cols: 1
 		GridLayout:
 			cols: 1
-			rows: 5
+			rows: 6
 			GridLayout:
 				cols: 1
 				rows: 2
-				size_hint: (1, 0.13)
+				size_hint: (1, 0.17)
 				Label:
 					size_hint: (None, 0.03)
 					valign: 'bottom'
@@ -118,16 +119,16 @@
 								GridLayout:
 									cols: 1
 								Button:
-								    id: button_play
+								    id: button_play_source_file
 									text: 'Play'
 									on_press: root.playAudioFile()
 								Button:
 									text: 'Stop'
 									on_press: root.stopAudioFile()
-								GridLayout: # empty GridLayout
+								GridLayout:
 									cols: 1
 
-				GridLayout: # empty GridLayout
+				GridLayout:
 					cols: 1
 					size_hint: (0.2, 0.4)
 			GridLayout:
@@ -135,17 +136,45 @@
 				rows: 2
 				size_hint: (1, 0.17)
 				Label:
-					size_hint: (None, 0.02)
+					size_hint: (None, 0.03)
 					valign: 'bottom'
 					text: 'Split file name'
 				TextInput:
 				    id: split_file_path_name
-					size_hint_y: 0.02
+					size_hint_y: 0.05
 					halign: 'left'
+            GridLayout:
+                cols: 7
+                rows: 1
+                size_hint: (0.1, 0.13)
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.4
+                Button:
+                    size_hint_x: 0.07
+                    text: '<|'
+                    on_press: root.goToStartPosSplitFile()
+                Button:
+                    id: button_play_split_file
+                    size_hint_x: 0.07
+                    text: 'Play'
+                    disabled: True
+                    on_press: root.playSplitFile()
+                Button:
+                    size_hint_x: 0.07
+                    text: 'Stop'
+                    on_press: root.stopSplitFile()
+                Button:
+                    size_hint_x: 0.07
+                    text: '|>'
+                    on_press: root.goToSplitFileEndPos()
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.4
 			GridLayout:
 			    cols: 1
 			    rows: 1
-				size_hint_y: 0.5
+				size_hint_y: 0.8
                 ScrollView:
                     id: scrlv_out
                     canvas.before:
@@ -168,14 +197,24 @@
                         foreground_color: 1,1,1,1
                         valign: "top"
                         markup: True
-			BoxLayout:
-				size_hint_y: 0.2
+			GridLayout:
+			    cols: 4
+			    rows: 1
+				size_hint: (1, 0.13)
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.3
 				Button:
+                    size_hint_x: 0.1
 					text: 'Save'
 					on_release: root.createSplitFile()
 				Button:
+                    size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
 						root.cancelSplitFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
+                GridLayout:
+                    cols: 1
+                    size_hint_x: 0.3
