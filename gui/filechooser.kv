@@ -66,12 +66,12 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-					text: "Cancel"
-					on_release: root.cancel()
-				Button:
 				    id: btn_load
 					text: "Load"
 					on_release: root.loadFile(file_chooser.path, file_chooser.selection)
+				Button:
+					text: "Cancel"
+					on_release: root.cancel()
 
 <SaveFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
 						# AbstractPopup, which derives from Popup
@@ -147,11 +147,11 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-					text: "Cancel"
-					on_release: root.cancel()
-				Button:
 					text: "Save"
 					on_release: root.save(file_chooser.path, path_file_name_text_input.text, load_at_start_chk_box.active)
+				Button:
+					text: "Cancel"
+					on_release: root.cancel()
 
 <SelectOrCreateDirFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
 						             # AbstractPopup, which derives from Popup

@@ -83,25 +83,25 @@
 								cols: 3
 								Button:
 									text: '<|'
-									on_press: root.goToStartPos()
+									on_press: root.goToSourceFileStartPos()
 								Button:
 									text: '<<'
-									on_press: root.backwardThirtySeconds()
+									on_press: root.backwardSourceFileThirtySeconds()
 								Button:
 									text: '<'
-									on_press: root.backwardTenSeconds()
+									on_press: root.backwardSourceFileTenSeconds()
 							GridLayout:
 								cols: 3
 								size_hint_y: 0.15
 								Button:
 									text: '>'
-									on_press: root.forwardTenSeconds()
+									on_press: root.forwardSourceFileTenSeconds()
 								Button:
 									text: '>>'
-									on_press: root.forwardThirtySeconds()
+									on_press: root.forwardSourceFileThirtySeconds()
 								Button:
 									text: '|>'
-									on_press: root.goToEndPos()
+									on_press: root.goToSourceFileEndPos()
 						GridLayout:
 							cols: 1
 							rows: 2
@@ -112,7 +112,7 @@
 								max: 1
 								step: 1
 								value: 0
-								on_value: root.updateSoundPos(self.value)
+								on_value: root.updateSourceFileSoundPos(self.value)
 							GridLayout:
 								cols: 4
 								rows: 1
@@ -121,10 +121,10 @@
 								Button:
 								    id: button_play_source_file
 									text: 'Play'
-									on_press: root.playAudioFile()
+									on_press: root.playSourceFile()
 								Button:
 									text: 'Stop'
-									on_press: root.stopAudioFile()
+									on_press: root.stopSourceFile()
 								GridLayout:
 									cols: 1
 
@@ -144,28 +144,36 @@
 					size_hint_y: 0.05
 					halign: 'left'
             GridLayout:
-                cols: 7
+                cols: 9
                 rows: 1
                 size_hint: (0.1, 0.13)
                 GridLayout:
                     cols: 1
                     size_hint_x: 0.4
                 Button:
-                    size_hint_x: 0.07
+                    size_hint_x: 0.09
                     text: '<|'
-                    on_press: root.goToStartPosSplitFile()
+                    on_press: root.goToSplitFileStartPos()
+                Button:
+                    size_hint_x: 0.09
+                    text: '<'
+                    on_press: root.backwardSplitFileTenSeconds()
                 Button:
                     id: button_play_split_file
-                    size_hint_x: 0.07
+                    size_hint_x: 0.09
                     text: 'Play'
                     disabled: True
                     on_press: root.playSplitFile()
                 Button:
-                    size_hint_x: 0.07
+                    size_hint_x: 0.09
                     text: 'Stop'
                     on_press: root.stopSplitFile()
                 Button:
-                    size_hint_x: 0.07
+                    size_hint_x: 0.09
+                    text: '>'
+                    on_press: root.forwardSplitFileTenSeconds()
+                Button:
+                    size_hint_x: 0.09
                     text: '|>'
                     on_press: root.goToSplitFileEndPos()
                 GridLayout:
