@@ -44,9 +44,6 @@ class AudioExtractor:
 		msgText = '\nextracting portions of "{}" ...\n'.format(videoFileName)
 		self.audioController.displayMessage(msgText)
 		
-		msgText = '\ttime frames extracted'
-		self.audioController.displayMessage(msgText)
-		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
 			timeStartSec = extractStartEndSecondsList[0]
 			timeEndSec = extractStartEndSecondsList[1]
@@ -70,7 +67,10 @@ class AudioExtractor:
 			                                                                       timeFrameIndex,
 			                                                                       mp3FileName,
 			                                                                       HHMMSS_TimeFrameList)
-
+			
+			msgText = '\ttime frames extracted'
+			self.audioController.displayMessage(msgText)
+			
 			msgText = '\t\t{}-{}'.format(HHMMSS_TimeFrameList[0], HHMMSS_TimeFrameList[1])
 			self.audioController.displayMessage(msgText)
 

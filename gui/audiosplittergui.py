@@ -142,6 +142,11 @@ class AudioSplitterGUI(AudioGUI):
 		self.currentTextInput.text = time.strftime('%H:%M:%S', time.gmtime(int(pos)))
 		
 	def createSplitFile(self):
+		t = threading.Thread(target=self.createSplitFileOnNewThread, args=(), kwargs={})
+		t.daemon = True
+		t.start()
+
+	def createSplitFileOnNewThread(self):
 		startPos = self.startTextInput.text
 		endPos = self.endTextInput.text
 		
