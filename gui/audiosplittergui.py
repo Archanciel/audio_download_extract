@@ -1,4 +1,3 @@
-from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
 import threading, time
@@ -7,20 +6,21 @@ from datetime import datetime
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
-from constants import *
 
 
 class AudioSplitterGUI(AudioGUI):
 	def __init__(self, **kw):
 		super(AudioSplitterGUI, self).__init__(**kw)
 
-		# WARNING: accessing MainWindow fields defined in kv file
-		# in the __init__ ctor is no longer possible when using
-		# ScreenManager. Here's the solution:
-		# (https://stackoverflow.com/questions/26916262/why-cant-i-access-the-screen-ids)
-		Clock.schedule_once(self._finish_init)
-
 	def _finish_init(self, dt):
+		"""
+		Due to using WindowManager for managing multiple screens, the content
+		of this method can no longer be located in the __init__ ctor method,
+		but must be called by Clock.schedule_once() (located in the base
+		class).
+
+		:param dt:
+		"""
 		self.soundloaderMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdateFrequency = 1

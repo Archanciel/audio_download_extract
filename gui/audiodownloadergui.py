@@ -288,21 +288,15 @@ class AudioDownloaderGUI(AudioGUI):
 		self.configMgr = ConfigManager(configPath)
 		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
 		self.dataPath = self.configMgr.dataPath
-
-		# WARNING: accessing MainWindow fields defined in kv file
-		# in the __init__ ctor is no longer possible when using
-		# ScreenManager. Here's the solution:
-		# (https://stackoverflow.com/questions/26916262/why-cant-i-access-the-screen-ids)
-		Clock.schedule_once(self._finish_init)
 	
 	def _finish_init(self, dt):
 		"""
-		Due to using WindowManager for managing multiple screns, the ontent of
-		this method can no longer be locatedin the __init__ ctor method, but must
-		be called by Clock.schedule_once().
+		Due to using WindowManager for managing multiple screens, the content
+		of this method can no longer be located in the __init__ ctor method,
+		but must be called by Clock.schedule_once() (located in the base
+		class).
 		
 		:param dt:
-		:return:
 		"""
 		if os.name == 'posix':
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
