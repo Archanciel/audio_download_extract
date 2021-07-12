@@ -84,3 +84,7 @@ downloaded to a directory specified in the app settings.
 - moviepy (not working on Android !)
 - mutagen
 - kivy
+- pydub
+- soundfile
+- pyrubberband
+- pyautogui

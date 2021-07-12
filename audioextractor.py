@@ -1,4 +1,7 @@
 import os, shutil
+from pydub import AudioSegment
+import soundfile as sf
+import pyrubberband as pyrb
 
 from constants import *
 
@@ -36,7 +39,11 @@ class AudioExtractor:
 		msgText = '\n"{}" playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
 		self.audioController.displayMessage(msgText)
 
-	def extractAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
+	def extractAudioPortions(self,
+	                         videoIndex,
+	                         videoFileName,
+	                         downloadVideoInfoDic,
+	                         floatSpeed=1.0):
 		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
@@ -62,6 +69,12 @@ class AudioExtractor:
 			                               mp3FileName)
 			clip.write_audiofile(mp3FilePathName)
 			clip.close()
+			
+			# now changing the speed of the split audio file
+			if floatSpeed != 1.0:
+				self.changeSpeed(mp3FilePathName=mp3FilePathName,
+				                 floatSpeed=floatSpeed)
+				
 			HHMMSS_TimeFrameList = self.convertStartEndSecondsListTo_HHMMSS_TimeFrameList(extractStartEndSecondsList)
 			downloadVideoInfoDic.addExtractedFileInfoForVideoIndexTimeFrameIndex(videoIndex,
 			                                                                       timeFrameIndex,
@@ -223,3 +236,20 @@ class AudioExtractor:
 			leftZero = '0'
 		
 		return str(HH) + ':' + str(MM) + ':' + leftZero + str(SS)
+
+	def changeSpeed(self,
+	                mp3FilePathName,
+	                floatSpeed):
+		sound = AudioSegment.from_file(mp3FilePathName)
+		wavFilePathName = mp3FilePathName.split('.')[0] + '.wav'
+		sound.export(wavFilePathName, format="wav")
+		y, sr = sf.read(wavFilePathName)
+		
+		y_stretch = pyrb.time_stretch(y, sr, floatSpeed)
+		sf.write(wavFilePathName, y_stretch, sr, format='wav')
+		
+		sound = AudioSegment.from_wav(wavFilePathName)
+		
+#		mp3FilePathNameAccelerated = mp3FilePathName.split('.')[0] + '_speeded' + '.mp3'
+		sound.export(mp3FilePathName, format="mp3")
+		os.remove(wavFilePathName)

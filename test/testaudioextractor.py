@@ -122,6 +122,63 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 	
+	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_doubleSpeed(self):
+		playListName = 'test_audio_extractor'
+		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.isdir(targetAudioDir):
+			os.mkdir(targetAudioDir)
+		
+		videoIndex = 1
+		startEndSecondsList = [5, 10]
+		expectedExtractedFileDuration = 2.56 # speed is doubled
+		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playListName)
+		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
+		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
+		                                               'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
+		downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(videoIndex, startEndSecondsList)
+		
+		# deleting files in downloadDir
+		files = glob.glob(targetAudioDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		# restoring mp4 file
+		
+		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
+		            targetAudioDir + '\\' + videoFileName)
+		guiOutput = GuiOutputStub()
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioExtractor.extractAudioPortions(videoIndex,
+		                                    videoFileName,
+		                                    downloadVideoInfoDic,
+		                                    floatSpeed=2.0)
+		
+		sys.stdout = stdout
+		
+		videoAndAudioFileList = os.listdir(targetAudioDir)
+		self.assertEqual(
+			['Wear a mask Help slow the spread of Covid-19.mp4', 'Wear a mask Help slow the spread of Covid-19_1.mp3'],
+			videoAndAudioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName_1 = videoAndAudioFileList[1]
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
+		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		
+		self.assertEqual(["0:0:05", "0:0:10"],
+		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
+		                                                                                      extractedMp3FileName_1))
+		
+		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
+		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
+	
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_0(self):
 		playListName = 'test_audio_extractor'
 		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
@@ -1057,5 +1114,5 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
 	ts = time.time()
-	tst.testExtractAudioPortions_one_mp3_with_two_superposed_extract_no_suppress_timeframe()
+	tst.testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_doubleSpeed()
 	print(time.time() - ts)

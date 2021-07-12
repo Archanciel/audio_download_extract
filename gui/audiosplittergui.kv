@@ -11,6 +11,7 @@
 	splitAudioFilePathName: split_file_path_name
 	splitFilePlayButton: button_play_split_file
 	outputLabel: label_output_split
+	speedTextInput: text_input_speed
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -206,12 +207,21 @@
                         valign: "top"
                         markup: True
 			GridLayout:
-			    cols: 4
+			    cols: 6
 			    rows: 1
 				size_hint: (1, 0.13)
                 GridLayout:
                     cols: 1
                     size_hint_x: 0.3
+                Label:
+                    size_hint_x: 0.1
+                    valign: 'bottom'
+                    text: 'Speed'
+                TextInput:
+                    id: text_input_speed
+                    size_hint_x: 0.07
+                    halign: 'right'
+                    text: '1.0'
 				Button:
                     size_hint_x: 0.1
 					text: 'Save'

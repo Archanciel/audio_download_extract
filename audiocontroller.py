@@ -107,12 +107,14 @@ class AudioController:
 	def trimAudioFile(self,
 	                  audioFilePathName,
 	                  trimStartHHMMSS,
-	                  trimEndHHMMSS):
+	                  trimEndHHMMSS,
+	                  floatSpeed=1.0):
 		"""
 		
 		:param audioFilePathName: the file which will be trimmed
 		:param trimStartHHMMSS:
 		:param trimEndHHMMSS:
+		:param floatSpeed: trimmed mp3 file speed modification
 		
 		:return: the trimmed file pathname
 		"""
@@ -135,7 +137,10 @@ class AudioController:
 		
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
-		audioExtractor.extractAudioPortions(1, audioFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex=1,
+		                                    videoFileName=audioFileName,
+		                                    downloadVideoInfoDic=downloadVideoInfoDic,
+		                                    floatSpeed=floatSpeed)
 		
 		return downloadVideoInfoDic
 	

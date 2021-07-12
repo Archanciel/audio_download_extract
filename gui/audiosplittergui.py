@@ -168,13 +168,20 @@ class AudioSplitterGUI(AudioGUI):
 	def createSplitFileOnNewThread(self):
 		startPos = self.startTextInput.text
 		endPos = self.endTextInput.text
+		speed = self.speedTextInput.text
+
+		# handling bad speed definition ...
+		try:
+			speed = float(speed)
+		except ValueError:
+			speed = 1.0
 		
 		if startPos == '' or endPos == '':
 			self.outputResult('Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos, endPos))
 			return
 		
 		audioController = AudioController(self, None)
-		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos)
+		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
 		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		self.splitFilePlayButton.disabled = False
 		self.soundloaderSplitMp3Obj = None
