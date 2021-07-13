@@ -32,3 +32,6 @@ class AudioGUI(Screen):
 			self.outputLabel.text = markupBoldStart + resultStr + markupBoldEnd
 		else:
 			self.outputLabel.text = self.outputLabel.text + '\n' + markupBoldStart + resultStr + markupBoldEnd
+
+		# scrolling to end of output text
+		self.outputScrollView.scroll_y = 0

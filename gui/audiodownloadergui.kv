@@ -8,6 +8,7 @@
 	name: "audioDownloaderScreen"
 	requestInput: request_TextInput
 	requestListRV: request_RecycleView_list
+	outputScrollView: scrlv_out
 	outputLabel: ro_output_Label
 	toggleHistoButton: toggle_history_list_Button
 	deleteButton: delete_Button
@@ -163,6 +164,7 @@
 			effect_cls: "ScrollEffect" #prevents overscrolling
 			#scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
 			do_scroll_x: False # limiting to vertical scrolling
+			do_scroll_y: True
 
 			Label:
 				id: ro_output_Label

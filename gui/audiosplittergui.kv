@@ -10,6 +10,7 @@
 	endTextInput: text_input_end
 	splitAudioFilePathName: split_file_path_name
 	splitFilePlayButton: button_play_split_file
+	outputScrollView: scrlv_out
 	outputLabel: label_output_split
 	speedTextInput: text_input_speed
 	GridLayout
@@ -195,6 +196,7 @@
                     effect_cls: "ScrollEffect" #prevents overscrolling
                     #scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
                     do_scroll_x: False # limiting to vertical scrolling
+                    do_scroll_y: True
 
                     Label:
                         id: label_output_split
