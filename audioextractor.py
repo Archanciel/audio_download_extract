@@ -77,9 +77,9 @@ class AudioExtractor:
 				
 			HHMMSS_TimeFrameList = self.convertStartEndSecondsListTo_HHMMSS_TimeFrameList(extractStartEndSecondsList)
 			downloadVideoInfoDic.addExtractedFileInfoForVideoIndexTimeFrameIndex(videoIndex,
-			                                                                       timeFrameIndex,
-			                                                                       mp3FileName,
-			                                                                       HHMMSS_TimeFrameList)
+			                                                                     timeFrameIndex,
+			                                                                     mp3FileName,
+			                                                                     HHMMSS_TimeFrameList)
 			
 			msgText = '\ttime frames extracted'
 			self.audioController.displayMessage(msgText)
