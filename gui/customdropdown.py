@@ -36,6 +36,9 @@ class CustomDropDown(DropDown):
 		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
 			self.owner.openFileToSplitLoadPopup()
 
+	def shareAudio(self):
+		self.owner.openShareAudioPopup()
+	
 	def help(self):
 		self.owner.displayHelp()
 	

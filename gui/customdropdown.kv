@@ -1,6 +1,5 @@
 <CustomDropDown>
 	saveButton: save_Button
-	statusToRequestInputButton: status_to_request_input_Button
 	Button:
 		text: 'Load'
 		size_hint_y: None
@@ -21,12 +20,12 @@
 		disabled: False
 		on_release: root.showSplitAudioFile()
 	Button:
-		id: status_to_request_input_Button
-		text: 'Status >'
+		id: shareAudioFile_Button
+		text: 'Share audio'
 		size_hint_y: None
 		height: '28dp'
-		disabled: True
-		on_release: root.copyStatusBarStrToRequestEntry()
+		disabled: False
+		on_release: root.shareAudio()
 	Button:
 		text: "Settings"
 		size_hint_y: None

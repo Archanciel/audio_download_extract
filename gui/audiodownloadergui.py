@@ -32,9 +32,10 @@ from kivy.utils import platform
 
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup
+from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup, FileToShareLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 from audiosplittergui import AudioSplitterGUI # must be kept to avoid Builder error
+from audiosharegui import AudioShareGUI # must be kept to avoid Builder error
 
 from audiogui import AudioGUI
 from constants import *
@@ -58,6 +59,7 @@ FILE_ACTION_LOAD = 0
 FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
+FILE_ACTION_SELECT_FILE_TO_SHARE = 4
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
@@ -842,12 +844,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.refocusOnRequestInput()
 
 	def openDropDownMenu(self, widget):
-		
-		if self.isRequest(self.statusBarTextInput.text):
-			self.dropDownMenu.statusToRequestInputButton.disabled = False
-		else:
-			self.dropDownMenu.statusToRequestInputButton.disabled = True
-		
 		self.dropDownMenu.open(widget)
 
 	def isRequest(self, statusBarStr):
@@ -915,6 +911,15 @@ class AudioDownloaderGUI(AudioGUI):
 													 cancel=self.dismissPopup)
 		self.popup.open()
 
+	def openShareAudioPopup(self):
+		self.dropDownMenu.dismiss()
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SHARE)
+		self.popup = FileToShareLoadFileChooserPopup(title=popupTitle,
+													 rootGUI=self,
+													 load=self.load,
+													 cancel=self.dismissPopup)
+		self.popup.open()
+
 	def buildFileChooserPopupTitle(self, fileAction):
 		if fileAction == FILE_ACTION_LOAD:
 			popupTitleAction = LoadFileChooserPopup.LOAD_FILE_POPUP_TITLE
@@ -923,9 +928,12 @@ class AudioDownloaderGUI(AudioGUI):
 		elif fileAction == FILE_ACTION_SELECT_OR_CREATE_DIR:
 			popupTitle = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
 			return popupTitle
-		else:
-			# fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT
+		elif fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT:
 			popupTitle = SaveFileChooserPopup.SELECT_FILE_TO_SPLIT
+			return popupTitle
+		else:
+			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
+			popupTitle = SaveFileChooserPopup.SELECT_FILE_TO_SHARE
 			return popupTitle
 
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
@@ -1180,6 +1188,7 @@ class AudioDownloaderGUIApp(App):
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audiosplittergui.kv')
+		Builder.load_file('audiosharegui.kv')
 		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':

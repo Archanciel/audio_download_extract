@@ -67,6 +67,7 @@ class FileChooserPopup(AbstractPopup):
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
 	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
 	SELECT_FILE_TO_SPLIT = 'Select audio file to split'
+	SELECT_FILE_TO_SHARE = 'Select audio file to share'
 
 	load = ObjectProperty(None)
 #	save = OLOAD_FILE_POPUP_TITLEbjectProperty(None)
@@ -277,5 +278,23 @@ class FileToSplitLoadFileChooserPopup(LoadFileChooserPopup):
 		audioSplitterScreen.initSoundFile(sourceAudioFilePathName=selection[0])
 		self.rootGUI.dismissPopup()
 		self.rootGUI.parent.current = "audioSplitterScreen"
+		self.rootGUI.manager.transition.direction = "left"
+
+
+class FileToShareLoadFileChooserPopup(LoadFileChooserPopup):
+	"""
+	This file chooser popup is used to select the file which will be transmitted to the
+	share audio file class.
+	"""
+	
+	def __init__(self, rootGUI, **kwargs):
+		super(FileToShareLoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		self.loadButton.text = 'Share file'
+	
+	def loadFile(self, path, selection):
+		audioShareScreen = self.rootGUI.manager.get_screen('audioShareScreen')
+		audioShareScreen.initSoundFile(sourceAudioFilePathName=selection[0])
+		self.rootGUI.dismissPopup()
+		self.rootGUI.parent.current = "audioShareScreen"
 		self.rootGUI.manager.transition.direction = "left"
 
