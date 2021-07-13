@@ -87,6 +87,13 @@ class AudioExtractor:
 			msgText = '\t\t{}-{}'.format(HHMMSS_TimeFrameList[0], HHMMSS_TimeFrameList[1])
 			self.audioController.displayMessage(msgText)
 
+			if floatSpeed != 1.0:
+				msgText = '\tspeed'
+				self.audioController.displayMessage(msgText)
+				
+				msgText = '\t\t{}'.format(floatSpeed)
+				self.audioController.displayMessage(msgText)
+			
 			timeFrameIndex += 1
 	
 	def suppressAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):

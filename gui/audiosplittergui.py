@@ -54,6 +54,8 @@ class AudioSplitterGUI(AudioGUI):
 		# FileToSplitLoadFileChooserPopup.loadFile() or by
 		# AudioDownloaderGUI._doOnStart().
 		
+		self.stopSplitFile()
+		
 		if self.soundloaderSourceMp3Obj is None:
 			self.soundloaderSourceMp3Obj = SoundLoader.load(self.sourceAudioFilePathName.text)
 			soundLength = self.soundloaderSourceMp3Obj.length
@@ -73,6 +75,8 @@ class AudioSplitterGUI(AudioGUI):
 		# self.sourceAudioFilePathName.text was set either by
 		# FileToSplitLoadFileChooserPopup.loadFile() or by
 		# AudioDownloaderGUI._doOnStart().
+		
+		self.stopSourceFile()
 		
 		if self.soundloaderSplitMp3Obj is None:
 			self.soundloaderSplitMp3Obj = SoundLoader.load(self.splitAudioFilePathName.text)
