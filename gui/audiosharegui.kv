@@ -67,15 +67,18 @@
 							    id: text_input_start
 								size_hint_y: 0.01
 								halign: 'right'
+								multiline: False
 							TextInput:
 							    id: text_input_current
 								size_hint_y: 0.01
 								halign: 'right'
-								readonly: True
+								multiline: False
+                				on_text_validate: root.currentPosChanged()
 							TextInput:
 							    id: text_input_end
 								size_hint_y: 0.01
 								halign: 'right'
+								multiline: False
 						GridLayout:
 							cols: 2
 							rows: 1

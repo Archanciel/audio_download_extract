@@ -277,6 +277,9 @@ class AudioSplitterGUI(AudioGUI):
 
 			self.splitFilePlayButton.disabled = True
 
+	def currentPosChanged(self):
+		print(self.currentTextInput.text)
+		
 if __name__ == '__main__':
 	audioGUI = AudioSplitterGUI()
 	time_string = "01:01:09"
