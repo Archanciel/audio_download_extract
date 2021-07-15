@@ -26,11 +26,13 @@ class AudioShareGUI(AudioGUI):
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
 		self.sliderUpdateFrequency = 1
+		self.splitAudioFilePathNameInitValue = ''
 	
 	def initSoundFile(self, sourceAudioFilePathName):
-		if 'mp3' == sourceAudioFilePathName[-4:]:
+		if 'mp3' != sourceAudioFilePathName[-3:]:
 			return
 		
+		self.sourceAudioFilePathNameInitValue = sourceAudioFilePathName
 		self.sourceAudioFilePathName.text = sourceAudioFilePathName
 		
 		self.soundloaderSourceMp3Obj = SoundLoader.load(sourceAudioFilePathName)
@@ -47,12 +49,12 @@ class AudioShareGUI(AudioGUI):
 	def playSourceFile(self):
 		"""
 		Method called when pressing the source file Play button
-		example of audio file pathname:
-		D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 		"""
-		# self.sourceAudioFilePathName.text was set either by
-		# FileToSplitLoadFileChooserPopup.loadFile() or by
-		# AudioDownloaderGUI._doOnStart().
+		#		example of audio file pathname:
+		#		D:\Users\Jean-Pierre\Downloads\Audiobooks\Various\Wear a mask. Help slow the spread of Covid-19..mp3
+		#       self.sourceAudioFilePathName.text was set either by
+		#       FileToSplitLoadFileChooserPopup.loadFile() or by
+		#       AudioDownloaderGUI._doOnStart().
 		
 		self.stopSplitFile()
 		
@@ -195,8 +197,10 @@ class AudioShareGUI(AudioGUI):
 		audioController = AudioController(self, None)
 		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos,
 		                                                     speed)
-		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(
+		createdSplitFilePathName = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(
 			videoIndex=1, timeFrameIndex=1)
+		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
+		self.splitAudioFilePathName.text = createdSplitFilePathName
 		self.splitFilePlayButton.disabled = False
 		self.splitFileShareButton.disabled = False
 		self.soundloaderSplitMp3Obj = None
@@ -337,6 +341,18 @@ class AudioShareGUI(AudioGUI):
 		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
 		self.parent.current = "audioShareScreen"
 		self.manager.transition.direction = "left"
+	
+	def ensureTextNotChanged(self, id):
+		"""
+		Method called when sourceAudioFilePathName.text is modified. The
+		TextInput is readonly. But in order to be able to move the cursor
+		along the TextInput long text, its readonly attribute must be set
+		to False. This method ensures that readonly is applied to the field.
+		"""
+		if id == 'source_file_path_name':
+			self.sourceAudioFilePathName.text = self.sourceAudioFilePathNameInitValue
+		elif id == 'split_file_path_name':
+			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue
 	
 	if __name__ == '__main__':
 		audioGUI = AudioShareGUI()

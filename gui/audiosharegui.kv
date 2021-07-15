@@ -29,10 +29,11 @@
 				TextInput:
 					id: source_file_path_name
 					size_hint_y: 0.05
+					text: ''
 					halign: 'left'
 					multiline: False
-					readonly: True
-					text: ''
+					readonly: False # necessary in order to be able to move into text
+    				on_text: root.ensureTextNotChanged('source_file_path_name')
 			GridLayout:
 				cols: 3
 				size_hint: (1, 0.6)
@@ -148,8 +149,11 @@
 				    id: split_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
+					text: ''
 					multiline: False
 					readonly: True
+					readonly: False # necessary in order to be able to move into text
+    				on_text: root.ensureTextNotChanged('split_file_path_name')
             GridLayout:
                 cols: 9
                 rows: 1
