@@ -28,7 +28,7 @@ class AudioSplitterGUI(AudioGUI):
 		self.sliderUpdateFrequency = 1
 
 	def initSoundFile(self, sourceAudioFilePathName):
-		if 'mp3' == sourceAudioFilePathName[-4:]:
+		if 'mp3' != sourceAudioFilePathName[-3:]:
 			return
 		
 		self.sourceAudioFilePathName.text = sourceAudioFilePathName
@@ -149,6 +149,9 @@ class AudioSplitterGUI(AudioGUI):
 			self.splitFilePlayButton.disabled = False
 	
 	def cancelSplitFile(self):
+		"""
+		Method called when Cancel button is pressed.
+		"""
 		self.stopSourceFile()
 		self.stopSplitFile()
 		self.startTextInput.text = ''
@@ -165,6 +168,9 @@ class AudioSplitterGUI(AudioGUI):
 		return time.strftime('%H:%M:%S', time.gmtime(int(pos)))
 	
 	def createSplitFile(self):
+		"""
+		Method called when Save button is pressed.
+		"""
 		t = threading.Thread(target=self.createSplitFileOnNewThread, args=(), kwargs={})
 		t.daemon = True
 		t.start()
@@ -188,6 +194,7 @@ class AudioSplitterGUI(AudioGUI):
 		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
 		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		self.splitFilePlayButton.disabled = False
+		self.splitFileShareButton.disabled = False
 		self.soundloaderSplitMp3Obj = None
 	
 	def goToSourceFileStartPos(self):
@@ -317,6 +324,15 @@ class AudioSplitterGUI(AudioGUI):
 			self.soundloaderSplitMp3Obj.play()
 		
 		self.splitFilePlayButton.disabled = True
+
+	def shareSplitFile(self):
+		"""
+		Method called when Share button is pressed.
+		"""
+		audioShareScreen = self.manager.get_screen('audioShareScreen')
+		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
+		self.parent.current = "audioShareScreen"
+		self.manager.transition.direction = "left"
 
 if __name__ == '__main__':
 	audioGUI = AudioSplitterGUI()

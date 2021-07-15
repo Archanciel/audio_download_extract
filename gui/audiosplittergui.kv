@@ -13,6 +13,7 @@
 	outputScrollView: scrlv_out
 	outputLabel: label_output_split
 	speedTextInput: text_input_speed
+	splitFileShareButton: button_share_split_file
 	GridLayout
 		cols: 1
 		GridLayout:
@@ -148,6 +149,7 @@
 				    id: split_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
+					multiline: False
 					readonly: True
             GridLayout:
                 cols: 9
@@ -213,7 +215,7 @@
                         valign: "top"
                         markup: True
 			GridLayout:
-			    cols: 6
+			    cols: 7
 			    rows: 1
 				size_hint: (1, 0.13)
                 GridLayout:
@@ -232,6 +234,12 @@
                     size_hint_x: 0.1
 					text: 'Save'
 					on_release: root.createSplitFile()
+				Button:
+				    id: button_share_split_file
+                    size_hint_x: 0.1
+					text: 'Share'
+					disabled: True # will be enabled after the split file was created
+					on_release: root.shareSplitFile()
 				Button:
                     size_hint_x: 0.1
 					text: 'Cancel'

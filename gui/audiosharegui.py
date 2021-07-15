@@ -11,7 +11,7 @@ from audiocontroller import AudioController
 class AudioShareGUI(AudioGUI):
 	def __init__(self, **kw):
 		super(AudioShareGUI, self).__init__(**kw)
-
+		
 	def _finish_init(self, dt):
 		"""
 		Due to using WindowManager for managing multiple screens, the content
@@ -26,18 +26,18 @@ class AudioShareGUI(AudioGUI):
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
 		self.sliderUpdateFrequency = 1
-
+	
 	def initSoundFile(self, sourceAudioFilePathName):
 		if 'mp3' == sourceAudioFilePathName[-4:]:
 			return
 		
 		self.sourceAudioFilePathName.text = sourceAudioFilePathName
-
+		
 		self.soundloaderSourceMp3Obj = SoundLoader.load(sourceAudioFilePathName)
 		soundLength = self.soundloaderSourceMp3Obj.length
 		self.startTextInput.text = self.convertSecondsToTimeString(0)
 		self.endTextInput.text = self.convertSecondsToTimeString(soundLength)
-
+		
 		self.audioSlider.value = 0
 		self.audioSlider.max = soundLength
 		
@@ -46,7 +46,7 @@ class AudioShareGUI(AudioGUI):
 	
 	def playSourceFile(self):
 		"""
-		Executed by pressing the Play button
+		Method called when pressing the source file Play button
 		example of audio file pathname:
 		D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 		"""
@@ -63,14 +63,14 @@ class AudioShareGUI(AudioGUI):
 			
 			if soundLength < 100:
 				self.sliderUpdateFrequency = 1 / soundLength
-				
+		
 		self.startSliderUpdateThread()
 		self.sourceFilePlayButton.disabled = True
 		self.soundloaderSourceMp3Obj.play()
 	
 	def playSplitFile(self):
 		"""
-		Executed by pressing the Play split file button.
+		Method called when pressing the split file Play button
 		"""
 		# self.sourceAudioFilePathName.text was set either by
 		# FileToSplitLoadFileChooserPopup.loadFile() or by
@@ -80,18 +80,18 @@ class AudioShareGUI(AudioGUI):
 		
 		if self.soundloaderSplitMp3Obj is None:
 			self.soundloaderSplitMp3Obj = SoundLoader.load(self.splitAudioFilePathName.text)
-
+		
 		self.splitFilePlayButton.disabled = True
 		self.soundloaderSplitMp3Obj.play()
 	
 	def startSliderUpdateThread(self):
 		if self.sliderAsynchUpdater:
 			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
-			
+		
 		self.sliderAsynchUpdater = AsynchSliderUpdater(self,
-													   self.soundloaderSourceMp3Obj,
-													   self.ids.slider,
-													   stopSliderUpdaterThread=False)
+		                                               self.soundloaderSourceMp3Obj,
+		                                               self.ids.slider,
+		                                               stopSliderUpdaterThread=False)
 		self.sliderUpdaterThread = threading.Thread(target=self.sliderAsynchUpdater.updateSlider, args=())
 		self.sliderUpdaterThread.daemon = True
 		self.sliderUpdaterThread.start()
@@ -123,7 +123,7 @@ class AudioShareGUI(AudioGUI):
 	
 	def stopSourceFile(self):
 		"""
-		Executed by pressing the Stop button
+		Method called when pressing the source file Stop button
 		"""
 		if self.soundloaderSourceMp3Obj:
 			if self.audioSlider.value >= self.soundloaderSourceMp3Obj.length - 2 * self.sliderUpdateFrequency:
@@ -134,30 +134,33 @@ class AudioShareGUI(AudioGUI):
 			
 			if self.sliderAsynchUpdater:
 				self.sliderAsynchUpdater.stopSliderUpdaterThread = True
-
+			
 			if self.sliderUpdaterThread:
 				self.sliderUpdaterThread.join()
-				
+			
 			self.sourceFilePlayButton.disabled = False
 	
 	def stopSplitFile(self):
 		"""
-		Executed by pressing the Stop button
+		Method called when pressing the split file Stop button
 		"""
 		if self.soundloaderSplitMp3Obj:
 			self.soundloaderSplitMp3Obj.stop()
 			self.splitFilePlayButton.disabled = False
 	
 	def cancelSplitFile(self):
+		"""
+		Method called when Cancel button is pressed.
+		"""
 		self.stopSourceFile()
 		self.stopSplitFile()
 		self.startTextInput.text = ''
 		self.currentTextInput.text = ''
 		self.endTextInput.text = ''
-
+	
 	def disablePlayButton(self):
 		self.sourceFilePlayButton.disabled = True
-		
+	
 	def updateCurrentSoundPosTextInput(self, seconds):
 		self.currentTextInput.text = self.convertSecondsToTimeString(seconds)
 	
@@ -165,15 +168,18 @@ class AudioShareGUI(AudioGUI):
 		return time.strftime('%H:%M:%S', time.gmtime(int(pos)))
 	
 	def createSplitFile(self):
+		"""
+		Method called when Save button is pressed.
+		"""
 		t = threading.Thread(target=self.createSplitFileOnNewThread, args=(), kwargs={})
 		t.daemon = True
 		t.start()
-
+	
 	def createSplitFileOnNewThread(self):
 		startPos = self.startTextInput.text
 		endPos = self.endTextInput.text
 		speed = self.speedTextInput.text
-
+		
 		# handling bad speed definition ...
 		try:
 			speed = float(speed)
@@ -181,16 +187,24 @@ class AudioShareGUI(AudioGUI):
 			speed = 1.0
 		
 		if startPos == '' or endPos == '':
-			self.outputResult('Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos, endPos))
+			self.outputResult(
+				'Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos,
+				                                                                                     endPos))
 			return
 		
 		audioController = AudioController(self, None)
-		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
-		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos,
+		                                                     speed)
+		self.splitAudioFilePathName.text = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(
+			videoIndex=1, timeFrameIndex=1)
 		self.splitFilePlayButton.disabled = False
+		self.splitFileShareButton.disabled = False
 		self.soundloaderSplitMp3Obj = None
 	
 	def goToSourceFileStartPos(self):
+		"""
+		Method called when source file <| button is pressed.
+		"""
 		hhmmssStartPos = self.startTextInput.text
 		
 		try:
@@ -200,6 +214,9 @@ class AudioShareGUI(AudioGUI):
 			self.outputResult('Start position invalid. {}. Value ignored.'.format(e))
 	
 	def goToSourceFileEndPos(self):
+		"""
+		Method called when source file |> button is pressed.
+		"""
 		hhmmssEndPos = self.endTextInput.text
 		
 		try:
@@ -208,37 +225,55 @@ class AudioShareGUI(AudioGUI):
 		except ValueError as e:
 			self.outputResult('End position invalid. {}. Value ignored.'.format(e))
 	
-	def goToSplitFileEndPos(self):
-		if self.soundloaderSplitMp3Obj:
-			endPos = self.soundloaderSplitMp3Obj.length
-			self.soundloaderSplitMp3Obj.seek(endPos - 5)
-
-			if self.soundloaderSplitMp3Obj.status == 'stop':
-				# here, the mp3 was played until its end
-				self.soundloaderSplitMp3Obj.play()
-
-			self.splitFilePlayButton.disabled = True
+	def goToSourceFileCurrentPos(self):
+		"""
+		Method called when currentTextInput value is changed manually
+		(on_text_validate in kv file).
+		"""
+		hhmmssEndPos = self.currentTextInput.text
 		
+		try:
+			currentPos = self.convertTimeStringToSeconds(hhmmssEndPos)
+			self.updateSourceFileSoundPos(currentPos)
+		except ValueError as e:
+			self.outputResult('Current position invalid. {}. Value ignored.'.format(e))
+	
 	def forwardSourceFileTenSeconds(self):
-		currentPos = self.soundloaderSourceMp3Obj.get_pos()
-		currentPos += 10
-		self.updateSourceFileSoundPos(currentPos)
+		"""
+		Method called when source file > button is pressed.
+		"""
+		if self.soundloaderSourceMp3Obj is not None:
+			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+			currentPos += 10
+			self.updateSourceFileSoundPos(currentPos)
 	
 	def forwardSourceFileThirtySeconds(self):
-		currentPos = self.soundloaderSourceMp3Obj.get_pos()
-		currentPos += 30
-		self.updateSourceFileSoundPos(currentPos)
-
+		"""
+		Method called when source file >> button is pressed.
+		"""
+		if self.soundloaderSourceMp3Obj is not None:
+			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+			currentPos += 30
+			self.updateSourceFileSoundPos(currentPos)
+	
 	def backwardSourceFileTenSeconds(self):
-		currentPos = self.soundloaderSourceMp3Obj.get_pos()
-		currentPos -= 10
-		self.updateSourceFileSoundPos(currentPos)
-
+		"""
+		Method called when source file < button is pressed.
+		"""
+		if self.soundloaderSourceMp3Obj is not None:
+			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+			currentPos -= 10
+			self.updateSourceFileSoundPos(currentPos)
+	
 	def backwardSourceFileThirtySeconds(self):
-		currentPos = self.soundloaderSourceMp3Obj.get_pos()
-		currentPos -= 30
-		self.updateSourceFileSoundPos(currentPos)
-
+		"""
+		Method called when source file << button is pressed.
+		"""
+		if self.soundloaderSourceMp3Obj is not None:
+			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+			currentPos -= 30
+			self.updateSourceFileSoundPos(currentPos)
+	
 	def convertTimeStringToSeconds(self, timeString):
 		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
 		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
@@ -246,38 +281,64 @@ class AudioShareGUI(AudioGUI):
 		return dateTimeDelta.total_seconds()
 	
 	def goToSplitFileStartPos(self):
-		if self.soundloaderSplitMp3Obj is not None:
-			self.soundloaderSplitMp3Obj.seek(0)
-
-			if self.soundloaderSplitMp3Obj.status == 'stop':
-				# here, the mp3 was played until its end
-				self.soundloaderSplitMp3Obj.play()
-
-			self.splitFilePlayButton.disabled = True
-
+		"""
+		Method called when split file <| button is pressed.
+		"""
+		if self.soundloaderSplitMp3Obj:
+			self.updateSplitFileSoundPos(newSoundPos=0)
+	
+	def goToSplitFileEndPos(self):
+		"""
+		Method called when split file |> button is pressed.
+		"""
+		if self.soundloaderSplitMp3Obj:
+			endPos = self.soundloaderSplitMp3Obj.length - 5
+			self.updateSplitFileSoundPos(newSoundPos=endPos)
+	
 	def forwardSplitFileTenSeconds(self):
+		"""
+		Method called when split file > button is pressed.
+		"""
 		if self.soundloaderSplitMp3Obj is not None:
 			currPos = self.soundloaderSplitMp3Obj.get_pos()
-			self.soundloaderSplitMp3Obj.seek(currPos + 10)
-
-			if self.soundloaderSplitMp3Obj.status == 'stop':
-				# here, the mp3 was played until its end
-				self.soundloaderSplitMp3Obj.play()
-
-			self.splitFilePlayButton.disabled = True
-
+			newSoundPos = currPos + 10
+			self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
+	
 	def backwardSplitFileTenSeconds(self):
+		"""
+		Method called when split file < button is pressed.
+		"""
 		if self.soundloaderSplitMp3Obj is not None:
 			currPos = self.soundloaderSplitMp3Obj.get_pos()
-			self.soundloaderSplitMp3Obj.seek(currPos - 10)
+			newSoundPos = currPos - 10
+			self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
+	
+	def updateSplitFileSoundPos(self,
+	                            newSoundPos):
+		"""
+		This method avoids duplicating several time the same code.
 
-			if self.soundloaderSplitMp3Obj.status == 'stop':
-				# here, the mp3 was played until its end
-				self.soundloaderSplitMp3Obj.play()
-
-			self.splitFilePlayButton.disabled = True
-
-if __name__ == '__main__':
-	audioGUI = AudioSplitterGUI()
-	time_string = "01:01:09"
-	audioGUI.convertTimeStringToSeconds(time_string)
+		:param newSoundPos:
+		:return:
+		"""
+		self.soundloaderSplitMp3Obj.seek(newSoundPos)
+		
+		if self.soundloaderSplitMp3Obj.status == 'stop':
+			# here, the mp3 was played until its end
+			self.soundloaderSplitMp3Obj.play()
+		
+		self.splitFilePlayButton.disabled = True
+	
+	def shareSplitFile(self):
+		"""
+		Method called when Share button is pressed.
+		"""
+		audioShareScreen = self.manager.get_screen('audioShareScreen')
+		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
+		self.parent.current = "audioShareScreen"
+		self.manager.transition.direction = "left"
+	
+	if __name__ == '__main__':
+		audioGUI = AudioShareGUI()
+		time_string = "01:01:09"
+		audioGUI.convertTimeStringToSeconds(time_string)

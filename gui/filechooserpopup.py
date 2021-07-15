@@ -297,4 +297,3 @@ class FileToShareLoadFileChooserPopup(LoadFileChooserPopup):
 		self.rootGUI.dismissPopup()
 		self.rootGUI.parent.current = "audioShareScreen"
 		self.rootGUI.manager.transition.direction = "left"
-
