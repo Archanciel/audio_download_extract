@@ -3,7 +3,7 @@
 <AudioShareGUI>: # sub-class of Screen
 	name: "audioShareScreen"
 	sharedAudioFilePathName: shared_file_path_name
-	sourceFilePlayButton: button_play_source_file
+	sharedFilePlayButton: button_play_shared_file
 	splitAudioFilePathName: split_file_path_name
 	splitFilePlayButton: button_play_split_file
 	outputScrollView: scrlv_out
@@ -39,61 +39,52 @@
 				GridLayout:
 					cols: 1
 					rows: 1
-					size_hint: (0.4, 0.4)
+					size_hint: (0.4, 0.2)
 					GridLayout:
 						cols: 1
-						rows: 3
+						rows: 2
 						size_hint: (0.4, 0.4)
 						GridLayout:
 							cols: 2
 							rows: 1
-							size_hint: (0.6, 0.5)
+							size_hint: (0.6, 0.2)
 							GridLayout:
 								size_hint_y: 0.15
-								cols: 3
+								cols: 4
 								Button:
 									text: '<|'
-									on_press: root.goToSourceFileStartPos()
+									on_press: root.goToSharedFileStartPos()
 								Button:
 									text: '<<'
-									on_press: root.backwardSourceFileThirtySeconds()
+									on_press: root.backwardSharedFileThirtySeconds()
 								Button:
 									text: '<'
-									on_press: root.backwardSourceFileTenSeconds()
-							GridLayout:
-								cols: 3
-								size_hint_y: 0.15
+									on_press: root.backwardSharedFileTenSeconds()
 								Button:
-									text: '>'
-									on_press: root.forwardSourceFileTenSeconds()
-								Button:
-									text: '>>'
-									on_press: root.forwardSourceFileThirtySeconds()
-								Button:
-									text: '|>'
-									on_press: root.goToSourceFileEndPos()
-						GridLayout:
-							cols: 1
-							rows: 1
-							size_hint_y: 1.2
+								    id: button_play_shared_file
+									text: 'Play'
+									on_press: root.playSharedFile()
 							GridLayout:
 								cols: 4
-								rows: 1
-								GridLayout:
-									cols: 1
-								Button:
-								    id: button_play_source_file
-									text: 'Play'
-									on_press: root.playSourceFile()
+								size_hint_y: 0.15
 								Button:
 									text: 'Stop'
-									on_press: root.stopSourceFile()
-								GridLayout:
-									cols: 1
-
+									on_press: root.stopSharedFile()
+								Button:
+									text: '>'
+									on_press: root.forwardSharedFileTenSeconds()
+								Button:
+									text: '>>'
+									on_press: root.forwardSharedFileThirtySeconds()
+								Button:
+									text: '|>'
+									on_press: root.goToSharedFileEndPos()
+                        GridLayout:
+                            cols: 1
+                            size_hint: (0.2, 0.8)
 				GridLayout:
 					cols: 1
-					size_hint: (0.2, 0.4)
+					size_hint: (0.2, 0.6)
 			GridLayout:
 				cols: 1
 				rows: 2

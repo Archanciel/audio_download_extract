@@ -107,6 +107,8 @@ class AudioSplitterGUI(AudioGUI):
 			   separate thread which updates the slider position
 			   every second to reflect the current mp3 playing position
 			   was executed.
+			3/ the user click on a move source audio file button
+			   (<| << < Play Stop > >> |>)
 		:param value:
 		:return:
 		"""
