@@ -367,11 +367,19 @@ class AudioDownloaderGUI(AudioGUI):
 			# can be commented out.
 			# example:
 			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
-			audioSplitterGUI = self.manager.get_screen('audioSplitterScreen')
-			audioSplitterGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
-			self.parent.current = "audioSplitterScreen"
+
+			# audioSplitterGUI = self.manager.get_screen('audioSplitterScreen')
+			# audioSplitterGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
+			# self.parent.current = "audioSplitterScreen"
+			# self.manager.transition.direction = "left"
+			# return
+
+			audioShareGUI = self.manager.get_screen('audioShareScreen')
+			audioShareGUI.initSoundFile(sharedAudioFilePathName=self.playlistOrSingleVideoUrl)
+			self.parent.current = "audioShareScreen"
 			self.manager.transition.direction = "left"
 			return
+
 		else:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !

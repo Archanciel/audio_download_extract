@@ -293,7 +293,7 @@ class FileToShareLoadFileChooserPopup(LoadFileChooserPopup):
 	
 	def loadFile(self, path, selection):
 		audioShareScreen = self.rootGUI.manager.get_screen('audioShareScreen')
-		audioShareScreen.initSoundFile(sourceAudioFilePathName=selection[0])
+		audioShareScreen.initSoundFile(sharedAudioFilePathName=selection[0])
 		self.rootGUI.dismissPopup()
 		self.rootGUI.parent.current = "audioShareScreen"
 		self.rootGUI.manager.transition.direction = "left"
