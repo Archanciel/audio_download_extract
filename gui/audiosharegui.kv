@@ -11,9 +11,101 @@
 	speedTextInput: text_input_speed
 	GridLayout
 		cols: 1
+		rows: 2
+        GridLayout
+            cols: 1
+			size_hint_y: 0.06
+            BoxLayout:
+                size_hint_y: None
+                height: "28dp"
+                ToggleButton:
+                    id: toggle_history_list_Button
+                    text: "History"
+                    size_hint_x: 15
+                    disabled:True
+                    on_press: root.toggleRequestList()
+                Button:
+                    id: delete_Button
+                    text: "Delete"
+                    size_hint_x: 15
+                    disabled: True
+                    on_press: root.deleteRequest()
+                Button:
+                    id: replace_Button
+                    text: "Replace"
+                    size_hint_x: 15
+                    disabled: True
+                    on_press: root.replaceRequest()
+                Button:
+                    id: moveUp_Button
+                    size_hint_x: 8
+                    disabled: True
+                    on_press: selectable_recyclebox_layout.moveItemUp()
+                    StackLayout:
+                        pos: self.parent.pos
+                        size: self.parent.size
+                        orientation: 'lr-tb'
+                        Image:
+                            source: 'arrow-up-32-disabled.png' if self.parent.disabled else 'arrow-up-32.png'
+                            size_hint_x: 1
+                            width: 74
+                Button:
+                    id: moveDown_Button
+                    size_hint_x: 8
+                    disabled: True
+                    on_press: selectable_recyclebox_layout.moveItemDown()
+                    StackLayout:
+                        pos: self.parent.pos
+                        size: self.parent.size
+                        orientation: 'lr-tb'
+                        Image:
+                            source: 'arrow-down-32-disabled.png' if self.parent.disabled else 'arrow-down-32.png'
+                            size_hint_x: 1
+                            width: 74
+                Button:
+                    id: replay_all_Button
+                    text: "Repl All"
+                    size_hint_x: 15
+                    disabled: True
+                    on_press: root.replayAllRequests()
+                Button:
+                    id: menu_Button
+                    text: "..."
+                    size_hint_x: 13
+                    on_release: root.openDropDownMenu(self)
+
+            BoxLayout:
+                id: boxlayout_recycleview
+                size_hint_y: None
+                height: "0dp"
+
+                RecycleView:
+                    id: request_RecycleView_list
+                    scroll_y: 0 # forces scrolling to list bottom after adding an entry
+                    effect_cls: "ScrollEffect" # prevents overscrolling
+                    viewclass: 'SelectableLabel'
+                    scroll_type: ['bars', 'content']
+                    scroll_wheel_distance: dp(114)
+                    bar_width: dp(10)
+
+                    SelectableRecycleBoxLayout:
+                        id: selectable_recyclebox_layout
+                        cryptoPricerGUI: root
+                        key_selection: 'selectable' # required so that 'selectable'
+                                                    # key/value can be added to
+                                                    # RecycleView data items
+                        default_size: None, dp(15)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: 0.5
+                        orientation: 'vertical'
+                        multiselect: False
+                        touch_multiselect: False
 		GridLayout:
 			cols: 1
 			rows: 6
+			size_hint_y: 0.94
 			GridLayout:
 				cols: 1
 				rows: 2
