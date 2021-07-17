@@ -6,6 +6,7 @@ from datetime import datetime
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
+from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 
 
 class AudioSplitterGUI(AudioGUI):
@@ -42,6 +43,10 @@ class AudioSplitterGUI(AudioGUI):
 
 		self.audioSlider.value = 0
 		self.audioSlider.max = soundLength
+		
+		# setting focus on startTextInput must be done here, not in
+		# the _finish_init() method !
+		self.startTextInput.focus = True
 		
 		if soundLength < 100:
 			self.sliderUpdateFrequency = 1 / soundLength

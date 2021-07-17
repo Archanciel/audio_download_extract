@@ -6,6 +6,7 @@ from datetime import datetime
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
+from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 
 
 class AudioShareGUI(AudioGUI):
@@ -35,6 +36,10 @@ class AudioShareGUI(AudioGUI):
 		self.sharedAudioFilePathNameInitValue = sharedAudioFilePathName
 		self.sharedAudioFilePathName.text = sharedAudioFilePathName
 		self.soundloaderSourceMp3Obj = SoundLoader.load(sharedAudioFilePathName)
+		
+		# setting focus on startTextInput must be done here, not in
+		# the _finish_init() method !
+		self.sharedAudioFilePathName.focus = True
 	
 	def playSharedFile(self):
 		"""

@@ -27,7 +27,7 @@
 					size_hint: (None, 0.03)
 					valign: 'bottom'
 					text: '  Source file name'
-				TextInput:
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: source_file_path_name
 					size_hint_y: 0.05
 					text: ''
@@ -65,18 +65,18 @@
 								size_hint_y: 0.01
 								valign: 'bottom'
 								text: 'End'
-							TextInput:
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 							    id: text_input_start
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
-							TextInput:
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 							    id: text_input_current
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
                 				on_text_validate: root.goToSourceFileCurrentPos()
-							TextInput:
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 							    id: text_input_end
 								size_hint_y: 0.01
 								halign: 'right'
@@ -146,7 +146,7 @@
 					size_hint: (None, 0.03)
 					valign: 'bottom'
 					text: 'Split file name'
-				TextInput:
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 				    id: split_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
@@ -229,7 +229,7 @@
                     size_hint_x: 0.1
                     valign: 'bottom'
                     text: 'Speed'
-                TextInput:
+                FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
                     id: text_input_speed
                     size_hint_x: 0.07
                     halign: 'right'
