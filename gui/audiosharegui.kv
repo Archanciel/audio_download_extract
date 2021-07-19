@@ -23,7 +23,7 @@
 		rows: 2
         GridLayout
             cols: 1
-            rows: 2
+            rows: 3
 			size_hint_y: 0.12
             FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
                 id: request_TextInput
@@ -33,7 +33,6 @@
                 multiline: False
                 #ENTER triggers root.submitRequest()
                 on_text_validate: root.submitRequest()
-                on_text: root.ensureLowercase()
             BoxLayout:
                 size_hint_y: None
                 height: "28dp"
@@ -94,7 +93,8 @@
 
                 RecycleView:
                     id: request_RecycleView_list
-                    scroll_y: 0 # forces scrolling to list bottom after adding an entry
+					rootGUI: root
+					scroll_y: 0 # forces scrolling to list bottom after adding an entry
                     effect_cls: "ScrollEffect" # prevents overscrolling
                     viewclass: 'SelectableLabelAudioShare'
                     scroll_type: ['bars', 'content']

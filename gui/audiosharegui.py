@@ -25,7 +25,7 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 	def refresh_view_attrs(self, rv, index, data):
 		''' Catch and handle the view changes '''
 		self.rv = rv
-		self.cryptoPricerGUI = rv.parent.parent.parent.parent
+		self.audioShareGUI = rv.rootGUI
 		self.index = index
 		
 		return super(SelectableLabelAudioShare, self).refresh_view_attrs(
@@ -33,15 +33,15 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 	
 	def on_touch_down(self, touch):
 		''' Add selection on touch down '''
-		if len(self.cryptoPricerGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
+		if len(self.audioShareGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
 			# here, the user manually deselects the selected item. When
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
-			self.cryptoPricerGUI.requestInput.text = ''
+			self.audioShareGUI.requestInput.text = ''
 			
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			self.cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+			self.audioShareGUI.recycleViewCurrentSelIndex = -1
 		
 		if super(SelectableLabelAudioShare, self).on_touch_down(touch):
 			return True
@@ -58,11 +58,11 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 			
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			self.cryptoPricerGUI.recycleViewCurrentSelIndex = index
-			self.cryptoPricerGUI.requestInput.text = selItemValue
+			self.audioShareGUI.recycleViewCurrentSelIndex = index
+			self.audioShareGUI.requestInput.text = selItemValue
 		
-		self.cryptoPricerGUI.refocusOnRequestInput()
-		self.cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
+		self.audioShareGUI.refocusOnRequestInput()
+		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
 
 class AudioShareGUI(AudioGUI):
@@ -320,7 +320,10 @@ class AudioShareGUI(AudioGUI):
 		:return:
 		'''
 		self.requestInput.focus = True
-	
+
+	def openDropDownMenu(self, widget):
+		self.dropDownMenu.open(widget)
+
 	def initSoundFile(self, sharedAudioFilePathName):
 		if 'mp3' != sharedAudioFilePathName[-3:]:
 			return

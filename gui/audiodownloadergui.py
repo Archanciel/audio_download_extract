@@ -179,7 +179,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 	def refresh_view_attrs(self, rv, index, data):
 		''' Catch and handle the view changes '''
 		self.rv = rv
-		self.cryptoPricerGUI = rv.parent.parent.parent
+		self.audioDownloaderGUI = rv.rootGUI
 		self.index = index
 		
 		return super(SelectableLabel, self).refresh_view_attrs(
@@ -187,15 +187,15 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 	
 	def on_touch_down(self, touch):
 		''' Add selection on touch down '''
-		if len(self.cryptoPricerGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
+		if len(self.audioDownloaderGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
 			# here, the user manually deselects the selected item. When
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
-			self.cryptoPricerGUI.requestInput.text = ''
+			self.audioDownloaderGUI.requestInput.text = ''
 
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			self.cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+			self.audioDownloaderGUI.recycleViewCurrentSelIndex = -1
 
 		if super(SelectableLabel, self).on_touch_down(touch):
 			return True
@@ -212,11 +212,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
-			self.cryptoPricerGUI.recycleViewCurrentSelIndex = index
-			self.cryptoPricerGUI.requestInput.text = selItemValue
+			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
+			self.audioDownloaderGUI.requestInput.text = selItemValue
 		
-		self.cryptoPricerGUI.refocusOnRequestInput()
-		self.cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
+		self.audioDownloaderGUI.refocusOnRequestInput()
+		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 
 
 class SettingScrollOptions(SettingOptions):
