@@ -34,8 +34,6 @@ from kivy.core.clipboard import Clipboard
 
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup, FileToShareLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
-from audiosplittergui import AudioSplitterGUI   # must be kept to avoid Builder error
-from audiosharegui import AudioShareGUI         # must be kept to avoid Builder error
 
 from audiogui import AudioGUI
 from constants import *
@@ -48,12 +46,9 @@ from helppopup import HelpPopup
 # called when pressing a button defined in the audiosplittergui.kv file
 # raises an error AttributeError: 'AudioSplitterGUI' object has no attribute
 # <method name>
-from audiosplittergui import AudioSplitterGUI
 
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
 
-RV_LIST_ITEM_SPACING_ANDROID = 2
-RV_LIST_ITEM_SPACING_WINDOWS = 0.5
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_LOAD = 0
 FILE_ACTION_SAVE = 1
@@ -226,7 +221,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
 class SettingScrollOptions(SettingOptions):
 	'''
-	This class is used in the Kivy Settings dialog to display in a sccrollable way
+	This class is used in the Kivy Settings dialog to display in a scrollable way
 	the long list of time zones
 
 	Source URL: https://github.com/kivy/kivy/wiki/Scollable-Options-in-Settings-panel
@@ -449,55 +444,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.requestListRVSelBoxLayout.default_size = None, self.rvListItemHeight
 		self.requestListRVSelBoxLayout.spacing = rvListItemSpacing
 	
-	def ensureDataPathExist(self, dataPath, message):
-		'''
-		Display a warning in a popup if the data path defined in the settings
-		does not exist and return False. If path ok, returns True. This prevents
-		exceptions at load or save or settings save time.
-		:return:
-		'''
-		if not (os.path.isdir(dataPath)):
-			self.displayPopupWarning(message)
-			
-			return False
-		else:
-			return True
-	
-	def displayPopupWarning(self, message):
-		popupSize = None
-		
-		if platform == 'android':
-			if GuiUtil.onSmartPhone():
-				popupSize = (980, 350)
-			else:				
-				popupSize = (980, 250)
-		elif platform == 'win':
-			popupSize = (330, 150)
-		
-		# this code ensures that the popup content text does not exceeds
-		# the popup borders
-		sizingLabel = Label(text=message)
-		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
-		
-		popup = Popup(title='AudioDownloader WARNING', content=sizingLabel,
-					  auto_dismiss=True, size_hint=(None, None),
-					  size=popupSize)
-		popup.open()
-	
-	def ensureDataPathFileNameExist(self, dataPathFileName, message):
-		'''
-		Display a warning in a popup if the passed data path file name
-		does not exist and return False. If dataPathFileName ok, returns True.
-		This prevents exceptions at load or save or settings save time.
-		:return:
-		'''
-		if not (os.path.isfile(dataPathFileName)):
-			self.displayPopupWarning(message)
-			
-			return False
-		else:
-			return True
-
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			self.appSize = self.configMgr.APP_SIZE_FULL
@@ -1045,18 +991,12 @@ class AudioDownloaderGUI(AudioGUI):
 		self.refocusOnRequestInput()
 
 	# --- end file chooser code ---
-
-	def buildDataPathNotExistMessage(self, path):
-		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
-
+	
 	def buildDataPathDefinedInSettingsNotExistMessage(self, path):
 		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
 	def buildDataPathContainedInFilePathNameNotExistMessage(self, path):
 		return 'Path ' + path + '\ndoes not exist !\nEither create the directory or\nmodify the path.'
-
-	def buildFileNotFoundMessage(self, filePathFilename):
-		return 'Data file\n' + filePathFilename + '\nnot found. No history loaded.'
 	
 	def buildNonAsciiFilePathNameMessage(self, savingPathFileName):
 		return 'Save path file name {}\ncontains non ascii characters. File not saved !'.format(savingPathFileName)
@@ -1197,6 +1137,10 @@ class AudioDownloaderGUIApp(App):
 		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audiosplittergui.kv')
 		Builder.load_file('audiosharegui.kv')
+		
+		from audiosplittergui import AudioSplitterGUI  # must be kept to avoid Builder error
+		from audiosharegui import AudioShareGUI  # must be kept to avoid Builder error
+	
 		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':

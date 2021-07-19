@@ -1,15 +1,73 @@
 from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
+from kivy.properties import BooleanProperty
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.label import Label
 
-import threading, time
+import os, threading, time
 from datetime import datetime
 
 from audiogui import AudioGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
+from configmanager import ConfigManager
+from constants import *
+from gui.customdropdown import CustomDropDown
+
+
+class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
+	''' Add selection support to the Label '''
+	index = None
+	selected = BooleanProperty(False)
+	selectable = BooleanProperty(True)
+	
+	def refresh_view_attrs(self, rv, index, data):
+		''' Catch and handle the view changes '''
+		self.rv = rv
+		self.cryptoPricerGUI = rv.parent.parent.parent.parent
+		self.index = index
+		
+		return super(SelectableLabelAudioShare, self).refresh_view_attrs(
+			rv, index, data)
+	
+	def on_touch_down(self, touch):
+		''' Add selection on touch down '''
+		if len(self.cryptoPricerGUI.requestListRVSelBoxLayout.selected_nodes) == 1:
+			# here, the user manually deselects the selected item. When
+			# on_touch_down is called, if the item is selected, the
+			# requestListRVSelBoxLayout.selected_nodes list has one element !
+			self.cryptoPricerGUI.requestInput.text = ''
+			
+			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			self.cryptoPricerGUI.recycleViewCurrentSelIndex = -1
+		
+		if super(SelectableLabelAudioShare, self).on_touch_down(touch):
+			return True
+		if self.collide_point(*touch.pos) and self.selectable:
+			return self.parent.select_with_touch(self.index, touch)
+	
+	def apply_selection(self, rv, index, is_selected):
+		# instance variable used in .kv file to change the selected item
+		# color !
+		self.selected = is_selected
+		
+		if is_selected:
+			selItemValue = rv.data[index]['text']
+			
+			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			self.cryptoPricerGUI.recycleViewCurrentSelIndex = index
+			self.cryptoPricerGUI.requestInput.text = selItemValue
+		
+		self.cryptoPricerGUI.refocusOnRequestInput()
+		self.cryptoPricerGUI.enableStateOfRequestListSingleItemButtons()
 
 
 class AudioShareGUI(AudioGUI):
+	showRequestList = False
+
 	def __init__(self, **kw):
 		super(AudioShareGUI, self).__init__(**kw)
 		
@@ -28,6 +86,240 @@ class AudioShareGUI(AudioGUI):
 		self.sliderUpdaterThread = None
 		self.sliderUpdateFrequency = 1
 		self.splitAudioFilePathNameInitValue = ''
+		self.dropDownMenu = CustomDropDown(owner=self)
+
+		if os.name == 'posix':
+			configPath = '/sdcard/audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
+		else:
+			configPath = 'c:\\temp\\audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+
+		self.configMgr = ConfigManager(configPath)
+		self.dataPath = self.configMgr.dataPath
+
+		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
+								int(self.configMgr.histoListVisibleSize),
+								requestListRVSpacing)
+
+		self.loadHistoryDataIfSet()
+	
+	def rvListSizeSettingsChanged(self):
+		if os.name == 'posix':
+			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
+		else:
+			rvListItemSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+		
+		self.setRVListSizeParms(self.rvListItemHeight,
+		                        self.rvListMaxVisibleItems,
+		                        rvListItemSpacing)
+		if self.showRequestList:
+			self.adjustRequestListSize()
+	
+	def setRVListSizeParms(self,
+	                       rvListItemHeight,
+	                       rvListMaxVisibleItems,
+	                       rvListItemSpacing):
+		self.rvListItemHeight = rvListItemHeight
+		self.rvListMaxVisibleItems = rvListMaxVisibleItems
+		self.maxRvListHeight = self.rvListMaxVisibleItems * self.rvListItemHeight
+		
+		# setting RecycleView list item height from config
+		self.requestListRVSelBoxLayout.default_size = None, self.rvListItemHeight
+		self.requestListRVSelBoxLayout.spacing = rvListItemSpacing
+	
+	def toggleRequestList(self):
+		'''
+		called by 'History' toggle button to toggle the display of the history
+		request list.
+		'''
+		if self.showRequestList:
+			# RecycleView request history list is currently displayed and
+			# will be hidden
+			self.boxLayoutContainingRV.height = '0dp'
+			
+			# when hidding the history request list, an item can be selected.
+			# For this reason, the disableStateOfRequestListSingleItemButtons()
+			# must be called explicitely called, otherwise the history request
+			# list items specific buttons remain isLoadAtStartChkboxActive !
+			self.disableStateOfRequestListSingleItemButtons()
+			self.showRequestList = False
+		else:
+			# RecycleView request history list is currently hidden and
+			# will be displayed
+			self.adjustRequestListSize()
+			self.showRequestList = True
+			self.resetListViewScrollToEnd()
+		
+		self.refocusOnRequestInput()
+	
+	def adjustRequestListSize(self):
+		listItemNumber = len(self.requestListRV.data)
+		self.boxLayoutContainingRV.height = min(listItemNumber * self.rvListItemHeight, self.maxRvListHeight)
+		
+		return listItemNumber
+	
+	def deleteRequest(self, *args):
+		# deleting selected item from RecycleView list
+		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
+		
+		remainingItemNb = len(self.requestListRV.data)
+		
+		if remainingItemNb == 0:
+			# no more item in RecycleView list
+			self.disableStateOfRequestListSingleItemButtons()
+			self.toggleHistoButton.disabled = True
+			self.showRequestList = False
+			self.requestInput.text = ''
+		
+		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
+		
+		if currentSelItemIdx >= remainingItemNb:
+			# the case if the last item was deleted. Then, the new last item
+			# is selected
+			lastItemIdx = remainingItemNb - 1
+			self.requestListRVSelBoxLayout.selected_nodes = [lastItemIdx]
+			self.recycleViewCurrentSelIndex = lastItemIdx
+		
+		if self.showRequestList:
+			self.adjustRequestListSize()
+		
+		self.manageStateOfGlobalRequestListButtons()
+		
+		self.refocusOnRequestInput()
+	
+	def clearHistoryListSelection(self):
+		self.requestListRV._get_layout_manager().clear_selection()
+	
+	def replaceRequest(self, *args):
+		# Remove the selected item
+		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
+		
+		# Get the request from the TextInputs
+		requestStr = self.requestInput.text
+		
+		# Add the updated data to the list if not already in
+		requestListEntry = {'text': requestStr, 'selectable': True}
+		
+		if not requestListEntry in self.requestListRV.data:
+			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
+		
+		self.refocusOnRequestInput()
+	
+	def enableStateOfRequestListSingleItemButtons(self):
+		"""
+		This method handles the states of the single items of the request
+		history list.
+		"""
+		if len(self.requestListRVSelBoxLayout.selected_nodes):
+			# here, a request list item is selected and the
+			# requestListRVSelBoxLayout.selected_nodes list has one
+			# element !
+			self.deleteButton.disabled = False
+			self.replaceButton.disabled = False
+			self.moveUpButton.disabled = False
+			self.moveDownButton.disabled = False
+		else:
+			self.disableStateOfRequestListSingleItemButtons()
+	
+	def disableStateOfRequestListSingleItemButtons(self):
+		self.deleteButton.disabled = True
+		self.replaceButton.disabled = True
+		self.moveUpButton.disabled = True
+		self.moveDownButton.disabled = True
+	
+	def loadHistoryDataIfSet(self):
+		'''
+		Testing at app start if data path defined in settings does exist
+		and if history file loaded at start app does exist. Since a warning popup
+		is displayed in case of invalid data, this must be performed here and
+		not in audioDownloaderGUI.__init__ where no popup could be displayed.
+		:return:
+		'''
+		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.dataPath)
+		
+		if self.ensureDataPathExist(self.dataPath, dataPathNotExistMessage):
+			# loading the load at start history file if defined
+			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
+			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
+			
+			if historyFilePathFilename != '' and self.ensureDataPathFileNameExist(
+					historyFilePathFilename, dataFileNotFoundMessage):
+				self.loadHistoryFromPathFilename(historyFilePathFilename)
+	
+	def loadHistoryFromPathFilename(self, pathFileName):
+		self.currentLoadedFathFileName = pathFileName
+		dataFileNotFoundMessage = self.buildFileNotFoundMessage(pathFileName)
+		
+		if not self.ensureDataPathFileNameExist(pathFileName, dataFileNotFoundMessage):
+			return
+		
+		with open(pathFileName) as stream:
+			lines = stream.readlines()
+		
+		lines = list(map(lambda line: line.strip('\n'), lines))
+		histoLines = [{'text': val, 'selectable': True} for val in lines]
+		self.requestListRV.data = histoLines
+		self.requestListRVSelBoxLayout.clear_selection()
+		
+		# Reset the ListView
+		self.resetListViewScrollToEnd()
+		
+		self.manageStateOfGlobalRequestListButtons()
+		self.refocusOnRequestInput()
+	
+	def resetListViewScrollToEnd(self):
+		maxVisibleItemNumber = self.rvListMaxVisibleItems
+		listLength = len(self.requestListRV.data)
+		
+		if listLength > maxVisibleItemNumber:
+			# for the moment, I do not know how to scroll to end of RecyclweView !
+			# listView.scroll_to(listLength - maxVisibleItemNumber)
+			pass
+		else:
+			if self.showRequestList:
+				listItemNumber = self.adjustRequestListSize()
+				if listItemNumber == 0:
+					self.showRequestList = False
+					self.manageStateOfGlobalRequestListButtons()
+	
+	def manageStateOfGlobalRequestListButtons(self):
+		'''
+		Enable or disable history request list related controls according to
+		the status of the list: filled with items or empty.
+
+		Only handles state of the request history list buttons which
+		operates on the list globally, not on specific items of the list.
+
+		Those buttons are:
+			Display/hide request history list button
+			Replay all button
+			Save request history list menu item button
+		'''
+		if len(self.requestListRV.data) == 0:
+			# request list is empty
+			self.toggleHistoButton.state = 'normal'
+			self.toggleHistoButton.disabled = True
+			self.boxLayoutContainingRV.height = '0dp'
+			self.dropDownMenu.saveButton.disabled = True
+		else:
+			self.toggleHistoButton.disabled = False
+			self.dropDownMenu.saveButton.disabled = False
+	
+	def refocusOnRequestInput(self):
+		# defining a delay of 0.5 sec ensure the
+		# refocus works in all situations, moving
+		# up and down comprised (0.1 sec was not
+		# sufficient for item move ...)
+		Clock.schedule_once(self._refocusTextInput, 0.5)
+	
+	def _refocusTextInput(self, *args):
+		'''
+		This method is here to be used as callback by Clock and must not be called directly
+		:param args:
+		:return:
+		'''
+		self.requestInput.focus = True
 	
 	def initSoundFile(self, sharedAudioFilePathName):
 		if 'mp3' != sharedAudioFilePathName[-3:]:

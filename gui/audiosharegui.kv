@@ -2,6 +2,15 @@
 
 <AudioShareGUI>: # sub-class of Screen
 	name: "audioShareScreen"
+	requestInput: request_TextInput
+	requestListRV: request_RecycleView_list
+	requestListRVSelBoxLayout: selectable_recyclebox_layout
+	toggleHistoButton: toggle_history_list_Button
+	deleteButton: delete_Button
+	replaceButton: replace_Button
+	moveUpButton: moveUp_Button
+	moveDownButton: moveDown_Button
+	boxLayoutContainingRV: boxlayout_recycleview
 	sharedAudioFilePathName: shared_file_path_name
 	sharedFilePlayButton: button_play_shared_file
 	splitAudioFilePathName: split_file_path_name
@@ -14,7 +23,17 @@
 		rows: 2
         GridLayout
             cols: 1
-			size_hint_y: 0.06
+            rows: 2
+			size_hint_y: 0.12
+            FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+                id: request_TextInput
+                background_color: 0,0,0,0
+                foreground_color: 1,1,1,1
+                focus: True
+                multiline: False
+                #ENTER triggers root.submitRequest()
+                on_text_validate: root.submitRequest()
+                on_text: root.ensureLowercase()
             BoxLayout:
                 size_hint_y: None
                 height: "28dp"
@@ -63,12 +82,6 @@
                             size_hint_x: 1
                             width: 74
                 Button:
-                    id: replay_all_Button
-                    text: "Repl All"
-                    size_hint_x: 15
-                    disabled: True
-                    on_press: root.replayAllRequests()
-                Button:
                     id: menu_Button
                     text: "..."
                     size_hint_x: 13
@@ -83,7 +96,7 @@
                     id: request_RecycleView_list
                     scroll_y: 0 # forces scrolling to list bottom after adding an entry
                     effect_cls: "ScrollEffect" # prevents overscrolling
-                    viewclass: 'SelectableLabel'
+                    viewclass: 'SelectableLabelAudioShare'
                     scroll_type: ['bars', 'content']
                     scroll_wheel_distance: dp(114)
                     bar_width: dp(10)
