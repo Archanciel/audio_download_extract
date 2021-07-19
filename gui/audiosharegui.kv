@@ -43,7 +43,7 @@
 					size: self.size
 
 			GridLayout:
-				cols: 2
+				cols: 1
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: request_TextInput
 					background_color: 0,0,0,0
@@ -139,6 +139,12 @@
 			cols: 1
 			rows: 6
 			size_hint_y: 0.94
+			canvas.before:
+				Color:
+					rgb: [0,0,0]
+				Rectangle:
+					pos: self.pos
+					size: self.size
 			GridLayout:
 				cols: 1
 				rows: 2
