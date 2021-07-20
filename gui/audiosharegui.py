@@ -2,7 +2,7 @@ from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.properties import BooleanProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
 
 import os, threading, time
 from datetime import datetime
@@ -16,7 +16,7 @@ from constants import *
 from gui.customdropdown import CustomDropDown
 
 
-class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
+class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 	''' Add selection support to the Label '''
 	index = None
 	selected = BooleanProperty(False)
@@ -28,7 +28,7 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 		self.audioShareGUI = rv.rootGUI
 		self.index = index
 		
-		return super(SelectableLabelAudioShare, self).refresh_view_attrs(
+		return super(MultiFieldSelectableBoxLayout, self).refresh_view_attrs(
 			rv, index, data)
 	
 	def on_touch_down(self, touch):
@@ -43,7 +43,7 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = -1
 		
-		if super(SelectableLabelAudioShare, self).on_touch_down(touch):
+		if super(MultiFieldSelectableBoxLayout, self).on_touch_down(touch):
 			return True
 		if self.collide_point(*touch.pos) and self.selectable:
 			return self.parent.select_with_touch(self.index, touch)
@@ -54,7 +54,7 @@ class SelectableLabelAudioShare(RecycleDataViewBehavior, Label):
 		self.selected = is_selected
 		
 		if is_selected:
-			selItemValue = rv.data[index]['text']
+			selItemValue = rv.data[index]['nameLabel']
 			
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
@@ -258,7 +258,14 @@ class AudioShareGUI(AudioGUI):
 			lines = stream.readlines()
 		
 		lines = list(map(lambda line: line.strip('\n'), lines))
-		histoLines = [{'text': val, 'selectable': True} for val in lines]
+		#histoLines = [{'text': val, 'selectable': True} for val in lines
+		
+		items = [{'name': 'Jean-Pierre Schnyder', 'email': 'jp.schnyder@gmail.com', 'phoneNumber': '+41768224987'},
+		         {'name': 'Tamara Jagne', 'email': 'tamara.jagne@gmail.com', 'phoneNumber': '+41764286884'}
+		         ]
+		
+		histoLines = [{'nameLabel': str(x['name']), 'emailLabel': str(x['email']), 'phoneNumberLabel': str(x['phoneNumber'])} for x in items]
+
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
 		
