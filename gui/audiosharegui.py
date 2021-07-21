@@ -37,8 +37,10 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			# here, the user manually deselects the selected item. When
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
-			self.audioShareGUI.requestInput.text = ''
-			
+			self.audioShareGUI.nameInput.text = ''
+			self.audioShareGUI.emailInput.text = ''
+			self.audioShareGUI.phoneNumberInput.text = ''
+
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = -1
@@ -54,13 +56,17 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 		self.selected = is_selected
 		
 		if is_selected:
-			selItemValue = rv.data[index]['nameLabel']
-			
+			selName = rv.data[index]['nameLabel']
+			selEmail = rv.data[index]['emailLabel']
+			selPhoneNumber = rv.data[index]['phoneNumberLabel']
+
 			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() cryptoPricerGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = index
-			self.audioShareGUI.requestInput.text = selItemValue
-		
+			self.audioShareGUI.nameInput.text = selName
+			self.audioShareGUI.emailInput.text = selEmail
+			self.audioShareGUI.phoneNumberInput.text = selPhoneNumber
+
 		self.audioShareGUI.refocusOnRequestInput()
 		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
@@ -170,7 +176,9 @@ class AudioShareGUI(AudioGUI):
 			self.disableStateOfRequestListSingleItemButtons()
 			self.toggleHistoButton.disabled = True
 			self.showRequestList = False
-			self.requestInput.text = ''
+			self.audioShareGUI.nameInput.text = ''
+			self.audioShareGUI.emailInput.text = ''
+			self.audioShareGUI.phoneNumberInput.text = ''
 		
 		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
 		
@@ -195,11 +203,13 @@ class AudioShareGUI(AudioGUI):
 		# Remove the selected item
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 		
-		# Get the request from the TextInputs
-		requestStr = self.requestInput.text
-		
+		# Get new values from the TextInput fields
+		name = self.nameInput.text
+		email= self.emailInput.text
+		phoneNumber = self.phoneNumberInput.text
+
 		# Add the updated data to the list if not already in
-		requestListEntry = {'text': requestStr, 'selectable': True}
+		requestListEntry = {'nameLabel': name, 'emailLabel': email, 'phoneNumberLabel': phoneNumber, 'selectable': True}
 		
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
@@ -326,7 +336,7 @@ class AudioShareGUI(AudioGUI):
 		:param args:
 		:return:
 		'''
-		self.requestInput.focus = True
+		self.nameInput.focus = True
 
 	def openDropDownMenu(self, widget):
 		self.dropDownMenu.open(widget)

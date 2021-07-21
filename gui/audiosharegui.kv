@@ -2,7 +2,9 @@
 
 <AudioShareGUI>: # sub-class of Screen
 	name: "audioShareScreen"
-	requestInput: request_TextInput
+	nameInput: name_TextInput
+	emailInput: email_TextInput
+	phoneNumberInput: phoneNumber_TextInput
 	requestListRV: request_RecycleView_list
 	requestListRVSelBoxLayout: selectable_recyclebox_layout
 	toggleHistoButton: toggle_history_list_Button
@@ -43,15 +45,32 @@
 					size: self.size
 
 			GridLayout:
-				cols: 1
+				cols: 3
+				rows: 1
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-					id: request_TextInput
+					id: name_TextInput
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: True
 					multiline: False
-					#ENTER triggers root.submitRequest()
-					on_text_validate: root.submitRequest()
+					#ENTER triggers root.setName()
+					on_text_validate: root.setName()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: email_TextInput
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					#ENTER triggers root.setEmail()
+					on_text_validate: root.setEmail()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: phoneNumber_TextInput
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					#ENTER triggers root.setPhoneNumber()
+					on_text_validate: root.setPhoneNumber()
 
 		BoxLayout:
 			size_hint_y: None
