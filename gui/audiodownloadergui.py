@@ -112,7 +112,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		# supplements the refocusOnRequestInput() called in the
 		# SelectableLabel.apply_selection() method, but is useful when
 		# the moved item is no longer visible !
-		self.cryptoPricerGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnRequestInput()
 
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
@@ -132,7 +132,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		# supplements the refocusOnRequestInput() called in the
 		# SelectableLabel.apply_selection() method, but is useful when
 		# the moved item is no longer visible !
-		self.cryptoPricerGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnRequestInput()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedValue = self.parent.data[movedItemSelIndex]['text']
@@ -165,9 +165,9 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 				self.parent.data.pop(movedItemNewSeIndex)
 				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
 		
-		# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-		# deleteRequest() and updateRequest() cryptoPricerGUI methods
-		self.cryptoPricerGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
+		# appGUI.recycleViewCurrentSelIndex is used by the
+		# deleteRequest() and updateRequest() appGUI methods
+		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
@@ -193,8 +193,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
 			self.audioDownloaderGUI.requestInput.text = ''
 
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			# appGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = -1
 
 		if super(SelectableLabel, self).on_touch_down(touch):
@@ -210,8 +210,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		if is_selected:
 			selItemValue = rv.data[index]['text']
 
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			# appGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			self.audioDownloaderGUI.requestInput.text = selItemValue
 		

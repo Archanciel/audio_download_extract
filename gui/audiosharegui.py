@@ -1,6 +1,9 @@
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.properties import BooleanProperty
+from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
@@ -14,6 +17,119 @@ from focustextinput import FocusTextInput # required for loading the audiosplitt
 from configmanager import ConfigManager
 from constants import *
 from gui.customdropdown import CustomDropDown
+
+NAME_LABEL_KEY = 'nameLabel'
+EMAIL_LABEL_KEY = 'emailLabel'
+PHONE_NUMBER_LABEL_KEY = 'phoneNumberLabel'
+
+
+class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+	''' Adds selection and focus behaviour to the view. '''
+	
+	MOVE_DIRECTION_UP = 'moveItemUp'
+	MOVE_DIRECTION_DOWN = 'moveItemDown'
+	
+	# required to authorise unselecting a selected item
+	touch_deselect_last = BooleanProperty(True)
+	
+	def get_nodes(self):
+		nodes = self.get_selectable_nodes()
+		
+		if self.nodes_order_reversed:
+			nodes = nodes[::-1]
+		
+		if not nodes:
+			return None, None
+		
+		selected = self.selected_nodes
+		
+		if not selected:  # nothing selected
+			return None, None
+		
+		if len(nodes) == 1:  # the only selectable node is selected already
+			return None, None
+		
+		currentSelIdx = nodes.index(selected[-1])
+		self.clear_selection()
+		
+		return currentSelIdx, nodes
+	
+	def moveItemUp(self):
+		currentSelIdx, nodes = self.get_nodes()
+		
+		if not nodes:
+			return
+		
+		if not currentSelIdx:
+			# currentSelIdx == 0 --> first item is moved up
+			# which means it will become the last item !
+			newSelIdx = -1
+		else:
+			newSelIdx = currentSelIdx - 1
+		
+		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
+		self.select_node(nodes[newSelIdx])
+		
+		# supplements the refocusOnRequestInput() called in the
+		# SelectableLabel.apply_selection() method, but is useful when
+		# the moved item is no longer visible !
+		self.appGUI.refocusOnRequestInput()
+	
+	def moveItemDown(self):
+		currentSelIdx, nodes = self.get_nodes()
+		
+		if not nodes:
+			return
+		
+		if currentSelIdx == len(nodes) - 1:
+			# moving down last item puts it at first item position
+			newSelIdx = 0
+		else:
+			newSelIdx = currentSelIdx + 1
+		
+		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
+		self.select_node(nodes[newSelIdx])
+		
+		# supplements the refocusOnRequestInput() called in the
+		# SelectableLabel.apply_selection() method, but is useful when
+		# the moved item is no longer visible !
+		self.appGUI.refocusOnRequestInput()
+	
+	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
+		movedValue = self.parent.data[movedItemSelIndex]['text']
+		
+		if moveDirection == AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
+			if movedItemSelIndex > movedItemNewSeIndex:
+				# we are moving down the last list item. The item will be inserted at top
+				# of the list
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(0, {'text': movedValue, 'selectable': True})
+			else:
+				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				
+				self.parent.data.pop(movedItemNewSeIndex)
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+		else:
+			# handling moving up
+			if movedItemSelIndex == 0:
+				# we are moving up the first item. The first item will be appended to the
+				# end of the list
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.append({'text': movedValue, 'selectable': True})
+			else:
+				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				self.parent.data.pop(movedItemSelIndex)
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				
+				self.parent.data.pop(movedItemNewSeIndex)
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+		
+		# appGUI.recycleViewCurrentSelIndex is used by the
+		# deleteRequest() and updateRequest() appGUI methods
+		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 
 class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
@@ -41,8 +157,8 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			self.audioShareGUI.emailInput.text = ''
 			self.audioShareGUI.phoneNumberInput.text = ''
 
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			# appGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() appGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = -1
 		
 		if super(MultiFieldSelectableBoxLayout, self).on_touch_down(touch):
@@ -56,12 +172,12 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 		self.selected = is_selected
 		
 		if is_selected:
-			selName = rv.data[index]['nameLabel']
-			selEmail = rv.data[index]['emailLabel']
-			selPhoneNumber = rv.data[index]['phoneNumberLabel']
+			selName = rv.data[index][NAME_LABEL_KEY]
+			selEmail = rv.data[index][EMAIL_LABEL_KEY]
+			selPhoneNumber = rv.data[index][PHONE_NUMBER_LABEL_KEY]
 
-			# cryptoPricerGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() cryptoPricerGUI methods
+			# appGUI.recycleViewCurrentSelIndex is used by the
+			# deleteRequest() and updateRequest() appGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = index
 			self.audioShareGUI.nameInput.text = selName
 			self.audioShareGUI.emailInput.text = selEmail
@@ -176,9 +292,9 @@ class AudioShareGUI(AudioGUI):
 			self.disableStateOfRequestListSingleItemButtons()
 			self.toggleHistoButton.disabled = True
 			self.showRequestList = False
-			self.audioShareGUI.nameInput.text = ''
-			self.audioShareGUI.emailInput.text = ''
-			self.audioShareGUI.phoneNumberInput.text = ''
+			self.nameInput.text = ''
+			self.emailInput.text = ''
+			self.phoneNumberInput.text = ''
 		
 		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
 		
@@ -204,17 +320,52 @@ class AudioShareGUI(AudioGUI):
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 		
 		# Get new values from the TextInput fields
-		name = self.nameInput.text
-		email= self.emailInput.text
-		phoneNumber = self.phoneNumberInput.text
-
+		name, email, phoneNumber = self.getInputValues()
+		
 		# Add the updated data to the list if not already in
-		requestListEntry = {'nameLabel': name, 'emailLabel': email, 'phoneNumberLabel': phoneNumber, 'selectable': True}
+		requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber, 'selectable': True}
 		
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 		
 		self.refocusOnRequestInput()
+
+	def setInputValues(self):
+		# Get new values from the TextInput fields
+		name, email, phoneNumber = self.getInputValues()
+
+		if name != '' and email != '' and phoneNumber != '':
+			requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber, 'selectable': True}
+
+			if not requestListEntry in self.requestListRV.data:
+				self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
+			
+			self.resetListViewScrollToEnd()
+			self.manageStateOfGlobalRequestListButtons()
+			
+			self.nameInput.text = ''
+			self.emailInput.text = ''
+			self.phoneNumberInput.text = ''
+			
+			self.refocusOnRequestInput()
+		elif name == '':
+			self.nameInput.focus = True
+		elif email == '':
+			self.emailInput.focus = True
+		else:
+			self.phoneNumberInput.focus = True
+			
+	def getInputValues(self):
+		'''
+		Returns new values from the TextInput fields.
+
+		:return:
+		'''
+		name = self.nameInput.text
+		email = self.emailInput.text
+		phoneNumber = self.phoneNumberInput.text
+		
+		return name, email, phoneNumber
 	
 	def enableStateOfRequestListSingleItemButtons(self):
 		"""
@@ -274,7 +425,7 @@ class AudioShareGUI(AudioGUI):
 		         {'name': 'Tamara Jagne', 'email': 'tamara.jagne@gmail.com', 'phoneNumber': '+41764286884'}
 		         ]
 		
-		histoLines = [{'nameLabel': str(x['name']), 'emailLabel': str(x['email']), 'phoneNumberLabel': str(x['phoneNumber'])} for x in items]
+		histoLines = [{NAME_LABEL_KEY: str(x['name']), EMAIL_LABEL_KEY: str(x['email']), PHONE_NUMBER_LABEL_KEY: str(x['phoneNumber']), 'selectable': True} for x in items]
 
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()

@@ -53,24 +53,24 @@
 					foreground_color: 1,1,1,1
 					focus: True
 					multiline: False
-					#ENTER triggers root.setName()
-					on_text_validate: root.setName()
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: email_TextInput
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: False
 					multiline: False
-					#ENTER triggers root.setEmail()
-					on_text_validate: root.setEmail()
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: phoneNumber_TextInput
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: False
 					multiline: False
-					#ENTER triggers root.setPhoneNumber()
-					on_text_validate: root.setPhoneNumber()
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
 
 		BoxLayout:
 			size_hint_y: None
@@ -140,9 +140,9 @@
 				scroll_wheel_distance: dp(114)
 				bar_width: dp(10)
 
-				SelectableRecycleBoxLayout:
+				AudioShareSelectableRecycleBoxLayout:
 					id: selectable_recyclebox_layout
-					cryptoPricerGUI: root
+					appGUI: root
 					key_selection: 'selectable' # required so that 'selectable'
 												# key/value can be added to
 												# RecycleView data items
