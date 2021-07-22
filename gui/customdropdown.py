@@ -41,12 +41,3 @@ class CustomDropDown(DropDown):
 	
 	def help(self):
 		self.owner.displayHelp()
-	
-	def copyStatusBarStrToRequestEntry(self):
-		statusBarStr = self.owner.statusBarTextInput.text
-		
-		self.owner.requestInput.text = statusBarStr.replace(STATUS_BAR_ERROR_SUFFIX, '')
-		self.owner.statusBarTextInput.text = ''
-		self.statusToRequestInputButton.disabled = True
-		self.owner.refocusOnRequestInput()
-		self.dismiss()

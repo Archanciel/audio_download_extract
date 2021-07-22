@@ -73,11 +73,7 @@ class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavio
 		
 		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-		
-		# supplements the refocusOnRequestInput() called in the
-		# SelectableLabel.apply_selection() method, but is useful when
-		# the moved item is no longer visible !
-		self.appGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnNameTextInputField()
 	
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
@@ -93,11 +89,7 @@ class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavio
 		
 		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-		
-		# supplements the refocusOnRequestInput() called in the
-		# SelectableLabel.apply_selection() method, but is useful when
-		# the moved item is no longer visible !
-		self.appGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnNameTextInputField()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedName, movedEmail, movedPhoneNumber = self.getSelectedContactValues(movedItemSelIndex)
@@ -180,9 +172,9 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			# here, the user manually deselects the selected item. When
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
-			self.audioShareGUI.nameInput.text = ''
-			self.audioShareGUI.emailInput.text = ''
-			self.audioShareGUI.phoneNumberInput.text = ''
+			self.audioShareGUI.nameTextInputField.text = ''
+			self.audioShareGUI.emailTextInputField.text = ''
+			self.audioShareGUI.phoneNumberTextInputField.text = ''
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
@@ -206,11 +198,11 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = index
-			self.audioShareGUI.nameInput.text = selName
-			self.audioShareGUI.emailInput.text = selEmail
-			self.audioShareGUI.phoneNumberInput.text = selPhoneNumber
+			self.audioShareGUI.nameTextInputField.text = selName
+			self.audioShareGUI.emailTextInputField.text = selEmail
+			self.audioShareGUI.phoneNumberTextInputField.text = selPhoneNumber
 
-		self.audioShareGUI.refocusOnRequestInput()
+		self.audioShareGUI.refocusOnNameTextInputField()
 		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
 
@@ -300,7 +292,7 @@ class AudioShareGUI(AudioGUI):
 			self.showRequestList = True
 			self.resetListViewScrollToEnd()
 		
-		self.refocusOnRequestInput()
+		self.refocusOnNameTextInputField()
 	
 	def adjustRequestListSize(self):
 		listItemNumber = len(self.requestListRV.data)
@@ -319,9 +311,9 @@ class AudioShareGUI(AudioGUI):
 			self.disableStateOfRequestListSingleItemButtons()
 			self.toggleHistoButton.disabled = True
 			self.showRequestList = False
-			self.nameInput.text = ''
-			self.emailInput.text = ''
-			self.phoneNumberInput.text = ''
+			self.nameTextInputField.text = ''
+			self.emailTextInputField.text = ''
+			self.phoneNumberTextInputField.text = ''
 		
 		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
 		
@@ -337,7 +329,7 @@ class AudioShareGUI(AudioGUI):
 		
 		self.manageStateOfGlobalRequestListButtons()
 		
-		self.refocusOnRequestInput()
+		self.refocusOnNameTextInputField()
 	
 	def clearHistoryListSelection(self):
 		self.requestListRV._get_layout_manager().clear_selection()
@@ -355,7 +347,7 @@ class AudioShareGUI(AudioGUI):
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 		
-		self.refocusOnRequestInput()
+		self.refocusOnNameTextInputField()
 
 	def setInputValues(self):
 		# Get new values from the TextInput fields
@@ -370,17 +362,17 @@ class AudioShareGUI(AudioGUI):
 			self.resetListViewScrollToEnd()
 			self.manageStateOfGlobalRequestListButtons()
 			
-			self.nameInput.text = ''
-			self.emailInput.text = ''
-			self.phoneNumberInput.text = ''
+			self.nameTextInputField.text = ''
+			self.emailTextInputField.text = ''
+			self.phoneNumberTextInputField.text = ''
 			
-			self.refocusOnRequestInput()
+			self.refocusOnNameTextInputField()
 		elif name == '':
-			self.nameInput.focus = True
+			self.nameTextInputField.focus = True
 		elif email == '':
-			self.emailInput.focus = True
+			self.emailTextInputField.focus = True
 		else:
-			self.phoneNumberInput.focus = True
+			self.phoneNumberTextInputField.focus = True
 			
 	def getInputContactValues(self):
 		'''
@@ -388,9 +380,9 @@ class AudioShareGUI(AudioGUI):
 
 		:return: name, email, phoneNumber
 		'''
-		name = self.nameInput.text
-		email = self.emailInput.text
-		phoneNumber = self.phoneNumberInput.text
+		name = self.nameTextInputField.text
+		email = self.emailTextInputField.text
+		phoneNumber = self.phoneNumberTextInputField.text
 		
 		return name, email, phoneNumber
 	
@@ -461,7 +453,7 @@ class AudioShareGUI(AudioGUI):
 		self.resetListViewScrollToEnd()
 		
 		self.manageStateOfGlobalRequestListButtons()
-		self.refocusOnRequestInput()
+		self.refocusOnNameTextInputField()
 	
 	def resetListViewScrollToEnd(self):
 		maxVisibleItemNumber = self.rvListMaxVisibleItems
@@ -501,20 +493,20 @@ class AudioShareGUI(AudioGUI):
 			self.toggleHistoButton.disabled = False
 			self.dropDownMenu.saveButton.disabled = False
 	
-	def refocusOnRequestInput(self):
+	def refocusOnNameTextInputField(self):
 		# defining a delay of 0.5 sec ensure the
 		# refocus works in all situations, moving
 		# up and down comprised (0.1 sec was not
 		# sufficient for item move ...)
-		Clock.schedule_once(self._refocusTextInput, 0.5)
+		Clock.schedule_once(self._refocusOnNameTextInputField, 0.5)
 	
-	def _refocusTextInput(self, *args):
+	def _refocusOnNameTextInputField(self, *args):
 		'''
 		This method is here to be used as callback by Clock and must not be called directly
 		:param args:
 		:return:
 		'''
-		self.nameInput.focus = True
+		self.nameTextInputField.focus = True
 
 	def openDropDownMenu(self, widget):
 		self.dropDownMenu.open(widget)
@@ -628,12 +620,6 @@ class AudioShareGUI(AudioGUI):
 	def disablePlayButton(self):
 		self.sharedFilePlayButton.disabled = True
 	
-	def updateCurrentSoundPosTextInput(self, seconds):
-		self.currentTextInput.text = self.convertSecondsToTimeString(seconds)
-	
-	def convertSecondsToTimeString(self, pos):
-		return time.strftime('%H:%M:%S', time.gmtime(int(pos)))
-	
 	def createSplitFile(self):
 		"""
 		Method called when Save button is pressed.
@@ -641,34 +627,6 @@ class AudioShareGUI(AudioGUI):
 		t = threading.Thread(target=self.createSplitFileOnNewThread, args=(), kwargs={})
 		t.daemon = True
 		t.start()
-	
-	def createSplitFileOnNewThread(self):
-		startPos = self.startTextInput.text
-		endPos = self.endTextInput.text
-		speed = self.speedTextInput.text
-		
-		# handling bad speed definition ...
-		try:
-			speed = float(speed)
-		except ValueError:
-			speed = 1.0
-		
-		if startPos == '' or endPos == '':
-			self.outputResult(
-				'Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos,
-				                                                                                     endPos))
-			return
-		
-		audioController = AudioController(self, None)
-		downloadVideoInfoDic = audioController.trimAudioFile(self.sharedAudioFilePathName.text, startPos, endPos,
-		                                                     speed)
-		createdSplitFilePathName = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(
-			videoIndex=1, timeFrameIndex=1)
-		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
-		self.splitAudioFilePathName.text = createdSplitFilePathName
-		self.splitFilePlayButton.disabled = False
-		self.splitFileShareButton.disabled = False
-		self.soundloaderSplitMp3Obj = None
 	
 	def goToSharedFileStartPos(self):
 		"""
@@ -683,19 +641,6 @@ class AudioShareGUI(AudioGUI):
 		if self.soundloaderSourceMp3Obj is not None:
 			endPos = self.soundloaderSourceMp3Obj.length
 			self.updateSharedFileSoundPos(endPos)
-	
-	def goToSharedFileCurrentPos(self):
-		"""
-		Method called when currentTextInput value is changed manually
-		(on_text_validate in kv file).
-		"""
-		hhmmssEndPos = self.currentTextInput.text
-		
-		try:
-			currentPos = self.convertTimeStringToSeconds(hhmmssEndPos)
-			self.updateSharedFileSoundPos(currentPos)
-		except ValueError as e:
-			self.outputResult('Current position invalid. {}. Value ignored.'.format(e))
 	
 	def forwardSharedFileTenSeconds(self):
 		"""
