@@ -1,9 +1,6 @@
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 from kivy.properties import BooleanProperty
-from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
@@ -16,7 +13,9 @@ from audiocontroller import AudioController
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 from configmanager import ConfigManager
 from constants import *
-from gui.customdropdown import CustomDropDown
+from customdropdown import CustomDropDown
+from selectablerecycleboxlayout import SelectableRecycleBoxLayout
+
 
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
@@ -26,37 +25,11 @@ CONTACT_NAME_KEY = 'name'
 CONTACT_EMAIL_KEY = 'email'
 CONTACT_PHONE_NUMBER_KEY = 'phoneNumber'
 
-class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
+class AudioShareSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
-	MOVE_DIRECTION_UP = 'moveItemUp'
-	MOVE_DIRECTION_DOWN = 'moveItemDown'
-	
-	# required to authorise unselecting a selected item
-	touch_deselect_last = BooleanProperty(True)
-	
-	def get_nodes(self):
-		nodes = self.get_selectable_nodes()
-		
-		if self.nodes_order_reversed:
-			nodes = nodes[::-1]
-		
-		if not nodes:
-			return None, None
-		
-		selected = self.selected_nodes
-		
-		if not selected:  # nothing selected
-			return None, None
-		
-		if len(nodes) == 1:  # the only selectable node is selected already
-			return None, None
-		
-		currentSelIdx = nodes.index(selected[-1])
-		self.clear_selection()
-		
-		return currentSelIdx, nodes
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
 	
 	def moveItemUp(self):
 		currentSelIdx, nodes = self.get_nodes()

@@ -18,10 +18,7 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.settings import SettingOptions
 from kivy.uix.settings import SettingSpacer
@@ -41,6 +38,7 @@ from configmanager import ConfigManager
 from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
 from helppopup import HelpPopup
+from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 
 # WARNING: without importing AudioSplitterGUI, the AudioSplitterGUI methods
 # called when pressing a button defined in the audiosplittergui.kv file
@@ -61,37 +59,11 @@ NO_INTERNET = False
 class WindowManager(ScreenManager):
 	pass
 
-class AudioDownloadSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                              RecycleBoxLayout):
+class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
-	MOVE_DIRECTION_UP = 'moveItemUp'
-	MOVE_DIRECTION_DOWN = 'moveItemDown'
-	
-	# required to authorise unselecting a selected item
-	touch_deselect_last = BooleanProperty(True)
-	
-	def get_nodes(self):
-		nodes = self.get_selectable_nodes()
-		
-		if self.nodes_order_reversed:
-			nodes = nodes[::-1]
-			
-		if not nodes:
-			return None, None
-		
-		selected = self.selected_nodes
-		
-		if not selected:  # nothing selected
-			return None, None
-		
-		if len(nodes) == 1:  # the only selectable node is selected already
-			return None, None
-		
-		currentSelIdx = nodes.index(selected[-1])
-		self.clear_selection()
-		
-		return currentSelIdx, nodes
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
 	
 	def moveItemUp(self):
 		currentSelIdx, nodes = self.get_nodes()
