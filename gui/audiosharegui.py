@@ -22,6 +22,9 @@ NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
 PHONE_NUMBER_LABEL_KEY = 'phoneNumberLabel'
 
+CONTACT_NAME_KEY = 'name'
+CONTACT_EMAIL_KEY = 'email'
+CONTACT_PHONE_NUMBER_KEY = 'phoneNumber'
 
 class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -97,39 +100,63 @@ class AudioShareSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavio
 		self.appGUI.refocusOnRequestInput()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
-		movedValue = self.parent.data[movedItemSelIndex]['text']
+		movedName, movedEmail, movedPhoneNumber = self.getSelectedContactValues(movedItemSelIndex)
 		
 		if moveDirection == AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
 			if movedItemSelIndex > movedItemNewSeIndex:
 				# we are moving down the last list item. The item will be inserted at top
 				# of the list
 				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(0, {'text': movedValue, 'selectable': True})
+				self.parent.data.insert(0, {NAME_LABEL_KEY: movedName, EMAIL_LABEL_KEY: movedEmail, PHONE_NUMBER_LABEL_KEY: movedPhoneNumber, 'selectable': True})
 			else:
-				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				replacedName, replacedEmail, replacedPhoneNumber = self.getSelectedContactValues(movedItemNewSeIndex)
 				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
-				
+				self.parent.data.insert(movedItemSelIndex, {NAME_LABEL_KEY: replacedName, EMAIL_LABEL_KEY: replacedEmail, PHONE_NUMBER_LABEL_KEY: replacedPhoneNumber, 'selectable': True})
+
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {NAME_LABEL_KEY: movedName, EMAIL_LABEL_KEY: movedEmail, PHONE_NUMBER_LABEL_KEY: movedPhoneNumber, 'selectable': True})
 		else:
 			# handling moving up
 			if movedItemSelIndex == 0:
 				# we are moving up the first item. The first item will be appended to the
 				# end of the list
 				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.append({'text': movedValue, 'selectable': True})
+				self.parent.data.append({NAME_LABEL_KEY: movedName, EMAIL_LABEL_KEY: movedEmail, PHONE_NUMBER_LABEL_KEY: movedPhoneNumber, 'selectable': True})
 			else:
-				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
+				replacedName, replacedEmail, replacedPhoneNumber = self.getSelectedContactValues(movedItemNewSeIndex)
 				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
-				
+				self.parent.data.insert(movedItemSelIndex, {NAME_LABEL_KEY: replacedName, EMAIL_LABEL_KEY: replacedEmail, PHONE_NUMBER_LABEL_KEY: replacedPhoneNumber, 'selectable': True})
+
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {NAME_LABEL_KEY: movedName, EMAIL_LABEL_KEY: movedEmail, PHONE_NUMBER_LABEL_KEY: movedPhoneNumber, 'selectable': True})
 		
 		# appGUI.recycleViewCurrentSelIndex is used by the
 		# deleteRequest() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
+		
+	def getSelectedContactValues(self, movedItemSelIndex):
+		'''
+		Returns values of the selected line in the contact list.
+
+		:return: name, email, phoneNumber
+		'''
+		name = self.parent.data[movedItemSelIndex][NAME_LABEL_KEY]
+		email = self.parent.data[movedItemSelIndex][EMAIL_LABEL_KEY]
+		phoneNumber =  self.parent.data[movedItemSelIndex][PHONE_NUMBER_LABEL_KEY]
+		
+		return name, email, phoneNumber
+	
+	def getLoadedContactValues(self, movedItemSelIndex):
+		'''
+		Returns values of the selected contact list item.
+
+		:return: name, email, phoneNumber
+		'''
+		name = self.parent.data[movedItemSelIndex][CONTACT_NAME_KEY]
+		email = self.parent.data[movedItemSelIndex][CONTACT_EMAIL_KEY]
+		phoneNumber = self.parent.data[movedItemSelIndex][CONTACT_PHONE_NUMBER_KEY]
+		
+		return name, email, phoneNumber
 
 
 class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
@@ -320,7 +347,7 @@ class AudioShareGUI(AudioGUI):
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 		
 		# Get new values from the TextInput fields
-		name, email, phoneNumber = self.getInputValues()
+		name, email, phoneNumber = self.getInputContactValues()
 		
 		# Add the updated data to the list if not already in
 		requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber, 'selectable': True}
@@ -332,7 +359,7 @@ class AudioShareGUI(AudioGUI):
 
 	def setInputValues(self):
 		# Get new values from the TextInput fields
-		name, email, phoneNumber = self.getInputValues()
+		name, email, phoneNumber = self.getInputContactValues()
 
 		if name != '' and email != '' and phoneNumber != '':
 			requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber, 'selectable': True}
@@ -355,11 +382,11 @@ class AudioShareGUI(AudioGUI):
 		else:
 			self.phoneNumberInput.focus = True
 			
-	def getInputValues(self):
+	def getInputContactValues(self):
 		'''
 		Returns new values from the TextInput fields.
 
-		:return:
+		:return: name, email, phoneNumber
 		'''
 		name = self.nameInput.text
 		email = self.emailInput.text
@@ -421,11 +448,11 @@ class AudioShareGUI(AudioGUI):
 		lines = list(map(lambda line: line.strip('\n'), lines))
 		#histoLines = [{'text': val, 'selectable': True} for val in lines
 		
-		items = [{'name': 'Jean-Pierre Schnyder', 'email': 'jp.schnyder@gmail.com', 'phoneNumber': '+41768224987'},
-		         {'name': 'Tamara Jagne', 'email': 'tamara.jagne@gmail.com', 'phoneNumber': '+41764286884'}
+		items = [{CONTACT_NAME_KEY: 'Jean-Pierre Schnyder', CONTACT_EMAIL_KEY: 'jp.schnyder@gmail.com', CONTACT_PHONE_NUMBER_KEY: '+41768224987'},
+		         {CONTACT_NAME_KEY: 'Tamara Jagne', CONTACT_EMAIL_KEY: 'tamara.jagne@gmail.com', CONTACT_PHONE_NUMBER_KEY: '+41764286884'}
 		         ]
 		
-		histoLines = [{NAME_LABEL_KEY: str(x['name']), EMAIL_LABEL_KEY: str(x['email']), PHONE_NUMBER_LABEL_KEY: str(x['phoneNumber']), 'selectable': True} for x in items]
+		histoLines = [{NAME_LABEL_KEY: str(x[CONTACT_NAME_KEY]), EMAIL_LABEL_KEY: str(x[CONTACT_EMAIL_KEY]), PHONE_NUMBER_LABEL_KEY: str(x[CONTACT_PHONE_NUMBER_KEY]), 'selectable': True} for x in items]
 
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
