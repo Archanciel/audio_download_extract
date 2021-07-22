@@ -61,8 +61,8 @@ NO_INTERNET = False
 class WindowManager(ScreenManager):
 	pass
 
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-								 RecycleBoxLayout):
+class AudioDownloadSelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
+                                              RecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
 	MOVE_DIRECTION_UP = 'moveItemUp'
@@ -106,7 +106,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		else:
 			newSelIdx = currentSelIdx - 1
 			
-		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
+		self.updateLineValues(AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
 
 		# supplements the refocusOnRequestInput() called in the
@@ -126,7 +126,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 		else:
 			newSelIdx = currentSelIdx + 1
 			
-		self.updateLineValues(SelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
+		self.updateLineValues(AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
 		
 		# supplements the refocusOnRequestInput() called in the
@@ -137,7 +137,7 @@ class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedValue = self.parent.data[movedItemSelIndex]['text']
 		
-		if moveDirection == SelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
+		if moveDirection == AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
 			if movedItemSelIndex > movedItemNewSeIndex:
 				# we are moving down the last list item. The item will be inserted at top
 				# of the list
