@@ -114,8 +114,8 @@ class AudioSplitterGUI(AudioGUI):
 			   was executed.
 			3/ the user click on a move source audio file button
 			   (<| << < Play Stop > >> |>)
+			   
 		:param value:
-		:return:
 		"""
 		if self.soundloaderSourceMp3Obj is not None:
 			if abs(self.soundloaderSourceMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
