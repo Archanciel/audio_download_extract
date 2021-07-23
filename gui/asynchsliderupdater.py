@@ -34,5 +34,6 @@ class AsynchSliderUpdater:
 				self.audioSplitterGUI.disablePlayButton()
 				self.audioSplitterGUI.updateCurrentSoundPosTextInput(mp3Pos)
 				#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
-				time.sleep(sliderUpdateFrequency)
-				mp3Pos = self.soundloaderMp3Obj.get_pos()
+
+			time.sleep(sliderUpdateFrequency)
+			mp3Pos = self.soundloaderMp3Obj.get_pos()
