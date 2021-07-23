@@ -22,10 +22,17 @@ class AsynchSliderUpdater:
 		mp3Pos = self.soundloaderMp3Obj.get_pos()
 		sliderUpdateFrequency = self.audioSplitterGUI.sliderUpdateFrequency
 		
-		while not self.stopSliderUpdaterThread and mp3Pos < self.mp3PosSliderStop:
-			self.slider.value = mp3Pos
-			self.audioSplitterGUI.disablePlayButton()
-			self.audioSplitterGUI.updateCurrentSoundPosTextInput(mp3Pos)
-			#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
-			time.sleep(sliderUpdateFrequency)
-			mp3Pos = self.soundloaderMp3Obj.get_pos()
+#		while not self.stopSliderUpdaterThread and mp3Pos < self.mp3PosSliderStop:
+		while not self.stopSliderUpdaterThread:
+			if self.audioSplitterGUI.userClickedOnSourceSoundPositionButton:
+				# since the user clicked on one of the source sound position button
+				# (<| << < Play Stop > >> |>), this avoids that the updateSlider()
+				# method overwrite the user position modification action ...
+				self.audioSplitterGUI.userClickedOnSourceSoundPositionButton = False
+			else:
+				self.slider.value = mp3Pos
+				self.audioSplitterGUI.disablePlayButton()
+				self.audioSplitterGUI.updateCurrentSoundPosTextInput(mp3Pos)
+				#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
+				time.sleep(sliderUpdateFrequency)
+				mp3Pos = self.soundloaderMp3Obj.get_pos()
