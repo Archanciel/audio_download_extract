@@ -109,7 +109,7 @@ class AudioSplitterGUI(AudioGUI):
 	def updateSourceFileSoundPos(self, newSoundPos):
 		"""
 		Method called by the slider every time its value changes. The
-		value of the slider changes for three reasons:
+		value of the slider changes for four reasons:
 			1/ the user moved the slider
 			2/ the AsynchSliderUpdater.updateSlider() called by a
 			   separate thread which updates the slider position
@@ -118,6 +118,7 @@ class AudioSplitterGUI(AudioGUI):
 			   executed.
 			3/ the user clicks on a move source audio file button
 			   (<| << < Play Stop > >> |>)
+			4/ the user edited the current pos FocusTextInput field
 			   
 		:param newSoundPos:
 		"""

@@ -1114,5 +1114,5 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
 	ts = time.time()
-	tst.testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_doubleSpeed()
+	tst.testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe()
 	print(time.time() - ts)
