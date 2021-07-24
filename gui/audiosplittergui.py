@@ -26,7 +26,6 @@ class AudioSplitterGUI(AudioGUI):
 		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
-		self.sliderUpdateFrequency = 1
 		self.splitAudioFilePathNameInitValue = ''
 		self.userClickedOnSourceSoundPositionButton = False
 
@@ -49,8 +48,13 @@ class AudioSplitterGUI(AudioGUI):
 		# the _finish_init() method !
 		self.startTextInput.focus = True
 		
-		if soundLength < 100:
-			self.sliderUpdateFrequency = 1 / soundLength
+		self.initializeSliderUpdateSecondsNumber(soundLength)
+	
+	def initializeSliderUpdateSecondsNumber(self, soundLength):
+		if soundLength < 30:
+			self.sliderUpdateEverySecondsNumber = 1 / soundLength
+		else:
+			self.sliderUpdateEverySecondsNumber = 0.1
 	
 	def playSourceFile(self):
 		"""
@@ -68,10 +72,8 @@ class AudioSplitterGUI(AudioGUI):
 			self.soundloaderSourceMp3Obj = SoundLoader.load(self.sourceAudioFilePathName.text)
 			soundLength = self.soundloaderSourceMp3Obj.length
 			self.audioSlider.max = soundLength
-			
-			if soundLength < 100:
-				self.sliderUpdateFrequency = 1 / soundLength
-				
+			self.initializeSliderUpdateSecondsNumber(soundLength)
+		
 		self.startSliderUpdateThread()
 		self.sourceFilePlayButton.disabled = True
 		self.soundloaderSourceMp3Obj.play()
@@ -104,24 +106,25 @@ class AudioSplitterGUI(AudioGUI):
 		self.sliderUpdaterThread.daemon = True
 		self.sliderUpdaterThread.start()
 	
-	def updateSourceFileSoundPos(self, value):
+	def updateSourceFileSoundPos(self, newSoundPos):
 		"""
 		Method called by the slider every time its value changes. The
-		value of the slider changes for two reasons:
+		value of the slider changes for three reasons:
 			1/ the user moved the slider
 			2/ the AsynchSliderUpdater.updateSlider() called by a
 			   separate thread which updates the slider position
-			   every second to reflect the current mp3 playing position
-			   was executed.
-			3/ the user click on a move source audio file button
+			   every self.sliderUpdateEverySecondsNumber seconds
+			   to reflect the current mp3 playing position was
+			   executed.
+			3/ the user clicks on a move source audio file button
 			   (<| << < Play Stop > >> |>)
 			   
-		:param value:
+		:param newSoundPos:
 		"""
 		if self.soundloaderSourceMp3Obj is not None:
-			if abs(self.soundloaderSourceMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
+			if abs(self.soundloaderSourceMp3Obj.get_pos() - newSoundPos) > self.sliderUpdateEverySecondsNumber:
 				# test required to avoid mp3 playing perturbation
-				self.soundloaderSourceMp3Obj.seek(value)
+				self.soundloaderSourceMp3Obj.seek(newSoundPos)
 				if self.soundloaderSourceMp3Obj.status == 'stop':
 					# here, the mp3 was played until its end
 					self.soundloaderSourceMp3Obj.play()
@@ -131,14 +134,14 @@ class AudioSplitterGUI(AudioGUI):
 					# of sound
 					self.sourceFilePlayButton.disabled = True
 	
-			self.updateCurrentSoundPosTextInput(value)
+			self.updateCurrentSoundPosTextInput(newSoundPos)
 			
 	def stopSourceFile(self):
 		"""
 		Method called when pressing the source file Stop button
 		"""
 		if self.soundloaderSourceMp3Obj:
-			if self.audioSlider.value >= self.soundloaderSourceMp3Obj.length - 2 * self.sliderUpdateFrequency:
+			if self.audioSlider.value >= self.soundloaderSourceMp3Obj.length - 2 * self.sliderUpdateEverySecondsNumber:
 				# here, the stop button is pressed when the sound file is at end. In this
 				# case, pressing stop reposition the slider at sound beginning position.
 				self.audioSlider.value = 0

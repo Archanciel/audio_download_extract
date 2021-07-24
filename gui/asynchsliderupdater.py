@@ -8,7 +8,7 @@ class AsynchSliderUpdater:
 	             stopSliderUpdaterThread):
 		self.audioSplitterGUI = audioSplitterGUI
 		self.soundloaderMp3Obj = soundloaderMp3Obj
-		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - audioSplitterGUI.sliderUpdateFrequency
+		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - audioSplitterGUI.sliderUpdateEverySecondsNumber
 		self.slider = slider
 		self.stopSliderUpdaterThread = stopSliderUpdaterThread
 	
@@ -20,7 +20,7 @@ class AsynchSliderUpdater:
 		:return:
 		"""
 		mp3Pos = self.soundloaderMp3Obj.get_pos()
-		sliderUpdateFrequency = self.audioSplitterGUI.sliderUpdateFrequency
+		sliderUpdateFrequency = self.audioSplitterGUI.sliderUpdateEverySecondsNumber
 		
 #		while not self.stopSliderUpdaterThread and mp3Pos < self.mp3PosSliderStop:
 		while not self.stopSliderUpdaterThread:
