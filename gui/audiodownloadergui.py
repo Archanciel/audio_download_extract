@@ -1090,7 +1090,16 @@ class AudioDownloaderGUI(AudioGUI):
 # --- end AudioDownloaderGUI new code ---
 
 
-class AudioDownloaderGUIApp(App):
+class AudioDownloaderGUIMainApp(App):
+	"""
+	WARNING: class nme can not be AudioDownloaderGUIApp since this will cause
+	the audiodownloadergui.kv file to be loaded twice: once by the
+	Builder.load_file('audiodownloadergui.kv') and once by the automatic
+	loading of a kv file with class name minus 'app' in the same dir as the
+	app class definition file.
+
+	(See https://stackoverflow.com/questions/48694764/kivy-popup-can-have-only-one-widget-as-content)
+	"""
 	settings_cls = SettingsWithTabbedPanel
 	audioDownloaderGUI = None
 	
@@ -1259,6 +1268,6 @@ class AudioDownloaderGUIApp(App):
 
 
 if __name__ == '__main__':
-	dbApp = AudioDownloaderGUIApp()
+	dbApp = AudioDownloaderGUIMainApp()
 
 	dbApp.run()
