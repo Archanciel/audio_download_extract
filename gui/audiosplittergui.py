@@ -352,6 +352,9 @@ class AudioSplitterGUI(AudioGUI):
 		"""
 		Method called when Share button is pressed.
 		"""
+		self.stopSourceFile()
+		self.stopSplitFile()
+		
 		audioShareScreen = self.manager.get_screen('audioShareScreen')
 		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
 		self.parent.current = "audioShareScreen"
