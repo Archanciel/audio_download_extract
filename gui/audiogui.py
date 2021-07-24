@@ -7,7 +7,9 @@ from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 
 from gui.guiutil import GuiUtil
+from gui.helppopup import HelpPopup
 
+AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 
 class AudioGUI(Screen):
 	"""
@@ -98,3 +100,9 @@ class AudioGUI(Screen):
 			return False
 		else:
 			return True
+	
+	def displayHelp(self):
+		self.dropDownMenu.dismiss()
+
+		popup = HelpPopup(title=AUDIODOWNLOADER_VERSION)
+		popup.open()

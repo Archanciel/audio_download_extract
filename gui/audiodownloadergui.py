@@ -37,7 +37,6 @@ from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
-from helppopup import HelpPopup
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 
 # WARNING: without importing AudioSplitterGUI, the AudioSplitterGUI methods
@@ -53,7 +52,6 @@ FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
 FILE_ACTION_SELECT_FILE_TO_SHARE = 4
-AUDIODOWNLOADER_VERSION = 'AudioDownloader 1.1'
 NO_INTERNET = False
 
 class WindowManager(ScreenManager):
@@ -778,12 +776,6 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		return False
 	
-	def displayHelp(self):
-		self.dropDownMenu.dismiss()
-
-		popup = HelpPopup(title=AUDIODOWNLOADER_VERSION)
-		popup.open()
-
 	def updateStatusBar(self, messageStr):
 		self.statusBarTextInput.text = messageStr
 
