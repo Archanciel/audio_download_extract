@@ -1096,7 +1096,9 @@ class AudioDownloaderGUIMainApp(App):
 	the audiodownloadergui.kv file to be loaded twice: once by the
 	Builder.load_file('audiodownloadergui.kv') and once by the automatic
 	loading of a kv file with class name minus 'app' in the same dir as the
-	app class definition file.
+	app class definition file. Loading twice the kv file causes
+	'kivy.uix.popup.PopupException: Popup can have only one widget as content'
+	exception.
 
 	(See https://stackoverflow.com/questions/48694764/kivy-popup-can-have-only-one-widget-as-content)
 	"""
