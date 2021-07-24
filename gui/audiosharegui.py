@@ -612,7 +612,7 @@ class AudioShareGUI(AudioGUI):
 		Method called when source file |> button is pressed.
 		"""
 		if self.soundloaderSourceMp3Obj is not None:
-			endPos = self.soundloaderSourceMp3Obj.length
+			endPos = self.soundloaderSourceMp3Obj.length - 5
 			self.updateSharedFileSoundPos(endPos)
 	
 	def forwardSharedFileTenSeconds(self):
