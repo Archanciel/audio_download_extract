@@ -194,7 +194,7 @@ class AudioShareGUI(AudioGUI):
 
 		:param dt:
 		"""
-		self.soundloaderSourceMp3Obj = None
+		self.soundloaderSharedMp3Obj = None
 		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
@@ -490,7 +490,7 @@ class AudioShareGUI(AudioGUI):
 		
 		self.sharedAudioFilePathNameInitValue = sharedAudioFilePathName
 		self.sharedAudioFilePathName.text = sharedAudioFilePathName
-		self.soundloaderSourceMp3Obj = SoundLoader.load(sharedAudioFilePathName)
+		self.soundloaderSharedMp3Obj = SoundLoader.load(sharedAudioFilePathName)
 		
 		# setting focus on startTextInput must be done here, not in
 		# the _finish_init() method !
@@ -508,11 +508,11 @@ class AudioShareGUI(AudioGUI):
 		
 		self.stopSplitFile()
 		
-		if self.soundloaderSourceMp3Obj is None:
-			self.soundloaderSourceMp3Obj = SoundLoader.load(self.sharedAudioFilePathName.text)
+		if self.soundloaderSharedMp3Obj is None:
+			self.soundloaderSharedMp3Obj = SoundLoader.load(self.sharedAudioFilePathName.text)
 
 		self.sharedFilePlayButton.disabled = True
-		self.soundloaderSourceMp3Obj.play()
+		self.soundloaderSharedMp3Obj.play()
 	
 	def playSplitFile(self):
 		"""
@@ -535,7 +535,7 @@ class AudioShareGUI(AudioGUI):
 			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
 		
 		self.sliderAsynchUpdater = AsynchSliderUpdater(self,
-		                                               self.soundloaderSourceMp3Obj,
+		                                               self.soundloaderSharedMp3Obj,
 		                                               self.ids.slider,
 		                                               stopSliderUpdaterThread=False)
 		self.sliderUpdaterThread = threading.Thread(target=self.sliderAsynchUpdater.updateSlider, args=())
@@ -556,20 +556,20 @@ class AudioShareGUI(AudioGUI):
 		:param value:
 		:return:
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			self.soundloaderSourceMp3Obj.seek(value)
-			if self.soundloaderSourceMp3Obj.status == 'stop':
+		if self.soundloaderSharedMp3Obj is not None:
+			self.soundloaderSharedMp3Obj.seek(value)
+			if self.soundloaderSharedMp3Obj.status == 'stop':
 				# the case when one of the <| << < > >> |> buttons is pressed
 				# when the sound file is not playing
-				self.soundloaderSourceMp3Obj.play()
+				self.soundloaderSharedMp3Obj.play()
 				self.sharedFilePlayButton.disabled = True
 	
 	def stopSharedFile(self):
 		"""
 		Method called when pressing the source file Stop button
 		"""
-		if self.soundloaderSourceMp3Obj:
-			self.soundloaderSourceMp3Obj.stop()
+		if self.soundloaderSharedMp3Obj:
+			self.soundloaderSharedMp3Obj.stop()
 			self.sharedFilePlayButton.disabled = False
 	
 	def stopSplitFile(self):
@@ -607,16 +607,16 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file |> button is pressed.
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			endPos = self.soundloaderSourceMp3Obj.length - 5
+		if self.soundloaderSharedMp3Obj is not None:
+			endPos = self.soundloaderSharedMp3Obj.length - 5
 			self.updateSharedFileSoundPos(endPos)
 	
 	def forwardSharedFileTenSeconds(self):
 		"""
 		Method called when source file > button is pressed.
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+		if self.soundloaderSharedMp3Obj is not None:
+			currentPos = self.soundloaderSharedMp3Obj.get_pos()
 			currentPos += 10
 			self.updateSharedFileSoundPos(currentPos)
 	
@@ -624,8 +624,8 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file >> button is pressed.
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+		if self.soundloaderSharedMp3Obj is not None:
+			currentPos = self.soundloaderSharedMp3Obj.get_pos()
 			currentPos += 30
 			self.updateSharedFileSoundPos(currentPos)
 	
@@ -633,8 +633,8 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file < button is pressed.
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+		if self.soundloaderSharedMp3Obj is not None:
+			currentPos = self.soundloaderSharedMp3Obj.get_pos()
 			currentPos -= 10
 			self.updateSharedFileSoundPos(currentPos)
 	
@@ -642,8 +642,8 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file << button is pressed.
 		"""
-		if self.soundloaderSourceMp3Obj is not None:
-			currentPos = self.soundloaderSourceMp3Obj.get_pos()
+		if self.soundloaderSharedMp3Obj is not None:
+			currentPos = self.soundloaderSharedMp3Obj.get_pos()
 			currentPos -= 30
 			self.updateSharedFileSoundPos(currentPos)
 	
