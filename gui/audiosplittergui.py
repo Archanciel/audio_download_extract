@@ -129,6 +129,7 @@ class AudioSplitterGUI(AudioGUI):
 				if self.soundloaderSourceMp3Obj.status == 'stop':
 					# here, the mp3 was played until its end
 					self.soundloaderSourceMp3Obj.play()
+					self.sourceFilePlayButton.disabled = True
 					self.startSliderUpdateThread()
 				else:
 					# here, the user moved the slider to a position before end
@@ -211,10 +212,10 @@ class AudioSplitterGUI(AudioGUI):
 		createdSplitFilePathName = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
 		self.splitAudioFilePathName.text = createdSplitFilePathName
+		self.soundloaderSplitMp3Obj = SoundLoader.load(createdSplitFilePathName)
 		self.splitFilePlayButton.disabled = False
 		self.splitFileShareButton.disabled = False
-		self.soundloaderSplitMp3Obj = None
-	
+
 	def goToSourceFileStartPos(self):
 		"""
 		Method called when source file <| button is pressed.
