@@ -232,4 +232,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 
 if __name__ == '__main__':
-	unittest.main()
+	# unittest.main()
+	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
+	tst.setUp()
+	tst.testDownloadSingleVideoForUrl_succeed_on_Windows_only()
