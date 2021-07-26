@@ -557,16 +557,12 @@ class AudioShareGUI(AudioGUI):
 		:return:
 		"""
 		if self.soundloaderSourceMp3Obj is not None:
-			if abs(self.soundloaderSourceMp3Obj.get_pos() - value) > self.sliderUpdateFrequency:
-				# test required to avoid mp3 playing perturbation
-				self.soundloaderSourceMp3Obj.seek(value)
-				if self.soundloaderSourceMp3Obj.status == 'stop':
-					# here, the mp3 was played until its end
-					self.soundloaderSourceMp3Obj.play()
-				else:
-					# here, the user moved the slider to a position before end
-					# of sound
-					self.sharedFilePlayButton.disabled = True
+			self.soundloaderSourceMp3Obj.seek(value)
+			if self.soundloaderSourceMp3Obj.status == 'stop':
+				# the case when one of the <| << < > >> |> buttons is pressed
+				# when the sound file is not playing
+				self.soundloaderSourceMp3Obj.play()
+				self.sharedFilePlayButton.disabled = True
 	
 	def stopSharedFile(self):
 		"""
