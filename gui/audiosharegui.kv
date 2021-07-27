@@ -49,7 +49,7 @@
 				rows: 1
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: name_TextInput
-				    size_hint_x: 0.35
+					size_hint_x: 0.35
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: True
@@ -59,7 +59,7 @@
 					on_text_validate: root.setInputValues()
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: email_TextInput
-				    size_hint_x: 0.45
+					size_hint_x: 0.45
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: False
@@ -69,7 +69,7 @@
 					on_text_validate: root.setInputValues()
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 					id: phoneNumber_TextInput
-				    size_hint_x: 0.2
+					size_hint_x: 0.2
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
 					focus: False
@@ -185,7 +185,7 @@
 					halign: 'left'
 					multiline: False
 					readonly: False # necessary in order to be able to move into text
-    				on_text: root.ensureTextNotChanged('shared_file_path_name')
+					on_text: root.ensureTextNotChanged('shared_file_path_name')
 			GridLayout:
 				cols: 3
 				size_hint: (1, 0.6)
@@ -217,7 +217,7 @@
 									text: '<'
 									on_press: root.backwardSharedFileTenSeconds()
 								Button:
-								    id: button_play_shared_file
+									id: button_play_shared_file
 									text: 'Play'
 									on_press: root.playSharedFile()
 							GridLayout:
@@ -235,9 +235,9 @@
 								Button:
 									text: '|>'
 									on_press: root.goToSharedFileEndPos()
-                        GridLayout:
-                            cols: 1
-                            size_hint: (0.2, 0.8)
+						GridLayout:
+							cols: 1
+							size_hint: (0.2, 0.8)
 				GridLayout:
 					cols: 1
 					size_hint: (0.2, 0.6)
@@ -250,107 +250,107 @@
 					valign: 'bottom'
 					text: 'Split file name'
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-				    id: split_file_path_name
+					id: split_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
 					text: ''
 					multiline: False
 					readonly: True
 					readonly: False # necessary in order to be able to move into text
-    				on_text: root.ensureTextNotChanged('split_file_path_name')
-            GridLayout:
-                cols: 9
-                rows: 1
-                size_hint: (0.1, 0.13)
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.4
-                Button:
-                    size_hint_x: 0.09
-                    text: '<|'
-                    on_press: root.goToSplitFileStartPos()
-                Button:
-                    size_hint_x: 0.09
-                    text: '<'
-                    on_press: root.backwardSplitFileTenSeconds()
-                Button:
-                    id: button_play_split_file
-                    size_hint_x: 0.09
-                    text: 'Play'
-                    disabled: True
-                    on_press: root.playSplitFile()
-                Button:
-                    size_hint_x: 0.09
-                    text: 'Stop'
-                    on_press: root.stopSplitFile()
-                Button:
-                    size_hint_x: 0.09
-                    text: '>'
-                    on_press: root.forwardSplitFileTenSeconds()
-                Button:
-                    size_hint_x: 0.09
-                    text: '|>'
-                    on_press: root.goToSplitFileEndPos()
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.4
+					on_text: root.ensureTextNotChanged('split_file_path_name')
 			GridLayout:
-			    cols: 1
-			    rows: 1
-				size_hint_y: 0.8
-                ScrollView:
-                    id: scrlv_out
-                    canvas.before:
-                        Color:
-                            rgb: [0,0,0]
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
-                    effect_cls: "ScrollEffect" #prevents overscrolling
-                    #scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
-                    do_scroll_x: False # limiting to vertical scrolling
-                    do_scroll_y: True
-
-                    Label:
-                        id: label_output_split
-                        size_hint_y: None
-                        height: self.texture_size[1]
-                        text_size: (self.width-20), None
-                        line_height: 0.9
-                        background_color: 0,0,0,0
-                        foreground_color: 1,1,1,1
-                        valign: "top"
-                        markup: True
-			GridLayout:
-			    cols: 6
-			    rows: 1
-				size_hint: (1, 0.13)
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.3
-                Label:
-                    size_hint_x: 0.1
-                    valign: 'bottom'
-                    text: 'Speed'
-                FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-                    id: text_input_speed
-                    size_hint_x: 0.07
-                    halign: 'right'
-                    text: '1.0'
+				cols: 9
+				rows: 1
+				size_hint: (0.1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
 				Button:
-                    size_hint_x: 0.1
+					size_hint_x: 0.09
+					text: '<|'
+					on_press: root.goToSplitFileStartPos()
+				Button:
+					size_hint_x: 0.09
+					text: '<'
+					on_press: root.backwardSplitFileTenSeconds()
+				Button:
+					id: button_play_split_file
+					size_hint_x: 0.09
+					text: 'Play'
+					disabled: True
+					on_press: root.playSplitFile()
+				Button:
+					size_hint_x: 0.09
+					text: 'Stop'
+					on_press: root.stopSplitFile()
+				Button:
+					size_hint_x: 0.09
+					text: '>'
+					on_press: root.forwardSplitFileTenSeconds()
+				Button:
+					size_hint_x: 0.09
+					text: '|>'
+					on_press: root.goToSplitFileEndPos()
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
+			GridLayout:
+				cols: 1
+				rows: 1
+				size_hint_y: 0.8
+				ScrollView:
+					id: scrlv_out
+					canvas.before:
+						Color:
+							rgb: [0,0,0]
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					effect_cls: "ScrollEffect" #prevents overscrolling
+					#scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
+					do_scroll_x: False # limiting to vertical scrolling
+					do_scroll_y: True
+
+					Label:
+						id: label_output_split
+						size_hint_y: None
+						height: self.texture_size[1]
+						text_size: (self.width-20), None
+						line_height: 0.9
+						background_color: 0,0,0,0
+						foreground_color: 1,1,1,1
+						valign: "top"
+						markup: True
+			GridLayout:
+				cols: 6
+				rows: 1
+				size_hint: (1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
+				Label:
+					size_hint_x: 0.1
+					valign: 'bottom'
+					text: 'Speed'
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: text_input_speed
+					size_hint_x: 0.07
+					halign: 'right'
+					text: '1.0'
+				Button:
+					size_hint_x: 0.1
 					text: 'Save'
 					on_release: root.createSplitFile()
 				Button:
-                    size_hint_x: 0.1
+					size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
 						root.cancelSplitFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.3
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
 
 <MultiFieldSelectableBoxLayout>: # inherit from RecycleDataViewBehavior and BoxLayout
 	orientation: 'horizontal'
@@ -368,14 +368,14 @@
 		Color:
 			rgba: (0, 0.9, .1, .3)
 	Label:
-	    size_hint_x: 0.35
-	    halign: 'left'
+		size_hint_x: 0.35
+		halign: 'left'
 		text: root.nameLabel
 	Label:
-	    size_hint_x: 0.45
-	    halign: 'left'
+		size_hint_x: 0.45
+		halign: 'left'
 		text: root.emailLabel
 	Label:
-	    size_hint_x: 0.2
-	    halign: 'left'
+		size_hint_x: 0.2
+		halign: 'left'
 		text: root.phoneNumberLabel

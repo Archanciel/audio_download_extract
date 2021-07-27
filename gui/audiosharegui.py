@@ -556,14 +556,14 @@ class AudioShareGUI(AudioGUI):
 		:param value:
 		:return:
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			self.soundloaderSharedMp3Obj.seek(value)
-			if self.soundloaderSharedMp3Obj.status == 'stop':
-				# the case when one of the <| << < > >> |> buttons is pressed
-				# when the sound file is not playing
-				self.soundloaderSharedMp3Obj.play()
-				self.sharedFilePlayButton.disabled = True
-	
+		self.soundloaderSharedMp3Obj.seek(value)
+
+		if self.soundloaderSharedMp3Obj.status == 'stop':
+			# the case when one of the <| << < > >> |> buttons is pressed
+			# when the sound file is not playing
+			self.soundloaderSharedMp3Obj.play()
+			self.sharedFilePlayButton.disabled = True
+
 	def stopSharedFile(self):
 		"""
 		Method called when pressing the source file Stop button
@@ -607,45 +607,40 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file |> button is pressed.
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			endPos = self.soundloaderSharedMp3Obj.length - 5
-			self.updateSharedFileSoundPos(endPos)
+		endPos = self.soundloaderSharedMp3Obj.length - 5
+		self.updateSharedFileSoundPos(endPos)
 	
 	def forwardSharedFileTenSeconds(self):
 		"""
 		Method called when source file > button is pressed.
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			currentPos = self.soundloaderSharedMp3Obj.get_pos()
-			currentPos += 10
-			self.updateSharedFileSoundPos(currentPos)
+		currentPos = self.soundloaderSharedMp3Obj.get_pos()
+		currentPos += 10
+		self.updateSharedFileSoundPos(currentPos)
 	
 	def forwardSharedFileThirtySeconds(self):
 		"""
 		Method called when source file >> button is pressed.
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			currentPos = self.soundloaderSharedMp3Obj.get_pos()
-			currentPos += 30
-			self.updateSharedFileSoundPos(currentPos)
+		currentPos = self.soundloaderSharedMp3Obj.get_pos()
+		currentPos += 30
+		self.updateSharedFileSoundPos(currentPos)
 	
 	def backwardSharedFileTenSeconds(self):
 		"""
 		Method called when source file < button is pressed.
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			currentPos = self.soundloaderSharedMp3Obj.get_pos()
-			currentPos -= 10
-			self.updateSharedFileSoundPos(currentPos)
+		currentPos = self.soundloaderSharedMp3Obj.get_pos()
+		currentPos -= 10
+		self.updateSharedFileSoundPos(currentPos)
 	
 	def backwardSharedFileThirtySeconds(self):
 		"""
 		Method called when source file << button is pressed.
 		"""
-		if self.soundloaderSharedMp3Obj is not None:
-			currentPos = self.soundloaderSharedMp3Obj.get_pos()
-			currentPos -= 30
-			self.updateSharedFileSoundPos(currentPos)
+		currentPos = self.soundloaderSharedMp3Obj.get_pos()
+		currentPos -= 30
+		self.updateSharedFileSoundPos(currentPos)
 	
 	def convertTimeStringToSeconds(self, timeString):
 		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
@@ -667,24 +662,6 @@ class AudioShareGUI(AudioGUI):
 		if self.soundloaderSplitMp3Obj:
 			endPos = self.soundloaderSplitMp3Obj.length - 5
 			self.updateSplitFileSoundPos(newSoundPos=endPos)
-	
-	def forwardSplitFileTenSeconds(self):
-		"""
-		Method called when split file > button is pressed.
-		"""
-		if self.soundloaderSplitMp3Obj is not None:
-			currPos = self.soundloaderSplitMp3Obj.get_pos()
-			newSoundPos = currPos + 10
-			self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
-	
-	def backwardSplitFileTenSeconds(self):
-		"""
-		Method called when split file < button is pressed.
-		"""
-		if self.soundloaderSplitMp3Obj is not None:
-			currPos = self.soundloaderSplitMp3Obj.get_pos()
-			newSoundPos = currPos - 10
-			self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
 	
 	def updateSplitFileSoundPos(self,
 	                            newSoundPos):

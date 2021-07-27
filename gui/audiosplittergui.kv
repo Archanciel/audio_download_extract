@@ -10,6 +10,11 @@
 	endTextInput: text_input_end
 	splitAudioFilePathName: split_file_path_name
 	splitFilePlayButton: button_play_split_file
+    splitFileStartButton: button_go_start_split_file
+    splitFileBackwardButton: button_backward_split_file
+    splitFileStopButton: button_stop_split_file
+    splitFileForwardButton: button_forward_split_file
+    splitFileEndButton: button_go_end_split_file
 	outputScrollView: scrlv_out
 	outputLabel: label_output_split
 	speedTextInput: text_input_speed
@@ -34,7 +39,7 @@
 					halign: 'left'
 					multiline: False
 					readonly: False # necessary in order to be able to move into text
-    				on_text: root.ensureTextNotChanged('source_file_path_name')
+					on_text: root.ensureTextNotChanged('source_file_path_name')
 			GridLayout:
 				cols: 3
 				size_hint: (1, 0.6)
@@ -66,18 +71,18 @@
 								valign: 'bottom'
 								text: 'End'
 							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-							    id: text_input_start
+								id: text_input_start
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
 							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-							    id: text_input_current
+								id: text_input_current
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
-                				on_text_validate: root.goToSourceFileCurrentPos()
+								on_text_validate: root.goToSourceFileCurrentPos()
 							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-							    id: text_input_end
+								id: text_input_end
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
@@ -126,7 +131,7 @@
 								GridLayout:
 									cols: 1
 								Button:
-								    id: button_play_source_file
+									id: button_play_source_file
 									text: 'Play'
 									on_press: root.playSourceFile()
 								Button:
@@ -147,110 +152,120 @@
 					valign: 'bottom'
 					text: 'Split file name'
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-				    id: split_file_path_name
+					id: split_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
 					text: ''
 					multiline: False
 					readonly: True
 					readonly: False # necessary in order to be able to move into text
-    				on_text: root.ensureTextNotChanged('split_file_path_name')
-            GridLayout:
-                cols: 9
-                rows: 1
-                size_hint: (0.1, 0.13)
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.4
-                Button:
-                    size_hint_x: 0.09
-                    text: '<|'
-                    on_press: root.goToSplitFileStartPos()
-                Button:
-                    size_hint_x: 0.09
-                    text: '<'
-                    on_press: root.backwardSplitFileTenSeconds()
-                Button:
-                    id: button_play_split_file
-                    size_hint_x: 0.09
-                    text: 'Play'
-                    disabled: True
-                    on_press: root.playSplitFile()
-                Button:
-                    size_hint_x: 0.09
-                    text: 'Stop'
-                    on_press: root.stopSplitFile()
-                Button:
-                    size_hint_x: 0.09
-                    text: '>'
-                    on_press: root.forwardSplitFileTenSeconds()
-                Button:
-                    size_hint_x: 0.09
-                    text: '|>'
-                    on_press: root.goToSplitFileEndPos()
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.4
+					on_text: root.ensureTextNotChanged('split_file_path_name')
 			GridLayout:
-			    cols: 1
-			    rows: 1
-				size_hint_y: 0.8
-                ScrollView:
-                    id: scrlv_out
-                    canvas.before:
-                        Color:
-                            rgb: [0,0,0]
-                        Rectangle:
-                            pos: self.pos
-                            size: self.size
-                    effect_cls: "ScrollEffect" #prevents overscrolling
-                    #scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
-                    do_scroll_x: False # limiting to vertical scrolling
-                    do_scroll_y: True
-
-                    Label:
-                        id: label_output_split
-                        size_hint_y: None
-                        height: self.texture_size[1]
-                        text_size: (self.width-20), None
-                        line_height: 0.9
-                        background_color: 0,0,0,0
-                        foreground_color: 1,1,1,1
-                        valign: "top"
-                        markup: True
-			GridLayout:
-			    cols: 7
-			    rows: 1
-				size_hint: (1, 0.13)
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.3
-                Label:
-                    size_hint_x: 0.1
-                    valign: 'bottom'
-                    text: 'Speed'
-                FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-                    id: text_input_speed
-                    size_hint_x: 0.07
-                    halign: 'right'
-                    text: '1.0'
+				cols: 9
+				rows: 1
+				size_hint: (0.1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
 				Button:
-                    size_hint_x: 0.1
+				    id: button_go_start_split_file
+					size_hint_x: 0.09
+					text: '<|'
+					disabled: True
+				   on_press: root.goToSplitFileStartPos()
+				Button:
+				    id: button_backward_split_file
+					size_hint_x: 0.09
+					text: '<'
+					disabled: True
+					on_press: root.backwardSplitFileTenSeconds()
+				Button:
+					id: button_play_split_file
+					size_hint_x: 0.09
+					text: 'Play'
+					disabled: True
+					on_press: root.playSplitFile()
+				Button:
+				    id: button_stop_split_file
+					size_hint_x: 0.09
+					text: 'Stop'
+					disabled: True
+					on_press: root.stopSplitFile()
+				Button:
+				    id: button_forward_split_file
+					size_hint_x: 0.09
+					text: '>'
+					disabled: True
+					on_press: root.forwardSplitFileTenSeconds()
+				Button:
+				    id: button_go_end_split_file
+					size_hint_x: 0.09
+					text: '|>'
+					disabled: True
+				   on_press: root.goToSplitFileEndPos()
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
+			GridLayout:
+				cols: 1
+				rows: 1
+				size_hint_y: 0.8
+				ScrollView:
+					id: scrlv_out
+					canvas.before:
+						Color:
+							rgb: [0,0,0]
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					effect_cls: "ScrollEffect" #prevents overscrolling
+					#scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
+					do_scroll_x: False # limiting to vertical scrolling
+					do_scroll_y: True
+
+					Label:
+						id: label_output_split
+						size_hint_y: None
+						height: self.texture_size[1]
+						text_size: (self.width-20), None
+						line_height: 0.9
+						background_color: 0,0,0,0
+						foreground_color: 1,1,1,1
+						valign: "top"
+						markup: True
+			GridLayout:
+				cols: 7
+				rows: 1
+				size_hint: (1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
+				Label:
+					size_hint_x: 0.1
+					valign: 'bottom'
+					text: 'Speed'
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: text_input_speed
+					size_hint_x: 0.07
+					halign: 'right'
+					text: '1.0'
+				Button:
+					size_hint_x: 0.1
 					text: 'Save'
 					on_release: root.createSplitFile()
 				Button:
-				    id: button_share_split_file
-                    size_hint_x: 0.1
+					id: button_share_split_file
+					size_hint_x: 0.1
 					text: 'Share'
 					disabled: True # will be enabled after the split file was created
 					on_release: root.shareSplitFile()
 				Button:
-                    size_hint_x: 0.1
+					size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
 						root.cancelSplitFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
-                GridLayout:
-                    cols: 1
-                    size_hint_x: 0.3
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
