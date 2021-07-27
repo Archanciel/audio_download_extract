@@ -212,7 +212,7 @@ class AudioSplitterGUI(AudioGUI):
 		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
 		self.splitAudioFilePathName.text = createdSplitFilePathName
 		self.soundloaderSplitMp3Obj = SoundLoader.load(createdSplitFilePathName)
-		self.enableSplitFileSoundButtons()
+		self.enableSplitFileButtons()
 		self.splitFilePlayButton.disabled = False
 		self.splitFileShareButton.disabled = False
 

@@ -10,11 +10,11 @@
 	endTextInput: text_input_end
 	splitAudioFilePathName: split_file_path_name
 	splitFilePlayButton: button_play_split_file
-    splitFileStartButton: button_go_start_split_file
-    splitFileBackwardButton: button_backward_split_file
-    splitFileStopButton: button_stop_split_file
-    splitFileForwardButton: button_forward_split_file
-    splitFileEndButton: button_go_end_split_file
+	splitFileStartButton: button_go_start_split_file
+	splitFileBackwardButton: button_backward_split_file
+	splitFileStopButton: button_stop_split_file
+	splitFileForwardButton: button_forward_split_file
+	splitFileEndButton: button_go_end_split_file
 	outputScrollView: scrlv_out
 	outputLabel: label_output_split
 	speedTextInput: text_input_speed
@@ -168,13 +168,13 @@
 					cols: 1
 					size_hint_x: 0.4
 				Button:
-				    id: button_go_start_split_file
+					id: button_go_start_split_file
 					size_hint_x: 0.09
 					text: '<|'
 					disabled: True
-				   on_press: root.goToSplitFileStartPos()
+					on_press: root.goToSplitFileStartPos()
 				Button:
-				    id: button_backward_split_file
+					id: button_backward_split_file
 					size_hint_x: 0.09
 					text: '<'
 					disabled: True
@@ -186,23 +186,23 @@
 					disabled: True
 					on_press: root.playSplitFile()
 				Button:
-				    id: button_stop_split_file
+					id: button_stop_split_file
 					size_hint_x: 0.09
 					text: 'Stop'
 					disabled: True
 					on_press: root.stopSplitFile()
 				Button:
-				    id: button_forward_split_file
+					id: button_forward_split_file
 					size_hint_x: 0.09
 					text: '>'
 					disabled: True
 					on_press: root.forwardSplitFileTenSeconds()
 				Button:
-				    id: button_go_end_split_file
+					id: button_go_end_split_file
 					size_hint_x: 0.09
 					text: '|>'
 					disabled: True
-				   on_press: root.goToSplitFileEndPos()
+					on_press: root.goToSplitFileEndPos()
 				GridLayout:
 					cols: 1
 					size_hint_x: 0.4
