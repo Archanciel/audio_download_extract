@@ -699,8 +699,3 @@ class AudioShareGUI(AudioGUI):
 			self.sharedAudioFilePathName.text = self.sharedAudioFilePathNameInitValue
 		elif id == 'split_file_path_name':
 			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue
-	
-	if __name__ == '__main__':
-		audioGUI = AudioShareGUI()
-		time_string = "01:01:09"
-		audioGUI.convertTimeStringToSeconds(time_string)
