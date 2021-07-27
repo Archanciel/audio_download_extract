@@ -33,3 +33,18 @@ class AudioPositionGUI(AudioGUI):
 			soundloaderMp3Obj.play()
 
 		soundFilePlayButton.disabled = True
+	
+	def ensureTextNotChanged(self, id):
+		"""
+		Method called when the audio file path name.text is modified. The
+		TextInput is not readonly, although it must not be modified. But
+		in order to be able to move the cursor along the TextInput long text,
+		its readonly attribute must be set to False. This method ensures that
+		readonly is applied to the field.
+		"""
+		if id == 'source_file_path_name':
+			self.sourceAudioFilePathName.text = self.sourceAudioFilePathNameInitValue
+		elif id == 'shared_file_path_name':
+			self.sharedAudioFilePathName.text = self.sharedAudioFilePathNameInitValue
+		elif id == 'split_file_path_name':
+			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue

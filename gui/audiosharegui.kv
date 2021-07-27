@@ -15,8 +15,6 @@
 	boxLayoutContainingRV: boxlayout_recycleview
 	sharedAudioFilePathName: shared_file_path_name
 	sharedFilePlayButton: button_play_shared_file
-	splitAudioFilePathName: split_file_path_name
-	splitFilePlayButton: button_play_split_file
 	outputScrollView: scrlv_out
 	outputLabel: label_output_split
 	speedTextTextInputField: text_input_speed
@@ -245,55 +243,6 @@
 				cols: 1
 				rows: 2
 				size_hint: (1, 0.17)
-				Label:
-					size_hint: (None, 0.03)
-					valign: 'bottom'
-					text: 'Split file name'
-				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-					id: split_file_path_name
-					size_hint_y: 0.05
-					halign: 'left'
-					text: ''
-					multiline: False
-					readonly: True
-					readonly: False # necessary in order to be able to move into text
-					on_text: root.ensureTextNotChanged('split_file_path_name')
-			GridLayout:
-				cols: 9
-				rows: 1
-				size_hint: (0.1, 0.13)
-				GridLayout:
-					cols: 1
-					size_hint_x: 0.4
-				Button:
-					size_hint_x: 0.09
-					text: '<|'
-					on_press: root.goToSplitFileStartPos()
-				Button:
-					size_hint_x: 0.09
-					text: '<'
-					on_press: root.backwardSplitFileTenSeconds()
-				Button:
-					id: button_play_split_file
-					size_hint_x: 0.09
-					text: 'Play'
-					disabled: True
-					on_press: root.playSplitFile()
-				Button:
-					size_hint_x: 0.09
-					text: 'Stop'
-					on_press: root.stopSplitFile()
-				Button:
-					size_hint_x: 0.09
-					text: '>'
-					on_press: root.forwardSplitFileTenSeconds()
-				Button:
-					size_hint_x: 0.09
-					text: '|>'
-					on_press: root.goToSplitFileEndPos()
-				GridLayout:
-					cols: 1
-					size_hint_x: 0.4
 			GridLayout:
 				cols: 1
 				rows: 1
@@ -339,13 +288,13 @@
 					text: '1.0'
 				Button:
 					size_hint_x: 0.1
-					text: 'Save'
-					on_release: root.createSplitFile()
+					text: 'Share'
+					on_release: root.shareSharedFile()
 				Button:
 					size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
-						root.cancelSplitFile()
+						root.cancelSharedFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
 				GridLayout:

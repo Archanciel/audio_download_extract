@@ -193,11 +193,6 @@ class AudioShareGUI(AudioPositionGUI):
 		:param dt:
 		"""
 		self.soundloaderSharedMp3Obj = None
-		self.soundloaderSplitMp3Obj = None
-		self.sliderAsynchUpdater = None
-		self.sliderUpdaterThread = None
-		self.sliderUpdateFrequency = 1
-		self.splitAudioFilePathNameInitValue = ''
 		self.dropDownMenu = CustomDropDown(owner=self)
 
 		if os.name == 'posix':
@@ -496,82 +491,23 @@ class AudioShareGUI(AudioPositionGUI):
 	
 	def playSharedFile(self):
 		"""
-		Method called when pressing the source file Play button
+		Method called when pressing the share file Play button
 		"""
-		#		example of audio file pathname:
-		#		D:\Users\Jean-Pierre\Downloads\Audiobooks\Various\Wear a mask. Help slow the spread of Covid-19..mp3
-		#       self.sharedAudioFilePathName.text was set either by
-		#       FileToSplitLoadFileChooserPopup.loadFile() or by
-		#       AudioDownloaderGUI._doOnStart().
-		
-		self.stopSplitFile()
-		
-		if self.soundloaderSharedMp3Obj is None:
-			self.soundloaderSharedMp3Obj = SoundLoader.load(self.sharedAudioFilePathName.text)
-
 		self.sharedFilePlayButton.disabled = True
 		self.soundloaderSharedMp3Obj.play()
-	
-	def playSplitFile(self):
-		"""
-		Method called when pressing the split file Play button
-		"""
-		# self.sharedAudioFilePathName.text was set either by
-		# FileToSplitLoadFileChooserPopup.loadFile() or by
-		# AudioDownloaderGUI._doOnStart().
-		
-		self.stopSharedFile()
-		
-		if self.soundloaderSplitMp3Obj is None:
-			self.soundloaderSplitMp3Obj = SoundLoader.load(self.splitAudioFilePathName.text)
-		
-		self.splitFilePlayButton.disabled = True
-		self.soundloaderSplitMp3Obj.play()
-	
-	def startSliderUpdateThread(self):
-		if self.sliderAsynchUpdater:
-			self.sliderAsynchUpdater.stopSliderUpdaterThread = True
-		
-		self.sliderAsynchUpdater = AsynchSliderUpdater(self,
-		                                               self.soundloaderSharedMp3Obj,
-		                                               self.ids.slider,
-		                                               stopSliderUpdaterThread=False)
-		self.sliderUpdaterThread = threading.Thread(target=self.sliderAsynchUpdater.updateSlider, args=())
-		self.sliderUpdaterThread.daemon = True
-		self.sliderUpdaterThread.start()
 
 	def stopSharedFile(self):
 		"""
 		Method called when pressing the source file Stop button
 		"""
-		if self.soundloaderSharedMp3Obj:
-			self.soundloaderSharedMp3Obj.stop()
-			self.sharedFilePlayButton.disabled = False
+		self.soundloaderSharedMp3Obj.stop()
+		self.sharedFilePlayButton.disabled = False
 	
-	def stopSplitFile(self):
-		"""
-		Method called when pressing the split file Stop button
-		"""
-		if self.soundloaderSplitMp3Obj:
-			self.soundloaderSplitMp3Obj.stop()
-			self.splitFilePlayButton.disabled = False
-	
-	def cancelSplitFile(self):
+	def cancelSharedFile(self):
 		"""
 		Method called when Cancel button is pressed.
 		"""
 		self.stopSharedFile()
-	
-	def disablePlayButton(self):
-		self.sharedFilePlayButton.disabled = True
-	
-	def createSplitFile(self):
-		"""
-		Method called when Save button is pressed.
-		"""
-		t = threading.Thread(target=self.createSplitFileOnNewThread, args=(), kwargs={})
-		t.daemon = True
-		t.start()
 	
 	def goToSharedFileStartPos(self):
 		"""
@@ -630,54 +566,8 @@ class AudioShareGUI(AudioPositionGUI):
 		                        newSoundPos=currentPos,
 		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
-	def goToSplitFileStartPos(self):
-		"""
-		Method called when split file <| button is pressed.
-		"""
-		if self.soundloaderSplitMp3Obj:
-			self.updateSplitFileSoundPos(newSoundPos=0)
-	
-	def goToSplitFileEndPos(self):
-		"""
-		Method called when split file |> button is pressed.
-		"""
-		if self.soundloaderSplitMp3Obj:
-			endPos = self.soundloaderSplitMp3Obj.length - 5
-			self.updateSplitFileSoundPos(newSoundPos=endPos)
-	
-	def updateSplitFileSoundPos(self,
-	                            newSoundPos):
-		"""
-		This method avoids duplicating several time the same code.
-
-		:param newSoundPos:
-		:return:
-		"""
-		self.soundloaderSplitMp3Obj.seek(newSoundPos)
-		
-		if self.soundloaderSplitMp3Obj.status == 'stop':
-			# here, the mp3 was played until its end
-			self.soundloaderSplitMp3Obj.play()
-		
-		self.splitFilePlayButton.disabled = True
-	
-	def shareSplitFile(self):
+	def shareSharedFile(self):
 		"""
 		Method called when Share button is pressed.
 		"""
-		audioShareScreen = self.manager.get_screen('audioShareScreen')
-		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
-		self.parent.current = "audioShareScreen"
-		self.manager.transition.direction = "left"
-	
-	def ensureTextNotChanged(self, id):
-		"""
-		Method called when sharedAudioFilePathName.text is modified. The
-		TextInput is readonly. But in order to be able to move the cursor
-		along the TextInput long text, its readonly attribute must be set
-		to False. This method ensures that readonly is applied to the field.
-		"""
-		if id == 'shared_file_path_name':
-			self.sharedAudioFilePathName.text = self.sharedAudioFilePathNameInitValue
-		elif id == 'split_file_path_name':
-			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue
+		print('shareShareFile not yet implemented')
