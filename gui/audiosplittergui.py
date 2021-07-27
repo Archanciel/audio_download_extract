@@ -27,6 +27,10 @@ class AudioSplitterGUI(AudioPositionGUI):
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
 		self.splitAudioFilePathNameInitValue = ''
+		
+		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+		# method called by separate thread overwrites the user position
+		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = False
 
 	def initSoundFile(self, sourceAudioFilePathName):
@@ -233,7 +237,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		hhmmssStartPos = self.startTextInput.text
 		
 		try:
+			# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+			# method called by separate thread overwrites the user position
+			# modification action ...
 			self.userClickedOnSourceSoundPositionButton = True
+			
 			startPos = self.convertTimeStringToSeconds(hhmmssStartPos)
 			self.updateSourceFileSoundPos(startPos)
 		except ValueError as e:
@@ -246,7 +254,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		hhmmssEndPos = self.endTextInput.text
 		
 		try:
+			# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+			# method called by separate thread overwrites the user position
+			# modification action ...
 			self.userClickedOnSourceSoundPositionButton = True
+			
 			endPos = self.convertTimeStringToSeconds(hhmmssEndPos)
 			self.updateSourceFileSoundPos(endPos)
 		except ValueError as e:
@@ -269,7 +281,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		Method called when source file > button is pressed.
 		"""
+		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+		# method called by separate thread overwrites the user position
+		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = True
+		
 		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos += 10
 		self.updateSourceFileSoundPos(currentPos)
@@ -278,7 +294,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		Method called when source file >> button is pressed.
 		"""
+		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+		# method called by separate thread overwrites the user position
+		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = True
+		
 		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos += 30
 		self.updateSourceFileSoundPos(currentPos)
@@ -287,7 +307,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		Method called when source file < button is pressed.
 		"""
+		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+		# method called by separate thread overwrites the user position
+		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = True
+		
 		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos -= 10
 		self.updateSourceFileSoundPos(currentPos)
@@ -296,7 +320,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		Method called when source file << button is pressed.
 		"""
+		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
+		# method called by separate thread overwrites the user position
+		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = True
+		
 		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos -= 30
 		self.updateSourceFileSoundPos(currentPos)
