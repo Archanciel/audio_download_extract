@@ -13,7 +13,7 @@ AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 
 class AudioGUI(Screen):
 	"""
-	Base class for the audio downloader GUI classes.
+	Abstract base class for the audio downloader GUI classes.
 	"""
 	def __init__(self, **kw):
 		super().__init__(**kw)

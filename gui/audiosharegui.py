@@ -7,7 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 import os, threading, time
 from datetime import datetime
 
-from audiogui import AudioGUI
+from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
@@ -179,7 +179,7 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
 
-class AudioShareGUI(AudioGUI):
+class AudioShareGUI(AudioPositionGUI):
 	showRequestList = False
 
 	def __init__(self, **kw):

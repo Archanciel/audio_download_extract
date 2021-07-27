@@ -3,13 +3,13 @@ from kivy.core.audio import SoundLoader
 import threading, time
 from datetime import datetime
 
-from audiogui import AudioGUI
+from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 
 
-class AudioSplitterGUI(AudioGUI):
+class AudioSplitterGUI(AudioPositionGUI):
 	def __init__(self, **kw):
 		super(AudioSplitterGUI, self).__init__(**kw)
 
