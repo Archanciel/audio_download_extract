@@ -1,12 +1,10 @@
 from kivy.core.audio import SoundLoader
 
 import threading, time
-from datetime import datetime
 
 from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
-from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 
 
 class AudioSplitterGUI(AudioPositionGUI):
@@ -328,25 +326,23 @@ class AudioSplitterGUI(AudioPositionGUI):
 		currentPos = self.soundloaderSourceMp3Obj.get_pos()
 		currentPos -= 30
 		self.updateSourceFileSoundPos(currentPos)
-
-	def convertTimeStringToSeconds(self, timeString):
-		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
-		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
-		
-		return dateTimeDelta.total_seconds()
 	
 	def goToSplitFileStartPos(self):
 		"""
 		Method called when split file <| button is pressed.
 		"""
-		self.updateSplitFileSoundPos(newSoundPos=0)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSplitMp3Obj,
+		                        newSoundPos=0,
+		                        soundFilePlayButton=self.splitFilePlayButton)
 	
 	def goToSplitFileEndPos(self):
 		"""
 		Method called when split file |> button is pressed.
 		"""
 		endPos = self.soundloaderSplitMp3Obj.length - 5
-		self.updateSplitFileSoundPos(newSoundPos=endPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSplitMp3Obj,
+		                        newSoundPos=endPos,
+		                        soundFilePlayButton=self.splitFilePlayButton)
 	
 	def forwardSplitFileTenSeconds(self):
 		"""
@@ -354,7 +350,9 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		currPos = self.soundloaderSplitMp3Obj.get_pos()
 		newSoundPos = currPos + 10
-		self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSplitMp3Obj,
+		                        newSoundPos=newSoundPos,
+		                        soundFilePlayButton=self.splitFilePlayButton)
 
 	def backwardSplitFileTenSeconds(self):
 		"""
@@ -362,24 +360,10 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		currPos = self.soundloaderSplitMp3Obj.get_pos()
 		newSoundPos = currPos - 10
-		self.updateSplitFileSoundPos(newSoundPos=newSoundPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSplitMp3Obj,
+		                        newSoundPos=newSoundPos,
+		                        soundFilePlayButton=self.splitFilePlayButton)
 	
-	def updateSplitFileSoundPos(self,
-	                            newSoundPos):
-		"""
-		This method avoids duplicating several time the same code.
-		
-		:param newSoundPos:
-		:return:
-		"""
-		self.soundloaderSplitMp3Obj.seek(newSoundPos)
-		
-		if self.soundloaderSplitMp3Obj.status == 'stop':
-			# here, the mp3 was played until its end
-			self.soundloaderSplitMp3Obj.play()
-		
-		self.splitFilePlayButton.disabled = True
-
 	def shareSplitFile(self):
 		"""
 		Method called when Share button is pressed.
