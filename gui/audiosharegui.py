@@ -4,12 +4,10 @@ from kivy.properties import BooleanProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-import os, threading, time
-from datetime import datetime
+import threading
 
-from audiogui import AudioGUI
+from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
-from audiocontroller import AudioController
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 from configmanager import ConfigManager
 from constants import *
@@ -179,7 +177,7 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
 
-class AudioShareGUI(AudioGUI):
+class AudioShareGUI(AudioPositionGUI):
 	showRequestList = False
 
 	def __init__(self, **kw):
@@ -541,28 +539,6 @@ class AudioShareGUI(AudioGUI):
 		self.sliderUpdaterThread = threading.Thread(target=self.sliderAsynchUpdater.updateSlider, args=())
 		self.sliderUpdaterThread.daemon = True
 		self.sliderUpdaterThread.start()
-	
-	def updateSharedFileSoundPos(self, value):
-		"""
-		Method called by the slider every time its value changes. The
-		value of the slider changes for two reasons:
-			1/ the user moved the slider
-			2/ the AsynchSliderUpdater.updateSlider() called by a
-			   separate thread which updates the slider position
-			   every second to reflect the current mp3 playing position
-			   was executed.
-			3/ the user click on a move source audio file button
-			   (<| << < Play Stop > >> |>)
-		:param value:
-		:return:
-		"""
-		self.soundloaderSharedMp3Obj.seek(value)
-
-		if self.soundloaderSharedMp3Obj.status == 'stop':
-			# the case when one of the <| << < > >> |> buttons is pressed
-			# when the sound file is not playing
-			self.soundloaderSharedMp3Obj.play()
-			self.sharedFilePlayButton.disabled = True
 
 	def stopSharedFile(self):
 		"""
@@ -601,14 +577,18 @@ class AudioShareGUI(AudioGUI):
 		"""
 		Method called when source file <| button is pressed.
 		"""
-		self.updateSharedFileSoundPos(0)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=0,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
 	def goToSharedFileEndPos(self):
 		"""
 		Method called when source file |> button is pressed.
 		"""
 		endPos = self.soundloaderSharedMp3Obj.length - 5
-		self.updateSharedFileSoundPos(endPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=endPos,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
 	def forwardSharedFileTenSeconds(self):
 		"""
@@ -616,7 +596,9 @@ class AudioShareGUI(AudioGUI):
 		"""
 		currentPos = self.soundloaderSharedMp3Obj.get_pos()
 		currentPos += 10
-		self.updateSharedFileSoundPos(currentPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=currentPos,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
 	def forwardSharedFileThirtySeconds(self):
 		"""
@@ -624,7 +606,9 @@ class AudioShareGUI(AudioGUI):
 		"""
 		currentPos = self.soundloaderSharedMp3Obj.get_pos()
 		currentPos += 30
-		self.updateSharedFileSoundPos(currentPos)
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=currentPos,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
 	def backwardSharedFileTenSeconds(self):
 		"""
@@ -632,21 +616,19 @@ class AudioShareGUI(AudioGUI):
 		"""
 		currentPos = self.soundloaderSharedMp3Obj.get_pos()
 		currentPos -= 10
-		self.updateSharedFileSoundPos(currentPos)
-	
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=currentPos,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
+
 	def backwardSharedFileThirtySeconds(self):
 		"""
 		Method called when source file << button is pressed.
 		"""
 		currentPos = self.soundloaderSharedMp3Obj.get_pos()
 		currentPos -= 30
-		self.updateSharedFileSoundPos(currentPos)
-	
-	def convertTimeStringToSeconds(self, timeString):
-		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
-		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
-		
-		return dateTimeDelta.total_seconds()
+		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderSharedMp3Obj,
+		                        newSoundPos=currentPos,
+		                        soundFilePlayButton=self.sharedFilePlayButton)
 	
 	def goToSplitFileStartPos(self):
 		"""
