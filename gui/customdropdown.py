@@ -2,8 +2,6 @@ from kivy.properties import ObjectProperty
 from kivy.uix.dropdown import DropDown
 from kivy.utils import platform
 
-from gui.audiodownloadergui import STATUS_BAR_ERROR_SUFFIX
-
 
 class CustomDropDown(DropDown):
 	saveButton = ObjectProperty(None)
