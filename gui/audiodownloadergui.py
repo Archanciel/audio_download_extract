@@ -1132,7 +1132,6 @@ class AudioDownloaderGUIMainApp(App):
 			Config.write()
 
 		self.title = 'AudioDownloader GUI'
-		#self.audioDownloaderGUI = AudioDownloaderGUI()
 
 		return windowManager
 
