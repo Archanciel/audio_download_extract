@@ -1,4 +1,7 @@
 <CustomDropDown>
+	gridLayoutSplit: gridlayout_splitButton
+	gridLayoutShare: gridlayout_shareButton
+	gridLayoutSettings: gridlayout_settingsButton
 	saveButton: save_Button
 	Button:
 		text: 'Load'
@@ -12,25 +15,40 @@
 		height: '28dp'
 		disabled: True
 		on_release: root.showSave()
-	Button:
-		id: splitAudioFile_Button
-		text: 'Split audio'
-		size_hint_y: None
-		height: '28dp'
-		disabled: False
-		on_release: root.showSplitAudioFile()
-	Button:
-		id: shareAudioFile_Button
-		text: 'Share audio'
-		size_hint_y: None
-		height: '28dp'
-		disabled: False
-		on_release: root.shareAudio()
-	Button:
-		text: "Settings"
-		size_hint_y: None
-		height: '28dp'
-		on_press: app.open_settings()
+    GridLayout: # enable to hide or display 'Split audio' menu item
+        id: gridlayout_splitButton
+		cols: 1
+        size_hint_y: None
+        #height: "0dp"
+        Button:
+            id: splitAudioFile_Button
+            text: 'Split audio'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.showSplitAudioFile()
+    GridLayout: # enable to hide or display 'Share audio' menu item
+        id: gridlayout_shareButton
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            id: shareAudioFile_Button
+            text: 'Share audio'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.shareAudio()
+    GridLayout: # enable to hide or display 'Settings' menu item
+        id: gridlayout_settingsButton
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            text: "Settings"
+            size_hint_y: None
+            height: '28dp'
+            on_press: app.open_settings()
 	Button:
 		text: 'Help'
 		size_hint_y: None

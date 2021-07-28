@@ -768,6 +768,13 @@ class AudioDownloaderGUI(AudioGUI):
 		self.refocusOnRequestInput()
 
 	def openDropDownMenu(self, widget):
+		dropDownMenuItemheight = self.dropDownMenu.saveButton.height
+		
+		# set drop down menu items visible
+		self.dropDownMenu.gridLayoutSplit.height = dropDownMenuItemheight
+		self.dropDownMenu.gridLayoutShare.height = dropDownMenuItemheight
+		self.dropDownMenu.gridLayoutSettings.height = dropDownMenuItemheight
+		
 		self.dropDownMenu.open(widget)
 
 	def isRequest(self, statusBarStr):
