@@ -56,7 +56,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 		if soundLength < 30:
 			self.sliderUpdateEverySecondsNumber = 1 / soundLength
 		else:
-			self.sliderUpdateEverySecondsNumber = 0.1
+			self.sliderUpdateEverySecondsNumber = 0.2
 	
 	def playSourceFile(self):
 		"""
