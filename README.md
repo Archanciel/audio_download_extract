@@ -79,6 +79,7 @@ downloaded to a directory specified in the app settings.
 </p>
 
 ## Required libraries
+- configobj
 - pytube
 - youtube_dl
 - moviepy (not working on Android !. Version 1.0.2. Version 1.0.3 not working !)
