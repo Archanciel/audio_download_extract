@@ -82,7 +82,7 @@ downloaded to a directory specified in the app settings.
 - configobj
 - pytube
 - youtube_dl
-- moviepy (not working on Android !. Version 1.0.2. Version 1.0.3 not working !)
+- moviepy (not working on Android !. Version 2.0.0.dev2. Version 1.0.2 and 1.0.3 not working !)
 - mutagen
 - kivy
 - pydub
