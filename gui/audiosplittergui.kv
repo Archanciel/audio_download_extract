@@ -131,12 +131,12 @@
 								GridLayout:
 									cols: 1
 								Button:
+									text: 'Stop'
+									on_press: root.stopSourceFile()
+								Button:
 									id: button_play_source_file
 									text: 'Play'
 									on_press: root.playSourceFile()
-								Button:
-									text: 'Stop'
-									on_press: root.stopSourceFile()
 								GridLayout:
 									cols: 1
 
@@ -251,6 +251,13 @@
 					text: '1.0'
 				Button:
 					size_hint_x: 0.1
+					text: 'Cancel'
+					on_release:
+						root.cancelSplitFile()
+						app.root.current = "audioDownloaderScreen"
+						root.manager.transition.direction = "right"
+				Button:
+					size_hint_x: 0.1
 					text: 'Split'
 					on_release: root.createSplitFile()
 				Button:
@@ -259,13 +266,6 @@
 					text: 'Share'
 					disabled: True # will be enabled after the split file was created
 					on_release: root.shareSplitFile()
-				Button:
-					size_hint_x: 0.1
-					text: 'Cancel'
-					on_release:
-						root.cancelSplitFile()
-						app.root.current = "audioDownloaderScreen"
-						root.manager.transition.direction = "right"
 				GridLayout:
 					cols: 1
 					size_hint_x: 0.3
