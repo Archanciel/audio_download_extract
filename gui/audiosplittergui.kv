@@ -2,6 +2,17 @@
 
 <AudioSplitterGUI>: # sub-class of Screen
 	name: "audioSplitterScreen"
+	nameTextInputField: name_TextInput
+	emailTextInputField: email_TextInput
+	phoneNumberTextInputField: phoneNumber_TextInput
+	requestListRV: request_RecycleView_list
+	requestListRVSelBoxLayout: selectable_recyclebox_layout
+	toggleHistoButton: toggle_history_list_Button
+	deleteButton: delete_Button
+	replaceButton: replace_Button
+	moveUpButton: moveUp_Button
+	moveDownButton: moveDown_Button
+	boxLayoutContainingRV: boxlayout_recycleview
 	sourceAudioFilePathName: source_file_path_name
 	audioSlider: slider
 	sourceFilePlayButton: button_play_source_file
@@ -19,11 +30,152 @@
 	outputLabel: label_output_split
 	speedTextInput: text_input_speed
 	splitFileShareButton: button_share_split_file
-	GridLayout
-		cols: 1
+	BoxLayout:
+		orientation: "vertical"
+
+		# adding main windows borders. Does not impact sub widgets !
+		padding: 5
+		spacing: 5
+
+		canvas.before:
+			Color:
+				rgb: [0.22,0.22,0.22]
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
+		BoxLayout:
+			size_hint_y: None
+			height: "28dp"
+			canvas.before:
+				Color:
+					rgb: [0,0,0]
+				Rectangle:
+					pos: self.pos
+					size: self.size
+
+			GridLayout:
+				cols: 3
+				rows: 1
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: name_TextInput
+					size_hint_x: 0.35
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: True
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: email_TextInput
+					size_hint_x: 0.45
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: phoneNumber_TextInput
+					size_hint_x: 0.2
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+
+		BoxLayout:
+			size_hint_y: None
+			height: "28dp"
+			ToggleButton:
+				id: toggle_history_list_Button
+				text: "History"
+				size_hint_x: 15
+				disabled:True
+				on_press: root.toggleRequestList()
+			Button:
+				id: delete_Button
+				text: "Delete"
+				size_hint_x: 15
+				disabled: True
+				on_press: root.deleteRequest()
+			Button:
+				id: replace_Button
+				text: "Replace"
+				size_hint_x: 15
+				disabled: True
+				on_press: root.replaceRequest()
+			Button:
+				id: moveUp_Button
+				size_hint_x: 8
+				disabled: True
+				on_press: selectable_recyclebox_layout.moveItemUp()
+				StackLayout:
+					pos: self.parent.pos
+					size: self.parent.size
+					orientation: 'lr-tb'
+					Image:
+						source: 'arrow-up-32-disabled.png' if self.parent.disabled else 'arrow-up-32.png'
+						size_hint_x: 1
+						width: 74
+			Button:
+				id: moveDown_Button
+				size_hint_x: 8
+				disabled: True
+				on_press: selectable_recyclebox_layout.moveItemDown()
+				StackLayout:
+					pos: self.parent.pos
+					size: self.parent.size
+					orientation: 'lr-tb'
+					Image:
+						source: 'arrow-down-32-disabled.png' if self.parent.disabled else 'arrow-down-32.png'
+						size_hint_x: 1
+						width: 74
+			Button:
+				id: menu_Button
+				text: "..."
+				size_hint_x: 13
+				on_release: root.openDropDownMenu(self)
+
+		BoxLayout:
+			id: boxlayout_recycleview
+			size_hint_y: None
+			height: "0dp"
+
+			RecycleView:
+				id: request_RecycleView_list
+				rootGUI: root
+				scroll_y: 0 # forces scrolling to list bottom after adding an entry
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				viewclass: 'MultiFieldSelectableBoxLayout'
+				scroll_type: ['bars', 'content']
+				scroll_wheel_distance: dp(114)
+				bar_width: dp(10)
+
+				AudioShareSelectableRecycleBoxLayout:
+					id: selectable_recyclebox_layout
+					appGUI: root
+					key_selection: 'selectable' # required so that 'selectable'
+												# key/value can be added to
+												# RecycleView data items
+					default_size: None, dp(15)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					spacing: 0.5
+					orientation: 'vertical'
+					multiselect: False
+					touch_multiselect: False
+
+
 		GridLayout:
 			cols: 1
 			rows: 6
+			size_hint_y: 0.94
 			GridLayout:
 				cols: 1
 				rows: 2
