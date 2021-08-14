@@ -89,3 +89,4 @@ downloaded to a directory specified in the app settings.
 - soundfile
 - pyrubberband
 - pyautogui
+- ffpyplayer 4.3.2
