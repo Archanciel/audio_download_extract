@@ -48,3 +48,12 @@ class AudioPositionGUI(AudioGUI):
 			self.sharedAudioFilePathName.text = self.sharedAudioFilePathNameInitValue
 		elif id == 'split_file_path_name':
 			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue
+	
+	def openDropDownMenu(self, widget):
+		
+		# hide drop down menu items
+		self.dropDownMenu.gridLayoutSplit.height = 0
+		self.dropDownMenu.gridLayoutShare.height = 0
+		self.dropDownMenu.gridLayoutSettings.height = 0
+
+		self.dropDownMenu.open(widget)

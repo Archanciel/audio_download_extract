@@ -4,10 +4,7 @@ from kivy.properties import BooleanProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-import threading
-
 from audiopositiongui import AudioPositionGUI
-from asynchsliderupdater import AsynchSliderUpdater
 from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 from configmanager import ConfigManager
 from constants import *
@@ -474,16 +471,7 @@ class AudioShareGUI(AudioPositionGUI):
 		:return:
 		'''
 		self.nameTextInputField.focus = True
-
-	def openDropDownMenu(self, widget):
-		
-		# hide drop down menu items
-		self.dropDownMenu.gridLayoutSplit.height = 0
-		self.dropDownMenu.gridLayoutShare.height = 0
-		self.dropDownMenu.gridLayoutSettings.height = 0
-
-		self.dropDownMenu.open(widget)
-
+	
 	def initSoundFile(self, sharedAudioFilePathName):
 		if 'mp3' != sharedAudioFilePathName[-3:]:
 			return
