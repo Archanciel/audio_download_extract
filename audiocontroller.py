@@ -5,7 +5,13 @@ from configmanager import ConfigManager
 from requester import Requester
 from downloadvideoinfodic import DownloadVideoInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
-from audioextractor import AudioExtractor
+
+if os.name == 'posix':
+	# sound file extraction is not possible on Android
+	pass
+else:
+	from audioextractor import AudioExtractor
+
 from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:

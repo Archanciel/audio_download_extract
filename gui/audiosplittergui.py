@@ -24,8 +24,10 @@ class AudioSplitterGUI(AudioPositionGUI):
 		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None
 		self.sliderUpdaterThread = None
+		self.sliderUpdateFrequency = 1
+		self.sourceAudioFilePathNameInitValue = ''
 		self.splitAudioFilePathNameInitValue = ''
-		
+
 		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
 		# method called by separate thread overwrites the user position
 		# modification action ...

@@ -193,6 +193,7 @@ class AudioShareGUI(AudioPositionGUI):
 		:param dt:
 		"""
 		self.soundloaderSharedMp3Obj = None
+		self.sharedAudioFilePathNameInitValue = ''
 		self.dropDownMenu = CustomDropDown(owner=self)
 
 		if os.name == 'posix':
