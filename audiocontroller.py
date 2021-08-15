@@ -5,12 +5,7 @@ from configmanager import ConfigManager
 from requester import Requester
 from downloadvideoinfodic import DownloadVideoInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
-
-if os.name == 'posix':
-	pass
-else:
-	from audioextractor import AudioExtractor
-
+from audioextractor import AudioExtractor
 from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:
