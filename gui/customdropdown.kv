@@ -3,6 +3,16 @@
 	gridLayoutShare: gridlayout_shareButton
 	gridLayoutSettings: gridlayout_settingsButton
 	saveButton: save_Button
+
+    # defining canvas causes disabled drop down menu items to be
+    # low grayed instead of being transparent !
+    canvas.before:
+        Color:
+            rgb: [0.22,0.22,0.22]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 	Button:
 		text: 'Load'
 		size_hint_y: None
@@ -19,7 +29,7 @@
         id: gridlayout_splitButton
 		cols: 1
         size_hint_y: None
-        #height: "0dp"
+        height: "0dp"
         Button:
             id: splitAudioFile_Button
             text: 'Split audio'
