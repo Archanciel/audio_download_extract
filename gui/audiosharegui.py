@@ -5,7 +5,6 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 from audiopositiongui import AudioPositionGUI
-from focustextinput import FocusTextInput # required for loading the audiosplittergui.kv file
 from configmanager import ConfigManager
 from constants import *
 from customdropdown import CustomDropDown

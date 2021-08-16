@@ -1,5 +1,11 @@
 # ---------- audiosharegui.kv  ----------
 
+# Next import instruction avoids importing the class in the
+# *.py python file, import which will be removed by Pycharm
+# when optimizing the imports or applying some refactoring !
+
+#: import FocusTextInput focustextinput.FocusTextInput
+
 <AudioShareGUI>: # sub-class of Screen
 	name: "audioShareScreen"
 	nameTextInputField: name_TextInput
