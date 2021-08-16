@@ -1,8 +1,10 @@
 # ---------- audiodownloadergui.kv  ----------
 
-#: import main audiodownloadergui
+# Next import instructions avoid importing the classes in the
+# *.py python file, import which will be removed by Pycharm
+# when optimizing the imports or applying some refactoring !
+
 #: import ScrollEffect kivy.effects.scroll.ScrollEffect
-#: import CheckBox kivy.uix.checkbox.CheckBox
 
 <AudioDownloaderGUI>: # sub-class of Screen
 	name: "audioDownloaderScreen"
