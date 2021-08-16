@@ -17,7 +17,11 @@ class AudioGUI(Screen):
 	"""
 	def __init__(self, **kw):
 		super().__init__(**kw)
-
+		
+		self.isExtractFileDropDownMenuItemDisplayed = True
+		self.isShareFileDropDownMenuItemDisplayed = True
+		self.isSettingsDropDownMenuItemDisplayed = True
+		
 		# WARNING: accessing MainWindow fields defined in kv file
 		# in the __init__ ctor is no longer possible when using
 		# ScreenManager. Here's the solution:

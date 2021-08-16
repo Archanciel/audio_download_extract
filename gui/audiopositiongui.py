@@ -8,7 +8,11 @@ class AudioPositionGUI(AudioGUI):
 	"""
 	def __init__(self, **kw):
 		super().__init__(**kw)
-	
+		
+		self.isExtractFileDropDownMenuItemDisplayed = False
+		self.isShareFileDropDownMenuItemDisplayed = False
+		self.isSettingsDropDownMenuItemDisplayed = False
+
 	def convertTimeStringToSeconds(self, timeString):
 		dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
 		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
@@ -51,9 +55,27 @@ class AudioPositionGUI(AudioGUI):
 	
 	def openDropDownMenu(self, widget):
 		
-		# hide drop down menu items
-		self.dropDownMenu.gridLayoutSplit.height = 0
-		self.dropDownMenu.gridLayoutShare.height = 0
-		self.dropDownMenu.gridLayoutSettings.height = 0
-
+		dropDownMenuItemheight = self.dropDownMenu.saveButton.height
+		
+		if self.isExtractFileDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutSplit.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutSplit.height = 0
+		
+		if self.isShareFileDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutShare.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutShare.height = 0
+		
+		if self.isSettingsDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutSettings.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutSettings.height = 0
+		
 		self.dropDownMenu.open(widget)
