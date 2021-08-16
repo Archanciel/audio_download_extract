@@ -767,16 +767,6 @@ class AudioDownloaderGUI(AudioGUI):
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
 		self.refocusOnRequestInput()
 
-	def openDropDownMenu(self, widget):
-		dropDownMenuItemheight = self.dropDownMenu.saveButton.height
-		
-		# set drop down menu items visible
-		self.dropDownMenu.gridLayoutSplit.height = dropDownMenuItemheight
-		self.dropDownMenu.gridLayoutShare.height = dropDownMenuItemheight
-		self.dropDownMenu.gridLayoutSettings.height = dropDownMenuItemheight
-		
-		self.dropDownMenu.open(widget)
-
 	def isRequest(self, statusBarStr):
 		if STATUS_BAR_ERROR_SUFFIX in statusBarStr:
 			return True

@@ -110,3 +110,30 @@ class AudioGUI(Screen):
 
 		popup = HelpPopup(title=AUDIODOWNLOADER_VERSION)
 		popup.open()
+	
+	def openDropDownMenu(self, widget):
+		
+		dropDownMenuItemheight = self.dropDownMenu.saveButton.height
+		
+		if self.isExtractFileDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutSplit.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutSplit.height = 0
+		
+		if self.isShareFileDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutShare.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutShare.height = 0
+		
+		if self.isSettingsDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutSettings.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutSettings.height = 0
+		
+		self.dropDownMenu.open(widget)
