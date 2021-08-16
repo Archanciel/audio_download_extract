@@ -140,9 +140,6 @@ class LoadFileChooserPopup(FileChooserPopup):
 		
 	def loadFile(self, path, selection):
 		self.load(path, selection)
-		
-	def onTouchDown(self):
-		print("hello")
 
 
 class SaveFileChooserPopup(FileChooserPopup):
