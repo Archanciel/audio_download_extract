@@ -1,3 +1,4 @@
+from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
 import threading, time
@@ -6,6 +7,14 @@ from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 
+# constants below were copied from AudioShareGUI and will be deleted
+NAME_LABEL_KEY = 'nameLabel'
+EMAIL_LABEL_KEY = 'emailLabel'
+PHONE_NUMBER_LABEL_KEY = 'phoneNumberLabel'
+
+CONTACT_NAME_KEY = 'name'
+CONTACT_EMAIL_KEY = 'email'
+CONTACT_PHONE_NUMBER_KEY = 'phoneNumber'
 
 class AudioSplitterGUI(AudioPositionGUI):
 	def __init__(self, **kw):
@@ -20,6 +29,8 @@ class AudioSplitterGUI(AudioPositionGUI):
 
 		:param dt:
 		"""
+		super(AudioSplitterGUI, self)._finish_init(dt)
+		
 		self.soundloaderSourceMp3Obj = None
 		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None
@@ -32,7 +43,18 @@ class AudioSplitterGUI(AudioPositionGUI):
 		# method called by separate thread overwrites the user position
 		# modification action ...
 		self.userClickedOnSourceSoundPositionButton = False
+	
+	def _refocusOnFirstTextInput(self, *args):
+		'''
+		Method temporarily copied from AudioShareGUI. Will be replaced since
+		list on AudioExtractGUI contains other informations !
 
+		This method is here to be used as callback by Clock and must not be called directly
+		:param args:
+		:return:
+		'''
+		self.nameTextInputField.focus = True
+	
 	def initSoundFile(self, sourceAudioFilePathName):
 		if 'mp3' != sourceAudioFilePathName[-3:]:
 			return
@@ -59,6 +81,37 @@ class AudioSplitterGUI(AudioPositionGUI):
 			self.sliderUpdateEverySecondsNumber = 1 / soundLength
 		else:
 			self.sliderUpdateEverySecondsNumber = 0.2
+	
+	def loadHistoryFromPathFilename(self, pathFileName):
+		self.currentLoadedFathFileName = pathFileName
+		dataFileNotFoundMessage = self.buildFileNotFoundMessage(pathFileName)
+		
+		if not self.ensureDataPathFileNameExist(pathFileName, dataFileNotFoundMessage):
+			return
+		
+		with open(pathFileName) as stream:
+			lines = stream.readlines()
+		
+		lines = list(map(lambda line: line.strip('\n'), lines))
+		# histoLines = [{'text': val, 'selectable': True} for val in lines
+		
+		items = [{CONTACT_NAME_KEY: 'Jean-Pierre Schnyder', CONTACT_EMAIL_KEY: 'jp.schnyder@gmail.com',
+		          CONTACT_PHONE_NUMBER_KEY: '+41768224987'},
+		         {CONTACT_NAME_KEY: 'Tamara Jagne', CONTACT_EMAIL_KEY: 'tamara.jagne@gmail.com',
+		          CONTACT_PHONE_NUMBER_KEY: '+41764286884'}
+		         ]
+		
+		histoLines = [{NAME_LABEL_KEY: str(x[CONTACT_NAME_KEY]), EMAIL_LABEL_KEY: str(x[CONTACT_EMAIL_KEY]),
+		               PHONE_NUMBER_LABEL_KEY: str(x[CONTACT_PHONE_NUMBER_KEY]), 'selectable': True} for x in items]
+		
+		self.requestListRV.data = histoLines
+		self.requestListRVSelBoxLayout.clear_selection()
+		
+		# Reset the ListView
+		self.resetListViewScrollToEnd()
+		
+		self.manageStateOfGlobalRequestListButtons()
+		self.refocusOnFirstRequestInput()
 	
 	def playSourceFile(self):
 		"""
@@ -398,6 +451,52 @@ class AudioSplitterGUI(AudioPositionGUI):
 		audioShareScreen.initSoundFile(self.splitAudioFilePathName.text)
 		self.parent.current = "audioShareScreen"
 		self.manager.transition.direction = "left"
+	
+	def replaceRequest(self, *args):
+		"""
+		Method copied from AudioShareGUI. Will have to be changed !
+		
+		:param args:
+		:return:
+		"""
+		# Remove the selected item
+		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
+		
+		# Get new values from the TextInput fields
+		name, email, phoneNumber = self.getInputContactValues()
+		
+		# Add the updated data to the list if not already in
+		requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber,
+		                    'selectable': True}
+		
+		if not requestListEntry in self.requestListRV.data:
+			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
+		
+		self.refocusOnFirstRequestInput()
+	
+	def getInputContactValues(self):
+		'''
+		Method copied from AudioShareGUI. Will have to be changed !
+		
+		Returns new values from the TextInput fields.
+
+		:return: name, email, phoneNumber
+		'''
+		name = self.nameTextInputField.text
+		email = self.emailTextInputField.text
+		phoneNumber = self.phoneNumberTextInputField.text
+		
+		return name, email, phoneNumber
+	
+	def emptyRequestFields(self):
+		"""
+		Method copied from AudioShareGUI. Will have to be changed !
+		
+		:return:
+		"""
+		self.nameTextInputField.text = ''
+		self.emailTextInputField.text = ''
+		self.phoneNumberTextInputField.text = ''
 
 
 if __name__ == '__main__':

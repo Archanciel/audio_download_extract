@@ -8,7 +8,6 @@ import threading
 from os.path import sep
 
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.config import Config
 from kivy.metrics import dp
 from kivy.properties import BooleanProperty
@@ -33,6 +32,7 @@ from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectO
 from gui.confirmpopup import ConfirmPopup
 
 from audiogui import AudioGUI
+from audiogui import FILE_ACTION_LOAD
 from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
@@ -47,7 +47,6 @@ from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
-FILE_ACTION_LOAD = 0
 FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
@@ -82,7 +81,7 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 		# supplements the refocusOnRequestInput() called in the
 		# SelectableLabel.apply_selection() method, but is useful when
 		# the moved item is no longer visible !
-		self.appGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnFirstRequestInput()
 
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
@@ -102,7 +101,7 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 		# supplements the refocusOnRequestInput() called in the
 		# SelectableLabel.apply_selection() method, but is useful when
 		# the moved item is no longer visible !
-		self.appGUI.refocusOnRequestInput()
+		self.appGUI.refocusOnFirstRequestInput()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedValue = self.parent.data[movedItemSelIndex]['text']
@@ -185,7 +184,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			self.audioDownloaderGUI.requestInput.text = selItemValue
 		
-		self.audioDownloaderGUI.refocusOnRequestInput()
+		self.audioDownloaderGUI.refocusOnFirstRequestInput()
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 
 
@@ -235,7 +234,6 @@ class AudioDownloaderGUI(AudioGUI):
 	outputLabel = ObjectProperty()
 	statusBarScrollView = ObjectProperty()
 	statusBarTextInput = ObjectProperty()
-	showRequestList = False
 	recycleViewCurrentSelIndex = -1
 
 	def __init__(self, **kwargs):
@@ -341,26 +339,6 @@ class AudioDownloaderGUI(AudioGUI):
 											 confirmPopupCallbackFunction)
 		self.popup.open()
 	
-	def loadHistoryDataIfSet(self):
-		'''
-		Testing at app start if data path defined in settings does exist
-		and if history file loaded at start app does exist. Since a warning popup
-		is displayed in case of invalid data, this must be performed here and
-		not in audioDownloaderGUI.__init__ where no popup could be displayed.
-		:return:
-		'''
-		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.dataPath)
-		
-		if self.ensureDataPathExist(self.dataPath, dataPathNotExistMessage):
-			# loading the load at start history file if defined
-			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
-			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
-			
-			if historyFilePathFilename != '' and self.ensureDataPathFileNameExist(
-					historyFilePathFilename, dataFileNotFoundMessage):
-				self.loadHistoryFromPathFilename(historyFilePathFilename)
-				self.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
-	
 	def onPopupAnswer(self, instance, answer):
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
@@ -384,18 +362,6 @@ class AudioDownloaderGUI(AudioGUI):
 								rvListItemSpacing)
 		if self.showRequestList:
 			self.adjustRequestListSize()
-
-	def setRVListSizeParms(self,
-						   rvListItemHeight,
-						   rvListMaxVisibleItems,
-						   rvListItemSpacing):
-		self.rvListItemHeight = rvListItemHeight
-		self.rvListMaxVisibleItems = rvListMaxVisibleItems
-		self.maxRvListHeight = self.rvListMaxVisibleItems * self.rvListItemHeight
-		
-		# setting RecycleView list item height from config
-		self.requestListRVSelBoxLayout.default_size = None, self.rvListItemHeight
-		self.requestListRVSelBoxLayout.spacing = rvListItemSpacing
 	
 	def toggleAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
@@ -404,14 +370,14 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.defaultAppPosAndSize == self.configMgr.APP_SIZE_FULL:
 				# on the smartphone, we do not want to reposition the cursor ob
 				# the input field since this would display the keyboard !
-				self.refocusOnRequestInput()
+				self.refocusOnFirstRequestInput()
 		else:
 			self.appSize = self.configMgr.APP_SIZE_HALF
 
 			# the case on the smartphone. Here, positioning the cursor on
 			# the input field after having pressed the 'half' button
 			# automatically displays the keyboard
-			self.refocusOnRequestInput()
+			self.refocusOnFirstRequestInput()
 
 		self.applyAppPosAndSize()
 
@@ -425,38 +391,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.size_hint_y = 1
 			self.pos_hint = {'x': 0, 'y': 0}
 			self.toggleAppSizeButton.text = 'Half'
-
-	def toggleRequestList(self):
-		'''
-		called by 'History' toggle button to toggle the display of the history
-		request list.
-		'''
-		if self.showRequestList:
-			# RecycleView request history list is currently displayed and
-			# will be hidden
-			self.boxLayoutContainingRV.height = '0dp'
-			
-			# when hidding the history request list, an item can be selected.
-			# For this reason, the disableStateOfRequestListSingleItemButtons()
-			# must be called explicitely called, otherwise the history request
-			# list items specific buttons remain isLoadAtStartChkboxActive !
-			self.disableStateOfRequestListSingleItemButtons()
-			self.showRequestList = False
-		else:
-			# RecycleView request history list is currently hidden and
-			# will be displayed
-			self.adjustRequestListSize()
-			self.showRequestList = True
-			self.resetListViewScrollToEnd()
-		
-		self.refocusOnRequestInput()
-
-	def adjustRequestListSize(self):
-		listItemNumber = len(self.requestListRV.data)
-		self.boxLayoutContainingRV.height = min(listItemNumber * self.rvListItemHeight, self.maxRvListHeight)
-
-		return listItemNumber
-
+	
 	def submitRequest(self):
 		'''
 		Submit the request, output the result and add the request to the
@@ -529,7 +464,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.clearHistoryListSelection()
 		self.manageStateOfGlobalRequestListButtons()
-		self.requestInput.text = ''
+		self.emptyRequestFields()
 
 		# displaying request in status bar
 
@@ -564,7 +499,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.clearResultOutputButton.disabled = False
 
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
-		self.refocusOnRequestInput()
+		self.refocusOnFirstRequestInput()
 
 	def ensureLowercase(self):
 		'''
@@ -581,91 +516,10 @@ class AudioDownloaderGUI(AudioGUI):
 			self.statusBarTextInput.text = ''
 
 		self.clearResultOutputButton.disabled = True
-		self.refocusOnRequestInput()
-
-	def resetListViewScrollToEnd(self):
-		maxVisibleItemNumber = self.rvListMaxVisibleItems
-		listLength = len(self.requestListRV.data)
-
-		if listLength > maxVisibleItemNumber:
-			# for the moment, I do not know how to scroll to end of RecyclweView !
-			# listView.scroll_to(listLength - maxVisibleItemNumber)
-			pass
-		else:
-			if self.showRequestList:
-				listItemNumber = self.adjustRequestListSize()
-				if listItemNumber == 0:
-					self.showRequestList = False
-					self.manageStateOfGlobalRequestListButtons()
-
-	def manageStateOfGlobalRequestListButtons(self):
-		'''
-		Enable or disable history request list related controls according to
-		the status of the list: filled with items or empty.
-
-		Only handles state of the request history list buttons which
-		operates on the list globally, not on specific items of the list.
-		
-		Those buttons are:
-			Display/hide request history list button
-			Replay all button
-			Save request history list menu item button
-		'''
-		if len(self.requestListRV.data) == 0:
-			# request list is empty
-			self.toggleHistoButton.state = 'normal'
-			self.toggleHistoButton.disabled = True
-			self.replayAllButton.disabled = True
-			self.boxLayoutContainingRV.height = '0dp'
-			self.dropDownMenu.saveButton.disabled = True
-		else:
-			self.toggleHistoButton.disabled = False
-			self.replayAllButton.disabled = False
-			self.dropDownMenu.saveButton.disabled = False
-
-	def refocusOnRequestInput(self):
-		# defining a delay of 0.5 sec ensure the
-		# refocus works in all situations, moving
-		# up and down comprised (0.1 sec was not
-		# sufficient for item move ...)
-		Clock.schedule_once(self._refocusTextInput, 0.5)
-
-	def _refocusTextInput(self, *args):
-		'''
-		This method is here to be used as callback by Clock and must not be called directly
-		:param args:
-		:return:
-		'''
-		self.requestInput.focus = True
-
-	def deleteRequest(self, *args):
-		# deleting selected item from RecycleView list
-		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
-		
-		remainingItemNb = len(self.requestListRV.data)
-		
-		if remainingItemNb == 0:
-			# no more item in RecycleView list
-			self.disableStateOfRequestListSingleItemButtons()
-			self.toggleHistoButton.disabled = True
-			self.showRequestList = False
-			self.requestInput.text = ''
-		
-		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
-		
-		if currentSelItemIdx >= remainingItemNb:
-			# the case if the last item was deleted. Then, the new last item
-			# is selected
-			lastItemIdx = remainingItemNb - 1
-			self.requestListRVSelBoxLayout.selected_nodes = [lastItemIdx]
-			self.recycleViewCurrentSelIndex = lastItemIdx
-
-		if self.showRequestList:
-			self.adjustRequestListSize()
-
-		self.manageStateOfGlobalRequestListButtons()
-
-		self.refocusOnRequestInput()
+		self.refocusOnFirstRequestInput()
+	
+	def emptyRequestFields(self):
+		self.requestInput.text = ''
 	
 	def clearHistoryListSelection(self):
 		self.requestListRV._get_layout_manager().clear_selection()
@@ -683,30 +537,8 @@ class AudioDownloaderGUI(AudioGUI):
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 
-		self.refocusOnRequestInput()
-
-	def enableStateOfRequestListSingleItemButtons(self):
-		"""
-		This method handles the states of the single items of the request
-		history list.
-		"""
-		if len(self.requestListRVSelBoxLayout.selected_nodes):
-			# here, a request list item is selected and the
-			# requestListRVSelBoxLayout.selected_nodes list has one
-			# element !
-			self.deleteButton.disabled = False
-			self.replaceButton.disabled = False
-			self.moveUpButton.disabled = False
-			self.moveDownButton.disabled = False
-		else:
-			self.disableStateOfRequestListSingleItemButtons()
+		self.refocusOnFirstRequestInput()
 	
-	def disableStateOfRequestListSingleItemButtons(self):
-		self.deleteButton.disabled = True
-		self.replaceButton.disabled = True
-		self.moveUpButton.disabled = True
-		self.moveDownButton.disabled = True
-
 	def replayAllRequests(self):
 		"""
 		Method linked to the Replay All button in kv file.
@@ -748,7 +580,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.clearResultOutputButton.disabled = False
 
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
-		self.refocusOnRequestInput()
+		self.refocusOnFirstRequestInput()
 
 	def isRequest(self, statusBarStr):
 		if STATUS_BAR_ERROR_SUFFIX in statusBarStr:
@@ -886,7 +718,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.resetListViewScrollToEnd()
 
 		self.manageStateOfGlobalRequestListButtons()
-		self.refocusOnRequestInput()
+		self.refocusOnFirstRequestInput()
 
 	def saveHistoryToFile(self, existingPathOnly, savingPathFileName, isLoadAtStart):
 		"""
@@ -932,7 +764,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.configMgr.storeConfig()
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
-		self.refocusOnRequestInput()
+		self.refocusOnFirstRequestInput()
 
 	# --- end file chooser code ---
 	
@@ -1095,7 +927,7 @@ class AudioDownloaderGUIMainApp(App):
 		
 		from audiosplittergui import AudioSplitterGUI  # must be kept to avoid Builder error
 		from audiosharegui import AudioShareGUI  # must be kept to avoid Builder error
-	
+
 		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':

@@ -64,3 +64,26 @@ class AudioPositionGUI(AudioGUI):
 		:param dt:
 		"""
 		super(AudioPositionGUI, self)._finish_init(dt)
+	
+	def manageStateOfGlobalRequestListButtons(self):
+		'''
+		Enable or disable history request list related controls according to
+		the status of the list: filled with items or empty.
+
+		Only handles state of the request history list buttons which
+		operates on the list globally, not on specific items of the list.
+
+		Those buttons are:
+			Display/hide request history list button
+			Replay all button
+			Save request history list menu item button
+		'''
+		if len(self.requestListRV.data) == 0:
+			# request list is empty
+			self.toggleHistoButton.state = 'normal'
+			self.toggleHistoButton.disabled = True
+			self.boxLayoutContainingRV.height = '0dp'
+			self.dropDownMenu.saveButton.disabled = True
+		else:
+			self.toggleHistoButton.disabled = False
+			self.dropDownMenu.saveButton.disabled = False

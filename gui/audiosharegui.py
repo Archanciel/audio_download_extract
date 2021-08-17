@@ -38,7 +38,7 @@ class AudioShareSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 		
 		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-		self.appGUI.refocusOnNameTextInputField()
+		self.appGUI.refocusOnFirstRequestInput()
 	
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
@@ -54,7 +54,7 @@ class AudioShareSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 		
 		self.updateLineValues(AudioShareSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-		self.appGUI.refocusOnNameTextInputField()
+		self.appGUI.refocusOnFirstRequestInput()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
 		movedName, movedEmail, movedPhoneNumber = self.getSelectedContactValues(movedItemSelIndex)
@@ -167,13 +167,11 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			self.audioShareGUI.emailTextInputField.text = selEmail
 			self.audioShareGUI.phoneNumberTextInputField.text = selPhoneNumber
 
-		self.audioShareGUI.refocusOnNameTextInputField()
+		self.audioShareGUI.refocusOnFirstRequestInput()
 		self.audioShareGUI.enableStateOfRequestListSingleItemButtons()
 
 
 class AudioShareGUI(AudioPositionGUI):
-	showRequestList = False
-
 	def __init__(self, **kw):
 		super(AudioShareGUI, self).__init__(**kw)
 		
@@ -203,48 +201,13 @@ class AudioShareGUI(AudioPositionGUI):
 		if self.showRequestList:
 			self.adjustRequestListSize()
 	
-	def setRVListSizeParms(self,
-	                       rvListItemHeight,
-	                       rvListMaxVisibleItems,
-	                       rvListItemSpacing):
-		self.rvListItemHeight = rvListItemHeight
-		self.rvListMaxVisibleItems = rvListMaxVisibleItems
-		self.maxRvListHeight = self.rvListMaxVisibleItems * self.rvListItemHeight
-		
-		# setting RecycleView list item height from config
-		self.requestListRVSelBoxLayout.default_size = None, self.rvListItemHeight
-		self.requestListRVSelBoxLayout.spacing = rvListItemSpacing
-	
-	def toggleRequestList(self):
+	def _refocusOnFirstTextInput(self, *args):
 		'''
-		called by 'History' toggle button to toggle the display of the history
-		request list.
+		This method is here to be used as callback by Clock and must not be called directly
+		:param args:
+		:return:
 		'''
-		if self.showRequestList:
-			# RecycleView request history list is currently displayed and
-			# will be hidden
-			self.boxLayoutContainingRV.height = '0dp'
-			
-			# when hidding the history request list, an item can be selected.
-			# For this reason, the disableStateOfRequestListSingleItemButtons()
-			# must be called explicitely called, otherwise the history request
-			# list items specific buttons remain isLoadAtStartChkboxActive !
-			self.disableStateOfRequestListSingleItemButtons()
-			self.showRequestList = False
-		else:
-			# RecycleView request history list is currently hidden and
-			# will be displayed
-			self.adjustRequestListSize()
-			self.showRequestList = True
-			self.resetListViewScrollToEnd()
-		
-		self.refocusOnNameTextInputField()
-	
-	def adjustRequestListSize(self):
-		listItemNumber = len(self.requestListRV.data)
-		self.boxLayoutContainingRV.height = min(listItemNumber * self.rvListItemHeight, self.maxRvListHeight)
-		
-		return listItemNumber
+		self.nameTextInputField.focus = True
 	
 	def deleteRequest(self, *args):
 		# deleting selected item from RecycleView list
@@ -257,9 +220,7 @@ class AudioShareGUI(AudioPositionGUI):
 			self.disableStateOfRequestListSingleItemButtons()
 			self.toggleHistoButton.disabled = True
 			self.showRequestList = False
-			self.nameTextInputField.text = ''
-			self.emailTextInputField.text = ''
-			self.phoneNumberTextInputField.text = ''
+			self.emptyRequestFields()
 		
 		currentSelItemIdx = self.requestListRVSelBoxLayout.selected_nodes[0]
 		
@@ -275,7 +236,12 @@ class AudioShareGUI(AudioPositionGUI):
 		
 		self.manageStateOfGlobalRequestListButtons()
 		
-		self.refocusOnNameTextInputField()
+		self.refocusOnFirstRequestInput()
+	
+	def emptyRequestFields(self):
+		self.nameTextInputField.text = ''
+		self.emailTextInputField.text = ''
+		self.phoneNumberTextInputField.text = ''
 	
 	def clearHistoryListSelection(self):
 		self.requestListRV._get_layout_manager().clear_selection()
@@ -293,7 +259,7 @@ class AudioShareGUI(AudioPositionGUI):
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
 		
-		self.refocusOnNameTextInputField()
+		self.refocusOnFirstRequestInput()
 
 	def setInputValues(self):
 		# Get new values from the TextInput fields
@@ -307,12 +273,8 @@ class AudioShareGUI(AudioPositionGUI):
 			
 			self.resetListViewScrollToEnd()
 			self.manageStateOfGlobalRequestListButtons()
-			
-			self.nameTextInputField.text = ''
-			self.emailTextInputField.text = ''
-			self.phoneNumberTextInputField.text = ''
-			
-			self.refocusOnNameTextInputField()
+			self.emptyRequestFields()
+			self.refocusOnFirstRequestInput()
 		elif name == '':
 			self.nameTextInputField.focus = True
 		elif email == '':
@@ -331,47 +293,6 @@ class AudioShareGUI(AudioPositionGUI):
 		phoneNumber = self.phoneNumberTextInputField.text
 		
 		return name, email, phoneNumber
-	
-	def enableStateOfRequestListSingleItemButtons(self):
-		"""
-		This method handles the states of the single items of the request
-		history list.
-		"""
-		if len(self.requestListRVSelBoxLayout.selected_nodes):
-			# here, a request list item is selected and the
-			# requestListRVSelBoxLayout.selected_nodes list has one
-			# element !
-			self.deleteButton.disabled = False
-			self.replaceButton.disabled = False
-			self.moveUpButton.disabled = False
-			self.moveDownButton.disabled = False
-		else:
-			self.disableStateOfRequestListSingleItemButtons()
-	
-	def disableStateOfRequestListSingleItemButtons(self):
-		self.deleteButton.disabled = True
-		self.replaceButton.disabled = True
-		self.moveUpButton.disabled = True
-		self.moveDownButton.disabled = True
-	
-	def loadHistoryDataIfSet(self):
-		'''
-		Testing at app start if data path defined in settings does exist
-		and if history file loaded at start app does exist. Since a warning popup
-		is displayed in case of invalid data, this must be performed here and
-		not in audioDownloaderGUI.__init__ where no popup could be displayed.
-		:return:
-		'''
-		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.dataPath)
-		
-		if self.ensureDataPathExist(self.dataPath, dataPathNotExistMessage):
-			# loading the load at start history file if defined
-			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
-			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
-			
-			if historyFilePathFilename != '' and self.ensureDataPathFileNameExist(
-					historyFilePathFilename, dataFileNotFoundMessage):
-				self.loadHistoryFromPathFilename(historyFilePathFilename)
 	
 	def loadHistoryFromPathFilename(self, pathFileName):
 		self.currentLoadedFathFileName = pathFileName
@@ -399,60 +320,7 @@ class AudioShareGUI(AudioPositionGUI):
 		self.resetListViewScrollToEnd()
 		
 		self.manageStateOfGlobalRequestListButtons()
-		self.refocusOnNameTextInputField()
-	
-	def resetListViewScrollToEnd(self):
-		maxVisibleItemNumber = self.rvListMaxVisibleItems
-		listLength = len(self.requestListRV.data)
-		
-		if listLength > maxVisibleItemNumber:
-			# for the moment, I do not know how to scroll to end of RecyclweView !
-			# listView.scroll_to(listLength - maxVisibleItemNumber)
-			pass
-		else:
-			if self.showRequestList:
-				listItemNumber = self.adjustRequestListSize()
-				if listItemNumber == 0:
-					self.showRequestList = False
-					self.manageStateOfGlobalRequestListButtons()
-	
-	def manageStateOfGlobalRequestListButtons(self):
-		'''
-		Enable or disable history request list related controls according to
-		the status of the list: filled with items or empty.
-
-		Only handles state of the request history list buttons which
-		operates on the list globally, not on specific items of the list.
-
-		Those buttons are:
-			Display/hide request history list button
-			Replay all button
-			Save request history list menu item button
-		'''
-		if len(self.requestListRV.data) == 0:
-			# request list is empty
-			self.toggleHistoButton.state = 'normal'
-			self.toggleHistoButton.disabled = True
-			self.boxLayoutContainingRV.height = '0dp'
-			self.dropDownMenu.saveButton.disabled = True
-		else:
-			self.toggleHistoButton.disabled = False
-			self.dropDownMenu.saveButton.disabled = False
-	
-	def refocusOnNameTextInputField(self):
-		# defining a delay of 0.5 sec ensure the
-		# refocus works in all situations, moving
-		# up and down comprised (0.1 sec was not
-		# sufficient for item move ...)
-		Clock.schedule_once(self._refocusOnNameTextInputField, 0.5)
-	
-	def _refocusOnNameTextInputField(self, *args):
-		'''
-		This method is here to be used as callback by Clock and must not be called directly
-		:param args:
-		:return:
-		'''
-		self.nameTextInputField.focus = True
+		self.refocusOnFirstRequestInput()
 	
 	def initSoundFile(self, sharedAudioFilePathName):
 		if 'mp3' != sharedAudioFilePathName[-3:]:
