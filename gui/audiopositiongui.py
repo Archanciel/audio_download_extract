@@ -24,7 +24,9 @@ class AudioPositionGUI(AudioGUI):
 	                       newSoundPos,
 	                       soundFilePlayButton):
 		"""
-		This method avoids duplicating several time the same code.
+		This method avoids duplicating several time the same code. It updates
+		the sound position of the split file if called by AudioExtractGUI
+		or the sound position of the shared file if called by AudioShareGUI.
 		
 		:param soundloaderMp3Obj:
 		:param newSoundPos:

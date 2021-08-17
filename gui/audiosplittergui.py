@@ -131,6 +131,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 			self.soundloaderSourceMp3Obj.seek(newSoundPos)
 			if self.soundloaderSourceMp3Obj.status == 'stop':
 				# here, the mp3 was played until its end
+				self.stopSplitFile()
 				self.soundloaderSourceMp3Obj.play()
 				self.sourceFilePlayButton.disabled = True
 				self.startSliderUpdateThread()
@@ -140,7 +141,16 @@ class AudioSplitterGUI(AudioPositionGUI):
 				self.sourceFilePlayButton.disabled = True
 
 		self.updateCurrentSoundPosTextInput(newSoundPos)
-		
+
+	def updateFileSoundPos(self,
+	                       soundloaderMp3Obj,
+	                       newSoundPos,
+	                       soundFilePlayButton):
+		self.stopSourceFile()
+		super(AudioSplitterGUI, self).updateFileSoundPos(soundloaderMp3Obj,
+		                                                 newSoundPos,
+		                                                 soundFilePlayButton)
+
 	def stopSourceFile(self):
 		"""
 		Method called when pressing the source file Stop button
