@@ -5,7 +5,6 @@ import threading, time
 from audiopositiongui import AudioPositionGUI
 from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
-from customdropdown import CustomDropDown
 
 
 class AudioSplitterGUI(AudioPositionGUI):
@@ -28,7 +27,6 @@ class AudioSplitterGUI(AudioPositionGUI):
 		self.sliderUpdateFrequency = 1
 		self.sourceAudioFilePathNameInitValue = ''
 		self.splitAudioFilePathNameInitValue = ''
-		self.dropDownMenu = CustomDropDown(owner=self)
 
 		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
 		# method called by separate thread overwrites the user position

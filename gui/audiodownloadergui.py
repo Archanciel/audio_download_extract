@@ -240,21 +240,6 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def __init__(self, **kwargs):
 		super(AudioDownloaderGUI, self).__init__(**kwargs)
-
-		# due to separate customdropdown kv file, import
-		# can not be placed elsewhere with other import
-		# sentences.
-		from gui.customdropdown import CustomDropDown
-		self.dropDownMenu = CustomDropDown(owner=self)
-
-		if os.name == 'posix':
-			configPath = '/sdcard/audiodownloader.ini'
-		else:
-			configPath = 'c:\\temp\\audiodownloader.ini'
-
-		self.configMgr = ConfigManager(configPath)
-		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
-		self.dataPath = self.configMgr.dataPath
 	
 	def _finish_init(self, dt):
 		"""
@@ -265,21 +250,19 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		:param dt:
 		"""
+		super(AudioDownloaderGUI, self)._finish_init(dt)
+		
 		if os.name == 'posix':
-			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 			if GuiUtil.onSmartPhone():
 				self.boxLayoutContainingStatusBar.height = "73dp"
 			else:
 				self.boxLayoutContainingStatusBar.height = "43dp"
 
 		else:
-			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
 
-		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
-								int(self.configMgr.histoListVisibleSize),
-								requestListRVSpacing)
+		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)

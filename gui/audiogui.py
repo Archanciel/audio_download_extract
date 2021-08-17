@@ -6,6 +6,9 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 
+from constants import *
+from configmanager import ConfigManager
+from gui.customdropdown import CustomDropDown
 from gui.guiutil import GuiUtil
 from gui.helppopup import HelpPopup
 
@@ -21,7 +24,8 @@ class AudioGUI(Screen):
 		self.isExtractFileDropDownMenuItemDisplayed = True
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
-		
+		self.dropDownMenu = CustomDropDown(owner=self)
+
 		# WARNING: accessing MainWindow fields defined in kv file
 		# in the __init__ ctor is no longer possible when using
 		# ScreenManager. Here's the solution:
@@ -36,7 +40,22 @@ class AudioGUI(Screen):
 
 		:param dt:
 		"""
-		pass
+
+		if os.name == 'posix':
+			configPath = '/sdcard/audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
+		else:
+			configPath = 'c:\\temp\\audiodownloader.ini'
+			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+
+		self.configMgr = ConfigManager(configPath)
+		self.dataPath = self.configMgr.dataPath
+
+		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
+								int(self.configMgr.histoListVisibleSize),
+								requestListRVSpacing)
+
+		self.loadHistoryDataIfSet()
 
 	def outputResult(self, resultStr):
 		markupBoldStart = '[b]'

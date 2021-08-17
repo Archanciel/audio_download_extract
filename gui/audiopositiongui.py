@@ -52,3 +52,13 @@ class AudioPositionGUI(AudioGUI):
 			self.sharedAudioFilePathName.text = self.sharedAudioFilePathNameInitValue
 		elif id == 'split_file_path_name':
 			self.splitAudioFilePathName.text = self.splitAudioFilePathNameInitValue
+
+	def _finish_init(self, dt):
+		"""
+		Due to using WindowManager for managing multiple screens, the content
+		of this method can no longer be located in the __init__ ctor method,
+		but must be called by Clock.schedule_once().
+
+		:param dt:
+		"""
+		super(AudioPositionGUI, self)._finish_init(dt)

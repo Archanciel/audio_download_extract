@@ -5,9 +5,7 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 from audiopositiongui import AudioPositionGUI
-from configmanager import ConfigManager
 from constants import *
-from customdropdown import CustomDropDown
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 
 
@@ -188,25 +186,10 @@ class AudioShareGUI(AudioPositionGUI):
 
 		:param dt:
 		"""
+		super(AudioShareGUI, self)._finish_init(dt)
+		
 		self.soundloaderSharedMp3Obj = None
 		self.sharedAudioFilePathNameInitValue = ''
-		self.dropDownMenu = CustomDropDown(owner=self)
-
-		if os.name == 'posix':
-			configPath = '/sdcard/audiodownloader.ini'
-			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
-		else:
-			configPath = 'c:\\temp\\audiodownloader.ini'
-			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
-
-		self.configMgr = ConfigManager(configPath)
-		self.dataPath = self.configMgr.dataPath
-
-		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
-								int(self.configMgr.histoListVisibleSize),
-								requestListRVSpacing)
-
-		self.loadHistoryDataIfSet()
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
