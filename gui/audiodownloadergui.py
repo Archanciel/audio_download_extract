@@ -925,9 +925,6 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('audiosplittergui.kv')
 		Builder.load_file('audiosharegui.kv')
 		
-		from audiosplittergui import AudioSplitterGUI  # must be kept to avoid Builder error
-		from audiosharegui import AudioShareGUI  # must be kept to avoid Builder error
-
 		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':
