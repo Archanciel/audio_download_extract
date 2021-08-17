@@ -146,6 +146,14 @@ class AudioSplitterGUI(AudioPositionGUI):
 	                       soundloaderMp3Obj,
 	                       newSoundPos,
 	                       soundFilePlayButton):
+		"""
+		Method called when changing split file sound position.
+		
+		:param soundloaderMp3Obj:
+		:param newSoundPos:
+		:param soundFilePlayButton:
+		:return:
+		"""
 		self.stopSourceFile()
 		super(AudioSplitterGUI, self).updateFileSoundPos(soundloaderMp3Obj,
 		                                                 newSoundPos,
