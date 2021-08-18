@@ -1,0 +1,12 @@
+{
+    "1": {
+        "email": "jp.schnyder@gmail.com",
+        "name": "Jean-Pierre Schnyder",
+        "phoneNumber": "+41768224987"
+    },
+    "2": {
+        "email": "tamara.jagne@gmail.com",
+        "name": "Tamara Jagne",
+        "phoneNumber": "+41764286884"
+    }
+}
