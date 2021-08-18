@@ -613,7 +613,6 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SAVE)
 		self.popup = SaveFileChooserPopup(title=popupTitle,
 										  rootGUI=self,
-										  load=self.load,
 										  cancel=self.dismissPopup)
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
