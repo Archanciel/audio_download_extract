@@ -74,8 +74,16 @@ class FileChooserPopup(AbstractPopup):
 	cancel = ObjectProperty(None)
 	
 	def __init__(self, rootGUI, **kwargs):
+		"""
+		Constructor.
+
+		:param rootGUI:
+		:param kwargs: contains popup title, root gui load and cancel bound
+					   methods. So, self.load() and self.cancel() in fact
+					   execute the root gui load and cancel bound methods.
+		"""
 		super(FileChooserPopup, self).__init__(**kwargs)
-		
+
 		self.sdCardDir = None
 		self.rootGUI = rootGUI
 		
@@ -136,6 +144,14 @@ class LoadFileChooserPopup(FileChooserPopup):
 	
 	"""
 	def __init__(self, rootGUI, **kwargs):
+		"""
+		Constructor.
+		
+		:param rootGUI:
+		:param kwargs: contains popup title, root gui load and cancel bound
+					   methods. So, self.load() and self.cancel() in fact
+					   execute the root gui load and cancel bound methods.
+		"""
 		super(LoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
 	def loadFile(self, path, selection):
