@@ -17,6 +17,9 @@ class ConfigManager:
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
 	
+	CONFIG_KEY_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME = 'loadatstartsharecontactspathfilename'
+	DEFAULT_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME = ''
+	
 	CONFIG_KEY_APP_SIZE = 'defaultappsize'
 	DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION = '0.62'
 	
@@ -31,8 +34,8 @@ class ConfigManager:
 	APP_SIZE_HALF = 'Half'
 	APP_SIZE_FULL = 'Full'
 	
-	def __init__(self, filename):
-		self.config = ConfigObj(filename)
+	def __init__(self, configFilePathName):
+		self.config = ConfigObj(configFilePathName)
 		self._updated = False
 		
 		if len(self.config) == 0:
@@ -53,6 +56,13 @@ class ConfigManager:
 				self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME]
 		except KeyError:
 			self.__loadAtStartPathFilename = self.DEFAULT_LOAD_AT_START_PATH_FILENAME
+			self._updated = True
+		
+		try:
+			self.__loadAtStartShareContactsPathFilename = self.config[self.CONFIG_SECTION_GENERAL][
+				self.CONFIG_KEY_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME]
+		except KeyError:
+			self.__loadAtStartShareContactsPathFilename = self.DEFAULT_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME
 			self._updated = True
 		
 		try:
@@ -126,6 +136,7 @@ class ConfigManager:
 			self.appSize = self.APP_SIZE_FULL
 		
 		self.loadAtStartPathFilename = self.DEFAULT_LOAD_AT_START_PATH_FILENAME
+		self.loadAtStartShareContactsPathFilename = self.DEFAULT_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME
 		self.histoListVisibleSize = self.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE
 		self.appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
 		self._updated = True
@@ -148,6 +159,15 @@ class ConfigManager:
 	@loadAtStartPathFilename.setter
 	def loadAtStartPathFilename(self, loadAtStartPathFilenameStr):
 		self.__loadAtStartPathFilename = loadAtStartPathFilenameStr
+		self._updated = True
+	
+	@property
+	def loadAtStartShareContactsPathFilename(self):
+		return self.__loadAtStartShareContactsPathFilename
+	
+	@loadAtStartShareContactsPathFilename.setter
+	def loadAtStartShareContactsPathFilename(self, loadAtStartShareContactsPathFilenameStr):
+		self.__loadAtStartShareContactsPathFilename = loadAtStartShareContactsPathFilenameStr
 		self._updated = True
 	
 	@property
@@ -193,6 +213,8 @@ class ConfigManager:
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
 		self.config[self.CONFIG_SECTION_GENERAL][
 			self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME] = self.loadAtStartPathFilename
+		self.config[self.CONFIG_SECTION_GENERAL][
+			self.CONFIG_KEY_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME] = self.loadAtStartShareContactsPathFilename
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE] = self.histoListVisibleSize
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT] = self.histoListItemHeight
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE] = self.appSize

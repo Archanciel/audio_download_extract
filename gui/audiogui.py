@@ -42,15 +42,19 @@ class AudioGUI(Screen):
 
 		:param dt:
 		"""
-
+		
+		configFileName = 'audiodownloader.ini'
+		
 		if os.name == 'posix':
-			configPath = '/sdcard/audiodownloader.ini'
+			self.configFilePath = '/sdcard/'
+			configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
-			configPath = 'c:\\temp\\audiodownloader.ini'
+			self.configFilePath = 'c:\\temp\\'
+			configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 
-		self.configMgr = ConfigManager(configPath)
+		self.configMgr = ConfigManager(configFilePathName)
 		self.audiobookPath = self.configMgr.dataPath
 
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),

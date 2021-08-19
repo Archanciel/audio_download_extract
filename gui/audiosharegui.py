@@ -8,7 +8,7 @@ from audiopositiongui import AudioPositionGUI
 from constants import *
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from sharecontactdic import *
-
+from audiogui import *
 
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
@@ -291,6 +291,26 @@ class AudioShareGUI(AudioPositionGUI):
 		
 		return name, email, phoneNumber
 	
+	def loadHistoryDataIfSet(self):
+		'''
+		Testing at app start if data path defined in settings does exist
+		and if history file loaded at start app does exist. Since a warning popup
+		is displayed in case of invalid data, this must be performed here and
+		not in audioDownloaderGUI.__init__ where no popup could be displayed.
+		:return:
+		'''
+		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.audiobookPath)
+		
+		if self.ensureDataPathExist(self.audiobookPath, dataPathNotExistMessage):
+			# loading the load at start history file if defined
+			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
+			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
+			
+			if historyFilePathFilename != '' and self.ensureDataPathFileNameExist(
+					historyFilePathFilename, dataFileNotFoundMessage):
+				self.loadHistoryFromPathFilename(historyFilePathFilename)
+				self.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
+	
 	def loadHistoryFromPathFilename(self, pathFileName):
 		self.currentLoadedFathFileName = pathFileName
 		dataFileNotFoundMessage = self.buildFileNotFoundMessage(pathFileName)
@@ -317,6 +337,53 @@ class AudioShareGUI(AudioPositionGUI):
 		self.resetListViewScrollToEnd()
 		
 		self.manageStateOfGlobalRequestListButtons()
+		self.refocusOnFirstRequestInput()
+	
+	def saveHistoryToFile(self, existingPathOnly, savingPathFileName, isLoadAtStart):
+		"""
+
+		:param existingPathOnly: this is the current path in the FileChooser dialog
+		:param savingPathFileName: path + file name specified by the user in the
+			   path file name TextInput save dialog field
+		:param isLoadAtStart: value of the load at start CheckBox
+		"""
+		if not savingPathFileName:
+			# no file selected. Save dialog remains open ...
+			return
+		
+		asciiOnlyPathFileName = savingPathFileName.encode("ascii", "ignore").decode()
+		
+		if asciiOnlyPathFileName != savingPathFileName:
+			message = self.buildNonAsciiFilePathNameMessage(savingPathFileName)
+			self.displayPopupWarning(message)
+			return
+		
+		self.currentLoadedFathFileName = savingPathFileName
+		pathElemLst = savingPathFileName.split(sep)
+		pathContainedInFilePathName = sep.join(pathElemLst[:-1])
+		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(
+			pathContainedInFilePathName)
+		
+		if not self.ensureDataPathExist(pathContainedInFilePathName, savingPathNotExistMessage):
+			# data path defined specified in saved file path name does not exist. Error popup is displayed.
+			return
+		
+		with open(savingPathFileName, 'w') as stream:
+			for listEntry in self.requestListRV.data:
+				line = listEntry['text']
+				line = line + '\n'
+				stream.write(line)
+		
+		# saving in config file if the saved file
+		# is to be loaded at application start
+		if isLoadAtStart:
+			self.configMgr.loadAtStartPathFilename = savingPathFileName
+		else:
+			if self.configMgr.loadAtStartPathFilename == savingPathFileName:
+				self.configMgr.loadAtStartPathFilename = ''
+		
+		self.configMgr.storeConfig()
+		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
 	
 	def initSoundFile(self, sharedAudioFilePathName):
