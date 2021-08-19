@@ -12,15 +12,15 @@ class CustomDropDown(DropDown):
 		self.owner = owner
 
 	def showLoad(self):
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+		message = 'Data path ' + self.owner.audiobookPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
+		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
 			self.owner.openFileLoadPopup()
 
 	def showSave(self):
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+		message = 'Data path ' + self.owner.audiobookPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
+		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
 			self.owner.openFileSavePopup()
 
 	def showSplitAudioFile(self):
@@ -29,9 +29,9 @@ class CustomDropDown(DropDown):
 			self.dismiss()
 			return
 		
-		message = 'Data path ' + self.owner.dataPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+		message = 'Data path ' + self.owner.audiobookPath + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
-		if self.owner.ensureDataPathExist(self.owner.dataPath, message):
+		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
 			self.owner.openFileToSplitLoadPopup()
 
 	def shareAudio(self):

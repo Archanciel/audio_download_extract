@@ -115,7 +115,7 @@ class FileChooserPopup(AbstractPopup):
 		
 		:return:
 		"""
-		dataLocationFromSetting = self.rootGUI.configMgr.dataPath
+		dataLocationFromSetting = self.rootGUI.audiobookPath
 		
 		if platform == 'android':
 			self.pathList.data.append({'text': 'Data file location setting', 'selectable': True,

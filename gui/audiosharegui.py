@@ -7,15 +7,12 @@ from kivy.uix.boxlayout import BoxLayout
 from audiopositiongui import AudioPositionGUI
 from constants import *
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
+from sharecontactdic import *
 
 
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
 PHONE_NUMBER_LABEL_KEY = 'phoneNumberLabel'
-
-CONTACT_NAME_KEY = 'name'
-CONTACT_EMAIL_KEY = 'email'
-CONTACT_PHONE_NUMBER_KEY = 'phoneNumber'
 
 class AudioShareSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''

@@ -51,7 +51,7 @@ class AudioGUI(Screen):
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 
 		self.configMgr = ConfigManager(configPath)
-		self.dataPath = self.configMgr.dataPath
+		self.audiobookPath = self.configMgr.dataPath
 
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
 								int(self.configMgr.histoListVisibleSize),
@@ -179,9 +179,9 @@ class AudioGUI(Screen):
 		not in audioDownloaderGUI.__init__ where no popup could be displayed.
 		:return:
 		'''
-		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.dataPath)
+		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.audiobookPath)
 		
-		if self.ensureDataPathExist(self.dataPath, dataPathNotExistMessage):
+		if self.ensureDataPathExist(self.audiobookPath, dataPathNotExistMessage):
 			# loading the load at start history file if defined
 			historyFilePathFilename = self.configMgr.loadAtStartPathFilename
 			dataFileNotFoundMessage = self.buildFileNotFoundMessage(historyFilePathFilename)
