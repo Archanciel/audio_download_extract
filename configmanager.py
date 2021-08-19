@@ -94,7 +94,7 @@ class ConfigManager:
 			self.__appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
 			self._updated = True
 		
-		self.storeConfig()  # will save config file in case one config key raised an exception
+		self.saveConfig()  # will save config file in case one config key raised an exception
 	
 	def getEmailDic(self):
 		return self.config[self.CONFIG_SECTION_MAILTO]
@@ -141,7 +141,7 @@ class ConfigManager:
 		self.appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
 		self._updated = True
 		
-		self.storeConfig()
+		self.saveConfig()
 	
 	@property
 	def dataPath(self):
@@ -206,7 +206,7 @@ class ConfigManager:
 		self.__appSizeHalfProportion = appSizeHalfProportionStr
 		self._updated = True
 	
-	def storeConfig(self):
+	def saveConfig(self):
 		if not self._updated:
 			return
 		

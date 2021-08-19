@@ -382,7 +382,7 @@ class AudioShareGUI(AudioPositionGUI):
 			if self.configMgr.loadAtStartPathFilename == savingPathFileName:
 				self.configMgr.loadAtStartPathFilename = ''
 		
-		self.configMgr.storeConfig()
+		self.configMgr.saveConfig()
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
 	
