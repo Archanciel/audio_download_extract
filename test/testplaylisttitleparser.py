@@ -236,7 +236,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoSuppressTimeFramesList)
 	
-	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress(self):
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_no_braces(self):
 		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress'
 		timeInfo = '(e0:05:52-0:07:23 s0:10:52-0:10:53)'
 		playlistTitle = expectedPlayListName + ' ' + timeInfo
@@ -257,7 +257,32 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_with_braces(self):
+		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress'
+		timeInfo = '{(e0:05:52-0:07:23 s0:10:52-0:10:53)}'
+		playlistTitle = expectedPlayListName + ' ' + timeInfo
 		
+		expectedVideoExtractTimeFramesList = [[352, 443]]
+		expectedVideoSuppressTimeFramesList = [[652, 653]]
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideoExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideoSuppressTimeFramesList)
+	
 	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos(self):
 		# Example of playlist title: playlist_title (s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		expectedPlayListName = 'Test_title_two_time_frame_one_extract_one_suppress_two_videos'
@@ -407,8 +432,61 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1))
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2))
 		self.assertIsNone(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(3))
+	
+	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end_playlistTitle_with_spaces_and_accented_letters(self):
+		# Example of playlist title: playlist_title {(s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
+		expectedPlayListName = "Audio: - ET L'UNIVERS DISPARAÎTRA La nature illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
+		playlistTitle = expectedPlayListName + ' ' + timeInfo
+		
+		expectedVideo1ExtractTimeFramesList = [[352, 443]]
+		expectedVideo1SuppressTimeFramesList = [[652, 'end']]
+		
+		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
+		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2SuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters(
+			self):
+		expectedPlayListName = "Audio: - ET L'UNIVERS DISPARAÎTRA La nature illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		playlistTitle = expectedPlayListName
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+
 
 if __name__ == '__main__':
-	unittest.main()
-	# tst = TestYoutubeAudioDownloaderOtherMethods()
-	# tst.testCreateDownloadVideoInfoDic_one_time_frame_extract()
+	#unittest.main()
+	tst = TestPlaylistTitleParser()
+	tst.testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end_playlistTitle_with_spaces_and_accented_letters()
+	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters()

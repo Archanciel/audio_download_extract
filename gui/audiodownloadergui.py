@@ -275,17 +275,20 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def _doOnStart(self):
 		'''
-		Testing at app start if the clipboard contains a valid playlist playlistObject.
-		If it is th case, the videos referenced in the playlist will be downloaded and
-		if we are on Windows, their audio will be extracted.
+		Testing at app start if the clipboard contains a valid playlist
+		playlistObject. If it is the case, the videos referenced in the
+		playlist will be downloaded and if we are on Windows, their audio will
+		be extracted.
 
-		Since a information popup is displayed in case of valid playlistObject, this must be performed
-		here and not in AudioDownloaderGUI.__init__ where no popup can be displayed.
+		Since an information popup is displayed in case of valid playlistObject,
+		this must be performed here and not in AudioDownloaderGUI.__init__ where
+		no popup can be displayed.
 
 		:return:
 
 		test urls:
-		multiple videos with time frames (test audio downloader two files with time frames)
+		multiple videos with time frames (test audio downloader two files with
+		time frames)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
 		2 videos no time frames (test audio downloader two files)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
@@ -324,8 +327,8 @@ class AudioDownloaderGUI(AudioGUI):
 			audioShareGUI.initSoundFile(sharedAudioFilePathName=self.playlistOrSingleVideoUrl)
 			self.parent.current = "audioShareScreen"
 			self.manager.transition.direction = "left"
+			
 			return
-
 		else:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
