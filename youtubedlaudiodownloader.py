@@ -32,6 +32,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 											 # 'str' object has no attribute 'write'
 				'quiet': YOUTUBE_DL_QUIET
 			}
+			
+			self.tempYdlFileExtension = 'mp3.ytdl'
 		else:
 			self.ydlOutTmplFormat = '\\%(title)s.%(ext)s'
 			
@@ -44,7 +46,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				}],
 				'quiet': YOUTUBE_DL_QUIET
 			}
-	
+
+			self.tempYdlFileExtension = 'm4a.ytdl'
+
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
@@ -92,20 +96,25 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				try:
 					ydl.download([videoUrl])
 				except AttributeError as e:
-					msgText = '"{}" audio download failed with error {}.\n'.format(videoTitle, e)
-					self.audioController.displayMessage(msgText)
-				else:
-					msgText = '"{}" audio downloaded.\n'.format(videoTitle)
-					self.audioController.displayMessage(msgText)
+					# typically 'str' object has no attribute 'write'. This error
+					# is no longer a problem
+					pass
+
+				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
+				self.audioController.displayMessage(msgText)
 				
-				downloadedVideoFileName = self.getLastCreatedFileName(targetAudioDir)
+				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
 				
 				if videoTitle == '':
 					# the case if ydl.extract_info() raised an AttributeError
-					videoTitle = downloadedVideoFileName.replace('.mp3', '')
-					
-				downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedVideoFileName)
-				downloadVideoInfoDic.saveDic()
+					videoTitle = downloadedAudioFileName.replace('.mp3', '')
+				
+				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
+					# updating and saving the downloadVideoInfoDic only if the audio file
+					# was downloaded successfully enables to retry downloading the playlist.
+					# The failed video download will be retryed.
+					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
+					downloadVideoInfoDic.saveDic()
 
 				videoIndex += 1
 		
@@ -114,7 +123,22 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return downloadVideoInfoDic, None
 
-	def getLastCreatedFileName(self, dir):
+	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
+		"""
+		Return True if no ytdl file version for the passed downloadedAudioFileName
+		exist. Otherwise, this means that the mp3 extraction from the downloaded
+		video failed.
+		
+		:param targetAudioDir:
+		:param downloadedAudioFileName:
+		:return:
+		"""
+		ytdlFileName = downloadedAudioFileName.replace('mp3', self.tempYdlFileExtension)
+		ytdlFilePathName = targetAudioDir + DIR_SEP + ytdlFileName
+		
+		return not os.path.isfile(ytdlFilePathName)
+		
+	def getLastCreatedMp3FileName(self, dir):
 		files = glob.glob(dir + DIR_SEP + '*.mp3')
 		files.sort(key=os.path.getctime, reverse=True)
 		
@@ -227,12 +251,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 			try:
 				ydl.download([singleVideoUrl])
-			except AttributeError as e:
-				msgText = '"{}" audio download failed with error {}.\n'.format(videoTitle, e)
-				self.audioController.displayMessage(msgText)
-			else:
-				msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
-				self.audioController.displayMessage(msgText)
+			except AttributeError:
+				# typically 'str' object has no attribute 'write'. This error
+				# is no longer a problem
+				pass
+
+			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
+			self.audioController.displayMessage(msgText)
 	
 	def createTargetDirIfNotExist(self, targetAudioDir):
 		targetAudioDirList = targetAudioDir.split(DIR_SEP)

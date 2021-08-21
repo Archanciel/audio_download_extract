@@ -22,7 +22,7 @@ class PlaylistTitleParser:
 				 accessError in case of problem, None otherwise
 		"""
 		playlistNamePattern = r'([\w_ ]+)((\([\d:\-eEsS ]*\)))?'
-		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçö :'_-]+)(\{.*\})?"
+		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö :'_-]+)(\{.*\})?"
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
