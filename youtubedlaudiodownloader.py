@@ -100,9 +100,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# is no longer a problem
 					logging.info("Downloading video {} caused this Attribute exception: {0}".format(videoTitle, e))
 				
-				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
-				self.audioController.displayMessage(msgText)
-				
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
 				
 				if videoTitle == '':
@@ -115,6 +112,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# The failed video download will be retryed.
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
 					downloadVideoInfoDic.saveDic()
+					
+					msgText = '"{}" audio downloaded.\n'.format(videoTitle)
+				else:
+					msgText = '"{}" audio download failed. Please retry downloading the playlist later.\n'.format(videoTitle)
+
+				self.audioController.displayMessage(msgText)
 
 				videoIndex += 1
 		
