@@ -98,7 +98,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					logging.info("Downloading video {} caused this Attribute exception: {0}".format(videoTitle, e))
+					logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
 				
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
 				
@@ -138,6 +138,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		"""
 		ytdlFileName = downloadedAudioFileName.replace('mp3', self.tempYdlFileExtension)
 		ytdlFilePathName = targetAudioDir + DIR_SEP + ytdlFileName
+		
+		# logging.info('isAudioFileDownloadOk. ytdlFileName = {}, ytdlFilePathName = {}'.format(ytdlFileName, ytdlFilePathName))
+		# logging.info('isAudioFileDownloadOk. doesYtdlFileExist = {}'.format(os.path.isfile(ytdlFilePathName)))
 		
 		return not os.path.isfile(ytdlFilePathName)
 		
@@ -257,7 +260,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			except AttributeError as e:
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
-				logging.info("Downloading video {} caused this Attribute exception: {0}".format(videoTitle, e))
+				logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
 			
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
