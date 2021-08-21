@@ -1,4 +1,4 @@
-import glob, re
+import glob, re, logging
 from os import listdir
 from os.path import isfile, join
 from urllib.error import URLError
@@ -98,8 +98,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					pass
-
+					logging.info("Downloading video {} caused this Attribute exception: {0}".format(videoTitle, e))
+				
 				msgText = '"{}" audio downloaded.\n'.format(videoTitle)
 				self.audioController.displayMessage(msgText)
 				
@@ -251,11 +251,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 			try:
 				ydl.download([singleVideoUrl])
-			except AttributeError:
+			except AttributeError as e:
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
-				pass
-
+				logging.info("Downloading video {} caused this Attribute exception: {0}".format(videoTitle, e))
+			
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
 	
