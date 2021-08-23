@@ -79,10 +79,11 @@ class DownloadVideoInfoDic:
 
 	def updatePlaylistTitle(self, playlistTitle):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
-		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = buildDownloadDirValue(playlistTitle)
+		#self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = self.buildDownloadDirValue(playlistTitle)
 
 	def buildDownloadDirValue(self, playlistTitle):
-		pass
+		# must be changed !!!
+		return playlistTitle
 	
 	def saveDic(self):
 		with open(self.getInfoDicFilePathName(self.getPlaylistDownloadDir(), self.getPlaylistName()), 'w') as f:
