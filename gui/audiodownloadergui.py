@@ -354,7 +354,7 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			if self.confirmPopupTextChanged:
-				self.downloadVideoInfoDic.updatePlaylistTitle(self.popup.editableTextInput.text)
+				self.downloadVideoInfoDic.updatePlaylistTitle(self.confirmPopup.editableTextInput.text)
 				
 			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 													self.singleVideoTitle)
@@ -368,10 +368,8 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def setConfirmPopupTextChanged(self):
 		"""
-		Method called if the editable text of the ConfirmPopup was chnged, i.e. if the
-		playlist name was modified by the user.
-		
-		:return:
+		Method called if the editable text of the ConfirmPopup was changed, i.e. if the
+		playlist title was modified by the user.
 		"""
 		self.confirmPopupTextChanged = True
 		
@@ -879,16 +877,17 @@ class AudioDownloaderGUI(AudioGUI):
 			msgWidth = 54
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
-		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
+		self.confirmPopup = ConfirmPopup(self, text=confirmPopupFormattedMsg)
 		
 		if isPlayListToDownload:
-			confirmPopup.ids.set_folder_btn.disabled = True
+			self.confirmPopup.ids.set_folder_btn.disabled = True
 		else:
-			confirmPopup.ids.set_folder_btn.disabled = False
+			self.confirmPopup.ids.set_folder_btn.disabled = False
 			
-		confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
+		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
+		
 		popup = Popup(title=confirmPopupTitle,
-					  content=confirmPopup,
+					  content=self.confirmPopup,
 					  size_hint=(None, None),
 					  pos_hint={'top': 0.8},
 					  size=popupSize,
