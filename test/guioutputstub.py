@@ -15,11 +15,6 @@ class GuiOutputStub:
 	
 	def displayError(self, msg):
 		print(msg)
-		
-	def getConfirmation(self, title, msg):
-		print(title + '\n' + msg)
-		
-		return True
 	
 	def clearClipboard(self):
 		from tkinter import Tk
