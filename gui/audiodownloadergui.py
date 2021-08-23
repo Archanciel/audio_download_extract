@@ -869,6 +869,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
+		
 		if isPlayListToDownload:
 			confirmPopup.ids.set_folder_btn.disabled = True
 		else:
