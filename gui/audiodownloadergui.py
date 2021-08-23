@@ -270,6 +270,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
 		self.singleVideoDownloadDir = SINGLE_VIDEO_AUDIO_DIR
+		self.confirmPopupTextChanged = False
+
 		
 		self._doOnStart()
 	
@@ -343,7 +345,17 @@ class AudioDownloaderGUI(AudioGUI):
 		self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
+		"""
+		Method called when one of the ConfirmPopup button is pushed.
+		
+		:param instance:
+		:param answer:
+		:return:
+		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
+			if self.confirmPopupTextChanged:
+				self.downloadVideoInfoDic.updatePlaylistTitle(self.popup.editableTextInput.text)
+				
 			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 													self.singleVideoTitle)
 			self.popup.dismiss()
@@ -353,7 +365,16 @@ class AudioDownloaderGUI(AudioGUI):
 			self.popup.dismiss()
 			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
 											self.singleVideoTitle)
-	
+
+	def setConfirmPopupTextChanged(self):
+		"""
+		Method called if the editable text of the ConfirmPopup was chnged, i.e. if the
+		playlist name was modified by the user.
+		
+		:return:
+		"""
+		self.confirmPopupTextChanged = True
+		
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
@@ -833,23 +854,6 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def setMessage(self, msgText):
 		pass
-	
-	def getConfirmation(self, title, msgText):
-		"""
-		Method called by AudioController
-		
-		:param title:
-		:param msgText:
-		:return:
-		"""
-		self.popup = self.createConfirmPopup(title, msgText, self.onConfirmPopupAnswer)
-		self.popup.open()
-	
-	def onConfirmPopupAnswer(self, instance, answer):
-		answer = answer == 'yes'
-		self.popup.dismiss()
-		
-		return answer
 	
 	def createConfirmPopup(self,
 						   isPlayListToDownload,
