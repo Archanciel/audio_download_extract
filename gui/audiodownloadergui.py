@@ -835,6 +835,13 @@ class AudioDownloaderGUI(AudioGUI):
 		pass
 	
 	def getConfirmation(self, title, msgText):
+		"""
+		Method called by AudioController
+		
+		:param title:
+		:param msgText:
+		:return:
+		"""
 		self.popup = self.createConfirmPopup(title, msgText, self.onConfirmPopupAnswer)
 		self.popup.open()
 	
@@ -861,10 +868,10 @@ class AudioDownloaderGUI(AudioGUI):
 		msgWidth = 100
 		
 		if platform == 'android':
-			popupSize = (980, 600)
+			popupSize = (980, 100)
 			msgWidth = 45
 		elif platform == 'win':
-			popupSize = (500, 200)
+			popupSize = (500, 100)
 			msgWidth = 54
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
