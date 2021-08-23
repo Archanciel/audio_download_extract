@@ -18,7 +18,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 		
-		# deleting video info dic file
+		# deleting video info dic files
 		files = glob.glob(downloadDir + DIR_SEP + '*')
 		
 		for f in files:
@@ -28,24 +28,36 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
 		videoIndex = dvi.getNextVideoIndex()
-		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
 		videoIndex += 1
-		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
 		
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
-		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoIndex(1))
-		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoTitle('title 2'))
-		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoIndex(2))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
 
-		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 1'))
-		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 2'))
+		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle(title_1))
+		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle(title_2))
 
-		self.assertEqual('title 1', dvi.getVideoTitleForVideoIndex(1))
+		self.assertEqual(title_1, dvi.getVideoTitleForVideoIndex(1))
 
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoTitle('title 1'))
-		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
-		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoTitle('title 2'))
+		self.assertEqual(videoFileName_1, dvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual(videoFileName_1, dvi.getVideoFileNameForVideoTitle(title_1))
+		self.assertEqual(videoFileName_2, dvi.getVideoFileNameForVideoIndex(2))
+		self.assertEqual(videoFileName_2, dvi.getVideoFileNameForVideoTitle(title_2))
 
 		self.assertIsNone(dvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=1))
 		self.assertIsNone(dvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=1))
@@ -387,6 +399,311 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(suppressFileName, reloadedDvi.getSuppressedFileNameForVideoIndex(1))
 		self.assertEqual(suppressTimeFrameList, reloadedDvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
 		self.assertEqual(keptTimeFrameList, reloadedDvi.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
+	
+	def testRemoveFirstVideoInfoForVideoTitle(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoTitle(title_1)
+		
+		# print('dvi after removing first video info')
+		# print(dvi)
+		
+		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
+		self.assertEqual(3, dvi.getNextVideoIndex())
+	
+	def testRemoveSecondVideoInfoForVideoTitle(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoTitle(title_2)
+		
+		# print('dvi after removing second video info')
+		# print(dvi)
+		
+		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(2))
+		self.assertEqual(3, dvi.getNextVideoIndex())
+	
+	def testRemoveVideoInfoForVideoTitle_in_empty_dic(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		title_1 = 'title 1'
+		
+		dvi.removeVideoInfoForVideoTitle(title_1)
+		
+		# print('dvi after removing video info in empty dic')
+		# print(dvi)
+		
+		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
+		self.assertEqual(1, dvi.getNextVideoIndex())
+	
+	def testRemoveVideoInfoForBadVideoTitle(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoTitle('bad title')
+		
+		# print('dvi after removing bad title video info')
+		# print(dvi)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		self.assertEqual(3, dvi.getNextVideoIndex())
+	
+	def testRemoveFirstVideoInfoForVideoIndex(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoIndex(1)
+		
+		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
+		self.assertEqual(3, dvi.getNextVideoIndex())
+	
+	def testRemoveSecondVideoInfoForVideoIndex(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoIndex(2)
+		
+		# print('dvi after removing second video info')
+		# print(dvi)
+		
+		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(2))
+		self.assertEqual(3, dvi.getNextVideoIndex())
+	
+	def testRemoveVideoInfoForBadVideoIndex(self):
+		playListName = 'test_download_vid_info_dic'
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting video info dic files
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp4'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		
+		dvi.removeVideoInfoForVideoIndex(100)
+		
+		# print('dvi after removing bad title video info')
+		# print(dvi)
+		
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
+		self.assertEqual(3, dvi.getNextVideoIndex())
 
 
 if __name__ == '__main__':

@@ -764,13 +764,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                 'Here to help: Give him what he wants'))
 		
 		self.assertEqual('Funny suspicious looking dog',
-		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(4))
 		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
-		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(3))
+		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(4))
 		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
 		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle('Funny suspicious looking dog'))
 		self.assertEqual('Funny suspicious looking dog.mp3',
-		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(3))
+		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(4))
 		self.assertEqual('Funny suspicious looking dog.mp3',
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Funny suspicious looking dog'))
@@ -785,4 +785,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()

@@ -298,23 +298,29 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
 
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
-
+	
 	def removeVideoInfoForVideoTitle(self,
-	                              videoTitle):
+	                                 videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 
 		if videoIndex:
 			del self.dic[KEY_VIDEOS][videoIndex]
-			nextVideoIndex = self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX]
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = nextVideoIndex - 1
+	
+	def removeVideoInfoForVideoIndex(self,
+	                                 videoIndex):
+		videoIndexStr = str(videoIndex)
+		
+		if videoIndexStr in self.dic[KEY_VIDEOS].keys():
+			del self.dic[KEY_VIDEOS][videoIndexStr]
 	
 	def _getVideoInfoForVideoIndex(self, videoIndex):
 		'''
-		Returns the video info dic associated to the passedkey videoIndexKey.
+		Returns the video info dic associated to the passed video index.
 		Protected method used internally only.
 
 		:param videoIndex:
-		:return: dictionary containing video information
+		:return: dictionary containing video information or empty dictionary
+				 if no video info for the passed video index exist.
 		'''
 		videoIndex = str(videoIndex)
 		
