@@ -95,10 +95,10 @@ class AudioSplitterGUI(AudioPositionGUI):
 		lines = list(map(lambda line: line.strip('\n'), lines))
 		# histoLines = [{'text': val, 'selectable': True} for val in lines
 		
-		items = [{CONTACT_NAME_KEY: 'Jean-Pierre Schnyder', CONTACT_EMAIL_KEY: 'jp.schnyder@gmail.com',
-		          CONTACT_PHONE_NUMBER_KEY: '+41768224987'},
-		         {CONTACT_NAME_KEY: 'Tamara Jagne', CONTACT_EMAIL_KEY: 'tamara.jagne@gmail.com',
-		          CONTACT_PHONE_NUMBER_KEY: '+41764286884'}
+		items = [{CONTACT_NAME_KEY: ' ', CONTACT_EMAIL_KEY: '',
+		          CONTACT_PHONE_NUMBER_KEY: ''},
+		         {CONTACT_NAME_KEY: '  ', CONTACT_EMAIL_KEY: '',
+		          CONTACT_PHONE_NUMBER_KEY: ''}
 		         ]
 		
 		histoLines = [{NAME_LABEL_KEY: str(x[CONTACT_NAME_KEY]), EMAIL_LABEL_KEY: str(x[CONTACT_EMAIL_KEY]),
