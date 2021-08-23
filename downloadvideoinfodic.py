@@ -31,6 +31,15 @@ class DownloadVideoInfoDic:
 	cachedRateAccessNumber = 0
 
 	def __init__(self, downloadDir, playlistTitle='', playlistName=''):
+		"""
+		Constructor.
+		
+		:param downloadDir:
+		:param playlistTitle: may contain extract and/or suppress information.
+							  Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
+		:param playlistName:  contains only the playlist title.
+							  Ex: E_Klein - le temps
+		"""
 		self._loadDicIfExist(downloadDir, playlistTitle, playlistName)
 		
 	def __str__(self):
@@ -45,7 +54,11 @@ class DownloadVideoInfoDic:
 		it is loaded into the self.dic instance variable. Otherwise, the dic variable
 		is initialized to an empty dic.
 		
-		:return:
+		:param downloadDir:
+		:param playlistTitle: may contain extract and/or suppress information.
+							  Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
+		:param playlistName:  contains only the playlist title.
+							  Ex: E_Klein - le temps
 		"""
 		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistName)
 
@@ -63,6 +76,13 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = downloadDir
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
+
+	def updatePlaylistTitle(self, playlistTitle):
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = buildDownloadDirValue(playlistTitle)
+
+	def buildDownloadDirValue(self, playlistTitle):
+		pass
 	
 	def saveDic(self):
 		with open(self.getInfoDicFilePathName(self.getPlaylistDownloadDir(), self.getPlaylistName()), 'w') as f:

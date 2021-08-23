@@ -1,4 +1,5 @@
 <ConfirmPopup>:
+    editableTextInput: txt_input_multiline
 	cols:1
 	rows: 2
 	TextInput:
@@ -8,6 +9,8 @@
         size_hint_y: None
         height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
 		text: root.text
+		on_text: root.setConfirmPopupTextChanged()
+
 	GridLayout:
 		cols: 3
 		size_hint_y: None

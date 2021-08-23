@@ -14,8 +14,8 @@ class PlaylistTitleParser:
 		end extract positions in seconds, the second list containing the start
 		and end suppress positions in seconds.
 
-		Example of playlist title:
-		The title {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
+		Example of playlist title with extract/suppress information:
+		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
 
 		@:return downloadVideoInfoDic
