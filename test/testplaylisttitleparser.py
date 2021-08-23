@@ -1,5 +1,5 @@
 import unittest
-import os, sys, inspect, shutil, glob
+import os, sys, inspect, glob
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -484,9 +484,42 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 
+	def testReplaceUnauthorizedDirNameChars(self):
+		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" de <Gary> Renard ?"
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedFileName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		actualFileName = PlaylistTitleParser.replaceUnauthorizedDirNameChars(playlistTitle)
+		
+		self.assertEqual(expectedFileName, actualFileName)
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_inauthorized_chars(
+			self):
+		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" de <Gary> Renard ?"
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		
+		epectedDownloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedFileName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(epectedDownloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(epectedDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+
 
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
-	tst.testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end_playlistTitle_with_spaces_and_accented_letters()
-	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters()
+	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_inauthorized_chars()

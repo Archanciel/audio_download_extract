@@ -21,15 +21,14 @@ class PlaylistTitleParser:
 		@:return downloadVideoInfoDic
 				 accessError in case of problem, None otherwise
 		"""
-		playlistNamePattern = r'([\w_ ]+)((\([\d:\-eEsS ]*\)))?'
-		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö :'_-]+)(\{.*\})?"
+		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|]+)(\{.*\})?"
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)
 		
 		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
 		playlistName = playlistName.strip() # removing playlistName last space if exist
-		targetAudioDir = audioDir + DIR_SEP + playlistName
+		targetAudioDir = audioDir + DIR_SEP + PlaylistTitleParser.replaceUnauthorizedDirNameChars(playlistName)
 		
 		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
 		accessError = None
@@ -39,6 +38,31 @@ class PlaylistTitleParser:
 			                                                                        videoTimeFramesInfo, playlistTitle)
 		
 		return downloadVideoInfoDic, accessError
+	
+	@staticmethod
+	def replaceUnauthorizedDirNameChars(rawFileName):
+		"""
+		This method replaces chars in the passed raw file name which are unauthorized on
+		Windows.
+		
+		:param rawFileName:
+		:return:
+		"""
+		charToReplace = {'\\': '',
+		                  '/': ' ',
+		                  ':': '',
+		                  '*': ' ',
+		                  '?': '',
+		                  '"': '',
+		                  '<': '',
+		                  '>': '',
+		                  '|': ''}
+		
+		# Replace all multiple characters in a string
+		# based on translation table created by dictionary
+		validFileName = rawFileName.translate(str.maketrans(charToReplace))
+		
+		return validFileName.strip()
 	
 	@staticmethod
 	def extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle):
