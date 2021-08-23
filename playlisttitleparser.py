@@ -21,7 +21,7 @@ class PlaylistTitleParser:
 		@:return downloadVideoInfoDic
 				 accessError in case of problem, None otherwise
 		"""
-		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|]+)(\{.*\})?"
+		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|+]+)(\{.*\})?"
 		
 		match = re.match(playlistNamePattern, playlistTitle)
 		playlistName = match.group(1)

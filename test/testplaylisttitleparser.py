@@ -485,8 +485,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 
 	def testReplaceUnauthorizedDirNameChars(self):
-		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" de <Gary> Renard ?"
-		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard"
 		
 		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedFileName
 		
@@ -502,8 +502,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_inauthorized_chars(
 			self):
-		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" de <Gary> Renard ?"
-		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard"
 		
 		epectedDownloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedFileName
 		
