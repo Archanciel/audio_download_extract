@@ -190,7 +190,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 		:param isLoadAtStart:
 		:return:
 		"""
-		if pathOnly == pathFileName:
+		if pathOnly == pathFileName[:-1]: # pathFileName ends with DIR_SEP
 			# no file selected or file name defined. Load dialog remains open ..
 			return
 
