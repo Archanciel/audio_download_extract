@@ -177,24 +177,41 @@ class SaveFileChooserPopup(FileChooserPopup):
 		if platform == 'android':
 			if self.onSmartPhone():
 				self.loadAtStartChkBox.size_hint_x = 0.12
+				self.gridLayoutPathField.size_hint_y = 0.16
 			else:
 				self.loadAtStartChkBox.size_hint_x = 0.06
+				self.gridLayoutPathField.size_hint_y = 0.10
 		elif platform == 'win':
 			self.loadAtStartChkBox.size_hint_x = 0.06
-	
-	def save(self, pathOnly, pathFileName, isLoadAtStart):
+			self.gridLayoutPathField.size_hint_y = 0.30
+
+	def handleSelection(self, selection):
+		selectionStr = selection[0]
+		selectionElemLst = selectionStr.split(sep)
+		
+		if os.path.isfile(selectionStr):
+			pathContainedInSelection = sep.join(selectionElemLst[:-1]) + sep
+			fileNameContainedInSelection = selectionElemLst[-1]
+		else:
+			pathContainedInSelection = selectionStr + sep
+			fileNameContainedInSelection = ''
+			
+		self.currentPathField.text = pathContainedInSelection
+		self.currentFileNameField.text = fileNameContainedInSelection
+
+	def save(self, pathOnly, pathName, fileName, isLoadAtStart):
 		"""
 		
 		:param pathOnly:
-		:param pathFileName:
+		:param pathName:
 		:param isLoadAtStart:
 		:return:
 		"""
-		if pathOnly == pathFileName[:-1]: # pathFileName ends with DIR_SEP
+		if fileName == '':
 			# no file selected or file name defined. Load dialog remains open ..
 			return
-
-		self.rootGUI.saveHistoryToFile(pathOnly, pathFileName, isLoadAtStart)
+		
+		self.rootGUI.saveHistoryToFile(pathOnly, pathName + fileName, isLoadAtStart)
 		self.rootGUI.dismissPopup()
 
 	def setCurrentLoadAtStartFile(self, loadAtStartFilePathName):
@@ -207,7 +224,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 
 		# update load at start checkbox
 		
-		currentSaveFilePathName = self.currentPathField.text
+		currentSaveFilePathName = self.currentPathField.text + self.currentFileNameField.text
 		
 		if currentSaveFilePathName == self.loadAtStartFilePathName:
 			self.loadAtStartChkBox.active = True

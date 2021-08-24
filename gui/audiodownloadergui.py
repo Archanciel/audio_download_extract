@@ -749,10 +749,6 @@ class AudioDownloaderGUI(AudioGUI):
 			   path file name TextInput save dialog field
 		:param isLoadAtStart: value of the load at start CheckBox
 		"""
-		if not savingPathFileName:
-			# no file selected. Save dialog remains open ...
-			return
-		
 		asciiOnlyPathFileName = savingPathFileName.encode("ascii", "ignore").decode()
 
 		if asciiOnlyPathFileName != savingPathFileName:
