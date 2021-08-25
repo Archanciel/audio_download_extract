@@ -80,9 +80,9 @@ class AudioGUI(Screen):
 		
 		if platform == 'android':
 			if GuiUtil.onSmartPhone():
-				popupSize = (980, 350)
+				popupSize = (1180, 450)
 			else:
-				popupSize = (980, 250)
+				popupSize = (1280, 300)
 		elif platform == 'win':
 			popupSize = (450, 150)
 		

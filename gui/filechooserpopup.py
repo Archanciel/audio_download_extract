@@ -176,7 +176,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 
 		if platform == 'android':
 			if self.onSmartPhone():
-				self.loadAtStartChkBox.size_hint_x = 0.12
+				self.loadAtStartChkBox.size_hint_x = 0.06
 				self.gridLayoutPathField.size_hint_y = 0.16
 			else:
 				self.loadAtStartChkBox.size_hint_x = 0.06
