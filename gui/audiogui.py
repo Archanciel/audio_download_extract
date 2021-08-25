@@ -84,12 +84,12 @@ class AudioGUI(Screen):
 			else:
 				popupSize = (980, 250)
 		elif platform == 'win':
-			popupSize = (330, 150)
+			popupSize = (450, 150)
 		
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
 		sizingLabel = Label(text=message)
-		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
+#		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
 		
 		popup = Popup(title='AudioDownloader WARNING', content=sizingLabel,
 					  auto_dismiss=True, size_hint=(None, None),
