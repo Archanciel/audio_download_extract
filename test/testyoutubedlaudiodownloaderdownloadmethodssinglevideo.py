@@ -235,4 +235,4 @@ if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadSingleVideoForUrl_succeed_on_Windows_only()
+	tst.testDownloadSingleVideoForUrl_redownloading_video()
