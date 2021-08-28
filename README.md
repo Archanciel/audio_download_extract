@@ -80,7 +80,7 @@ downloaded to a directory specified in the app settings.
 
 ## Required libraries
 - configobj
-- pytube
+- pytube 11.0.1
 - youtube_dl
 - moviepy (not working on Android !. Version 2.0.0.dev2. Version 1.0.2 and 1.0.3 not working !)
 - mutagen
