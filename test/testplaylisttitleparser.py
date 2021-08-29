@@ -522,4 +522,4 @@ class TestPlaylistTitleParser(unittest.TestCase):
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
-	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_inauthorized_chars()
+	tst.testCreateDownloadVideoInfoDic_no_time_frame()

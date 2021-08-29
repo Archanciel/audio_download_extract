@@ -33,9 +33,10 @@ class PlaylistTitleParser:
 		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
 		accessError = None
 		
-		if videoTimeFramesInfo is not None:
+		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
-			                                                                        videoTimeFramesInfo, playlistTitle)
+			                                                                        videoTimeFramesInfo,
+			                                                                        playlistTitle)
 		
 		return downloadVideoInfoDic, accessError
 	
