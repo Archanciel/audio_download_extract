@@ -209,6 +209,18 @@ class AudioController:
 		'''
 		return inputStr, inputStr, inputStr, inputStr, inputStr
 
+	def extractAudioFromVideoFile(self, videoFilePathName):
+		"""
+		Extract the audio from the passed video file path name.
+		
+		:param videoFilePathName:
+		
+		:return: the extracted audio mp3 file path name
+		"""
+		audioExtractor = AudioExtractor(self, videoFilePathName, {})
+		
+		return audioExtractor.extractAudioFromVideoFile(videoFilePathName)
+
 
 if __name__ == "__main__":
 	downloader = AudioController()

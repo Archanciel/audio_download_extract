@@ -115,7 +115,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 
 		self.assertEqual(["0:0:05", "0:0:10"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
 		
@@ -170,7 +170,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:05", "0:0:10"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
@@ -224,7 +224,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:00", "0:0:05"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
@@ -278,7 +278,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertEqual(['0:0:10', '0:0:15'],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
@@ -341,9 +341,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
 
 		self.assertEqual(["0:0:05", "0:0:10"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
 		self.assertEqual(["0:0:11", "0:0:13"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_2))
@@ -405,9 +405,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:02", "0:1:05"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
@@ -473,9 +473,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:05", "0:0:10"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex,
@@ -560,16 +560,16 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1_1 = videoAndAudioFileList[4]
 		extractedMp3FileName_1_2 = videoAndAudioFileList[5]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1_2, audio.info.length, delta=0.1)
 		
 		extractedMp3FileName_2_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
 
 		self.assertEqual(["0:0:05", "0:0:10"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_1))
 		self.assertEqual(["0:0:11", "0:0:13"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_2))
@@ -580,9 +580,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_2_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:03", "0:0:08"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexTwo, extractedMp3FileName_2_1))
 		self.assertEqual(["0:0:10", "0:0:13"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexTwo, extractedMp3FileName_2_2))
@@ -640,7 +640,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 
 		self.assertIsNone(downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
 
@@ -697,7 +697,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertIsNone(
 			downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
@@ -758,7 +758,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
 
 		self.assertIsNone(downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
 
@@ -834,7 +834,7 @@ class TestAudioExtractor(unittest.TestCase):
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1_1 = videoAndAudioFileList[3]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_1)
-		self.assertAlmostEquals(expectedSuppressedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedSuppressedFileDuration_2, audio.info.length, delta=0.1)
 
 		self.assertIsNone(downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_1))
 
@@ -843,7 +843,7 @@ class TestAudioExtractor(unittest.TestCase):
 
 		extractedMp3FileName_2_1 = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_1)
-		self.assertAlmostEquals(expectedSuppressedFileDuration_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedSuppressedFileDuration_1, audio.info.length, delta=0.1)
 
 		self.assertIsNone(downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexTwo, extractedMp3FileName_2_1))
 
@@ -919,9 +919,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
 
 		self.assertEqual(["0:0:05", "0:0:10"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_1))
 		self.assertEqual(["0:0:11", "0:0:13"], downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_2))
@@ -929,7 +929,7 @@ class TestAudioExtractor(unittest.TestCase):
 		# testing suppress time frame
 		extractedMp3FileName_3 = videoAndAudioFileList[3]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_3)
-		self.assertAlmostEquals(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertIsNone(
 			downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndex, extractedMp3FileName_3))
@@ -1054,9 +1054,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_1_1 = videoAndAudioFileList[1]
 		extractedMp3FileName_1_2 = videoAndAudioFileList[2]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_1_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_1_2, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:05", "0:0:10"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne,
@@ -1068,7 +1068,7 @@ class TestAudioExtractor(unittest.TestCase):
 		# testing suppress time frame
 		extractedMp3FileName_1_3 = videoAndAudioFileList[3]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_1_3)
-		self.assertAlmostEquals(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedSuppressedFileDuration, audio.info.length, delta=0.1)
 		
 		self.assertIsNone(
 			downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne, extractedMp3FileName_1_3))
@@ -1084,9 +1084,9 @@ class TestAudioExtractor(unittest.TestCase):
 		extractedMp3FileName_2_1 = videoAndAudioFileList[5]
 		extractedMp3FileName_2_2 = videoAndAudioFileList[6]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_1)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_1, audio.info.length, delta=0.1)
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_2)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2_2, audio.info.length, delta=0.1)
 		
 		self.assertEqual(["0:0:05", "0:0:09"],
 		                 downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexTwo,
@@ -1098,7 +1098,7 @@ class TestAudioExtractor(unittest.TestCase):
 		# testing suppress time frame
 		extractedMp3FileName_2_3 = videoAndAudioFileList[7]
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName_2_3)
-		self.assertAlmostEquals(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
+		self.assertAlmostEqual(expectedExtractedFileDuration_2, audio.info.length, delta=0.1)
 		
 		self.assertIsNone(
 			downloadVideoInfoDic.getStartEndHHMMSS_TimeFrameForExtractedFileName(videoIndexOne,
@@ -1108,11 +1108,48 @@ class TestAudioExtractor(unittest.TestCase):
 		                 downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15']],
 		                 downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
+	
+	def testExtractAudioFromVideoFile(self):
+		testDirName = 'test_audible_mobizen'
+		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + testDirName
+		videoFileName = 'Short low video quality'
+		videoFilePathName = targetAudioDir + DIR_SEP + videoFileName + '.mp4'
+		
+		expectedExtractedAudioFileDuration = 964.661
+		
+		# deleting mp3 files in test dir
+		files = glob.glob(targetAudioDir + DIR_SEP + '*.mp3')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, {})
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioExtractor.extractAudioFromVideoFile(videoFilePathName)
+		
+		sys.stdout = stdout
+		
+		self.assertTrue(r'extracted audio file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp3" from video file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp4"' in outputCapturingString.getvalue())
+
+		videoAndAudioFileList = os.listdir(targetAudioDir)
+		
+		self.assertEqual(
+			['Short low video quality.mp3',
+			 'Short low video quality.mp4'],
+			videoAndAudioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName = videoAndAudioFileList[1]
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName)
+		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
-	ts = time.time()
-	tst.testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe()
-	print(time.time() - ts)
+	tst.testExtractAudioFromVideoFile()

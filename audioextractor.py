@@ -9,6 +9,7 @@ if os.name == 'posix':
 	pass
 else:
 	import moviepy.editor as mp  # not working on Android
+	from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 
 class AudioExtractor:
 	def __init__(self, audioController, targetAudioDir, downloadVideoInfoDictionary):
@@ -260,3 +261,22 @@ class AudioExtractor:
 #		mp3FilePathNameAccelerated = mp3FilePathName.split('.')[0] + '_speeded' + '.mp3'
 		sound.export(mp3FilePathName, format="mp3")
 		os.remove(wavFilePathName)
+	
+	def extractAudioFromVideoFile(self, videoFilePathName):
+		"""
+		Extract the audio from the passed video file path name
+		with bitrate=64 and fps=22050. This minimizes the extracted
+		audio file size maintaining a perfect quality for a spoken
+		audio file.
+
+		:param videoFilePathName:
+
+		:return: the extracted audio mp3 file path name
+		"""
+		targetAudioFilePathName = videoFilePathName[:-4] + '.mp3'
+		ffmpeg_extract_audio(videoFilePathName, targetAudioFilePathName, bitrate=64, fps=22050)
+
+		msgText = '\nextracted audio file "{}" from video file "{}"\n'.format(targetAudioFilePathName, videoFilePathName)
+		self.audioController.displayMessage(msgText)
+
+		return targetAudioFilePathName
