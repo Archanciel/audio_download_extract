@@ -38,6 +38,8 @@ class AudioSplitterGUI(AudioPositionGUI):
 		self.sliderUpdateFrequency = 1
 		self.sourceAudioFilePathNameInitValue = ''
 		self.splitAudioFilePathNameInitValue = ''
+		self.audioController = AudioController(self, None)
+
 
 		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()
 		# method called by separate thread overwrites the user position
@@ -55,14 +57,20 @@ class AudioSplitterGUI(AudioPositionGUI):
 		'''
 		self.nameTextInputField.focus = True
 	
-	def initSoundFile(self, sourceAudioFilePathName):
-		if 'mp3' != sourceAudioFilePathName[-3:]:
-			return
-		
-		self.sourceAudioFilePathNameInitValue = sourceAudioFilePathName
-		self.sourceAudioFilePathName.text = sourceAudioFilePathName
+	def initSoundFile(self, sourceFilePathName):
+		sourceFileExtension = sourceFilePathName[-3:]
 
-		self.soundloaderSourceMp3Obj = SoundLoader.load(sourceAudioFilePathName)
+		if 'mp3' != sourceFileExtension:
+			if 'mp4' == sourceFileExtension:
+				# the case if Mobizen video capture was applied to an Audible audoiobook
+				sourceFilePathName = self.audioController.extractAudioFromVideoFile(sourceFilePathName)
+			else:
+				return
+		
+		self.sourceAudioFilePathNameInitValue = sourceFilePathName
+		self.sourceAudioFilePathName.text = sourceFilePathName
+
+		self.soundloaderSourceMp3Obj = SoundLoader.load(sourceFilePathName)
 		soundLength = self.soundloaderSourceMp3Obj.length
 		self.startTextInput.text = self.convertSecondsToTimeString(0)
 		self.endTextInput.text = self.convertSecondsToTimeString(soundLength)
@@ -284,8 +292,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 			self.outputResult('Invalid start ({}) or end ({}) position. Split file creation not performed.'.format(startPos, endPos))
 			return
 		
-		audioController = AudioController(self, None)
-		downloadVideoInfoDic = audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
+		downloadVideoInfoDic = self.audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
 		createdSplitFilePathName = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
 		self.splitAudioFilePathName.text = createdSplitFilePathName
