@@ -249,6 +249,11 @@ class AudioDownloaderGUI(AudioGUI):
 		:param dt:
 		"""
 		super(AudioDownloaderGUI, self)._finish_init(dt)
+
+		if self.error:
+			# Error set by base class.
+			# The case if the configuration manager could not load the config file
+			return
 		
 		if os.name == 'posix':
 			if GuiUtil.onSmartPhone():

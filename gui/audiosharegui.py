@@ -183,6 +183,11 @@ class AudioShareGUI(AudioPositionGUI):
 		"""
 		super(AudioShareGUI, self)._finish_init(dt)
 		
+		if self.error:
+			# Error set by base class.
+			# The case if the configuration manager could not load the config file
+			return
+		
 		self.soundloaderSharedMp3Obj = None
 		self.sharedAudioFilePathNameInitValue = ''
 	

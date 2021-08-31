@@ -31,6 +31,11 @@ class AudioSplitterGUI(AudioPositionGUI):
 		"""
 		super(AudioSplitterGUI, self)._finish_init(dt)
 		
+		if self.error:
+			# Error set by base class.
+			# The case if the configuration manager could not load the config file
+			return
+		
 		self.soundloaderSourceMp3Obj = None
 		self.soundloaderSplitMp3Obj = None
 		self.sliderAsynchUpdater = None

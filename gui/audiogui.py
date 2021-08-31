@@ -1,3 +1,4 @@
+import logging
 import os
 
 from kivy import platform
@@ -27,7 +28,8 @@ class AudioGUI(Screen):
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
 		self.dropDownMenu = CustomDropDown(owner=self)
-
+		self.error = False
+		
 		# WARNING: accessing MainWindow fields defined in kv file
 		# in the __init__ ctor is no longer possible when using
 		# ScreenManager. Here's the solution:
@@ -54,7 +56,16 @@ class AudioGUI(Screen):
 			configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 
-		self.configMgr = ConfigManager(configFilePathName)
+		try:
+			self.configMgr = ConfigManager(configFilePathName)
+		except FileNotFoundError as e:
+			self.configMgr = None
+			msgText = 'Configuration file {} not found.\nSolve the problem and restart the application.'.format(configFilePathName)
+			self.displayPopupError(msgText)
+			logging.error(e)
+			self.error = True
+			return
+		
 		self.audiobookPath = self.configMgr.dataPath
 
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
@@ -76,8 +87,15 @@ class AudioGUI(Screen):
 		self.outputScrollView.scroll_y = 0
 	
 	def displayPopupWarning(self, message):
+		self.displayPopup(title='AudioDownloader WARNING',
+		                  message=message)
+	
+	def displayPopupError(self, message):
+		self.displayPopup(title='AudioDownloader ERROR',
+		                  message=message)
+	
+	def displayPopup(self, title, message):
 		popupSize = None
-		
 		if platform == 'android':
 			if GuiUtil.onSmartPhone():
 				popupSize = (1180, 450)
@@ -85,17 +103,15 @@ class AudioGUI(Screen):
 				popupSize = (1280, 300)
 		elif platform == 'win':
 			popupSize = (450, 150)
-		
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
 		sizingLabel = Label(text=message)
-#		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
-		
-		popup = Popup(title='AudioDownloader WARNING', content=sizingLabel,
-					  auto_dismiss=True, size_hint=(None, None),
-					  size=popupSize)
+		#		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
+		popup = Popup(title=title, content=sizingLabel,
+		              auto_dismiss=True, size_hint=(None, None),
+		              size=popupSize)
 		popup.open()
-	
+
 	def buildDataPathNotExistMessage(self, path):
 		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 	
