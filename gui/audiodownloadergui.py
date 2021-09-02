@@ -794,7 +794,7 @@ class AudioDownloaderGUI(AudioGUI):
 		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
 	def buildDataPathContainedInFilePathNameNotExistMessage(self, path):
-		return 'Path ' + path + '\ndoes not exist !\nEither create the directory or\nmodify the path.'
+		return 'Path ' + path + ' does not exist ! Either create the directory or modify the path.'
 	
 	def buildNonAsciiFilePathNameMessage(self, savingPathFileName):
 		return 'Save path file name {}\ncontains non ascii characters. File not saved !'.format(savingPathFileName)
