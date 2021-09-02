@@ -60,7 +60,7 @@ class AudioGUI(Screen):
 			self.configMgr = ConfigManager(configFilePathName)
 		except FileNotFoundError as e:
 			self.configMgr = None
-			msgText = 'Configuration file {} not found.\nSolve the problem and restart the application.'.format(configFilePathName)
+			msgText = 'Configuration file {} not found. Solve the problem and restart the application.'.format(configFilePathName)
 			self.displayPopupError(msgText)
 			logging.error(e)
 			self.error = True
@@ -96,17 +96,23 @@ class AudioGUI(Screen):
 	
 	def displayPopup(self, title, message):
 		popupSize = None
+
 		if platform == 'android':
 			if GuiUtil.onSmartPhone():
-				popupSize = (1180, 450)
+				popupSize = (1180, 550)
+				messageMaxLength = 40
 			else:
 				popupSize = (1280, 300)
+				messageMaxLength = 70
 		elif platform == 'win':
 			popupSize = (450, 150)
+			messageMaxLength = 55
+
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
-		sizingLabel = Label(text=message)
-		#		sizingLabel.bind(size=lambda s, w: s.setter('text_size')(s, w))
+		
+		sizingLabel = Label(text=GuiUtil.reformatString(message, messageMaxLength))
+
 		popup = Popup(title=title, content=sizingLabel,
 		              auto_dismiss=True, size_hint=(None, None),
 		              size=popupSize)
