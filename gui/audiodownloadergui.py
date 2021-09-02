@@ -875,7 +875,7 @@ class AudioDownloaderGUI(AudioGUI):
 			msgWidth = 45
 		elif platform == 'win':
 			popupSize = (500, 100)
-			msgWidth = 54
+			msgWidth = 65
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		self.confirmPopup = ConfirmPopup(self, text=confirmPopupFormattedMsg)

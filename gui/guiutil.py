@@ -13,8 +13,7 @@ class GuiUtil:
     @staticmethod
     def splitLineToLines(longLine, maxLineLen, replaceUnderscoreBySpace=False):
         '''
-		Splits the oneLineNote string into lines not exceeding maxLineLen and
-		returns the lines into a list.
+		Add '\n' chars to the passed lonLine in order to respect the passed maxLineLen.
 
 		:param longLine:
 		:param maxLineLen:
