@@ -14,7 +14,8 @@ class GuiUtil:
     def splitLineToLines(longLine, maxLineLen, replaceUnderscoreBySpace=False):
         '''
 		Add '\n' chars to the passed lonLine in order to respect the passed maxLineLen.
-
+        This method is replaced by GuiUtil.reformatString().
+        
 		:param longLine:
 		:param maxLineLen:
 		:param replaceUnderscoreBySpace
@@ -49,8 +50,8 @@ class GuiUtil:
     @staticmethod
     def reformatString(sourceStr, maxLength):
         """
-        Reformats the passed sourceString so that the returned formattedStr contains
-        new line (\n) charsin order for the formattedStr to contain lines shorter or equal
+        Re-formats the passed sourceString so that the returned formattedStr contains
+        new line (\n) chars in order for the formattedStr to contain lines shorter or equal
         to the passed maxLength char number.
         
         :param sourceStr:

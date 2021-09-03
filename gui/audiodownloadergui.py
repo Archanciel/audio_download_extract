@@ -294,18 +294,24 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 
 		test urls:
-		multiple videos with time frames (test audio downloader two files with
+		
+		- multiple videos with time frames (test audio downloader two files with
 		time frames)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn
-		2 videos no time frames (test audio downloader two files)
+		- 2 videos no time frames (test audio downloader two files)
 		https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv
+		
+		- unique video:
+		https://youtu.be/EHsi_KPKFqU
 		'''
 		self.loadHistoryDataIfSet()
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		downloadVideoInfoDic, videoTitle = self.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
-			self.playlistOrSingleVideoUrl)
+		downloadVideoInfoDic, videoTitle = \
+			self.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
+		
 		self.singleVideoTitle = videoTitle
+		
 		isPlayListToDownload = False
 		
 		if downloadVideoInfoDic is not None:
@@ -897,8 +903,8 @@ class AudioDownloaderGUI(AudioGUI):
 		return popup
 	
 	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace=False):
-		resizedMsg = GuiUtil.splitLineToLines(rawMsg, maxLineWidth, replaceUnderscoreBySpace)
-		
+		resizedMsg = GuiUtil.reformatString(rawMsg, maxLineWidth)
+
 		return resizedMsg
 	
 	def displayError(self, msg):
