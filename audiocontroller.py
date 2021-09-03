@@ -159,7 +159,7 @@ class AudioController:
 		:param url: playlist or single video url
 		:return: downloadVideoInfoDic, videoTitle
 		"""
-		_, downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
+		downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
 		
 		if accessError:
 			self.displayMessage(accessError.errorMsg)
