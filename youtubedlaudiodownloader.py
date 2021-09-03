@@ -161,17 +161,17 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: playlistObject, downloadVideoInfoDic, videoTitle, accessError
 		"""
-		playlistObject, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
+		_, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
 		
 		if accessError:
-			return None, None, None, accessError
+			return None, None, accessError
 		
 		if playlistTitle:
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
 		else:
 			downloadVideoInfoDic = None
 
-		return playlistObject, downloadVideoInfoDic, videoTitle, accessError
+		return downloadVideoInfoDic, videoTitle, accessError
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""
