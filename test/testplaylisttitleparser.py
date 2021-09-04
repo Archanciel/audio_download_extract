@@ -500,7 +500,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		self.assertEqual(expectedFileName, actualFileName)
 	
-	def testCreateDownloadVideoInfoDic_playlistTitle_with_inauthorized_chars(
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars(
 			self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
 		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard"
@@ -517,6 +517,57 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		                                                                                                AUDIO_DIR_TEST)
 		
 		self.assertEqual(epectedDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma(
+			self):
+		expectedPlayListName = "Et l\'Univers disparaîtra, basé sur Un Cours en Miracles transmis par Jésus: avec mes commentaires et de nombreux extraits accompagnés de leur numéro"
+		playlistTitle = expectedPlayListName
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma_with_time_info(
+			self):
+		expectedPlayListName = "Et l\'Univers disparaîtra, basé sur Un Cours en Miracles transmis par Jésus: avec mes commentaires et de nombreux extraits accompagnés de leur numéro"
+		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
+		playlistTitle = expectedPlayListName + ' ' + timeInfo
+		
+		expectedVideo1ExtractTimeFramesList = [[352, 443]]
+		expectedVideo1SuppressTimeFramesList = [[652, 'end']]
+		
+		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
+		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                AUDIO_DIR_TEST)
+		
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2SuppressTimeFramesList)
 
 
 if __name__ == '__main__':
