@@ -276,7 +276,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLineBold = True
 		self.singleVideoDownloadDir = SINGLE_VIDEO_AUDIO_DIR
 		self.confirmPopupTextChanged = False
-
+		self.downloadVideoInfoDic = None
 		
 		self._doOnStart()
 	
@@ -307,16 +307,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.loadHistoryDataIfSet()
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		downloadVideoInfoDic, videoTitle = \
+		self.downloadVideoInfoDic, videoTitle = \
 			self.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
 		
 		self.singleVideoTitle = videoTitle
 		
 		isPlayListToDownload = False
 		
-		if downloadVideoInfoDic is not None:
+		if self.downloadVideoInfoDic is not None:
 			# playlist url obtained from clipboard
-			downloadObjectTitle = downloadVideoInfoDic.getPlaylistTitle()
+			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ..."
 			isPlayListToDownload = True
 		elif videoTitle is not None:
@@ -655,13 +655,20 @@ class AudioDownloaderGUI(AudioGUI):
 								   playlistOrSingleVideoUrl,
 								   singleVideoTitle):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, singleVideoTitle)
+		
+		if singleVideoTitle is None:
+			playlistPath = self.downloadVideoInfoDic.getPlaylistDownloadDir()
+		else:
+			playlistPath = None
+			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-													   rootGUI=self,
-													   playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-													   singleVideoTitle=singleVideoTitle,
-													   load=self.load,
-													   cancel=self.dismissPopup)
+		                                               rootGUI=self,
+		                                               playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+		                                               playlistPath=playlistPath,
+		                                               singleVideoTitle=singleVideoTitle,
+		                                               load=self.load,
+		                                               cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openFileToSplitLoadPopup(self):
@@ -682,21 +689,32 @@ class AudioDownloaderGUI(AudioGUI):
 													 cancel=self.dismissPopup)
 		self.popup.open()
 
-	def buildFileChooserPopupTitle(self, fileAction):
+	def buildFileChooserPopupTitle(self, fileAction, singleVideoTitle=None):
+		"""
+		In case of FILE_ACTION_SELECT_OR_CREATE_DIR, this means we are asking the user
+		to select or create a dir where either playlist video audios or single video audio
+		will ba downloaded. If a playlist is to be downloaded, the passed singleVideoTitle
+		is None.
+		
+		:param fileAction:
+		:param singleVideoTitle:
+		:return:
+		"""
 		if fileAction == FILE_ACTION_LOAD:
 			popupTitleAction = LoadFileChooserPopup.LOAD_FILE_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SAVE:
 			popupTitleAction = SaveFileChooserPopup.SAVE_FILE_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SELECT_OR_CREATE_DIR:
-			popupTitle = SaveFileChooserPopup.SELECT_OR_CREATE_DIR_POPUP_TITLE
-			return popupTitle
+			if singleVideoTitle is not None:
+				return SaveFileChooserPopup.SELECT_OR_CREATE_DIR_SINGLE_VIDEO_POPUP_TITLE
+			else:
+				# if a playlist is downloaded, the passed singleVideoTitle is None
+				return SaveFileChooserPopup.SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT:
-			popupTitle = SaveFileChooserPopup.SELECT_FILE_TO_SPLIT
-			return popupTitle
+			return SaveFileChooserPopup.SELECT_FILE_TO_SPLIT
 		else:
 			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
-			popupTitle = SaveFileChooserPopup.SELECT_FILE_TO_SHARE
-			return popupTitle
+			return SaveFileChooserPopup.SELECT_FILE_TO_SHARE
 
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		
@@ -885,12 +903,6 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
 		self.confirmPopup = ConfirmPopup(self, text=confirmPopupFormattedMsg)
-		
-		if isPlayListToDownload:
-			self.confirmPopup.ids.set_folder_btn.disabled = True
-		else:
-			self.confirmPopup.ids.set_folder_btn.disabled = False
-			
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
 		popup = Popup(title=confirmPopupTitle,

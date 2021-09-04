@@ -18,8 +18,8 @@ class PlaylistTitleParser:
 		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
 
-		@:return downloadVideoInfoDic
-				 accessError in case of problem, None otherwise
+		:return downloadVideoInfoDic
+				accessError in case of problem, None otherwise
 		"""
 		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|+]+)(\{.*\})?"
 		

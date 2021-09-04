@@ -65,7 +65,8 @@ class SelectableRecycleBoxLayoutFileChooser(FocusBehavior, LayoutSelectionBehavi
 class FileChooserPopup(AbstractPopup):
 	LOAD_FILE_POPUP_TITLE = 'Select history file to load'
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
-	SELECT_OR_CREATE_DIR_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
+	SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE = 'Select or create directory where the playlist video audios will be downloaded'
+	SELECT_OR_CREATE_DIR_SINGLE_VIDEO_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
 	SELECT_FILE_TO_SPLIT = 'Select audio file to split'
 	SELECT_FILE_TO_SHARE = 'Select audio file to share'
 
@@ -277,12 +278,19 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	def __init__(self,
 	             rootGUI,
 	             playlistOrSingleVideoUrl,
+	             playlistPath,
 			     singleVideoTitle,
 			     **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
+		
+		if singleVideoTitle is not None:
+			self.currentPathField.text += sep + singleVideoTitle
+		else:
+			self.currentPathField.text = playlistPath
+
 		
 	def selOrCreateDir(self, pathFileName):
 		"""

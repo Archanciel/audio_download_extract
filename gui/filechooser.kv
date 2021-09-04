@@ -208,7 +208,8 @@
 				id: file_chooser
 				dirselect: True
     			filters: [lambda folder, filename: not filename.endswith('')]
-				on_selection: text_path_sel_create_dir.text = self.selection and self.selection[0] or ''
+				#on_selection: text_path_sel_create_dir.text = self.selection and self.selection[0] or ''
+				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
 				id: grid_layout_path_field
