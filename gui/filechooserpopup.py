@@ -286,7 +286,22 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
 		self.playlistPath = playlistPath
+	
+	def _sizeFileChooser(self):
+		"""
 
+		:return:
+		"""
+		super()._sizeFileChooser()
+		
+		if platform == 'android':
+			if self.onSmartPhone():
+				self.gridLayoutPathField.size_hint_y = 0.16
+			else:
+				self.gridLayoutPathField.size_hint_y = 0.10
+		elif platform == 'win':
+			self.gridLayoutPathField.size_hint_y = 0.30
+	
 	def updateFilePathNameFields(self, selectedPath):
 		"""
 		This method is called by SelectableLabelFileChooser.apply_selection() when the
@@ -295,10 +310,12 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
 		"""
+		self.currentPathField.text = selectedPath
+
 		if self.playlistPath is not None:
-			self.currentPathField.text = selectedPath + self.playlistPath.split(sep)[-1]
+			self.currentFileNameField.text = self.playlistPath.split(sep)[-1]
 		else:
-			self.currentPathField.text = selectedPath + self.singleVideoTitle
+			self.currentFileNameField.text = self.singleVideoTitle
 
 	def handleSelection(self, selection):
 		"""
@@ -306,10 +323,33 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selection: ['D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Hoppla']
 		"""
+		self.currentPathField.text = selection[0] + sep
+
 		if self.playlistPath is not None:
-			self.currentPathField.text = selection[0] + sep + self.playlistPath.split(sep)[-1]
+			self.currentFileNameField.text = self.playlistPath.split(sep)[-1]
 		else:
-			self.currentPathField.text = selection[0] + sep + self.singleVideoTitle
+			self.currentFileNameField.text = self.singleVideoTitle
+	
+	def formatCurrentPathField(self):
+		"""
+		Method called when the currentPath TextInput field content is modified.
+		"""
+		currentSavePathValue = self.currentPathField.text
+		
+		# ensure path ends with / or \ according to the OS
+		
+		if currentSavePathValue[-1] != sep:
+			currentSavePathValue += sep
+			self.currentPathField.text = currentSavePathValue
+
+	def updateCurrentFileNameField(self):
+		currentFileNameFieldValue = self.currentFileNameField.text
+
+		if self.playlistPath is not None:
+			self.playlistPath = sep.join(self.playlistPath.split(sep)[:-1]) + sep + currentFileNameFieldValue
+		else:
+			self.singleVideoTitle = currentFileNameFieldValue
+
 		
 	def selOrCreateDir(self, pathFileName):
 		"""

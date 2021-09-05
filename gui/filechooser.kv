@@ -121,7 +121,6 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
-#				on_selection: path_name_text_input.text = self.selection and self.selection[0] or ''
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
@@ -168,7 +167,8 @@
 	fileChooser: file_chooser
 	pathList: path_mem_list
 	gridLayoutPathField: grid_layout_path_field
-	currentPathField: text_path_sel_create_dir
+	currentPathField: path_name_text_input
+	currentFileNameField: file_name_text_input
 	BoxLayout:
 		orientation: 'vertical'
 		BoxLayout:
@@ -214,15 +214,22 @@
 				id: grid_layout_path_field
 				#size_hint_y: 0.023 # tablet
 				#size_hint_y: 0.035 # smartphone
-				size_hint_y: 0.12 # Windows
+				size_hint_y: 0.30 # Windows
 				cols: 2
 				GridLayout:
-					rows: 1
+					rows: 2
 					TextInput:
-						id: text_path_sel_create_dir
+						id: path_name_text_input
 						font_size: '15sp'
 						multiline: False
 						readonly: False
+						on_text: root.formatCurrentPathField()
+					TextInput:
+						id: file_name_text_input
+						font_size: '15sp'
+						multiline: False
+						readonly: False
+						on_text: root.updateCurrentFileNameField()
 
 			GridLayout:
 				cols: 2
