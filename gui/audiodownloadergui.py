@@ -312,8 +312,6 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.singleVideoTitle = videoTitle
 		
-		isPlayListToDownload = False
-		
 		if self.downloadVideoInfoDic is not None:
 			# playlist url obtained from clipboard
 			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
@@ -323,25 +321,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# single video url obtained from clipboard
 			downloadObjectTitle = videoTitle
 			confirmPopupTitle = "Go on with downloading audio for video ... "
-		elif 'mp3' in self.playlistOrSingleVideoUrl:
-			# This is useful in order to facilitate opening the AudioSplitterGUI
-			# screen during its development. Once dev is finished, this code
-			# can be commented out.
-			# example:
-			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
-
-			# audioSplitterGUI = self.manager.get_screen('audioSplitterScreen')
-			# audioSplitterGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
-			# self.parent.current = "audioSplitterScreen"
-			# self.manager.transition.direction = "left"
-			# return
-
-			audioShareGUI = self.manager.get_screen('audioShareScreen')
-			audioShareGUI.initSoundFile(sharedAudioFilePathName=self.playlistOrSingleVideoUrl)
-			self.parent.current = "audioShareScreen"
-			self.manager.transition.direction = "left"
-			
-			return
+			isPlayListToDownload = False
 		else:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
@@ -349,10 +329,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupCallbackFunction = self.onPopupAnswer
 		
-		self.popup = self.createConfirmPopup(isPlayListToDownload,
-											 confirmPopupTitle,
-											 downloadObjectTitle,
-											 confirmPopupCallbackFunction)
+		self.popup = self.createConfirmPopup(confirmPopupTitle, downloadObjectTitle, confirmPopupCallbackFunction)
 		self.popup.open()
 	
 	def onPopupAnswer(self, instance, answer):
@@ -659,15 +636,15 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		if singleVideoTitle is None:
 			# here, a playlist is going to be downloaded
-			playlistPath = self.downloadVideoInfoDic.getPlaylistDownloadDir()
+			playlistTitle = self.downloadVideoInfoDic.getPlaylistTitle()
 		else:
 			# here, a single video is going to be downloaded
-			playlistPath = None
+			playlistTitle = None
 			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 		                                               rootGUI=self,
 		                                               playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-		                                               playlistPath=playlistPath,
+		                                               playlistTitle=playlistTitle,
 		                                               singleVideoTitle=singleVideoTitle,
 		                                               load=self.load,
 		                                               cancel=self.dismissPopup)
@@ -880,11 +857,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def setMessage(self, msgText):
 		pass
 	
-	def createConfirmPopup(self,
-						   isPlayListToDownload,
-						   confirmPopupTitle,
-						   confirmPopupMsg,
-						   confirmPopupCallbackFunction):
+	def createConfirmPopup(self, confirmPopupTitle, confirmPopupMsg, confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:

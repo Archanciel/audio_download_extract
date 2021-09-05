@@ -278,14 +278,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	def __init__(self,
 	             rootGUI,
 	             playlistOrSingleVideoUrl,
-	             playlistPath,
-			     singleVideoTitle,
-			     **kwargs):
+	             playlistTitle,
+	             singleVideoTitle,
+	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
-		self.playlistPath = playlistPath
+		self.playlistTitle = playlistTitle
 	
 	def _sizeFileChooser(self):
 		"""
@@ -312,8 +312,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		self.currentPathField.text = selectedPath
 
-		if self.playlistPath is not None:
-			self.currentFileNameField.text = self.playlistPath.split(sep)[-1]
+		if self.playlistTitle is not None:
+			self.currentFileNameField.text = self.playlistTitle
 		else:
 			self.currentFileNameField.text = self.singleVideoTitle
 
@@ -325,8 +325,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		self.currentPathField.text = selection[0] + sep
 
-		if self.playlistPath is not None:
-			self.currentFileNameField.text = self.playlistPath.split(sep)[-1]
+		if self.playlistTitle is not None:
+			self.currentFileNameField.text = self.playlistTitle
 		else:
 			self.currentFileNameField.text = self.singleVideoTitle
 	
@@ -345,8 +345,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	def updateCurrentFileNameField(self):
 		currentFileNameFieldValue = self.currentFileNameField.text
 
-		if self.playlistPath is not None:
-			self.playlistPath = sep.join(self.playlistPath.split(sep)[:-1]) + sep + currentFileNameFieldValue
+		if self.playlistTitle is not None:
+			self.playlistTitle = currentFileNameFieldValue
 		else:
 			self.singleVideoTitle = currentFileNameFieldValue
 
