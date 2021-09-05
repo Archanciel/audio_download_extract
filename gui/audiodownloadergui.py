@@ -658,8 +658,10 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, singleVideoTitle)
 		
 		if singleVideoTitle is None:
+			# here, a playlist is going to be downloaded
 			playlistPath = self.downloadVideoInfoDic.getPlaylistDownloadDir()
 		else:
+			# here, a single video is going to be downloaded
 			playlistPath = None
 			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,

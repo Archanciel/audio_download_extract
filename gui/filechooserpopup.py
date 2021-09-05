@@ -40,7 +40,7 @@ class SelectableLabelFileChooser(RecycleDataViewBehavior, Label):
 		self.selected = is_selected
 		
 		if is_selected:
-			rootGUI = rv.parent.parent.parent.parent.parent
+			selectOrCreateDirFileChooserPopup = rv.parent.parent.parent.parent.parent
 			selectedPath = rv.data[index]['pathOnly']
 			
 			selectedPath = selectedPath + sep  # adding '\\' is required, otherwise,
@@ -50,8 +50,8 @@ class SelectableLabelFileChooser(RecycleDataViewBehavior, Label):
 			# text input field is not ended by '/'
 			# which causes a bug corrected on 15.1.21
 			
-			rootGUI.fileChooser.path = selectedPath
-			rootGUI.currentPathField.text = selectedPath
+			selectOrCreateDirFileChooserPopup.fileChooser.path = selectedPath
+			selectOrCreateDirFileChooserPopup.updateFilePathNameFields(selectedPath)
 
 
 class SelectableRecycleBoxLayoutFileChooser(FocusBehavior, LayoutSelectionBehavior,
@@ -285,12 +285,31 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
-		
-		if singleVideoTitle is not None:
-			self.currentPathField.text += sep + singleVideoTitle
-		else:
-			self.currentPathField.text = playlistPath
+		self.playlistPath = playlistPath
 
+	def updateFilePathNameFields(self, selectedPath):
+		"""
+		This method is called by SelectableLabelFileChooser.apply_selection() when the
+		SelectOrCreateDirFileChooserPopup dialog is opened or when a disk item is
+		selected.
+		
+		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
+		"""
+		if self.playlistPath is not None:
+			self.currentPathField.text = selectedPath + self.playlistPath.split(sep)[-1]
+		else:
+			self.currentPathField.text = selectedPath + self.singleVideoTitle
+
+	def handleSelection(self, selection):
+		"""
+		This method is called when a dir item is selected.
+		
+		:param selection: ['D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Hoppla']
+		"""
+		if self.playlistPath is not None:
+			self.currentPathField.text = selection[0] + sep + self.playlistPath.split(sep)[-1]
+		else:
+			self.currentPathField.text = selection[0] + sep + self.singleVideoTitle
 		
 	def selOrCreateDir(self, pathFileName):
 		"""
