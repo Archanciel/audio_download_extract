@@ -68,6 +68,7 @@ class PlaylistTitleParser:
 	@staticmethod
 	def extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle):
 		"""
+		Extracts the time information and add them to the passed downloadVideoInfoDic.
 		
 		:param downloadVideoInfoDic:
 		:param videoTimeFramesInfo:
