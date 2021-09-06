@@ -954,7 +954,7 @@ class AudioDownloaderGUIMainApp(App):
 			Config.write()
 
 		self.title = 'AudioDownloader GUI'
-		self.audioDownloaderGUI = windowManager.get_screen('AudioDownloaderGUI')
+		self.audioDownloaderGUI = windowManager.get_screen('audioDownloaderScreen')
 	
 		return windowManager
 
@@ -1084,9 +1084,9 @@ class AudioDownloaderGUIMainApp(App):
 				self.root.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.root.applyAppPosAndSize()
 
-	def close_settings(self, *largs):
-		a = 'a'
-		super().close_settings()
+	def open_settings(self, *largs):
+		self.audioDownloaderGUI.dropDownMenu.dismiss()
+		super().open_settings()
 		
 	def get_application_config(self, defaultpath="c:/temp/%(appname)s.ini"):
 		'''
