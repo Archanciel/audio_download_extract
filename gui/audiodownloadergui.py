@@ -643,12 +643,12 @@ class AudioDownloaderGUI(AudioGUI):
 			playlistTitle = None
 			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-		                                               rootGUI=self,
-		                                               playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-		                                               playlistTitle=playlistTitle,
-		                                               singleVideoTitle=singleVideoTitle,
-		                                               load=self.load,
-		                                               cancel=self.dismissPopup)
+													   rootGUI=self,
+													   playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+													   playlistTitle=playlistTitle,
+													   singleVideoTitle=singleVideoTitle,
+													   load=self.load,
+													   cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openFileToSplitLoadPopup(self):
@@ -941,7 +941,7 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
-		self.audioDownloaderGUI = Builder.load_file('audiodownloadergui.kv')
+		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audiosplittergui.kv')
 		Builder.load_file('audiosharegui.kv')
 		
@@ -954,7 +954,8 @@ class AudioDownloaderGUIMainApp(App):
 			Config.write()
 
 		self.title = 'AudioDownloader GUI'
-
+		self.audioDownloaderGUI = windowManager.get_screen('AudioDownloaderGUI')
+	
 		return windowManager
 
 	def on_pause(self):
