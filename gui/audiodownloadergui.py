@@ -274,7 +274,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
-		self.singleVideoDownloadDir = SINGLE_VIDEO_AUDIO_DIR
+		self.singleVideoAudiobookPath = SINGLE_VIDEO_AUDIO_DIR
 		self.confirmPopupTextChanged = False
 		self.downloadVideoInfoDic = None
 		
@@ -637,8 +637,10 @@ class AudioDownloaderGUI(AudioGUI):
 		if singleVideoTitle is None:
 			# here, a playlist is going to be downloaded
 			playlistTitle = self.downloadVideoInfoDic.getPlaylistTitle()
+			self.isPlaylistDownload = True
 		else:
 			# here, a single video is going to be downloaded
+			self.isPlaylistDownload = False
 			playlistTitle = None
 			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
@@ -896,6 +898,19 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def displayError(self, msg):
 		pass
+
+	def getAudiobookPath(self):
+		"""
+		Method called by FileChooserPopup.fillDriveOrMemoryList() in order to determine
+		the value of the disk/memory item selected by default when opening the
+		FileChooserPopup or its sub class.
+		
+		:return:
+		"""
+		if self.isPlaylistDownload:
+			return self.audiobookPath
+		else:
+			return self.singleVideoAudiobookPath
 
 
 # --- end AudioDownloaderGUI new code ---

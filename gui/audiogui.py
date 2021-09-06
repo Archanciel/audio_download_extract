@@ -60,13 +60,14 @@ class AudioGUI(Screen):
 			self.configMgr = ConfigManager(configFilePathName)
 		except FileNotFoundError as e:
 			self.configMgr = None
-			msgText = 'Configuration file {} not found. Solve the problem and restart the application.'.format(configFilePathName)
+			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(self.configFilePath)
 			self.displayPopupError(msgText)
 			logging.error(e)
 			self.error = True
 			return
 		
 		self.audiobookPath = self.configMgr.dataPath
+		self.audiobookSingleVideoPath = self.configMgr.singleVideoDataPath
 
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
 								int(self.configMgr.histoListVisibleSize),
@@ -106,7 +107,7 @@ class AudioGUI(Screen):
 				messageMaxLength = 70
 		elif platform == 'win':
 			popupSize = (450, 150)
-			messageMaxLength = 55
+			messageMaxLength = 60
 
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders

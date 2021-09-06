@@ -116,7 +116,7 @@ class FileChooserPopup(AbstractPopup):
 		
 		:return:
 		"""
-		dataLocationFromSetting = self.rootGUI.audiobookPath
+		dataLocationFromSetting = self.rootGUI.getAudiobookPath()
 		
 		if platform == 'android':
 			self.pathList.data.append({'text': 'Data file location setting', 'selectable': True,
@@ -310,11 +310,11 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
 		"""
-		self.currentPathField.text = selectedPath
-
 		if self.playlistTitle is not None:
+			self.currentPathField.text = selectedPath
 			self.currentFileNameField.text = self.playlistTitle
 		else:
+			self.currentPathField.text = selectedPath + 'various'
 			self.currentFileNameField.text = self.singleVideoTitle
 
 	def handleSelection(self, selection):
@@ -369,7 +369,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			except FileExistsError as e:
 				print("{} dir already exists".format(pathFileName))
 		
-		self.rootGUI.singleVideoDownloadDir = pathFileName
+		self.rootGUI.singleVideoAudiobookPath = pathFileName
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 		                                                self.singleVideoTitle)
 		self.rootGUI.dismissPopup()

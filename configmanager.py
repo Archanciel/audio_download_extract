@@ -14,6 +14,11 @@ class ConfigManager:
 	DEFAULT_DATA_PATH_IOS = '~/Documents'
 	DEFAULT_DATA_PATH_WINDOWS = 'c:\\temp\\audiodownload_data'
 	
+	CONFIG_KEY_SINGLE_VIDEO_DATA_PATH = 'datapath'
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = '/storage/emulated/0/audiodownload_data/various'
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS = '~/Documents'
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = 'c:\\temp\\audiodownload_data\\various'
+	
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
 	
@@ -48,6 +53,16 @@ class ConfigManager:
 				self.__dataPath = self.DEFAULT_DATA_PATH_ANDROID
 			else:
 				self.__dataPath = self.DEFAULT_DATA_PATH_WINDOWS
+			
+			self._updated = True
+		
+		try:
+			self.__singleVideoDataPath = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH]
+		except KeyError:
+			if os.name == 'posix':
+				self.__singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID
+			else:
+				self.__singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS
 			
 			self._updated = True
 		
@@ -128,10 +143,12 @@ class ConfigManager:
 		
 		if os.name == 'posix':
 			self.dataPath = self.DEFAULT_DATA_PATH_ANDROID
+			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID
 			self.appSize = self.APP_SIZE_HALF
 		else:
 			self.dataPath = self.DEFAULT_DATA_PATH_WINDOWS
+			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS
 			self.appSize = self.APP_SIZE_FULL
 		
@@ -150,6 +167,15 @@ class ConfigManager:
 	@dataPath.setter
 	def dataPath(self, dataPathStr):
 		self.__dataPath = dataPathStr
+		self._updated = True
+	
+	@property
+	def singleVideoDataPath(self):
+		return self.__singleVideoDataPath
+	
+	@singleVideoDataPath.setter
+	def singleVideoDataPath(self, singleVideoDataPathStr):
+		self.__singleVideoDataPath = singleVideoDataPathStr
 		self._updated = True
 	
 	@property
@@ -211,6 +237,7 @@ class ConfigManager:
 			return
 		
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
+		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH] = self.singleVideoDataPath
 		self.config[self.CONFIG_SECTION_GENERAL][
 			self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME] = self.loadAtStartPathFilename
 		self.config[self.CONFIG_SECTION_GENERAL][
