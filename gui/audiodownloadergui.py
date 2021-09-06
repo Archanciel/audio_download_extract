@@ -265,7 +265,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
 
-		self.audioController = AudioController(self, AUDIO_DIR, self.configMgr)
+		self.audioController = AudioController(self, self.audiobookPath, self.configMgr)
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
@@ -274,7 +274,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
-		self.singleVideoAudiobookPath = SINGLE_VIDEO_AUDIO_DIR
 		self.confirmPopupTextChanged = False
 		self.downloadVideoInfoDic = None
 		
@@ -910,7 +909,7 @@ class AudioDownloaderGUI(AudioGUI):
 		if self.isPlaylistDownload:
 			return self.audiobookPath
 		else:
-			return self.singleVideoAudiobookPath
+			return self.audiobookSingleVideoPath
 
 
 # --- end AudioDownloaderGUI new code ---
@@ -981,6 +980,8 @@ class AudioDownloaderGUIMainApp(App):
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_ANDROID})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
 		elif platform == 'ios':
@@ -988,6 +989,8 @@ class AudioDownloaderGUIMainApp(App):
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_IOS})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
 		elif platform == 'win':
@@ -995,6 +998,8 @@ class AudioDownloaderGUIMainApp(App):
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_WINDOWS})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS})
 
@@ -1013,10 +1018,16 @@ class AudioDownloaderGUIMainApp(App):
 		settings.add_json_panel("General", self.config, data=("""
 			[
 				{"type": "path",
-					"title": "Data files location",
-					"desc": "Set the directory where the app data files like history files are stored",
+					"title": "Audio files location",
+					"desc": "Set the directory where the downloaded playlist video audio files are stored",
 					"section": "General",
 					"key": "dataPath"
+				},
+				{"type": "path",
+					"title": "Single video audio files location",
+					"desc": "Set the directory where the downloaded single video audio files are stored",
+					"section": "General",
+					"key": "singlevideodataPath"
 				}
 			]""")  # "key": "dataPath" above is the key in the app config file.
 								)   # To use another drive, simply define it as datapath value

@@ -14,7 +14,7 @@ class ConfigManager:
 	DEFAULT_DATA_PATH_IOS = '~/Documents'
 	DEFAULT_DATA_PATH_WINDOWS = 'c:\\temp\\audiodownload_data'
 	
-	CONFIG_KEY_SINGLE_VIDEO_DATA_PATH = 'datapath'
+	CONFIG_KEY_SINGLE_VIDEO_DATA_PATH = 'singlevideodatapath'
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = '/storage/emulated/0/audiodownload_data/various'
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS = '~/Documents'
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = 'c:\\temp\\audiodownload_data\\various'
