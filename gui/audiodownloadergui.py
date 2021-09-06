@@ -928,7 +928,6 @@ class AudioDownloaderGUIMainApp(App):
 	(See https://stackoverflow.com/questions/48694764/kivy-popup-can-have-only-one-widget-as-content)
 	"""
 	settings_cls = SettingsWithTabbedPanel
-	audioDownloaderGUI = None
 	
 	def build(self): # implicitely looks for a kv file of name cryptopricergui.kv which is
 					 # class name without App, in lowercases
@@ -942,7 +941,7 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
-		Builder.load_file('audiodownloadergui.kv')
+		self.audioDownloaderGUI = Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audiosplittergui.kv')
 		Builder.load_file('audiosharegui.kv')
 		
@@ -1084,6 +1083,10 @@ class AudioDownloaderGUIMainApp(App):
 				self.root.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.root.applyAppPosAndSize()
 
+	def close_settings(self, *largs):
+		a = 'a'
+		super().close_settings()
+		
 	def get_application_config(self, defaultpath="c:/temp/%(appname)s.ini"):
 		'''
 		Redefining super class method to control the name and location of the application
