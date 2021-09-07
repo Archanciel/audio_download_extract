@@ -66,9 +66,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			return None, accessError
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		_, dirCreationMessage = self.createTargetDirIfNotExist(targetAudioDir)
 		
-		self.createTargetDirIfNotExist(targetAudioDir)
-		
+		if dirCreationMessage:
+			self.audioController.displayMessage(dirCreationMessage)
+
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
@@ -238,7 +240,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param videoTitle:
 		:param targetAudioDir:
 		"""
-		targetAudioDirShort = self.createTargetDirIfNotExist(targetAudioDir)
+		targetAudioDirShort, dirCreationMessage = self.createTargetDirIfNotExist(targetAudioDir)
+		
+		if dirCreationMessage:
+			self.audioController.displayMessage(dirCreationMessage)
 		
 		targetAudioDirFileNameList = self.getFileNamesInDir(targetAudioDir)
 		purgedVideoTitle = self.purgeIllegalWinFileNameChar(videoTitle)
@@ -267,12 +272,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def createTargetDirIfNotExist(self, targetAudioDir):
 		targetAudioDirList = targetAudioDir.split(DIR_SEP)
 		targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
+		dirCreationMessage = None
 		
 		if not os.path.isdir(targetAudioDir):
 			os.makedirs(targetAudioDir)
-			self.audioController.displayMessage("directory\n{}\nwas created.\n".format(targetAudioDirShort))
+			dirCreationMessage = "directory\n{}\nwas created.\n".format(targetAudioDirShort)
 
-		return targetAudioDirShort
+		return targetAudioDirShort, dirCreationMessage
 	
 	def purgeIllegalWinFileNameChar(self, videoTitle):
 		"""
