@@ -343,6 +343,9 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			self.currentPathField.text = currentSavePathValue
 
 	def updateCurrentFileNameField(self):
+		"""
+		Method called when the currentFileNameField content is modified.
+		"""
 		currentFileNameFieldValue = self.currentFileNameField.text
 
 		if self.playlistTitle is not None:
