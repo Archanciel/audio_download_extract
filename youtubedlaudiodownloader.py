@@ -1,6 +1,4 @@
 import glob, re, logging
-from os import listdir
-from os.path import isfile, join
 from urllib.error import URLError
 from urllib.error import HTTPError
 from pytube import Playlist
@@ -13,6 +11,7 @@ import youtube_dl
 from constants import *
 from audiodownloader import AudioDownloader
 from playlisttitleparser import PlaylistTitleParser
+from dirutil import DirUtil
 from accesserror import AccessError
 
 YOUTUBE_DL_QUIET = True
@@ -66,7 +65,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			return None, accessError
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
-		_, dirCreationMessage = self.createTargetDirIfNotExist(targetAudioDir)
+		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		
 		if dirCreationMessage:
 			self.audioController.displayMessage(dirCreationMessage)
@@ -240,13 +239,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param videoTitle:
 		:param targetAudioDir:
 		"""
-		targetAudioDirShort, dirCreationMessage = self.createTargetDirIfNotExist(targetAudioDir)
+		targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		
 		if dirCreationMessage:
 			self.audioController.displayMessage(dirCreationMessage)
 		
-		targetAudioDirFileNameList = self.getFileNamesInDir(targetAudioDir)
-		purgedVideoTitle = self.purgeIllegalWinFileNameChar(videoTitle)
+		targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
+		purgedVideoTitle = DirUtil.purgeIllegalWinFileNameChar(videoTitle)
 		
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
 			msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
@@ -268,27 +267,3 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
-	
-	def createTargetDirIfNotExist(self, targetAudioDir):
-		targetAudioDirList = targetAudioDir.split(DIR_SEP)
-		targetAudioDirShort = DIR_SEP.join(targetAudioDirList[-2:])
-		dirCreationMessage = None
-		
-		if not os.path.isdir(targetAudioDir):
-			os.makedirs(targetAudioDir)
-			dirCreationMessage = "directory\n{}\nwas created.\n".format(targetAudioDirShort)
-
-		return targetAudioDirShort, dirCreationMessage
-	
-	def purgeIllegalWinFileNameChar(self, videoTitle):
-		"""
-		This method eliminates the characters which are not accepted in file names
-		on Windows.
-		
-		:param videoTitle:
-		:return:
-		"""
-		return videoTitle.replace('/', '_').replace(':', '_').replace('?', '')
-	
-	def getFileNamesInDir(self, targetAudioDir):
-		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]

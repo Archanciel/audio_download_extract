@@ -3,6 +3,7 @@ import re
 from constants import *
 from downloadvideoinfodic import DownloadVideoInfoDic
 from accesserror import AccessError
+from dirutil import DirUtil
 
 class PlaylistTitleParser:
 	
@@ -28,7 +29,7 @@ class PlaylistTitleParser:
 		
 		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
 		playlistName = playlistName.strip() # removing playlistName last space if exist
-		targetAudioDir = audioDir + DIR_SEP + PlaylistTitleParser.replaceUnauthorizedDirNameChars(playlistName)
+		targetAudioDir = audioDir + DIR_SEP + DirUtil.replaceUnauthorizedDirNameChars(playlistName)
 		
 		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName)
 		accessError = None
@@ -39,31 +40,6 @@ class PlaylistTitleParser:
 			                                                                        playlistTitle)
 		
 		return downloadVideoInfoDic, accessError
-	
-	@staticmethod
-	def replaceUnauthorizedDirNameChars(rawFileName):
-		"""
-		This method replaces chars in the passed raw file name which are unauthorized on
-		Windows.
-		
-		:param rawFileName:
-		:return:
-		"""
-		charToReplace = {'\\': '',
-		                  '/': ' ',
-		                  ':': '',
-		                  '*': ' ',
-		                  '?': '',
-		                  '"': '',
-		                  '<': '',
-		                  '>': '',
-		                  '|': ''}
-		
-		# Replace all multiple characters in a string
-		# based on translation table created by dictionary
-		validFileName = rawFileName.translate(str.maketrans(charToReplace))
-		
-		return validFileName.strip()
 	
 	@staticmethod
 	def extractTimeInfo(downloadVideoInfoDic, videoTimeFramesInfo, playlistTitle):
@@ -92,7 +68,7 @@ class PlaylistTitleParser:
 				startEndTimeFrame = startEndTimeFrameGroup.group(0)
 				try:
 					startEndSecondsList = PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame[1:])
-				except ValueError as e:
+				except ValueError:
 					accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR, 'time frame syntax error "{}" detected in playlist title: "{}".'.format(startEndTimeFrame, playlistTitle))
 					
 					return downloadVideoInfoDic, accessError
