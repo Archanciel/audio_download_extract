@@ -7,6 +7,7 @@ from pytube.exceptions import RegexMatchError
 from pytube.exceptions import VideoUnavailable
 import http.client
 import youtube_dl
+from youtube_dl import DownloadError
 
 from constants import *
 from audiodownloader import AudioDownloader
@@ -99,8 +100,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
-				
+					self.audioController.displayError("Downloading video {} caused this Attribute exception: {}. Playlist name length: {}. Max acceptable length is 126 !".format(videoTitle, e, len(downloadVideoInfoDic.getPlaylistName())))
+				except DownloadError as e:
+					self.audioController.displayError("Downloading video {} caused this DownloadError exception: {}. Playlist name length: {}. Max acceptable length is 126 !".format(videoTitle, e, len(downloadVideoInfoDic.getPlaylistName())))
+					continue
+					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
 				
 				if videoTitle == '':
@@ -110,7 +114,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
 					# updating and saving the downloadVideoInfoDic only if the audio file
 					# was downloaded successfully enables to retry downloading the playlist.
-					# The failed video download will be retryed.
+					# The failed video download will be retried.
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
 					downloadVideoInfoDic.saveDic()
 					
