@@ -106,7 +106,7 @@ class AudioGUI(Screen):
 				popupSize = (1280, 300)
 				messageMaxLength = 70
 		elif platform == 'win':
-			popupSize = (450, 150)
+			popupSize = (450, 180)
 			messageMaxLength = 60
 
 		# this code ensures that the popup content text does not exceeds
