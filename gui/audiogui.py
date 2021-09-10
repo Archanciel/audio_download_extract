@@ -106,7 +106,7 @@ class AudioGUI(Screen):
 				popupSize = (1280, 300)
 				messageMaxLength = 70
 		elif platform == 'win':
-			popupSize = (450, 190)
+			popupSize = (450, 160)
 			messageMaxLength = 60
 
 		# this code ensures that the popup content text does not exceeds
@@ -120,10 +120,10 @@ class AudioGUI(Screen):
 		popup.open()
 
 	def buildDataPathNotExistMessage(self, path):
-		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
+		return 'Data path ' + path + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 	
 	def buildFileNotFoundMessage(self, filePathFilename):
-		return 'Data file\n' + filePathFilename + '\nnot found. No history loaded.'
+		return 'Data file ' + filePathFilename + ' not found. No history loaded.'
 	
 	def ensureDataPathExist(self, dataPath, message):
 		'''
@@ -133,7 +133,7 @@ class AudioGUI(Screen):
 		:return:
 		'''
 		if not (os.path.isdir(dataPath)):
-			self.displayPopupWarning(message)
+			self.displayPopupError(message)
 			
 			return False
 		else:
