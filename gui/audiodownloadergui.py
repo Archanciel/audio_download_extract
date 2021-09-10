@@ -345,12 +345,12 @@ class AudioDownloaderGUI(AudioGUI):
 			# single video. Here, an error message was displayed in the UI !
 			return
 		
-		confirmPopupCallbackFunction = self.onPopupAnswer
+		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 		
 		self.popup = self.createConfirmPopup(confirmPopupTitle, downloadObjectTitle, confirmPopupCallbackFunction)
 		self.popup.open()
 	
-	def onPopupAnswer(self, instance, answer):
+	def onConfirmPopupAnswer(self, instance, answer):
 		"""
 		Method called when one of the ConfirmPopup button is pushed.
 		
@@ -371,7 +371,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.popup.dismiss()
 			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
 											self.singleVideoTitle)
-
+	
 	def setConfirmPopupTextChanged(self):
 		"""
 		Method called if the editable text of the ConfirmPopup was changed, i.e. if the
@@ -958,6 +958,7 @@ class AudioDownloaderGUIMainApp(App):
 		
 		# Loading Multiple .kv files
 		Builder.load_file('filechooser.kv')
+		Builder.load_file('okpopup.kv')
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')

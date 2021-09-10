@@ -12,6 +12,7 @@ from configmanager import ConfigManager
 from gui.customdropdown import CustomDropDown
 from gui.guiutil import GuiUtil
 from gui.helppopup import HelpPopup
+from gui.okpopup import OkPopup
 
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 FILE_ACTION_LOAD = 0
@@ -88,14 +89,14 @@ class AudioGUI(Screen):
 		self.outputScrollView.scroll_y = 0
 	
 	def displayPopupWarning(self, message):
-		self.displayPopup(title='AudioDownloader WARNING',
-		                  message=message)
+		self.displayOkPopup(title='AudioDownloader WARNING',
+		                    message=message)
 	
 	def displayPopupError(self, message):
-		self.displayPopup(title='AudioDownloader ERROR',
-		                  message=message)
+		self.displayOkPopup(title='AudioDownloader ERROR',
+		                    message=message)
 	
-	def displayPopup(self, title, message):
+	def displayOkPopup(self, title, message):
 		popupSize = None
 
 		if platform == 'android':
@@ -111,14 +112,31 @@ class AudioGUI(Screen):
 
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
+
+		resizedMsg = GuiUtil.reformatString(message, messageMaxLength)
+		okPopup = OkPopup()
+		okPopup.ids.txt_input_multiline.text = resizedMsg
 		
-		sizingLabel = Label(text=GuiUtil.reformatString(message, messageMaxLength))
-
-		popup = Popup(title=title, content=sizingLabel,
-		              auto_dismiss=True, size_hint=(None, None),
-		              size=popupSize)
+		popup = Popup(title=title,
+		              content=okPopup,
+		              size_hint=(None, None),
+		              pos_hint={'top': 0.8},
+		              size=popupSize,
+		              auto_dismiss=False)
+		
+		okPopup.popup = popup
+#
+# 		sizingLabel = Label(text=GuiUtil.reformatString(message, messageMaxLength))
+#
+# 		okPopup = OkPopup(text=message)
+# #		okPopup.displayedMessage.text = message
+# 		okPopup.bind(on_answer=self.onOkPopupAnswer)
+#
+# 		self.popup = Popup(title=title, content=sizingLabel,
+# 		              auto_dismiss=True, size_hint=(None, None),
+# 		              size=popupSize)
 		popup.open()
-
+	
 	def buildDataPathNotExistMessage(self, path):
 		return 'Data path ' + path + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 	
