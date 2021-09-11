@@ -276,6 +276,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLineBold = True
 		self.confirmPopupTextChanged = False
 		self.downloadVideoInfoDic = None
+		self.isPlaylistDownload = None
 		
 		self._doOnStart()
 	
@@ -303,7 +304,9 @@ class AudioDownloaderGUI(AudioGUI):
 		- unique video:
 		https://youtu.be/EHsi_KPKFqU
 		'''
-		self.loadHistoryDataIfSet()
+		if not self.loadHistoryDataIfSet():
+			return
+		
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		self.downloadVideoInfoDic, videoTitle = \
@@ -812,9 +815,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.refocusOnFirstRequestInput()
 
 	# --- end file chooser code ---
-	
-	def buildDataPathDefinedInSettingsNotExistMessage(self, path):
-		return 'Data path ' + path + '\nas defined in the settings does not exist !\nEither create the directory or change the\ndata path value using the Settings menu.'
 
 	def buildDataPathContainedInFilePathNameNotExistMessage(self, path):
 		return 'Path ' + path + ' does not exist ! Either create the directory or modify the path.'
@@ -925,7 +925,11 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		:return:
 		"""
-		if self.isPlaylistDownload:
+		if self.isPlaylistDownload is None or self.isPlaylistDownload:
+			# self.isPlaylistDownload is True or False only if we are
+			# going to download video(s). Else, if called from
+			# FileChooserPopup.fillDriveOrMemoryList(), then this
+			# self attribute was not defined.
 			return self.audiobookPath
 		else:
 			return self.audiobookSingleVideoPath

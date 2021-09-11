@@ -74,8 +74,6 @@ class AudioGUI(Screen):
 								int(self.configMgr.histoListVisibleSize),
 								requestListRVSpacing)
 
-		self.loadHistoryDataIfSet()
-
 	def outputResult(self, resultStr):
 		markupBoldStart = '[b]'
 		markupBoldEnd = '[/b]'
@@ -125,16 +123,6 @@ class AudioGUI(Screen):
 		              auto_dismiss=False)
 		
 		okPopup.popup = popup
-#
-# 		sizingLabel = Label(text=GuiUtil.reformatString(message, messageMaxLength))
-#
-# 		okPopup = OkPopup(text=message)
-# #		okPopup.displayedMessage.text = message
-# 		okPopup.bind(on_answer=self.onOkPopupAnswer)
-#
-# 		self.popup = Popup(title=title, content=sizingLabel,
-# 		              auto_dismiss=True, size_hint=(None, None),
-# 		              size=popupSize)
 		popup.open()
 	
 	def buildDataPathNotExistMessage(self, path):
@@ -145,12 +133,13 @@ class AudioGUI(Screen):
 	
 	def ensureDataPathExist(self, dataPath, message):
 		'''
-		Display a warning in a popup if the data path defined in the settings
+		Display an error message in a popup if the data path defined in the settings
 		does not exist and return False. If path ok, returns True. This prevents
 		exceptions at load or save or settings save time.
 		:return:
 		'''
 		if not (os.path.isdir(dataPath)):
+			self.error = True
 			self.displayPopupError(message)
 			
 			return False
@@ -222,7 +211,8 @@ class AudioGUI(Screen):
 		and if history file loaded at start app does exist. Since a warning popup
 		is displayed in case of invalid data, this must be performed here and
 		not in audioDownloaderGUI.__init__ where no popup could be displayed.
-		:return:
+		
+		:return: True if the history file was loaded, False if not
 		'''
 		dataPathNotExistMessage = self.buildDataPathNotExistMessage(self.audiobookPath)
 		
@@ -235,6 +225,10 @@ class AudioGUI(Screen):
 					historyFilePathFilename, dataFileNotFoundMessage):
 				self.loadHistoryFromPathFilename(historyFilePathFilename)
 				self.displayFileActionOnStatusBar(historyFilePathFilename, FILE_ACTION_LOAD)
+				
+			return True
+		else:
+			return False
 
 	def displayFileActionOnStatusBar(self, *unused):
 		pass

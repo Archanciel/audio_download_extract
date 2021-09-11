@@ -138,6 +138,18 @@ class FileChooserPopup(AbstractPopup):
 			
 			for drive in available_drives:
 				self.pathList.data.append({'text': drive, 'selectable': True, 'pathOnly': drive})
+	
+	def updateFilePathNameFields(self, selectedPath):
+		"""
+		Updates the file path and file name fields of the file chooser dialog.
+
+		This method is called by SelectableLabelFileChooser.apply_selection() when the
+		SelectOrCreateDirFileChooserPopup dialog is opened or when a disk item is
+		selected.
+
+		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
+		"""
+		pass
 
 
 class LoadFileChooserPopup(FileChooserPopup):
@@ -157,7 +169,6 @@ class LoadFileChooserPopup(FileChooserPopup):
 		
 	def loadFile(self, path, selection):
 		self.load(path, selection)
-
 
 class SaveFileChooserPopup(FileChooserPopup):
 	"""
@@ -304,6 +315,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	
 	def updateFilePathNameFields(self, selectedPath):
 		"""
+		Updates the file path and file name fields of the file chooser dialog.
+		
 		This method is called by SelectableLabelFileChooser.apply_selection() when the
 		SelectOrCreateDirFileChooserPopup dialog is opened or when a disk item is
 		selected.
