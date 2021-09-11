@@ -1093,20 +1093,20 @@ class AudioDownloaderGUIMainApp(App):
 				appSize = config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE, "Half").upper()
 
 				if appSize == "HALF":
-					self.root.appSize = ConfigManager.APP_SIZE_HALF
+					self.audioDownloaderGUI.appSize = ConfigManager.APP_SIZE_HALF
 				else:
-					self.root.appSize = ConfigManager.APP_SIZE_FULL
+					self.audioDownloaderGUI.appSize = ConfigManager.APP_SIZE_FULL
 
-				self.root.applyAppPosAndSize()
+				self.audioDownloaderGUI.applyAppPosAndSize()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT:
-				self.root.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
-				self.root.rvListSizeSettingsChanged()
+				self.audioDownloaderGUI.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
+				self.audioDownloaderGUI.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
-				self.root.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
-				self.root.rvListSizeSettingsChanged()
+				self.audioDownloaderGUI.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
+				self.audioDownloaderGUI.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
-				self.root.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
-				self.root.applyAppPosAndSize()
+				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
+				self.audioDownloaderGUI.applyAppPosAndSize()
 
 	def open_settings(self, *largs):
 		self.audioDownloaderGUI.dropDownMenu.dismiss()
