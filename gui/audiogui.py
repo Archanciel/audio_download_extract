@@ -18,6 +18,8 @@ AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 FILE_ACTION_LOAD = 0
 
 class AudioGUI(Screen):
+	configMgrErrorDisplayed = False
+	
 	"""
 	Abstract base class for the audio downloader GUI classes.
 	"""
@@ -62,9 +64,14 @@ class AudioGUI(Screen):
 		except FileNotFoundError as e:
 			self.configMgr = None
 			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(self.configFilePath)
-			self.displayPopupError(msgText)
-			logging.error(e)
+
+			if not AudioGUI.configMgrErrorDisplayed:
+				# avoids to open several OkPopup dialogs, one for every application Screen
+				self.displayPopupError(msgText)
+				AudioGUI.configMgrErrorDisplayed = True
+
 			self.error = True
+
 			return
 		
 		self.audiobookPath = self.configMgr.dataPath
