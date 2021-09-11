@@ -66,7 +66,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 		sourceFileExtension = sourceFilePathName[-3:]
 
 		if 'mp3' != sourceFileExtension:
-			if 'mp4' == sourceFileExtension:
+			if 'mp4' == sourceFileExtension or 'm4a' == sourceFileExtension:
 				# the case if Mobizen video capture was applied to an Audible audoiobook
 				sourceFilePathName = self.audioController.extractAudioFromVideoFile(sourceFilePathName)
 			else:
