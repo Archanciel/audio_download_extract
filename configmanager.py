@@ -12,7 +12,7 @@ class ConfigManager:
 	CONFIG_KEY_CONFIG_FILE_PATH = 'configfilepath'
 	DEFAULT_CONFIG_FILE_PATH_ANDROID = '/storage/emulated/0/'
 	DEFAULT_CONFIG_FILE_PATH_IOS = '~/Documents'
-	DEFAULT_CONFIG_FILE_PATH_WINDOWS = 'c:\\'
+	DEFAULT_CONFIG_FILE_PATH_WINDOWS = 'c:\\temp\\'
 	
 	CONFIG_KEY_DATA_PATH = 'datapath'
 	DEFAULT_DATA_PATH_ANDROID = '/storage/emulated/0/Download/'
