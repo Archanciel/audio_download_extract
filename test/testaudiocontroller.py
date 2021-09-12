@@ -1,6 +1,7 @@
 import unittest
 import os, sys, inspect, shutil, glob, time
 from io import StringIO
+from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -9,6 +10,7 @@ sys.path.insert(0, parentDir)
 from constants import *
 from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
+from configmanager import ConfigManager
 			
 class TestAudioController(unittest.TestCase):
 	def testTrimAudioFileCommandLine(self):
@@ -35,7 +37,7 @@ class TestAudioController(unittest.TestCase):
 		            targetAudioDir + '\\' + audioFileName)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, AUDIO_DIR_TEST)
+		audioController = AudioController(guiOutput,  ConfigManager(AUDIO_DIR_TEST + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -76,7 +78,7 @@ class TestAudioController(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, AUDIO_DIR_TEST)
+		audioController = AudioController(guiOutput, ConfigManager(AUDIO_DIR_TEST + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
