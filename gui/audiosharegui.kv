@@ -294,15 +294,15 @@
 					text: '1.0'
 				Button:
 					size_hint_x: 0.1
+					text: 'Share'
+					on_release: root.shareSharedFile()
+				Button:
+					size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
 						root.cancelSharedFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
-				Button:
-					size_hint_x: 0.1
-					text: 'Share'
-					on_release: root.shareSharedFile()
 				GridLayout:
 					cols: 1
 					size_hint_x: 0.3

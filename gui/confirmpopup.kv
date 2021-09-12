@@ -16,12 +16,12 @@
 		size_hint_y: None
 		height: '28dp'
 		Button:
-			text: 'No'
-			on_release: root.dispatch('on_answer', 'no')
-		Button:
 			text: 'Yes'
 			on_release: root.dispatch('on_answer','yes')
 		Button:
 		    id: set_folder_btn
 			text: 'Set folder/name'
 			on_release: root.dispatch('on_answer', 'set_folder')
+		Button:
+			text: 'No'
+			on_release: root.dispatch('on_answer', 'no')
