@@ -2,7 +2,37 @@ import os
 from os import listdir
 from os.path import isfile, join, sep
 
+from constants import RV_LIST_ITEM_SPACING_WINDOWS
+from pathlib import Path
+from os.path import sep
+
 class DirUtil:
+	@staticmethod
+	def getConfigFilePath():
+		
+		configFileName = 'audiodownloader.ini'
+		
+		if os.name == 'posix':
+			configFilePath = '/sdcard/'
+		else:
+			configFilePath = str(Path.home() / "Downloads" / 'Audio')
+
+		return configFilePath
+	
+	@staticmethod
+	def getConfigFilePathName():
+		
+		configFileName = 'audiodownloader.ini'
+		
+		if os.name == 'posix':
+			configFilePath = '/sdcard/'
+			configFilePathName = '%s%s' % (configFilePath, configFileName)
+		else:
+			configFilePath = str(Path.home() / "Downloads" / 'Audio')
+			configFilePathName = configFilePath + sep + configFileName
+		
+		return configFilePathName
+	
 	@staticmethod
 	def createTargetDirIfNotExist(targetAudioDir):
 		targetAudioDirList = targetAudioDir.split(sep)

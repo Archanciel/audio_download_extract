@@ -43,7 +43,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 		self.sliderUpdateFrequency = 1
 		self.sourceAudioFilePathNameInitValue = ''
 		self.splitAudioFilePathNameInitValue = ''
-		self.audioController = AudioController(self, None)
+		self.audioController = AudioController(self, self.configMgr)
 
 
 		# if set to True, avoids that the AsynchSliderUpdater.updateSlider()

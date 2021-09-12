@@ -1,5 +1,6 @@
 import os
 from configobj import ConfigObj
+from dirutil import DirUtil
 
 
 class ConfigManager:
@@ -7,22 +8,16 @@ class ConfigManager:
 	# they are declared inside the class
 	CONFIG_SECTION_GENERAL = 'General'
 	CONFIG_SECTION_LAYOUT = 'Layout'
-	CONFIG_SECTION_MAILTO = 'MailTo'
-	
-	CONFIG_KEY_CONFIG_FILE_PATH = 'configfilepath'
-	DEFAULT_CONFIG_FILE_PATH_ANDROID = '/storage/emulated/0/'
-	DEFAULT_CONFIG_FILE_PATH_IOS = '~/Documents'
-	DEFAULT_CONFIG_FILE_PATH_WINDOWS = 'c:\\temp\\'
 	
 	CONFIG_KEY_DATA_PATH = 'datapath'
 	DEFAULT_DATA_PATH_ANDROID = '/storage/emulated/0/Download/'
 	DEFAULT_DATA_PATH_IOS = '~/Documents'
-	DEFAULT_DATA_PATH_WINDOWS = 'c:\\temp\\'
+	DEFAULT_DATA_PATH_WINDOWS = DirUtil.getConfigFilePath()
 	
 	CONFIG_KEY_SINGLE_VIDEO_DATA_PATH = 'singlevideodatapath'
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = '/storage/emulated/0/Download/'
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS = '~/Documents'
-	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = 'c:\\temp\\'
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = DirUtil.getConfigFilePath()
 	
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
@@ -35,7 +30,7 @@ class ConfigManager:
 	
 	CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT = 'histolistitemheight'
 	DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID = '90'
-	DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS = '35'
+	DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS = '25'
 	
 	CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE = 'histolistvisiblesize'
 	DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE = '3'
@@ -50,16 +45,6 @@ class ConfigManager:
 		
 		if len(self.config) == 0:
 			self._setAndStoreDefaultConf()
-		
-		try:
-			self.__configFilePath = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_CONFIG_FILE_PATH]
-		except KeyError:
-			if os.name == 'posix':
-				self.__configFilePath = self.DEFAULT_CONFIG_FILE_PATH_ANDROID
-			else:
-				self.__configFilePath = self.DEFAULT_CONFIG_FILE_PATH_WINDOWS
-			
-			self._updated = True
 		
 		try:
 			self.__dataPath = self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH]
@@ -126,22 +111,6 @@ class ConfigManager:
 		
 		self.saveConfig()  # will save config file in case one config key raised an exception
 	
-	def getEmailDic(self):
-		return self.config[self.CONFIG_SECTION_MAILTO]
-	
-	def getEmailLst(self):
-		emailDic = self.getEmailDic()
-		emailNb = len(emailDic.keys())
-		emailLst = []
-		
-		for i in range(1, emailNb + 1):
-			key = str(i)
-			email = emailDic[key]
-			email = [key, email[0], email[1]]
-			emailLst.append(email)
-		
-		return emailLst
-	
 	def _setAndStoreDefaultConf(self):
 		"""
 		In case no config file exists or if config file is empty,
@@ -153,17 +122,13 @@ class ConfigManager:
 		self.config.comments[self.CONFIG_SECTION_GENERAL] = ["Contains app general parameters"]
 		self.config[self.CONFIG_SECTION_LAYOUT] = {}
 		self.config.comments[self.CONFIG_SECTION_LAYOUT] = ["Contains GUI layout parameters"]
-		self.config[self.CONFIG_SECTION_MAILTO] = {}
-		self.config.comments[self.CONFIG_SECTION_MAILTO] = ["Emails to which the audio file can be sent. Format: key = Field order, value list = person name, person email. Example: 1 = Joe Bidden, jbd@gmail.com"]
 		
 		if os.name == 'posix':
-			self.configFilePath = self.DEFAULT_CONFIG_FILE_PATH_ANDROID
 			self.dataPath = self.DEFAULT_DATA_PATH_ANDROID
 			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID
 			self.appSize = self.APP_SIZE_HALF
 		else:
-			self.configFilePath = self.DEFAULT_CONFIG_FILE_PATH_WINDOWS
 			self.dataPath = self.DEFAULT_DATA_PATH_WINDOWS
 			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS
@@ -176,15 +141,6 @@ class ConfigManager:
 		self._updated = True
 		
 		self.saveConfig()
-	
-	@property
-	def configFilePath(self):
-		return self.__configFilePath
-	
-	@configFilePath.setter
-	def configFilePath(self, configFilePathStr):
-		self.__configFilePath = configFilePathStr
-		self._updated = True
 	
 	@property
 	def dataPath(self):
@@ -262,7 +218,6 @@ class ConfigManager:
 		if not self._updated:
 			return
 		
-		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_CONFIG_FILE_PATH] = self.configFilePath
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH] = self.singleVideoDataPath
 		self.config[self.CONFIG_SECTION_GENERAL][
@@ -283,9 +238,6 @@ if __name__ == '__main__':
 	if os.name == 'posix':
 		FILE_PATH = '/storage/emulated/0/audiodownloader.ini'
 	else:
-		FILE_PATH = 'c:\\temp\\audiodownloader.ini'
+		FILE_PATH = DirUtil.getConfigFilePathName()
 	
 	cm = ConfigManager(FILE_PATH)
-	
-	for mail_address in cm.getEmailLst():
-		print(mail_address)

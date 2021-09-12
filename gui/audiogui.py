@@ -1,8 +1,6 @@
-import logging
-import os
+from os.path import sep
 
 from kivy import platform
-from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
@@ -13,6 +11,7 @@ from gui.customdropdown import CustomDropDown
 from gui.guiutil import GuiUtil
 from gui.helppopup import HelpPopup
 from gui.okpopup import OkPopup
+from dirutil import DirUtil
 
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 FILE_ACTION_LOAD = 0
@@ -47,23 +46,18 @@ class AudioGUI(Screen):
 
 		:param dt:
 		"""
-		
-		configFileName = 'audiodownloader.ini'
-		
 		if os.name == 'posix':
-			self.configFilePath = '/sdcard/'
-			configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
-			self.configFilePath = 'c:\\temp\\'
-			configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
+
+		configFilePathName = DirUtil.getConfigFilePathName()
 
 		try:
 			self.configMgr = ConfigManager(configFilePathName)
 		except FileNotFoundError as e:
 			self.configMgr = None
-			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(self.configFilePath)
+			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(sep.join(configFilePathName.split(sep)[:-1]))
 
 			if not AudioGUI.configMgrErrorDisplayed:
 				# avoids to open several OkPopup dialogs, one for every application Screen

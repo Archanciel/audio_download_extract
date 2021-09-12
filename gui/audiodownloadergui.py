@@ -38,6 +38,7 @@ from configmanager import ConfigManager
 from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
+from dirutil import DirUtil
 
 # WARNING: without importing AudioSplitterGUI, the AudioSplitterGUI methods
 # called when pressing a button defined in the audiosplittergui.kv file
@@ -265,7 +266,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
 
-		self.audioController = AudioController(self, self.audiobookPath, self.configMgr)
+		self.audioController = AudioController(self, self.configMgr)
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
@@ -994,6 +995,7 @@ class AudioDownloaderGUIMainApp(App):
 		'''
 		Defaults set in this method will be overwritten by the values obtained from the
 		app ini file.
+		
 		:param config:
 		:return:
 		'''
@@ -1002,8 +1004,6 @@ class AudioDownloaderGUIMainApp(App):
 		if platform == 'android':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
-			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
-				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
@@ -1014,8 +1014,6 @@ class AudioDownloaderGUIMainApp(App):
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
-				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_IOS})
-			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_IOS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS})
@@ -1024,8 +1022,6 @@ class AudioDownloaderGUIMainApp(App):
 		elif platform == 'win':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
-			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
-				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
@@ -1048,20 +1044,14 @@ class AudioDownloaderGUIMainApp(App):
 		settings.add_json_panel("General", self.config, data=("""
 			[
 				{"type": "path",
-					"title": "AudioDownloader configuration file location",
-					"desc": "Set the directory where the audiodownloader.ini file is stored",
-					"section": "General",
-					"key": "configfilepath"
-				},
-				{"type": "path",
-					"title": "Single video audio files location",
-					"desc": "Set the directory where the downloaded single video audio files are stored",
+					"title": "Playlist video audio files location",
+					"desc": "Set the directory where the downloaded playlist video audio files are stored",
 					"section": "General",
 					"key": "datapath"
 				},
 				{"type": "path",
-					"title": "Single video audio files location",
-					"desc": "Set the directory where the downloaded single video audio files are stored",
+					"title": "Single video audio file location",
+					"desc": "Set the directory where the downloaded single video audio file is stored",
 					"section": "General",
 					"key": "singlevideodatapath"
 				}
@@ -1119,27 +1109,23 @@ class AudioDownloaderGUIMainApp(App):
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
 				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.audioDownloaderGUI.applyAppPosAndSize()
+	
+	def get_application_config(self):
+		'''
+		Redefining super class method to control the name and location of the
+		application	settings ini file. WARNING: this method is necessary for
+		the appconfig file to be updated when a value was changed with the
+		Kivy settings dialog.
 
+		:return: the app config file path name
+		'''
+		configFilePathName = DirUtil.getConfigFilePathName()
+		
+		return configFilePathName
+	
 	def open_settings(self, *largs):
 		self.audioDownloaderGUI.dropDownMenu.dismiss()
 		super().open_settings()
-		
-	def get_application_config(self, defaultpath="c:/temp/%(appname)s.ini"):
-		'''
-		Redefining super class method to control the name and location of the application
-		settings ini file
-		:param defaultpath: used under Windows
-		:return:
-		'''
-		if platform == 'android':
-			defaultpath = '/sdcard/%(appname)s.ini'
-		elif platform == 'ios':
-			defaultpath = '~/Documents/%(appname)s.ini'
-		elif platform == 'win':
-			defaultpath = defaultpath.replace('/', sep)
-
-		return os.path.expanduser(defaultpath) % {
-			'appname': 'audiodownloader', 'appdir': self.directory}
 
 
 if __name__ == '__main__':

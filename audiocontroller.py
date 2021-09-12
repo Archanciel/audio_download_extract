@@ -15,25 +15,15 @@ else:
 from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:
-	def __init__(self, audioGUI, audioDir, configMgr=None):
+	def __init__(self, audioGUI, configMgr):
 		"""
 		
 		:param audioGUI: used for unit testing only !
 		"""
-
-		if os.name == 'posix':
-			configFilePathName = '/storage/emulated/0/audiodownloader.ini'
-		else:
-			configFilePathName = 'c:\\temp\\audiodownloader.ini'
-
-		if configMgr == None:
-			self.configMgr = ConfigManager(configFilePathName)
-		else:
-			self.configMgr = configMgr
-
+		self.configMgr = configMgr
 		self.requester = Requester(self.configMgr)
 		self.audioGUI = audioGUI
-		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDir)
+		self.audioDownloader = YoutubeDlAudioDownloader(self, configMgr.dataPath)
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
 		'''
