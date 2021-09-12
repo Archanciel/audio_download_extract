@@ -1003,6 +1003,8 @@ class AudioDownloaderGUIMainApp(App):
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_ANDROID})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID})
@@ -1012,6 +1014,8 @@ class AudioDownloaderGUIMainApp(App):
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_IOS})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_IOS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS})
@@ -1020,6 +1024,8 @@ class AudioDownloaderGUIMainApp(App):
 		elif platform == 'win':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
+				ConfigManager.CONFIG_KEY_CONFIG_FILE_PATH: ConfigManager.DEFAULT_CONFIG_FILE_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
