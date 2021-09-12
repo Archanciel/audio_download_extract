@@ -1042,20 +1042,26 @@ class AudioDownloaderGUIMainApp(App):
 		settings.add_json_panel("General", self.config, data=("""
 			[
 				{"type": "path",
-					"title": "Audio files location",
-					"desc": "Set the directory where the downloaded playlist video audio files are stored",
+					"title": "AudioDownloader configuration file location",
+					"desc": "Set the directory where the audiodownloader.ini file is stored",
 					"section": "General",
-					"key": "dataPath"
+					"key": "configfilepath"
 				},
 				{"type": "path",
 					"title": "Single video audio files location",
 					"desc": "Set the directory where the downloaded single video audio files are stored",
 					"section": "General",
-					"key": "singlevideodataPath"
+					"key": "datapath"
+				},
+				{"type": "path",
+					"title": "Single video audio files location",
+					"desc": "Set the directory where the downloaded single video audio files are stored",
+					"section": "General",
+					"key": "singlevideodatapath"
 				}
 			]""")  # "key": "dataPath" above is the key in the app config file.
-								)   # To use another drive, simply define it as datapath value
-									# in the app config file
+				)  # To use another drive, simply define it as datapath value
+				   # in the app config file
 
 		# add 'Layout' settings pannel
 		settings.add_json_panel("Layout", self.config, data=("""
