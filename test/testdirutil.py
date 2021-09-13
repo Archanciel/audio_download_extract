@@ -1,5 +1,6 @@
 import unittest
 import os, sys, inspect, glob
+from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -25,6 +26,12 @@ class TestDirUtil(unittest.TestCase):
 		actualFileName = DirUtil.replaceUnauthorizedDirNameChars(playlistTitle)
 		
 		self.assertEqual(expectedFileName, actualFileName)
+
+	def testExtractPathFromPathFileName(self):
+		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
+		pathFileName = expectedPath + sep + 'file.mp3'
+		
+		self.assertEqual(expectedPath, DirUtil.extractPathFromPathFileName(pathFileName))
 
 
 if __name__ == '__main__':
