@@ -11,11 +11,12 @@ from constants import *
 from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 from configmanager import ConfigManager
+from dirutil import DirUtil
 			
 class TestAudioController(unittest.TestCase):
 	def testTrimAudioFileCommandLine(self):
 		playListName = 'test_audio_controller'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getAudioRootPath() + sep + playListName
 		audioFileName = 'LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3'
 		audioFilePathName = targetAudioDir + DIR_SEP + audioFileName
 
@@ -37,7 +38,7 @@ class TestAudioController(unittest.TestCase):
 		            targetAudioDir + '\\' + audioFileName)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput,  ConfigManager(AUDIO_DIR_TEST + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -65,9 +66,9 @@ class TestAudioController(unittest.TestCase):
 
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + testDirName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + testDirName + sep
 		videoFileName = 'Short low video quality'
-		videoFilePathName = targetAudioDir + DIR_SEP + videoFileName + '.mp4'
+		videoFilePathName = targetAudioDir + videoFileName + '.mp4'
 		
 		expectedExtractedAudioFileDuration = 964.661
 		
@@ -78,7 +79,7 @@ class TestAudioController(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, ConfigManager(AUDIO_DIR_TEST + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -88,7 +89,7 @@ class TestAudioController(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertTrue(r'extracted audio file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp3" from video file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp4"' in outputCapturingString.getvalue())
+		self.assertTrue(r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(targetAudioDir, targetAudioDir) in outputCapturingString.getvalue())
 
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 

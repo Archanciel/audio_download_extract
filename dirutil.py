@@ -8,17 +8,20 @@ from os.path import sep
 
 class DirUtil:
 	@staticmethod
-	def getConfigFilePath():
-		
-		configFileName = 'audiodownloader.ini'
-		
+	def getAudioRootPath():
 		if os.name == 'posix':
-			configFilePath = '/sdcard/'
+			audioRootPath = '/sdcard/'
 		else:
-			configFilePath = str(Path.home() / "Downloads" / 'Audio')
+			audioRootPath = str(Path.home() / "Downloads" / 'Audio')
 
-		return configFilePath
-	
+		return audioRootPath
+
+	@staticmethod
+	def getTestAudioRootPath():
+		audioRootPath = DirUtil.getAudioRootPath()
+		
+		return audioRootPath + sep + 'test' + sep
+
 	@staticmethod
 	def getConfigFilePathName():
 		

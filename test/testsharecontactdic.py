@@ -6,13 +6,13 @@ parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
 from sharecontactdic import *
-from constants import *
-			
+from dirutil import DirUtil
+
 class TestShareContactDic(unittest.TestCase):
 	def testSaveLoadDic(self):
 		dataFileName = "shareContacts.txt"
 
-		dataFilePathName = AUDIO_DIR_TEST + DIR_SEP + dataFileName
+		dataFilePathName = DirUtil.getTestAudioRootPath() + dataFileName
 
 		# emptying share contact dic file
 		

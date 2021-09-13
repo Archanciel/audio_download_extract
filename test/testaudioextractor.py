@@ -1,5 +1,6 @@
 import unittest
-import os, sys, inspect, shutil, glob, time
+import os, sys, inspect, shutil, glob
+from os.path import sep
 from io import StringIO
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -10,6 +11,7 @@ from constants import *
 from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
 from downloadvideoinfodic import DownloadVideoInfoDic
+from dirutil import DirUtil
 			
 class TestAudioExtractor(unittest.TestCase):
 	def testConvertSecondsTo_HHMMSS(self):
@@ -28,7 +30,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_no_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -74,7 +76,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -124,7 +126,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_doubleSpeed(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -181,7 +183,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_0(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -235,7 +237,7 @@ class TestAudioExtractor(unittest.TestCase):
 
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_n_to_end(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -289,7 +291,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -353,7 +355,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_mp3_with_two_superposed_extract_no_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -421,7 +423,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe_last_extract_to_end(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -489,7 +491,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioPortions_two_video_with_two_extract_no_suppress_timeframe_each(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -592,7 +594,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -649,7 +651,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe_last_suppress_to_end(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -709,7 +711,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -767,7 +769,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_two_video_with_two_suppress_no_extract_timeframe_each(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -852,7 +854,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_one_video_with_two_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -941,7 +943,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testSuppressAudioPortions_two_videos_with_two_extract_and_three_suppress_timeframe(self):
 		playListName = 'test_audio_extractor'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1111,7 +1113,7 @@ class TestAudioExtractor(unittest.TestCase):
 	
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
-		targetAudioDir = AUDIO_DIR_TEST + DIR_SEP + testDirName
+		targetAudioDir = DirUtil.getTestAudioRootPath() + testDirName
 		videoFileName = 'Short low video quality'
 		videoFilePathName = targetAudioDir + DIR_SEP + videoFileName + '.mp4'
 		
@@ -1134,7 +1136,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertTrue(r'extracted audio file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp3" from video file "D:\Users\Jean-Pierre\Downloads\Audiobooks\test\test_audible_mobizen\Short low video quality.mp4"' in outputCapturingString.getvalue())
+		self.assertTrue(r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(targetAudioDir + sep, targetAudioDir + sep) in outputCapturingString.getvalue())
 
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 		

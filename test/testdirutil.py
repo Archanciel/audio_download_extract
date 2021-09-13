@@ -14,7 +14,7 @@ class TestDirUtil(unittest.TestCase):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
 		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard"
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + expectedFileName
+		downloadDir = DirUtil.getTestAudioRootPath() + expectedFileName
 		
 		# deleting dic file in downloadDir
 		files = glob.glob(downloadDir + DIR_SEP + '*.txt')

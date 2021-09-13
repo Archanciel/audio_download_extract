@@ -1,5 +1,8 @@
 import unittest
 import os, sys, inspect
+from os.path import sep
+
+from dirutil import DirUtil
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -12,12 +15,8 @@ class TestConfigManager(unittest.TestCase):
 	def setUp(self):
 		configFileName = 'audiodownloader_test.ini'
 	
-		if os.name == 'posix':
-			self.configFilePath = '/sdcard/'
-			self.configFilePathName = '%s%s' % (self.configFilePath, configFileName)
-		else:
-			self.configFilePath = 'c:\\temp\\'
-			self.configFilePathName = '%s%s' % (self.configFilePath, configFileName)
+		self.configFilePath = DirUtil.getTestAudioRootPath()
+		self.configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 
 
 	def testConfigManagerInstanciationWithNoConfigFile(self):
@@ -35,17 +34,14 @@ class TestConfigManager(unittest.TestCase):
 			self.assertEqual('90', configMgr.histoListItemHeight)
 		else:
 			self.assertEqual('Full', configMgr.appSize)
-			self.assertEqual('35', configMgr.histoListItemHeight)
+			self.assertEqual('25', configMgr.histoListItemHeight)
 
 		self.assertEqual('', configMgr.loadAtStartPathFilename)
 		self.assertEqual('3', configMgr.histoListVisibleSize)
 		self.assertEqual('0.62', configMgr.appSizeHalfProportion)
 	
 	def instanciateConfigManager(self):
-		if os.name == 'posix':
-			defaultDataPath = '/storage/emulated/0/audiodownload_data'
-		else:
-			defaultDataPath = r'c:\temp\audiodownload_data'
+		defaultDataPath = DirUtil.getAudioRootPath()
 
 		configMgr = ConfigManager(self.configFilePathName)
 
@@ -92,5 +88,4 @@ if __name__ == '__main__':
 	#unittest.main()
 	tst = TestConfigManager()
 	tst.setUp()
-	tst.testConfigManagerInstanciationWithNoConfigFile()
-	tst.testConfigManagerInstanciationEmptyConfigFile()
+	tst.testChangingDefaultValue()

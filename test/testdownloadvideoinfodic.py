@@ -8,12 +8,13 @@ sys.path.insert(0, parentDir)
 		
 from downloadvideoinfodic import DownloadVideoInfoDic
 from constants import *
+from dirutil import DirUtil
 			
 class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddVideoInfoForVideoIndex_new_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -69,7 +70,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddVideoInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -152,7 +153,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -246,7 +247,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddExtractedFileInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -316,7 +317,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddSuppressedFileInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -403,7 +404,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveFirstVideoInfoForVideoTitle(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -449,7 +450,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveSecondVideoInfoForVideoTitle(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -495,7 +496,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveVideoInfoForVideoTitle_in_empty_dic(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -521,7 +522,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveVideoInfoForBadVideoTitle(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -570,7 +571,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveFirstVideoInfoForVideoIndex(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -613,7 +614,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveSecondVideoInfoForVideoIndex(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -659,7 +660,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testRemoveVideoInfoForBadVideoIndex(self):
 		playListName = 'test_download_vid_info_dic'
 		
-		downloadDir = AUDIO_DIR_TEST + DIR_SEP + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
