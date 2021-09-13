@@ -93,11 +93,14 @@ class GuiUtil:
                     if splitStr == '':
                         continue
                 
-                    formattedStr += splitStr + '\n'
+                    formattedStr += splitStr.strip() + '\n'
                     previousSplitIndex = splitEndIndex
                     currSplitLength = currIndex - splitEndIndex - 1
     
-        formattedStr += sourceStr[previousSplitIndex:]
+        if previousSplitIndex == len(sourceStr):
+            formattedStr = formattedStr[:-1] # removing the end \n
+        else:
+            formattedStr += sourceStr[previousSplitIndex:]
     
         return formattedStr
 
