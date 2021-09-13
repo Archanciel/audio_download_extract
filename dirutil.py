@@ -23,6 +23,12 @@ class DirUtil:
 		return audioRootPath + sep + 'test' + sep
 
 	@staticmethod
+	def extractPathFromPathFileName(pathFileName):
+		pathElemLst = pathFileName.split(sep)
+
+		return sep.join(pathElemLst[:-1])
+
+	@staticmethod
 	def getConfigFilePathName():
 		
 		configFileName = 'audiodownloader.ini'

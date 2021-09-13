@@ -789,8 +789,7 @@ class AudioDownloaderGUI(AudioGUI):
 			return
 		
 		self.currentLoadedFathFileName = savingPathFileName
-		pathElemLst = savingPathFileName.split(sep)
-		pathContainedInFilePathName = sep.join(pathElemLst[:-1])
+		pathContainedInFilePathName = DirUtil.extractPathFromPathFileName(savingPathFileName)
 		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(pathContainedInFilePathName)
 		
 		if not self.ensureDataPathExist(pathContainedInFilePathName, savingPathNotExistMessage):

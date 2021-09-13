@@ -364,8 +364,7 @@ class AudioShareGUI(AudioPositionGUI):
 			return
 		
 		self.currentLoadedFathFileName = savingPathFileName
-		pathElemLst = savingPathFileName.split(sep)
-		pathContainedInFilePathName = sep.join(pathElemLst[:-1])
+		pathContainedInFilePathName = DirUtil.extractPathFromPathFileName(savingPathFileName)
 		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(
 			pathContainedInFilePathName)
 		

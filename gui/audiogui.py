@@ -57,7 +57,7 @@ class AudioGUI(Screen):
 			self.configMgr = ConfigManager(configFilePathName)
 		except FileNotFoundError as e:
 			self.configMgr = None
-			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(sep.join(configFilePathName.split(sep)[:-1]))
+			msgText = 'Configuration file dir {} not found. Solve the problem and restart the application.'.format(DirUtil.extractPathFromPathFileName(configFilePathName))
 
 			if not AudioGUI.configMgrErrorDisplayed:
 				# avoids to open several OkPopup dialogs, one for every application Screen
@@ -107,7 +107,7 @@ class AudioGUI(Screen):
 				messageMaxLength = 70
 		elif platform == 'win':
 			popupSize = (450, 160)
-			messageMaxLength = 60
+			messageMaxLength = 55
 
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
