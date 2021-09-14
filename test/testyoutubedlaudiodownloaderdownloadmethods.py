@@ -914,9 +914,63 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.m4a']), sorted(fileNameLst))
+	
+	def testDownloadPlaylistWithName_two_points(self):
+		playlistName = "test short_n'ame pl, aylist: avec deux points"
+		playlistDirName = "test short_n'ame pl, aylist avec deux points"
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistDirName
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMSg3vAMZWqdGiEPQEuZi2Zh"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['directory',
+			                  'test/test_audio_downloader_one_file',
+			                  'was created.',
+			                  '',
+			                  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			                  '',
+			                  '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['directory',
+ "test\\test short_n'ame pl, aylist avec deux points",
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller" audio downloaded.',
+ '',
+ '"test short_n\'ame pl, aylist: avec deux points" playlist audio(s) download '
+ 'terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*')]
+		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller.mp3',
+ "test short_n'ame pl, aylist_dic.txt"]), sorted(fileNameLst))
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadMaxNamePlaylist_126_char_oneShortVideo_targetFolder_not_exist()
+	tst.testDownloadPlaylistWithName_two_points()

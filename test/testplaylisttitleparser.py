@@ -28,7 +28,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -50,7 +50,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -74,7 +74,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -98,7 +98,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -122,7 +122,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -144,7 +144,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -168,7 +168,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -188,7 +188,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		
@@ -208,7 +208,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -230,7 +230,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -254,7 +254,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
@@ -277,7 +277,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath() + sep)
+		                                                                                                DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -305,7 +305,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideo1ExtractTimeFramesList)
@@ -333,7 +333,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -357,7 +357,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 	
@@ -373,7 +373,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 	
@@ -397,7 +397,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -422,7 +422,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath() + sep)
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, DirUtil.getTestAudioRootPath())
 		self.assertIsNotNone(accessError)
 		self.assertEqual('time frame syntax error "e-0:0:4-0:0:6" detected in playlist title: "Test 3 short videos (e-0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (e0:0:2-0:0:3 e0:0:5-e)".\ndownloading playlist interrupted.', accessError.errorMsg)
 		
@@ -456,7 +456,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath() + sep)
+		                                                                                                DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -482,7 +482,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath() + sep)
+		                                                                                                DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 	
@@ -518,7 +518,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath() + sep)
+		                                                                                                DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
 	
@@ -543,9 +543,145 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath() + sep)
+		                                                                                                DirUtil.getTestAudioRootPath())
 		
 		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2SuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_no_time_info(
+			self):
+		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
+		expectedPlayListName = "test playlist avec un point"
+		timeInfo = ""
+		
+		if timeInfo != '':
+			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
+		else:
+			playlistTitle = expectedPlayListTitle
+		
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                DirUtil.getTestAudioRootPath())
+
+		self.assertEqual(playlistTitle, downloadedVideoInfoDic.getPlaylistTitle())
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(expectedPlayListDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_with_time_info(
+			self):
+		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
+		expectedPlayListName = "test playlist avec un point"
+		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
+		
+		if timeInfo != '':
+			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
+		else:
+			playlistTitle = expectedPlayListTitle
+		
+		expectedVideo1ExtractTimeFramesList = [[352, 443]]
+		expectedVideo1SuppressTimeFramesList = [[652, 'end']]
+		
+		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
+		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                DirUtil.getTestAudioRootPath())
+		
+		self.assertEqual(playlistTitle, downloadedVideoInfoDic.getPlaylistTitle())
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(expectedPlayListDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
+		                 expectedVideo1SuppressTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2ExtractTimeFramesList)
+		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
+		                 expectedVideo2SuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_no_time_info(
+			self):
+		expectedPlayListTitle = "test short_n'ame pl, aylist: avec deux points"
+		expectedPlayListName = "test short_n'ame pl, aylist: avec deux points"
+		expectedPlayListNameForDirName = "test short_n'ame pl, aylist avec deux points"
+		timeInfo = ""
+		
+		if timeInfo != '':
+			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
+		else:
+			playlistTitle = expectedPlayListTitle
+		
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListNameForDirName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                DirUtil.getTestAudioRootPath())
+		
+		self.assertEqual(playlistTitle, downloadedVideoInfoDic.getPlaylistTitle())
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(expectedPlayListDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+	
+	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_with_time_info(
+			self):
+		expectedPlayListTitle = "test short_n'ame pl, aylist: avec deux points"
+		expectedPlayListName = "test short_n'ame pl, aylist: avec deux points"
+		expectedPlayListNameForDirName = "test short_n'ame pl, aylist avec deux points"
+		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
+		
+		if timeInfo != '':
+			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
+		else:
+			playlistTitle = expectedPlayListTitle
+		
+		expectedVideo1ExtractTimeFramesList = [[352, 443]]
+		expectedVideo1SuppressTimeFramesList = [[652, 'end']]
+		
+		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
+		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
+		
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListNameForDirName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+		                                                                                                DirUtil.getTestAudioRootPath())
+		
+		self.assertEqual(playlistTitle, downloadedVideoInfoDic.getPlaylistTitle())
+		self.assertEqual(expectedPlayListName, downloadedVideoInfoDic.getPlaylistName())
+		self.assertEqual(expectedPlayListDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1),
@@ -559,4 +695,4 @@ class TestPlaylistTitleParser(unittest.TestCase):
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
-	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars()
+	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_no_time_info()
