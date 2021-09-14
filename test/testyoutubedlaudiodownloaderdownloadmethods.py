@@ -784,8 +784,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Test 3 short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 
-	def testDownloadMaxNamePlaylistOneShortVideo_targetFolder_not_exist(self):
-		playlistName = 'test not too long playlist name 126 chars max possible playlist name jjjjjj hhhhhhhhhh test not too long playlist name tefffgg'
+	def testDownloadMaxNamePlaylist_126_char_oneShortVideo_targetFolder_not_exist(self):
+		playlistName = '126 char max len__playlist name 126 chars max possible playlist name jjjjjj hhhhhhhhhh test not too long playlist name tefffgg'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
 		
 		# deleting downloadDir (dir and content)
@@ -829,33 +829,30 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
-							 'test\\test not too long playlist name 126 chars max possible playlist name '
-							 'jjjjjj hhhhhhhhhh test not too long playlist name tefffgg',
-							 'was created.',
-							 '',
-							 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
-							 'route - Arthur Keller" audio ...',
-							 '',
-							 'Downloading video Les imaginaires effondristes sont les seuls qui tiennent '
-							 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
-							 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test\\test not too long '
-							 'playlist name 126 chars max possible playlist name jjjjjj hhhhhhhhhh test '
-							 'not too long playlist name tefffgg\\Les imaginaires effondristes sont les '
-							 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
-							 'directory. Playlist name length: 126. Max acceptable length is 126 !',
-							 '"test not too long playlist name 126 chars max possible playlist name jjjjjj '
-							 'hhhhhhhhhh test not too long playlist name tefffgg" playlist audio(s) '
-							 'download terminated.',
-							 '',
-							 ''], outputCapturingString.getvalue().split('\n'))
+ 'test\\126 char max len__playlist name 126 chars max possible playlist name '
+ 'jjjjjj hhhhhhhhhh test not too long playlist name tefffgg',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller" audio downloaded.',
+ '',
+ '"126 char max len__playlist name 126 chars max possible playlist name jjjjjj '
+ 'hhhhhhhhhh test not too long playlist name tefffgg" playlist audio(s) '
+ 'download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Funny suspicious looking dog.mp3',
-								 'test not too long playlist name 126 chars max possible playlist name jjjjjj '
-								 'hhhhhhhhhh test not too long playlist name tefffgg_dic.txt']), sorted(fileNameLst))
+		self.assertEqual(sorted(['126 char max len__playlist name 126 chars max possible playlist name jjjjjj '
+ 'hhhhhhhhhh test not too long playlist name tefffgg_dic.txt',
+ 'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller.mp3']), sorted(fileNameLst))
 	
-	def testDownloaTooLongNamePlaylistOneShortVideo_targetFolder_not_exist(self):
-		playlistName = 'Longer name_ playlist Longer name playlist Longer name playlist Longer name playlist Longer name play max possible is 126 chars'
+	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
+		playlistName = '127 char_____playlist Longer name playlist Longer name playlist Longer name playlist Longer name play max possible is 126 chars'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
 		
 		# deleting downloadDir (dir and content)
@@ -893,27 +890,32 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\test too long playlist name 127 chars ong playlist name test too long '
- 'playlist name test too long playlist name test too long p',
+ 'test\\127 char_____playlist Longer name playlist Longer name playlist Longer '
+ 'name playlist Longer name play max possible is 126 chars',
  'was created.',
  '',
- 'downloading "Funny suspicious looking dog" audio ...',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
  '',
- '"Funny suspicious looking dog" audio downloaded.',
- '',
- '"test too long playlist name 127 chars ong playlist name test too long '
- 'playlist name test too long playlist name test too long p" playlist audio(s) '
+ 'Downloading video Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
+ 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
+ 'Longer name playlist Longer name playlist Longer name playlist Longer name '
+ 'play max possible is 126 chars\\Les imaginaires effondristes sont les seuls '
+ 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
+ 'Playlist name length: 127. Max acceptable length is 126 !',
+ '"127 char_____playlist Longer name playlist Longer name playlist Longer name '
+ 'playlist Longer name play max possible is 126 chars" playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['Funny suspicious looking dog.mp3',
-		                         'test not too long playlist name 126 chars max possible playlist name jjjjjj '
-		                         'hhhhhhhhhh test not too long playlist name tefffgg_dic.txt']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller.m4a']), sorted(fileNameLst))
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
+	tst.testDownloadMaxNamePlaylist_126_char_oneShortVideo_targetFolder_not_exist()
