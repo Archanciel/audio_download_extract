@@ -66,7 +66,7 @@ class TestAudioController(unittest.TestCase):
 
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
-		targetAudioDir = DirUtil.getTestAudioRootPath() + testDirName + sep
+		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + testDirName + sep
 		videoFileName = 'Short low video quality'
 		videoFilePathName = targetAudioDir + videoFileName + '.mp4'
 		

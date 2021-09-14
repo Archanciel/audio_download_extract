@@ -15,7 +15,7 @@ class TestConfigManager(unittest.TestCase):
 	def setUp(self):
 		configFileName = 'audiodownloader_test.ini'
 	
-		self.configFilePath = DirUtil.getTestAudioRootPath()
+		self.configFilePath = DirUtil.getTestAudioRootPath() + sep
 		self.configFilePathName = '%s%s' % (self.configFilePath, configFileName)
 
 

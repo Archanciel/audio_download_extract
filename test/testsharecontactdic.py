@@ -1,5 +1,7 @@
 import unittest
-import os, sys, inspect, glob, time
+import os, sys, inspect
+from os.path import sep
+
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -12,7 +14,7 @@ class TestShareContactDic(unittest.TestCase):
 	def testSaveLoadDic(self):
 		dataFileName = "shareContacts.txt"
 
-		dataFilePathName = DirUtil.getTestAudioRootPath() + dataFileName
+		dataFilePathName = DirUtil.getTestAudioRootPath() + sep + dataFileName
 
 		# emptying share contact dic file
 		

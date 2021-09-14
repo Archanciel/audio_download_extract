@@ -20,7 +20,7 @@ class DirUtil:
 	def getTestAudioRootPath():
 		audioRootPath = DirUtil.getAudioRootPath()
 		
-		return audioRootPath + sep + 'test' + sep
+		return audioRootPath + sep + 'test'
 	
 	@staticmethod
 	def getTestAudioRootPathNoEndSep():

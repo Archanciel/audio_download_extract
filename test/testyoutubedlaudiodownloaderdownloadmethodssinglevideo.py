@@ -1,5 +1,6 @@
 import unittest
 import os, sys, inspect, shutil, glob
+from os.path import sep
 from io import StringIO
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -16,7 +17,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_targetFolder_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test'
-		downloadDir = DirUtil.getTestAudioRootPath() + audioSubDirName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -63,7 +64,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 'directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual(DirUtil.getTestAudioRootPath() + audioSubDirName,
+			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -72,7 +73,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test_new'
-		downloadDir = DirUtil.getTestAudioRootPath() + audioSubDirName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -122,7 +123,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 'test\\Various_test_new directory.',
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
-			self.assertEqual(DirUtil.getTestAudioRootPath() + audioSubDirName,
+			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
@@ -131,7 +132,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	def testDownloadSingleVideoForUrl_redownloading_video(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
 		audioSubDirName = 'Various_test'
-		downloadDir = DirUtil.getTestAudioRootPath() + audioSubDirName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -174,7 +175,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		"""
 		expectedVideoTitle = 'Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀'
 		audioSubDirName = 'Various_test'
-		downloadDir = DirUtil.getTestAudioRootPath() + audioSubDirName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -225,7 +226,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual(DirUtil.getTestAudioRootPath() + audioSubDirName,
+			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
