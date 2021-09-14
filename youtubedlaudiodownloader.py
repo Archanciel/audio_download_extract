@@ -100,9 +100,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					self.audioController.displayError("Downloading video {} caused this Attribute exception: {}. Playlist name length: {}. Max acceptable length is 126 !".format(videoTitle, e, len(downloadVideoInfoDic.getPlaylistName())))
+					self.audioController.displayError("Downloading video '{}' caused this Attribute exception: {}. Playlist target dir '{}' length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 				except DownloadError as e:
-					self.audioController.displayError("Downloading video {} caused this DownloadError exception: {}. Playlist name length: {}. Max acceptable length is 126 !".format(videoTitle, e, len(downloadVideoInfoDic.getPlaylistName())))
+					self.audioController.displayError("Downloading video '{}' caused this DownloadError exception: {}. Playlist target dir '{}' length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)

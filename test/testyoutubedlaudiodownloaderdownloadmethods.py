@@ -785,7 +785,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 
 	def testDownloadMaxNamePlaylist_126_char_oneShortVideo_targetFolder_not_exist(self):
-		playlistName = '126 char max len__playlist name 126 chars max possible playlist name jjjjjj hhhhhhhhhh test not too long playlist name tefffgg'
+		playlistName = '126 char____playlist name  this  playlist name should no cause a problem even if its name is very long'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
 		
 		# deleting downloadDir (dir and content)
@@ -794,7 +794,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
-		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMRyo9jlXsQae5yvNbsdHaBi"
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQRlpXCFMkrgSnJXNRNAgn8"
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -829,8 +829,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\126 char max len__playlist name 126 chars max possible playlist name '
- 'jjjjjj hhhhhhhhhh test not too long playlist name tefffgg',
+ 'test\\126 char____playlist name  this  playlist name should no cause a '
+ 'problem even if its name is very long',
  'was created.',
  '',
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
@@ -839,20 +839,19 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller" audio downloaded.',
  '',
- '"126 char max len__playlist name 126 chars max possible playlist name jjjjjj '
- 'hhhhhhhhhh test not too long playlist name tefffgg" playlist audio(s) '
- 'download terminated.',
+ '"126 char____playlist name  this  playlist name should no cause a problem '
+ 'even if its name is very long" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['126 char max len__playlist name 126 chars max possible playlist name jjjjjj '
- 'hhhhhhhhhh test not too long playlist name tefffgg_dic.txt',
+		self.assertEqual(sorted(['126 char____playlist name  this  playlist name should no cause a problem '
+ 'even if its name is very long_dic.txt',
  'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
 	
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
-		playlistName = '127 char_____playlist Longer name playlist Longer name playlist Longer name playlist Longer name play max possible is 126 chars'
+		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
 		
 		# deleting downloadDir (dir and content)
@@ -862,7 +861,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQou0yHh8npCY2_ls8dwgVn"
-		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
@@ -890,22 +888,25 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\127 char_____playlist Longer name playlist Longer name playlist Longer '
- 'name playlist Longer name play max possible is 126 chars',
+ 'test\\127 char_____playlist name is very long and will cause a problem if '
+ 'the target dir name exceeds a maximum possible too big name',
  'was created.',
  '',
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video Les imaginaires effondristes sont les seuls qui tiennent '
- 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
- 'Longer name playlist Longer name playlist Longer name playlist Longer name '
- 'play max possible is 126 chars\\Les imaginaires effondristes sont les seuls '
+ 'name is very long and will cause a problem if the target dir name exceeds a '
+ 'maximum possible too big name\\Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
- 'Playlist name length: 127. Max acceptable length is 126 !',
- '"127 char_____playlist Longer name playlist Longer name playlist Longer name '
- 'playlist Longer name play max possible is 126 chars" playlist audio(s) '
+ "Playlist target dir 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 "
+ 'char_____playlist name is very long and will cause a problem if the target '
+ "dir name exceeds a maximum possible too big name' length is 169 chars which "
+ 'exceeds the max acceptable length of 168 chars !',
+ '"127 char_____playlist name is very long and will cause a problem if the '
+ 'target dir name exceeds a maximum possible too big name" playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))

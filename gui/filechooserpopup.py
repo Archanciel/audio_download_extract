@@ -367,25 +367,27 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			self.singleVideoTitle = currentFileNameFieldValue
 
 		
-	def selOrCreateDir(self, pathFileName):
+	def selOrCreateDir(self, rootPath, newPathName):
 		"""
 
 		:param pathOnly:
-		:param pathFileName:
+		:param newPathName:
 		:param isLoadAtStart:
 		:return:
 		"""
-		if os.path.isdir(pathFileName):
+		path = rootPath + sep + newPathName
+		
+		if os.path.isdir(path):
 			pass
-			#print("{} dir was selected".format(pathFileName))
+			print("{} dir was selected".format(path))
 		else:
 			try:
-				os.mkdir(pathFileName)
-				#print("{} dir was created".format(pathFileName))
+				os.mkdir(path)
+				print("{} dir was created".format(path))
 			except FileExistsError as e:
-				print("{} dir already exists".format(pathFileName))
+				print("{} dir already exists".format(path))
 		
-		self.rootGUI.singleVideoAudiobookPath = pathFileName
+#		self.rootGUI.singleVideoAudiobookPath = newPathName
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 		                                                self.singleVideoTitle)
 		self.rootGUI.dismissPopup()
