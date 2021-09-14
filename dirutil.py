@@ -15,15 +15,9 @@ class DirUtil:
 			audioRootPath = str(Path.home() / "Downloads" / 'Audio')
 
 		return audioRootPath
-
-	@staticmethod
-	def getTestAudioRootPath():
-		audioRootPath = DirUtil.getAudioRootPath()
-		
-		return audioRootPath + sep + 'test'
 	
 	@staticmethod
-	def getTestAudioRootPathNoEndSep():
+	def getTestAudioRootPath():
 		audioRootPath = DirUtil.getAudioRootPath()
 		
 		return audioRootPath + sep + 'test'
