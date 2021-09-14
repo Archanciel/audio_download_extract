@@ -29,7 +29,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -80,7 +80,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -144,7 +144,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
 		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
@@ -187,7 +187,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/LhH9uX3kgTI"
 		
 		stdout = sys.stdout
