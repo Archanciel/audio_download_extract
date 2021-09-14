@@ -21,7 +21,13 @@ class DirUtil:
 		audioRootPath = DirUtil.getAudioRootPath()
 		
 		return audioRootPath + sep + 'test' + sep
-
+	
+	@staticmethod
+	def getTestAudioRootPathNoEndSep():
+		audioRootPath = DirUtil.getAudioRootPath()
+		
+		return audioRootPath + sep + 'test'
+	
 	@staticmethod
 	def extractPathFromPathFileName(pathFileName):
 		pathElemLst = pathFileName.split(sep)

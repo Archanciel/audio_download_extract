@@ -499,7 +499,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-		                                                                                                DirUtil.getTestAudioRootPath()[:-1])
+		                                                                                                DirUtil.getTestAudioRootPathNoEndSep())
 		
 		self.assertEqual(epectedDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
 	

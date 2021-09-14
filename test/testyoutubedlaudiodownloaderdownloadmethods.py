@@ -30,7 +30,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 			
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -79,7 +79,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
 		
 		stdout = sys.stdout
@@ -132,7 +132,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -192,7 +192,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -305,7 +305,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -363,7 +363,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -425,7 +425,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		# re-downloading the playlist
 	
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -496,7 +496,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
 		
 		stdout = sys.stdout
@@ -577,7 +577,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		# re-downloading the playlist
 		
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -662,7 +662,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = 'https://www.youtube.com/playlist?list=PLzwWSJNcZTMShenMgwyjHC8o5bU8QUPbn'
 		
 		stdout = sys.stdout
@@ -792,7 +792,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMRyo9jlXsQae5yvNbsdHaBi"
 		
 		stdout = sys.stdout
@@ -862,7 +862,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath()[:-1])
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPathNoEndSep())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQou0yHh8npCY2_ls8dwgVn"
 		
 		stdout = sys.stdout
