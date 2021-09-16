@@ -88,7 +88,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded
-					msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
+					msgText = '"{}" audio already downloaded in {} dir. Video skipped.\n'.format(videoTitle, targetAudioDir)
 					self.audioController.displayMessage(msgText)
 					continue
 
@@ -252,7 +252,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		purgedVideoTitle = DirUtil.purgeIllegalWinFileNameChar(videoTitle)
 		
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
-			msgText = '"{}" audio already downloaded. Video skipped.\n'.format(videoTitle)
+			msgText = '"{}" audio already downloaded in {} dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
 			return
 		
