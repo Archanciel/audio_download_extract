@@ -33,6 +33,12 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedPath, DirUtil.extractPathFromPathFileName(pathFileName))
 
+	def testGetLastSubDirs(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'
+		expectedShortDir = 'Audio\\Test 3 short videos'
+		
+		self.assertEqual(expectedShortDir, DirUtil.getLastSubDirs(fullDir, subDirsNumber=2))
+
 
 if __name__ == '__main__':
 	#unittest.main()
