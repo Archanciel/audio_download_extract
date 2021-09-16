@@ -558,15 +558,15 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_no_time_info(
 			self):
 		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
-		expectedPlayListName = "test playlist avec un point"
+		expectedPlayListName = "test playlist avec un point. Et la fin du nom"
+		playListNameForDirName = "test playlist avec un point Et la fin du nom"
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = ""
 		
 		if timeInfo != '':
 			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
 		else:
 			playlistTitle = expectedPlayListTitle
-		
-		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListName
 		
 		# deleting dic file in downloadDir
 		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
@@ -584,7 +584,9 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_with_time_info(
 			self):
 		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
-		expectedPlayListName = "test playlist avec un point"
+		expectedPlayListName = "test playlist avec un point. Et la fin du nom"
+		playListNameForDirName = "test playlist avec un point Et la fin du nom"
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
 		
 		if timeInfo != '':
@@ -597,8 +599,6 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
-		
-		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListName
 		
 		# deleting dic file in downloadDir
 		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
@@ -624,17 +624,16 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_no_time_info(
 			self):
-		expectedPlayListTitle = "test short_n'ame pl, aylist: avec deux points"
-		expectedPlayListName = "test short_n'ame pl, aylist: avec deux points"
-		expectedPlayListNameForDirName = "test short_n'ame pl, aylist avec deux points"
+		expectedPlayListTitle = "test short_n'ame pl, playlist: avec deux points"
+		expectedPlayListName = "test short_n'ame pl, playlist: avec deux points"
+		playListNameForDirName = "test short_n'ame pl, playlist avec deux points"
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = ""
 		
 		if timeInfo != '':
 			playlistTitle = expectedPlayListTitle + ' ' + timeInfo
 		else:
 			playlistTitle = expectedPlayListTitle
-		
-		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListNameForDirName
 		
 		# deleting dic file in downloadDir
 		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
@@ -651,9 +650,10 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_with_time_info(
 			self):
-		expectedPlayListTitle = "test short_n'ame pl, aylist: avec deux points"
-		expectedPlayListName = "test short_n'ame pl, aylist: avec deux points"
-		expectedPlayListNameForDirName = "test short_n'ame pl, aylist avec deux points"
+		expectedPlayListTitle = "test short_n'ame pl, playlist: avec deux points"
+		expectedPlayListName = "test short_n'ame pl, playlist: avec deux points"
+		playListNameForDirName = "test short_n'ame pl, playlist avec deux points"
+		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
 		
 		if timeInfo != '':
@@ -666,8 +666,6 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		expectedVideo2ExtractTimeFramesList = [[3952, 'end']]
 		expectedVideo2SuppressTimeFramesList = [[4252, 4253]]
-		
-		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlayListNameForDirName
 		
 		# deleting dic file in downloadDir
 		files = glob.glob(expectedPlayListDownloadDir + DIR_SEP + '*.txt')
@@ -696,3 +694,4 @@ if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
 	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_with_time_info()
+	#tst.testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_no_braces()

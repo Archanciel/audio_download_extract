@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from os.path import sep
 
 from constants import *
 
@@ -30,44 +31,27 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, downloadDir, playlistTitle='', playlistName=''):
+	def __init__(self, downloadDir, playlistTitle='', playlistName='', playlistDirName=''):
 		"""
 		Constructor.
+		If a file containing the dictionary data for the corresponding playlist exist
+		in the passed downloadDir + playlistDirName, it is loaded and set into the
+		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
+		the passed information.
 		
 		:param downloadDir:
-		:param playlistTitle: may contain extract and/or suppress information.
-							  Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
-		:param playlistName:  contains only the playlist title.
-							  Ex: E_Klein - le temps
+		:param playlistTitle:   may contain extract and/or suppress information.
+								Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
+		:param playlistName:    contains only the playlist title part without extract 
+								and/or suppress information. May contain chars which
+								would be unacceptable for Windows dir or file names.
+		:param playlistDirName: contains the playlistName purged from any invalid
+								Windows dir or file names chars.
 		"""
-		self._loadDicIfExist(downloadDir, playlistTitle, playlistName)
+		dic = self._loadDicIfExist(downloadDir, playlistDirName)
 		
-	def __str__(self):
-		try:
-			return json.dumps(self.dic, sort_keys=False, indent=4)
-		except Exception as e:
-			print(e)
-	
-	def _loadDicIfExist(self, downloadDir, playlistTitle, playlistName):
-		"""
-		If a file containing the dictionary data for the corresponding playlist,
-		it is loaded into the self.dic instance variable. Otherwise, the dic variable
-		is initialized to an empty dic.
-		
-		:param downloadDir:
-		:param playlistTitle: may contain extract and/or suppress information.
-							  Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
-		:param playlistName:  contains only the playlist title.
-							  Ex: E_Klein - le temps
-		"""
-		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistName)
-
-		if os.path.isfile(infoDicFilePathName):
-			try:
-				with open(infoDicFilePathName, 'r') as f:
-					self.dic = json.load(f)
-			except Exception as e:
-				print(e)
+		if dic:
+			self.dic = dic
 		else:
 			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
@@ -76,7 +60,36 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = downloadDir
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
+	
+	def __str__(self):
+		try:
+			return json.dumps(self.dic, sort_keys=False, indent=4)
+		except Exception as e:
+			print(e)
+	
+	def _loadDicIfExist(self, downloadDir, playlistDirName):
+		"""
+		If a file containing the dictionary data for the corresponding playlist,
+		it is loaded using json.
+		
+		:param downloadDir:
+		:param playlistDirName: contains the playlistName purged from any invalid
+								Windows dir or file names chars.
+								
+		:return None or loaded dir
+		"""
+		dic = None
+		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistDirName)
 
+		if os.path.isfile(infoDicFilePathName):
+			try:
+				with open(infoDicFilePathName, 'r') as f:
+					dic = json.load(f)
+			except Exception as e:
+				print(e)
+
+		return dic
+	
 	def updatePlaylistTitle(self, playlistTitle):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
 		#self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = self.buildDownloadDirValue(playlistTitle)
@@ -133,7 +146,7 @@ class DownloadVideoInfoDic:
 			return None
 	
 	def getInfoDicFilePathName(self, downloadDir, playlistName):
-		return downloadDir + DIR_SEP + playlistName + '_dic.txt'
+		return downloadDir + sep + playlistName + '_dic.txt'
 	
 	def getVideoIndexes(self):
 		'''
@@ -451,7 +464,7 @@ class DownloadVideoInfoDic:
 		else:
 			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			timeFrameIndexExtractedFileInfo = extractedFilesSubDic[str(timeFrameIndex)]
-			return self.getPlaylistDownloadDir() + DIR_SEP + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
+			return self.getPlaylistDownloadDir() + sep + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
 	
 	def addSuppressedFileInfoForVideoIndex(self,
 	                                       videoIndex,
