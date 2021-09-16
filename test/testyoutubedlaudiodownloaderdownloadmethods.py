@@ -439,11 +439,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded. '
- 'Video skipped.',
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded in '
+ '"test\\test_audio_downloader_two_files" dir. Video skipped.',
  '',
- '"Here to help: Give him what he wants" audio already downloaded. Video '
- 'skipped.',
+ '"Here to help: Give him what he wants" audio already downloaded in '
+ '"test\\test_audio_downloader_two_files" dir. Video skipped.',
  '',
  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
@@ -591,11 +591,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded. '
- 'Video skipped.',
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded in '
+ '"test\\test_audio_downloader_two_files_with_time_frames" dir. Video skipped.',
  '',
- '"Here to help: Give him what he wants" audio already downloaded. Video '
- 'skipped.',
+ '"Here to help: Give him what he wants" audio already downloaded in '
+ '"test\\test_audio_downloader_two_files_with_time_frames" dir. Video skipped.',
  '',
  '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
  'download terminated.',
@@ -725,11 +725,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded. '
- 'Video skipped.',
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded in '
+ '"test\\Test 3 short videos" dir. Video skipped.',
  '',
- '"Here to help: Give him what he wants" audio already downloaded. Video '
- 'skipped.',
+ '"Here to help: Give him what he wants" audio already downloaded in '
+ '"test\\Test 3 short videos" dir. Video skipped.',
  '',
  'downloading "Funny suspicious looking dog" audio ...',
  '',

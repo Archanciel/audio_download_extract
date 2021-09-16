@@ -44,8 +44,7 @@ class DirUtil:
 	
 	@staticmethod
 	def createTargetDirIfNotExist(targetAudioDir):
-		targetAudioDirList = targetAudioDir.split(sep)
-		targetAudioDirShort = sep.join(targetAudioDirList[-2:])
+		targetAudioDirShort = DirUtil.getLastSubDirs(targetAudioDir, subDirsNumber=2)
 		dirCreationMessage = None
 		
 		if not os.path.isdir(targetAudioDir):
@@ -53,6 +52,13 @@ class DirUtil:
 			dirCreationMessage = "directory\n{}\nwas created.\n".format(targetAudioDirShort)
 		
 		return targetAudioDirShort, dirCreationMessage
+	
+	@staticmethod
+	def getLastSubDirs(fullDir, subDirsNumber):
+		fullDirComponentList = fullDir.split(sep)
+		targetAudioDirShort = sep.join(fullDirComponentList[-subDirsNumber:])
+		
+		return targetAudioDirShort
 	
 	@staticmethod
 	def purgeIllegalWinFileNameChar(videoTitle):

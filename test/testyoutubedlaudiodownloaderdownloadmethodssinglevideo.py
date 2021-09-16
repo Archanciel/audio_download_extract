@@ -164,7 +164,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 		sys.stdout = stdout
 		
-		self.assertEqual(['"Funny suspicious looking dog" audio already downloaded. Video skipped.',
+		self.assertEqual(['"Funny suspicious looking dog" audio already downloaded in '
+ '"test\\Various_test" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 	
