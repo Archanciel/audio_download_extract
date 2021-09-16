@@ -181,7 +181,7 @@ class AudioExtractor:
 		clip.write_audiofile(compliantAudioFilePathName)
 		clip.close()
 
-		msgText = '"{}" converted to {}\n'.format(downloadedAudioFileName, compliantAudioFileName)
+		msgText = '"{}" converted to "{}"\n'.format(downloadedAudioFileName, compliantAudioFileName)
 		self.audioController.displayMessage(msgText)
 	
 	def convertVideoToAudio(self, videoFileName, fileNameSuffix = ''):

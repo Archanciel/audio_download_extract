@@ -270,5 +270,5 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				# is no longer a problem
 				logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
 			
-			msgText = '"{}" audio downloaded in {} directory.\n'.format(videoTitle, targetAudioDirShort)
+			msgText = '"{}" audio downloaded in "{}" dir.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
