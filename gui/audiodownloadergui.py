@@ -275,7 +275,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
-		self.confirmPopupTextChanged = False
 		self.downloadVideoInfoDic = None
 		self.isPlaylistDownload = None
 		
@@ -319,12 +318,10 @@ class AudioDownloaderGUI(AudioGUI):
 			# playlist url obtained from clipboard
 			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ..."
-			isPlayListToDownload = True
 		elif videoTitle is not None:
 			# single video url obtained from clipboard
 			downloadObjectTitle = videoTitle
 			confirmPopupTitle = "Go on with downloading audio for video ... "
-			isPlayListToDownload = False
 		elif 'mp3' in self.playlistOrSingleVideoUrl:
 			# This is useful in order to facilitate opening the AudioSplitterGUI
 			# screen during its development. Once dev is finished, this code
@@ -363,9 +360,6 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
-			if self.confirmPopupTextChanged:
-				self.downloadVideoInfoDic.updatePlaylistTitle(self.confirmPopup.editableTextInput.text)
-				
 			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
 													self.singleVideoTitle)
 			self.popup.dismiss()
@@ -376,13 +370,6 @@ class AudioDownloaderGUI(AudioGUI):
 			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
 											self.singleVideoTitle)
 	
-	def setConfirmPopupTextChanged(self):
-		"""
-		Method called if the editable text of the ConfirmPopup was changed, i.e. if the
-		playlist title was modified by the user.
-		"""
-		self.confirmPopupTextChanged = True
-		
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
@@ -884,6 +871,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param confirmPopupMsg:
 		:param confirmPopupCallbackFunction: function called when the user click on
 											 yes or no button
+		:param isPlayListToDownload
 		:return:
 		"""
 		popupSize = None

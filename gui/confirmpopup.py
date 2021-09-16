@@ -13,9 +13,3 @@ class ConfirmPopup(GridLayout):
 	
 	def on_answer(self, *args):
 		pass
-	
-	def setTextInputChanged(self):
-		"""
-		Method called if the editable text of the ConfirmPopup was changed.
-		"""
-		self.rootGUI.setConfirmPopupTextChanged()
