@@ -12,6 +12,7 @@ from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
 from downloadvideoinfodic import DownloadVideoInfoDic
 from dirutil import DirUtil
+from configmanager import ConfigManager
 			
 class TestAudioExtractor(unittest.TestCase):
 	def testConvertSecondsTo_HHMMSS(self):
@@ -1138,6 +1139,48 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertTrue(r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(targetAudioDir + sep, targetAudioDir + sep) in outputCapturingString.getvalue())
 
+		videoAndAudioFileList = os.listdir(targetAudioDir)
+		
+		self.assertEqual(
+			['Short low video quality.mp3',
+			 'Short low video quality.mp4'],
+			videoAndAudioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName = videoAndAudioFileList[1]
+		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName)
+		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
+
+	@unittest.skip
+	def testConcatenateAudioFiles(self):
+		testDirName = "Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT L'histoire d'une noble amitié de Gary Renard"
+		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + testDirName
+		videoFileName = 'Short low video quality'
+		videoFilePathName = targetAudioDir + DIR_SEP + videoFileName + '.mp4'
+		
+		expectedExtractedAudioFileDuration = 964.661
+		
+		# deleting mp3 files in test dir
+		files = glob.glob(targetAudioDir + DIR_SEP + '*.mp3')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, {})
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioExtractor.extractAudioFromVideoFile(videoFilePathName)
+		
+		sys.stdout = stdout
+		
+		self.assertTrue(
+			r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(
+				targetAudioDir + sep, targetAudioDir + sep) in outputCapturingString.getvalue())
+		
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 		
 		self.assertEqual(
