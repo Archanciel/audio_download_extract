@@ -71,7 +71,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		if dirCreationMessage:
 			self.audioController.displayMessage(dirCreationMessage)
-
+		
+		targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
@@ -88,8 +89,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					self.audioController.displayMessage(msgText)
 				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
-					# the video was already downloaded
-					msgText = '"{}" audio already downloaded in "{}" dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+					if downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle) in targetAudioDirFileNameList:
+						# the video was already downloaded and converted to audio file
+						msgText = '"{}" audio already downloaded in "{}" dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+					else:
+						# the video audio file was already downloaded and was deleted
+						msgText = '"{}" audio already downloaded in "{}" dir but was deleted. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+
 					self.audioController.displayMessage(msgText)
 					continue
 

@@ -968,9 +968,148 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3',
  "test short_n'ame pl, aylist_dic.txt"]), sorted(fileNameLst))
+	
+	def testRedownloading_the_playlist_with_deleted_audio_files(self):
+		playlistName = 'test_audio_downloader_two_files'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		
+		if not os.path.exists(downloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + DIR_SEP + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl,
+		                                                                                                   downloadVideoInfoDic)
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+		self.assertEqual(
+			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			 '',
+			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 '',
+			 'downloading "Here to help: Give him what he wants" audio ...',
+			 '',
+			 '"Here to help: Give him what he wants" audio downloaded.',
+			 '',
+			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 '',
+			 ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertEqual(downloadDir, targetAudioDir)
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
+		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 downloadVideoInfoDic.getVideoUrlForVideoTitle(
+			                 'Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
+		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
+		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
+			                 'Wear a mask. Help slow the spread of Covid-19.'))
+		
+		self.assertEqual('Here to help: Give him what he wants',
+		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 downloadVideoInfoDic.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 downloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help - Give him what he wants.mp3',
+		                 downloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help - Give him what he wants.mp3',
+		                 downloadVideoInfoDic.getVideoFileNameForVideoTitle(
+			                 'Here to help: Give him what he wants'))
+		
+		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
+		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
+		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+		# re-downloading the playlist after deleting one audio file
+		
+		deletedAudioFileName = 'Here to help - Give him what he wants.mp3'
+		os.remove(downloadDir + sep + deletedAudioFileName)
+		
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		redownloadVideoInfoDic, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
+			playlistUrl, downloadVideoInfoDic)
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded in '
+ '"test\\test_audio_downloader_two_files" dir. Video skipped.',
+ '',
+ '"Here to help: Give him what he wants" audio already downloaded in '
+ '"test\\test_audio_downloader_two_files" dir but was deleted. Video skipped.',
+ '',
+ '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertEqual(downloadDir, targetAudioDir)
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(1))
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle(
+			                 'Wear a mask. Help slow the spread of Covid-19.'))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
+		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19..mp3',
+		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
+			                 'Wear a mask. Help slow the spread of Covid-19.'))
+		
+		self.assertEqual('Here to help: Give him what he wants',
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 redownloadVideoInfoDic.getVideoUrlForVideoIndex(2))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 redownloadVideoInfoDic.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		self.assertEqual('Here to help - Give him what he wants.mp3',
+		                 redownloadVideoInfoDic.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('Here to help - Give him what he wants.mp3',
+		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
+			                 'Here to help: Give him what he wants'))
+		
+		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
+		
+		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
+ 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadPlaylistWithName_two_points()
+	tst.testRedownloading_the_playlist_with_deleted_audio_files()
+#	tst.testDownloadPlaylistWithName_two_points()
