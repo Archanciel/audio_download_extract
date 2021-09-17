@@ -2,7 +2,6 @@ import os
 from os import listdir
 from os.path import isfile, join, sep
 
-from constants import RV_LIST_ITEM_SPACING_WINDOWS
 from pathlib import Path
 from os.path import sep
 
@@ -12,6 +11,8 @@ class DirUtil:
 		if os.name == 'posix':
 			audioRootPath = '/sdcard/'
 		else:
+			# Path.home() returns C:\users\my name\ even if my OneDrive folder is
+			# on D:\users\my name\ !!!
 			audioRootPath = str(Path.home() / "Downloads" / 'Audio')
 
 		return audioRootPath

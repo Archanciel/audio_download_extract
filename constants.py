@@ -6,14 +6,12 @@ SEVERAL_SECONDS = 5
 
 if os.name == 'posix':
 	CONVERT = False
-#	AUDIO_DIR_TEST = "/storage/emulated/0/Download/Audiobooks/test"
 	YOUTUBE_DL_FILE_EXT = 'mp3'
 	DIR_SEP = '/'
 	WIN_WIDTH_RATIO = 1
 	WIN_HEIGHT = 800	
 else:
 	CONVERT = False # can be set to True on Windows only
-#	AUDIO_DIR_TEST = "D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\test"
 	YOUTUBE_DL_FILE_EXT = 'mp3'
 	DIR_SEP = '\\'
 	WIN_WIDTH_RATIO = 0.8
