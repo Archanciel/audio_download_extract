@@ -2,6 +2,7 @@ import os, shutil
 from pydub import AudioSegment
 import soundfile as sf
 import pyrubberband as pyrb
+from os.path import sep
 
 from constants import *
 
@@ -152,63 +153,26 @@ class AudioExtractor:
 		self.displayFramesMsg('\ttime frames suppressed:', HHMMSS_suppressedTimeFramesList)
 		self.displayFramesMsg('\n\ttime frames kept:', HHMMSS_keptTimeFramesList)
 	
-	def concatenateAudioFiles(self, audioSourcePath, sourceFileNameLst):
-		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
-		suppressStartEndSecondsLists = downloadVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(videoIndex)
-		suppressFrameNb = len(suppressStartEndSecondsLists)
-		videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
-		duration = videoAudioFrame.duration
-		clips = []
-		keptStartEndSecondsLists = []
-		
-		msgText = '\nsuppressing portions of "{}" ...\n'.format(videoFileName)
+	def concatenateAudioFiles(self, audioSourcePath, sourceFileNameLst, targetFileName):
+		sourceFileNamesStr = ',\n'.join(sourceFileNameLst)
+		msgText = '\nConcatenating "{}" ...\n'.format(sourceFileNamesStr)
 		self.audioController.displayMessage(msgText)
+
+		audioFileClipLst = []
 		
-		for extractIdx in range(suppressFrameNb + 1):
-			if extractIdx == 0:
-				timeFrameEndValue = suppressStartEndSecondsLists[0][0]
-				
-				if timeFrameEndValue == 0:
-					# suppress frame is starting at 0 and so, appending time frame 0-0 is nonsensical !
-					continue
-				
-				extractStartEndSecondsList = [0, timeFrameEndValue]
-				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
-			elif extractIdx == suppressFrameNb:
-				extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1], duration]
-				
-				if extractStartEndSecondsList[0] == 'end':
-					suppressStartEndSecondsLists[extractIdx - 1][1] = duration
-					continue
-				
-				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
-			else:
-				extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1],
-				                              suppressStartEndSecondsLists[extractIdx][0]]
-				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
+		for audioFileName in sourceFileNameLst:
+			audioFilePathName = audioSourcePath + sep + audioFileName
+			audioFileClipLst.append(mp.AudioFileClip(audioFilePathName))
 		
-		clip = mp.concatenate_audioclips(clips)
-		mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
-		mp3FilePathName = os.path.join(self.targetAudioDir,
-		                               mp3FileName)
-		clip.write_audiofile(mp3FilePathName)
-		clip.close()
-		videoAudioFrame.close()
-		HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(
-			suppressStartEndSecondsLists)
-		HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(
-			keptStartEndSecondsLists)
-		downloadVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
-		                                                        mp3FileName,
-		                                                        HHMMSS_suppressedTimeFramesList,
-		                                                        HHMMSS_keptTimeFramesList)
+		concatenatedAudioClip = mp.concatenate_audioclips(audioFileClipLst)
+		targetFilePathName = audioSourcePath + sep + targetFileName
 		
-		self.displayFramesMsg('\ttime frames suppressed:', HHMMSS_suppressedTimeFramesList)
-		self.displayFramesMsg('\n\ttime frames kept:', HHMMSS_keptTimeFramesList)
-	
+		concatenatedAudioClip.write_audiofile(targetFilePathName)
+		concatenatedAudioClip.close()
+
+		msgText = '\n"{} concatenated to "{}"\n'.format(sourceFileNamesStr, targetFileName)
+		self.audioController.displayMessage(msgText)
+
 	def displayFramesMsg(self, startMsgText, HHMMSS_timeFramesList):
 		self.audioController.displayMessage(startMsgText)
 		
