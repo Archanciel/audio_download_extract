@@ -693,5 +693,5 @@ class TestPlaylistTitleParser(unittest.TestCase):
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
-	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_with_time_info()
+	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_no_time_info()
 	#tst.testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_no_braces()
