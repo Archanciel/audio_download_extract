@@ -828,19 +828,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['directory',
- 'test\\126 char____playlist name  this  playlist name should no cause a '
- 'problem even if its name is very long',
- 'was created.',
- '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+			self.assertEqual(['downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller" audio downloaded.',
  '',
  '"126 char____playlist name  this  playlist name should no cause a problem '
- 'even if its name is very long" playlist audio(s) download terminated.',
+ 'even if its name is very long. Target dir name import" playlist audio(s) '
+ 'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -906,7 +902,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  "dir name exceeds a maximum possible too big name' length is 169 chars which "
  'exceeds the max acceptable length of 168 chars !',
  '"127 char_____playlist name is very long and will cause a problem if the '
- 'target dir name exceeds a maximum possible too big name" playlist audio(s) '
+ 'target dir name exceeds a maximum possible too big name." playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
