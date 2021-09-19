@@ -170,7 +170,7 @@ class AudioExtractor:
 		concatenatedAudioClip.write_audiofile(targetFilePathName)
 		concatenatedAudioClip.close()
 
-		msgText = '\n"{} concatenated to "{}"\n'.format(sourceFileNamesStr, targetFileName)
+		msgText = '\n"{} concatenated into "{}"\n'.format(sourceFileNamesStr, targetFileName)
 		self.audioController.displayMessage(msgText)
 
 	def displayFramesMsg(self, startMsgText, HHMMSS_timeFramesList):
