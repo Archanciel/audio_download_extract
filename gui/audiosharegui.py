@@ -420,7 +420,8 @@ class AudioShareGUI(AudioPositionGUI):
 		"""
 		Method called when Cancel button is pressed.
 		"""
-		self.stopSharedFile()
+		if self.soundloaderSharedMp3Obj:
+			self.stopSharedFile()
 	
 	def goToSharedFileStartPos(self):
 		"""
