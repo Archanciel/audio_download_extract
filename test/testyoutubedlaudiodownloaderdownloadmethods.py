@@ -793,6 +793,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		WARNING: the exception raised is due to the download dir + sep + playlist name
 		too long length, not to the playlist name only exceeding length !
+		
+		BUT what is uncomprehensible is that downloading this playlist with the
+		AudioDownloaderGUI succeeds !
 		"""
 		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
@@ -882,6 +885,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		WARNING: the exception raised is due to the download dir + sep + playlist name
 		too long length, not to the playlist name only exceeding length !
+		
+		BUT what is uncomprehensible is that downloading this playlist with the
+		AudioDownloaderGUI succeeds !
 		"""
 		playlistName = 'Il commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
 		playlistNameWindowsAcceptable = 'Il commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
