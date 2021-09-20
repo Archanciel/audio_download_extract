@@ -85,7 +85,6 @@ class TestGuiUtil(unittest.TestCase):
 		maxLength = 65
 		formattedMessage = GuiUtil.reformatString(msg, maxLength)
 
-#						 "Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT\nL'histoire d'une noble amitié de Gary Renard"
 		self.assertEqual("Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT\nL'histoire d'une noble amitié de Gary Renard",
 			formattedMessage)
 
