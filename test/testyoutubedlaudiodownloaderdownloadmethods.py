@@ -25,7 +25,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -67,7 +67,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		else:
 			self.assertEqual('{}test_audio_downloader_one_file'.format(DirUtil.getTestAudioRootPath() + sep), downloadDir)
 
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
@@ -115,7 +115,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
 
@@ -127,7 +127,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -173,7 +173,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 								 'Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
@@ -187,7 +187,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -253,7 +253,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 					'Wear a mask. Help slow the spread of Covid-19..mp3',
@@ -300,7 +300,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -345,7 +345,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + playlistName,
 			                 downloadDir)
 
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Test_title_one_time_frame_extract_dic.txt',
 								 'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		self.assertEqual([[5, 10]], downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
@@ -358,7 +358,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -419,7 +419,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
@@ -477,7 +477,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
@@ -491,7 +491,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -570,7 +570,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
@@ -641,12 +641,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 
+	@unittest.skip
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -657,7 +658,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -694,7 +695,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Funny suspicious looking dog.mp3',
  'Here to help - Give him what he wants.mp3',
@@ -705,7 +706,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# the last video
 		
 		# the last video files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*.mp3')
+		files = glob.glob(downloadDir + sep + '*.mp3')
 		
 		for f in files:
 			if 'Funny suspicious looking dog' in f:
@@ -777,16 +778,197 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                 redownloadVideoInfoDic.getVideoFileNameForVideoTitle(
 			                 'Funny suspicious looking dog'))
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Funny suspicious looking dog.mp3',
  'Here to help - Give him what he wants.mp3',
  'Test 3 short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 
-	def testDownloadMaxNamePlaylist_126_char_oneShortVideo_targetFolder_not_exist(self):
-		playlistName = '126 char____playlist name  this  playlist name should no cause a problem even if its name is very long'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+	def testDownloadMaxNamePlaylist(self):
+		"""
+		Verifying that downloading a playlist whose name exceeds with only one char
+		the max possible playlist name raises the awaited exception, which causes
+		an adequate error msg to be outputted to the GUI output text field.
+		
+		WARNING: the exception raised is due to the download dir + sep + playlist name
+		too long length, not to the playlist name only exceeding length !
+		"""
+		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMRTPgK-xIKcbu5JbKpN49Tn"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['directory',
+ 'test/Je commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
+ 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
+ 'ce problème impossible à analyser/Les imaginaires effondristes sont les '
+ 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'directory. Playlist target dir '
+ "'C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué "
+ 'de ce problème impossible à analyser Je commence à être fatigué de ce '
+ "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'acceptable length of 168 chars !',
+ '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
+ 'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
+ 'download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['directory',
+ 'test\\Je commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
+ 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
+ 'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
+ 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'directory. Playlist target dir '
+ "'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être fatigué "
+ 'de ce problème impossible à analyser Je commence à être fatigué de ce '
+ "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'acceptable length of 168 chars !',
+ '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
+ 'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
+ 'download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller.m4a']), sorted(fileNameLst))
+	
+	def testDownloadMaxNamePlaylist_with_point(self):
+		"""
+		Verifying that downloading a playlist whose name exceeds with only one char
+		the max possible playlist name raises the awaited exception, which causes
+		an adequate error msg to be outputted to the GUI output text field.
+		
+		In this test, the playlist name contins a point. The point will be removed
+		from the created dir name. The point does not alter the error due to the
+		exceeding download dir name + playlist name.
+
+		WARNING: the exception raised is due to the download dir + sep + playlist name
+		too long length, not to the playlist name only exceeding length !
+		"""
+		playlistName = 'Il commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
+		playlistNameWindowsAcceptable = 'Il commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMSqBPP5sFHilrgG6dbNr6ei"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['directory',
+ 'test/Il commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
+ 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
+ 'ce problème impossible à analyser/Les imaginaires effondristes sont les '
+ 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'directory. Playlist target dir '
+ "'C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué "
+ 'de ce problème impossible à analyser Je commence à être fatigué de ce '
+ "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'acceptable length of 168 chars !',
+ '"Il commence à être fatigué de ce problème impossible à analyser. Je '
+ 'commence à être fatigué de ce problème impossible à analyser" playlist '
+ 'audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['directory',
+ 'test\\Il commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
+ 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
+ 'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
+ 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'directory. Playlist target dir '
+ "'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être fatigué "
+ 'de ce problème impossible à analyser Je commence à être fatigué de ce '
+ "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'acceptable length of 168 chars !',
+ '"Il commence à être fatigué de ce problème impossible à analyser. Je '
+ 'commence à être fatigué de ce problème impossible à analyser" playlist '
+ 'audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+		                         'Keller.m4a']), sorted(fileNameLst))
+
+		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistName())
+		
+	def testDownloadMaxNamePlaylist_minus_one_char(self):
+		"""
+		Verifying that downloading a playlist whose name length is one char less than
+		the max possible playlist name is ok.
+		"""
+		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyse'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -808,44 +990,119 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		if os.name == 'posix':
 			self.assertEqual(['directory',
-							 'test/test not too long playlist name 126 chars max possible playlist name '
-							 'jjjjjj hhhhhhhhhh test not too long playlist name tefffgg',
-							 'was created.',
-							 '',
-							 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
-							 'route - Arthur Keller" audio ...',
-							 '',
-							 'Downloading video Les imaginaires effondristes sont les seuls qui tiennent '
-							 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
-							 'file:D:/,Users/,Jean-Pierre/,Downloads/,Audiobooks/,test/,test not too long '
-							 'playlist name 126 chars max possible playlist name jjjjjj hhhhhhhhhh test '
-							 'not too long playlist name tefffgg/,Les imaginaires effondristes sont les '
-							 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
-							 'directory. Playlist name length: 126. Max acceptable length is 126 !',
-							 '"test not too long playlist name 126 chars max possible playlist name jjjjjj '
-							 'hhhhhhhhhh test not too long playlist name tefffgg" playlist audio(s) '
-							 'download terminated.',
-							 '',
-							 ''], outputCapturingString.getvalue().split('\n'))
+			                  'test/Je commence à être fatigué de ce problème impossible à analyser Je '
+			                  'commence à être fatigué de ce problème impossible à analyse',
+			                  'was created.',
+			                  '',
+			                  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+			                  'route - Arthur Keller" audio ...',
+			                  '',
+			                  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+			                  'Keller" audio downloaded.',
+			                  '',
+			                  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
+			                  'à être fatigué de ce problème impossible à analyse" playlist audio(s) '
+			                  'download terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+			self.assertEqual(['directory',
+			                  'test\\Je commence à être fatigué de ce problème impossible à analyser Je '
+			                  'commence à être fatigué de ce problème impossible à analyse',
+			                  'was created.',
+			                  '',
+			                  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+			                  'route - Arthur Keller" audio ...',
+			                  '',
+			                  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+			                  'Keller" audio downloaded.',
+			                  '',
+			                  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
+			                  'à être fatigué de ce problème impossible à analyse" playlist audio(s) '
+			                  'download terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['Je commence à être fatigué de ce problème impossible à analyser Je commence '
+		                         'à être fatigué de ce problème impossible à analyse_dic.txt',
+		                         'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+		                         'Keller.mp3']), sorted(fileNameLst))
+	
+	def testDownloadMaxNamePlaylist_minus_one_char_with_point(self):
+		"""
+		Verifying that downloading a playlist whose name length is one char less than
+		the max possible playlist name is ok.
+
+		In this test, the playlist name contains a point. The point will be removed
+		from the created dir name. The point does not alter the fact that the playlist
+		download succeeds.
+		"""
+		playlistName = 'G commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
+		playlistNameWindowsAcceptable = 'G commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQBqzowzbM5XlJkYw0Ovl5W"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['directory',
+ 'test/G commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller" audio downloaded.',
  '',
- '"126 char____playlist name  this  playlist name should no cause a problem '
- 'even if its name is very long. Target dir name import" playlist audio(s) '
+ '"G commence à être fatigué de ce problème impossible à analyser. Je commence '
+ 'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
+ 'download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['directory',
+ 'test\\G commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à analyser',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
+ 'Keller" audio downloaded.',
+ '',
+ '"G commence à être fatigué de ce problème impossible à analyser. Je commence '
+ 'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
-		self.assertEqual(sorted(['126 char____playlist name  this  playlist name should no cause a problem '
- 'even if its name is very long_dic.txt',
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['G commence à être fatigué de ce problème impossible à analyser. Je commence '
+ 'à être fatigué de ce problème impossible à analyser_dic.txt',
  'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
-	
+
+		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistName())
+
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
 		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
@@ -869,19 +1126,28 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		if os.name == 'posix':
 			self.assertEqual(['directory',
-			                  'test/test not too long playlist name 126 chars max possible playlist name '
-			                  'jjjjjj hhhhhhhhhh test not too long playlist name tefffgg',
-			                  'was created.',
-			                  '',
-			                  'downloading "Funny suspicious looking dog" audio ...',
-			                  '',
-			                  '"Funny suspicious looking dog" audio downloaded.',
-			                  '',
-			                  '"test not too long playlist name 126 chars max possible playlist name jjjjjj '
-			                  'hhhhhhhhhh test not too long playlist name tefffgg" playlist audio(s) '
-			                  'download terminated.',
-			                  '',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+ 'test/127 char_____playlist name is very long and will cause a problem if '
+ 'the target dir name exceeds a maximum possible too big name',
+ 'was created.',
+ '',
+ 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller" audio ...',
+ '',
+ "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
+ "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
+ 'name is very long and will cause a problem if the target dir name exceeds a '
+ 'maximum possible too big name/Les imaginaires effondristes sont les seuls '
+ 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
+ "Playlist target dir 'C:/Users/Jean-Pierre/Downloads/Audio/test/127 "
+ 'char_____playlist name is very long and will cause a problem if the target '
+ "dir name exceeds a maximum possible too big name' length is 169 chars which "
+ 'exceeds the max acceptable length of 168 chars !',
+ '"127 char_____playlist name is very long and will cause a problem if the '
+ 'target dir name exceeds a maximum possible too big name." playlist audio(s) '
+ 'download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
  'test\\127 char_____playlist name is very long and will cause a problem if '
@@ -907,7 +1173,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.m4a']), sorted(fileNameLst))
 	
@@ -960,11 +1226,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3',
  "test short_n'ame pl, aylist_dic.txt"]), sorted(fileNameLst))
-	
+
+		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistName())
+
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
@@ -973,7 +1241,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -1036,7 +1304,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
@@ -1099,7 +1367,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
@@ -1107,5 +1375,5 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testRedownloading_the_playlist_with_deleted_audio_files()
+	tst.testDownloadMaxNamePlaylist()
 #	tst.testDownloadPlaylistWithName_two_points()
