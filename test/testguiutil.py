@@ -21,8 +21,8 @@ class TestGuiUtil(unittest.TestCase):
 		formattedMessage = GuiUtil.reformatString(msg, maxLength)
 
 		
-		self.assertEqual("c:\\temp\\\ntesting\\\naudiobooks\\\nEt\nl\'Univers\ndisparaîtra-\nt-il: avec\nmes\ncommentaires", formattedMessage)
-	
+		self.assertEqual("c:\\temp\\\ntesting\\\naudiobooks\\\nEt\nl'Univers\ndisparaîtra-\nt-il:\navec mes\ncommentaires", formattedMessage)
+
 	def testReformatString_maxLength_15(self):
 		if sep == '\\':
 			# on Windows
@@ -49,10 +49,9 @@ class TestGuiUtil(unittest.TestCase):
 		maxLength = 20
 		formattedMessage = GuiUtil.reformatString(msg, maxLength)
 		
-		self.assertEqual(
-			"c:\\temp\\testing\\\naudiobooks\Et\nl'Univers disparaîtra-\nt-il: avec mes\ncommentaires",
-			formattedMessage)
-	
+		self.assertEqual("c:\\temp\\testing\\\naudiobooks\\Et\nl'Univers\ndisparaîtra-t-il:\navec mes\ncommentaires",
+		                 formattedMessage)
+
 	def testReformatString_maxLength_60(self):
 		if sep == '\\':
 			# on Windows
@@ -64,9 +63,8 @@ class TestGuiUtil(unittest.TestCase):
 		maxLength = 60
 		formattedMessage = GuiUtil.reformatString(msg, maxLength)
 		
-		self.assertEqual(
-			"Path C:\\Users\\Jean-Pierre\\Downloads\\Audio\\new does not exist\n! Either create the directory or modify the path.",
-			formattedMessage)
+		self.assertEqual("Path C:\\Users\\Jean-Pierre\\Downloads\\Audio\\new does not\nexist ! Either create the directory or modify the path.",
+		                 formattedMessage)
 	
 	def testReformatString_maxLength_55(self):
 		if sep == '\\':
@@ -79,8 +77,16 @@ class TestGuiUtil(unittest.TestCase):
 		maxLength = 55
 		formattedMessage = GuiUtil.reformatString(msg, maxLength)
 		
-		self.assertEqual(
-			"Path C:\\Users\\Jean-Pierre\\Downloads\\Audio\\new does not\nexist ! Either create the directory or modify the path.",
+		self.assertEqual("Path C:\\Users\\Jean-Pierre\\Downloads\\Audio\\new does\nnot exist ! Either create the directory or modify the\npath.",
+		                 formattedMessage)
+	
+	def testReformatString_maxLength_65(self):
+		msg = "Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT L'histoire d'une noble amitié de Gary Renard"
+		maxLength = 65
+		formattedMessage = GuiUtil.reformatString(msg, maxLength)
+
+#						 "Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT\nL'histoire d'une noble amitié de Gary Renard"
+		self.assertEqual("Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT\nL'histoire d'une noble amitié de Gary Renard",
 			formattedMessage)
 
 

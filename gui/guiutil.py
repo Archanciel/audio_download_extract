@@ -86,7 +86,7 @@ class GuiUtil:
                     previousSplitIndex = splitEndIndex
                     currSplitLength = currIndex - splitEndIndex
             else:
-                if currSplitLength > maxLength:
+                if currSplitLength >= maxLength - 1:
                     splitEndIndex = previousSepIndex + 1
                     splitStr = sourceStr[previousSplitIndex:splitEndIndex]
                 
