@@ -77,7 +77,7 @@ class DirUtil:
 		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]
 	
 	@staticmethod
-	def replaceUnauthorizedDirNameChars(rawFileName):
+	def replaceUnauthorizedDirOrFileNameChars(rawFileName):
 		"""
 		This method replaces chars in the passed raw file name which are unauthorized on
 		Windows.

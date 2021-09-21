@@ -3,6 +3,7 @@ from datetime import datetime
 from os.path import sep
 
 from constants import *
+from dirutil import DirUtil
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_TITLE = 'pl_title'
@@ -31,7 +32,7 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, downloadDir, playlistTitle='', playlistName='', playlistDirName=''):
+	def __init__(self, downloadDir, playlistTitle='', playlistName=''):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
@@ -48,7 +49,7 @@ class DownloadVideoInfoDic:
 		:param playlistDirName: contains the playlistName purged from any invalid
 								Windows dir or file names chars.
 		"""
-		dic = self._loadDicIfExist(downloadDir, playlistDirName)
+		dic = self._loadDicIfExist(downloadDir, playlistName)
 		
 		if dic:
 			self.dic = dic
@@ -145,8 +146,10 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getInfoDicFilePathName(self, downloadDir, playlistName):
-		return downloadDir + sep + playlistName + '_dic.txt'
+	def getInfoDicFilePathName(self, downloadDir=None, playlistName=None):
+		validPlaylistName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+			
+		return downloadDir + sep + validPlaylistName + '_dic.txt'
 	
 	def getVideoIndexes(self):
 		'''

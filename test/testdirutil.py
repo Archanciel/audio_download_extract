@@ -23,10 +23,18 @@ class TestDirUtil(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		actualFileName = DirUtil.replaceUnauthorizedDirNameChars(playlistTitle)
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		
 		self.assertEqual(expectedFileName, actualFileName)
-
+	
+	def testReplaceUnauthorizedDirOrFileNameContainingTwoPoints(self):
+		illegalFileNameWithTwoPoints = "test short_n\'ame pl, aylist: avec deux points_dic"
+		expectedFileName = "test short_n\'ame pl, aylist avec deux points_dic"
+		
+		actualCorrectedFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(illegalFileNameWithTwoPoints)
+		
+		self.assertEqual(expectedFileName, actualCorrectedFileName)
+	
 	def testExtractPathFromPathFileName(self):
 		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
 		pathFileName = expectedPath + sep + 'file.mp3'

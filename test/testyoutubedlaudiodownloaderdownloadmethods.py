@@ -1381,5 +1381,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadMaxNamePlaylist()
-#	tst.testDownloadPlaylistWithName_two_points()
+	tst.testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist()
