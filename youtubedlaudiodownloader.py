@@ -256,7 +256,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displayMessage(dirCreationMessage)
 		
 		targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
-		purgedVideoTitle = DirUtil.purgeIllegalWinFileNameChar(videoTitle)
+		purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 		
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
 			msgText = '"{}" audio already downloaded in "{}" dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)

@@ -3,6 +3,7 @@ from datetime import datetime
 from os.path import sep
 
 from constants import *
+from dirutil import DirUtil
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_TITLE = 'pl_title'
@@ -31,7 +32,7 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, downloadDir, playlistTitle='', playlistName='', playlistDirName=''):
+	def __init__(self, audioDir, playlistTitle='', playlistName=''):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
@@ -39,16 +40,16 @@ class DownloadVideoInfoDic:
 		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
 		the passed information.
 		
-		:param downloadDir:
+		:param audioDir:        base dir containing the extracted audio files
 		:param playlistTitle:   may contain extract and/or suppress information.
 								Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
 		:param playlistName:    contains only the playlist title part without extract 
 								and/or suppress information. May contain chars which
 								would be unacceptable for Windows dir or file names.
-		:param playlistDirName: contains the playlistName purged from any invalid
-								Windows dir or file names chars.
 		"""
-		dic = self._loadDicIfExist(downloadDir, playlistDirName)
+		downloadDir = audioDir + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		
+		dic = self._loadDicIfExist(downloadDir, playlistName)
 		
 		if dic:
 			self.dic = dic
@@ -57,6 +58,7 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST] = {}
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME] = playlistName
+			downloadDir = audioDir + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = downloadDir
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
@@ -67,19 +69,19 @@ class DownloadVideoInfoDic:
 		except Exception as e:
 			print(e)
 	
-	def _loadDicIfExist(self, downloadDir, playlistDirName):
+	def _loadDicIfExist(self, downloadDir, playlistName):
 		"""
 		If a file containing the dictionary data for the corresponding playlist,
 		it is loaded using json.
 		
-		:param downloadDir:
+		:param downloadDir:     dir containing the playlist extracted audio files
 		:param playlistDirName: contains the playlistName purged from any invalid
 								Windows dir or file names chars.
 								
 		:return None or loaded dir
 		"""
 		dic = None
-		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistDirName)
+		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistName)
 
 		if os.path.isfile(infoDicFilePathName):
 			try:
@@ -146,7 +148,9 @@ class DownloadVideoInfoDic:
 			return None
 	
 	def getInfoDicFilePathName(self, downloadDir, playlistName):
-		return downloadDir + sep + playlistName + '_dic.txt'
+		validPlaylistName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+
+		return downloadDir + sep + validPlaylistName + '_dic.txt'
 	
 	def getVideoIndexes(self):
 		'''

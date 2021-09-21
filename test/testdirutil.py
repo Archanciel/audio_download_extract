@@ -23,7 +23,7 @@ class TestDirUtil(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		actualFileName = DirUtil.replaceUnauthorizedDirNameChars(playlistTitle)
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		
 		self.assertEqual(expectedFileName, actualFileName)
 

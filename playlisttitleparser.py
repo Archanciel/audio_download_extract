@@ -29,10 +29,8 @@ class PlaylistTitleParser:
 		
 		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
 		playlistName = playlistName.strip() # removing playlistName last space if exist
-		playlistDirName = DirUtil.replaceUnauthorizedDirNameChars(playlistName)
-		targetAudioDir = audioDir + DIR_SEP + playlistDirName
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic(targetAudioDir, playlistTitle, playlistName, playlistDirName)
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioDir, playlistTitle, playlistName)
 		accessError = None
 		
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':

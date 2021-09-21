@@ -19,7 +19,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -73,7 +73,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -121,7 +121,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -181,7 +181,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -293,7 +293,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrl_with_timeFrame(self):
 		playlistName = 'Test_title_one_time_frame_extract'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		# timeInfo = '(e0:0:5-0:0:10)'
 
 		if not os.path.exists(downloadDir):
@@ -352,7 +352,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -485,7 +485,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -652,7 +652,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		playlistName = 'Test 3 short videos'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -798,7 +798,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		AudioDownloaderGUI succeeds !
 		"""
 		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -891,7 +891,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		"""
 		playlistName = 'Il commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
 		playlistNameWindowsAcceptable = 'Il commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -974,7 +974,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		the max possible playlist name is ok.
 		"""
 		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyse'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1046,7 +1046,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		"""
 		playlistName = 'G commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
 		playlistNameWindowsAcceptable = 'G commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistNameWindowsAcceptable
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1102,8 +1102,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['G commence à être fatigué de ce problème impossible à analyser. Je commence '
- 'à être fatigué de ce problème impossible à analyser_dic.txt',
+		self.assertEqual(sorted(['G commence à être fatigué de ce problème impossible à analyser Je commence à '
+ 'être fatigué de ce problème impossible à analyser_dic.txt',
  'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
 
@@ -1111,7 +1111,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
 		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1235,13 +1235,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3',
- "test short_n'ame pl, aylist_dic.txt"]), sorted(fileNameLst))
+ "test short_n'ame pl, aylist avec deux points_dic.txt"]), sorted(fileNameLst))
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistName())
 
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -1381,5 +1381,5 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadMaxNamePlaylist()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
 #	tst.testDownloadPlaylistWithName_two_points()
