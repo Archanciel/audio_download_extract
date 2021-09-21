@@ -62,17 +62,6 @@ class DirUtil:
 		return targetAudioDirShort
 	
 	@staticmethod
-	def purgeIllegalWinFileNameChar(videoTitle):
-		"""
-		This method eliminates the characters which are not accepted in file names
-		on Windows.
-
-		:param videoTitle:
-		:return:
-		"""
-		return videoTitle.replace('/', '_').replace(':', '_').replace('?', '')
-	
-	@staticmethod
 	def getFileNamesInDir(targetAudioDir):
 		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]
 	
