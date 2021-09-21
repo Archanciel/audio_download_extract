@@ -91,15 +91,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					if downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle) in targetAudioDirFileNameList:
 						# the video was already downloaded and converted to audio file
-						msgText = '"{}" audio already downloaded in "{}" dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+						msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
 					else:
 						# the video audio file was already downloaded and was deleted
-						msgText = '"{}" audio already downloaded in "{}" dir but was deleted. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+						msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
 
 					self.audioController.displayMessage(msgText)
 					continue
 
-				msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
+				msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 				self.audioController.displayMessage(msgText)
 
 				try:
@@ -107,9 +107,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					self.audioController.displayError("Downloading video '{}' caused this Attribute exception: {}. Playlist target dir '{}' length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("Downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 				except DownloadError as e:
-					self.audioController.displayError("Downloading video '{}' caused this DownloadError exception: {}. Playlist target dir '{}' length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("Downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
@@ -125,15 +125,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
 					downloadVideoInfoDic.saveDic()
 					
-					msgText = '"{}" audio downloaded.\n'.format(videoTitle)
+					msgText = '[b]{}[/b] audio downloaded.\n'.format(videoTitle)
 				else:
-					msgText = '"{}" audio download failed. Please retry downloading the playlist later.\n'.format(videoTitle)
+					msgText = '[b]{}[/b] audio download failed. Please retry downloading the playlist later.\n'.format(videoTitle)
 
 				self.audioController.displayMessage(msgText)
 
 				videoIndex += 1
 		
-			msgText = '"{}" playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
+			msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
 			self.audioController.displayMessage(msgText)
 		
 		return downloadVideoInfoDic, None
@@ -259,14 +259,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 		
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
-			msgText = '"{}" audio already downloaded in "{}" dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+			msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
 			return
 		
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 		
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
-			msgText = 'downloading "{}" audio ...\n'.format(videoTitle)
+			msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 			self.audioController.displayMessage(msgText)
 
 			try:
@@ -276,5 +276,5 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				# is no longer a problem
 				logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
 			
-			msgText = '"{}" audio downloaded in "{}" dir.\n'.format(videoTitle, targetAudioDirShort)
+			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] dir.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)

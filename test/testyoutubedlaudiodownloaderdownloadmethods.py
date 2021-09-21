@@ -827,16 +827,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory. Playlist target dir '
- "'C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué "
+ '"C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'problème impossible à analyser" length is 169 chars which exceeds the max '
  'acceptable length of 168 chars !',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
@@ -852,16 +852,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory. Playlist target dir '
- "'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être fatigué "
+ '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'problème impossible à analyser" length is 169 chars which exceeds the max '
  'acceptable length of 168 chars !',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
@@ -920,16 +920,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory. Playlist target dir '
- "'C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué "
+ '"C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'problème impossible à analyser" length is 169 chars which exceeds the max '
  'acceptable length of 168 chars !',
  '"Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser" playlist '
@@ -945,16 +945,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory. Playlist target dir '
- "'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être fatigué "
+ '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- "problème impossible à analyser' length is 169 chars which exceeds the max "
+ 'problème impossible à analyser" length is 169 chars which exceeds the max '
  'acceptable length of 168 chars !',
  '"Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser" playlist '
@@ -1139,15 +1139,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name/Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
- "Playlist target dir 'C:/Users/Jean-Pierre/Downloads/Audio/test/127 "
+ 'Playlist target dir "C:/Users/Jean-Pierre/Downloads/Audio/test/127 '
  'char_____playlist name is very long and will cause a problem if the target '
- "dir name exceeds a maximum possible too big name' length is 169 chars which "
+ 'dir name exceeds a maximum possible too big name" length is 169 chars which '
  'exceeds the max acceptable length of 168 chars !',
  '"127 char_____playlist name is very long and will cause a problem if the '
  'target dir name exceeds a maximum possible too big name." playlist audio(s) '
@@ -1163,15 +1163,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- "Downloading video 'Les imaginaires effondristes sont les seuls qui tiennent "
- "la route - Arthur Keller' caused this DownloadError exception: ERROR: "
+ 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name\\Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
- "Playlist target dir 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 "
+ 'Playlist target dir "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 '
  'char_____playlist name is very long and will cause a problem if the target '
- "dir name exceeds a maximum possible too big name' length is 169 chars which "
+ 'dir name exceeds a maximum possible too big name" length is 169 chars which '
  'exceeds the max acceptable length of 168 chars !',
  '"127 char_____playlist name is very long and will cause a problem if the '
  'target dir name exceeds a maximum possible too big name." playlist audio(s) '

@@ -76,13 +76,10 @@ class AudioGUI(Screen):
 								requestListRVSpacing)
 
 	def outputResult(self, resultStr):
-		markupBoldStart = '[b]'
-		markupBoldEnd = '[/b]'
-		
 		if len(self.outputLabel.text) == 0:
-			self.outputLabel.text = markupBoldStart + resultStr + markupBoldEnd
+			self.outputLabel.text = resultStr
 		else:
-			self.outputLabel.text = self.outputLabel.text + '\n' + markupBoldStart + resultStr + markupBoldEnd
+			self.outputLabel.text = self.outputLabel.text + '\n' + resultStr
 
 		# scrolling to end of output text
 		self.outputScrollView.scroll_y = 0

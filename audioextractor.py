@@ -26,19 +26,19 @@ class AudioExtractor:
 				continue
 			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isExtractedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nextracting portions for "{}" was already performed. Extraction skipped.'.format(videoFileName)
+					msgText = '\nextracting portions for [b]{}[/b] was already performed. Extraction skipped.'.format(videoFileName)
 					self.audioController.displayMessage(msgText)
 				else:
 					self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isSuppressedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nsuppressing portions for "{}" was already performed. Suppression skipped.'.format(videoFileName)
+					msgText = '\nsuppressing portions for [b]{}[/b] was already performed. Suppression skipped.'.format(videoFileName)
 					self.audioController.displayMessage(msgText)
 				else:
 					self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
 
-		msgText = '\n"{}" playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
+		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
 		self.audioController.displayMessage(msgText)
 
 	def extractAudioPortions(self,
@@ -50,7 +50,7 @@ class AudioExtractor:
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
 
-		msgText = '\nextracting portions of "{}" ...\n'.format(videoFileName)
+		msgText = '\nextracting portions of [b]{}[/b] ...\n'.format(videoFileName)
 		self.audioController.displayMessage(msgText)
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
@@ -107,7 +107,7 @@ class AudioExtractor:
 		clips = []
 		keptStartEndSecondsLists = []
 		
-		msgText = '\nsuppressing portions of "{}" ...\n'.format(videoFileName)
+		msgText = '\nsuppressing portions of [b]{}[/b] ...\n'.format(videoFileName)
 		self.audioController.displayMessage(msgText)
 		
 		for extractIdx in range(suppressFrameNb + 1):
@@ -155,7 +155,7 @@ class AudioExtractor:
 	
 	def concatenateAudioFiles(self, audioSourcePath, sourceFileNameLst, targetFileName):
 		sourceFileNamesStr = ',\n'.join(sourceFileNameLst)
-		msgText = '\nConcatenating "{}" ...\n'.format(sourceFileNamesStr)
+		msgText = '\nConcatenating [b]{}[/b] ...\n'.format(sourceFileNamesStr)
 		self.audioController.displayMessage(msgText)
 
 		audioFileClipLst = []
@@ -170,7 +170,7 @@ class AudioExtractor:
 		concatenatedAudioClip.write_audiofile(targetFilePathName)
 		concatenatedAudioClip.close()
 
-		msgText = '\n"{} concatenated into "{}"\n'.format(sourceFileNamesStr, targetFileName)
+		msgText = '\n"{} concatenated into [b]{}[/b]\n'.format(sourceFileNamesStr, targetFileName)
 		self.audioController.displayMessage(msgText)
 
 	def displayFramesMsg(self, startMsgText, HHMMSS_timeFramesList):
@@ -190,7 +190,7 @@ class AudioExtractor:
 		:param downloadedAudioFileName:
 		:return:
 		"""
-		msgText = '\nconverting "{}" to compliant mp3 ...\n'.format(downloadedAudioFileName)
+		msgText = '\nconverting [b]{}[/b] to compliant mp3 ...\n'.format(downloadedAudioFileName)
 		self.audioController.displayMessage(msgText)
 
 		downloadedAudioFilePathName = os.path.join(self.targetAudioDir,
@@ -202,7 +202,7 @@ class AudioExtractor:
 		clip.write_audiofile(compliantAudioFilePathName)
 		clip.close()
 
-		msgText = '"{}" converted to "{}"\n'.format(downloadedAudioFileName, compliantAudioFileName)
+		msgText = '[b]{}[/b] converted to [b]{}[/b]\n'.format(downloadedAudioFileName, compliantAudioFileName)
 		self.audioController.displayMessage(msgText)
 	
 	def convertVideoToAudio(self, videoFileName, fileNameSuffix = ''):
@@ -297,7 +297,7 @@ class AudioExtractor:
 		targetAudioFilePathName = videoFilePathName[:-4] + '.mp3'
 		ffmpeg_extract_audio(videoFilePathName, targetAudioFilePathName, bitrate=64, fps=22050)
 
-		msgText = '\nextracted audio file "{}" from video file "{}"\n'.format(targetAudioFilePathName, videoFilePathName)
+		msgText = '\nextracted audio file [b]{}[/b] from video file [b]{}[/b]\n'.format(targetAudioFilePathName, videoFilePathName)
 		self.audioController.displayMessage(msgText)
 
 		return targetAudioFilePathName
