@@ -60,7 +60,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		else:
 			self.assertEqual(['downloading "Funny suspicious looking dog" audio ...',
  '',
- '"Funny suspicious looking dog" audio downloaded in "test\\Various_test" dir.',
+ '"Funny suspicious looking dog" audio downloaded in "test\\Various_test" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
@@ -119,7 +119,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
  'downloading "Funny suspicious looking dog" audio ...',
  '',
  '"Funny suspicious looking dog" audio downloaded in "test\\Various_test_new" '
- 'dir.',
+ 'directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
@@ -218,7 +218,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
  '...',
  '',
  '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
- '"test\\Various_test" dir.',
+ '"test\\Various_test" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
