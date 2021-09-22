@@ -70,7 +70,7 @@ class DirUtil:
 		"""
 		This method replaces chars in the passed raw file name which are unauthorized on
 		Windows.
-
+		
 		:param rawFileName:
 		:return:
 		"""
@@ -88,5 +88,9 @@ class DirUtil:
 		# Replace all multiple characters in a string
 		# based on translation table created by dictionary
 		validFileName = rawFileName.translate(str.maketrans(charToReplace))
-		
-		return validFileName.strip()
+
+		# Since YoutubeDL replaces '?' by ' ', determining if a video whose title
+		# ends with '?' has already be downloaded using
+		# replaceUnauthorizedDirOrFileNameChars(videoTitle) + '.mp3' can be executed
+		# if validFileName.strip() is NOT done.
+		return validFileName
