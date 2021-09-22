@@ -114,15 +114,16 @@ class AudioController:
 		None and a video title in case of single video URL.
 		
 		:param url: playlist or single video url
-		:return: downloadVideoInfoDic, videoTitle
+		
+		:return: downloadVideoInfoDic, videoTitle, accessError
 		"""
 		downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
 		
 		if accessError:
 			self.displayMessage(accessError.errorMsg)
-			return None, None
+			return None, None, accessError
 		
-		return downloadVideoInfoDic, videoTitle
+		return downloadVideoInfoDic, videoTitle, accessError
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)

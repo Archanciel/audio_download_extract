@@ -251,11 +251,16 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param targetAudioDir:
 		"""
 		targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
+		targetAudioDirFileNameList = []
 		
 		if dirCreationMessage:
+			# target dir was created
 			self.audioController.displayMessage(dirCreationMessage)
-		
-		targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
+		else:
+			# target dir already existed which means that the single video
+			# may already be downloaded
+			targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
+
 		purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 		
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:

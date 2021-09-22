@@ -309,20 +309,12 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		self.downloadVideoInfoDic, videoTitle = \
-			self.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
+		self.downloadVideoInfoDic, videoTitle, accessError = \
+			self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
 		
 		self.singleVideoTitle = videoTitle
 		
-		if self.downloadVideoInfoDic is not None:
-			# playlist url obtained from clipboard
-			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
-			confirmPopupTitle = "Go on with processing playlist ..."
-		elif videoTitle is not None:
-			# single video url obtained from clipboard
-			downloadObjectTitle = videoTitle
-			confirmPopupTitle = "Go on with downloading audio for video ... "
-		elif 'mp3' in self.playlistOrSingleVideoUrl:
+		if 'mp3' in self.playlistOrSingleVideoUrl:
 			# This is useful in order to facilitate opening the AudioSplitterGUI
 			# screen during its development. Once dev is finished, this code
 			# can be commented out.
@@ -341,10 +333,18 @@ class AudioDownloaderGUI(AudioGUI):
 			self.manager.transition.direction = "left"
 			
 			return
-		else:
+		elif accessError is not None:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
 			return
+		elif videoTitle is None:
+			# url obtained from clipboard points to a playlist
+			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
+			confirmPopupTitle = "Go on with processing playlist ..."
+		else:
+			# url obtained from clipboard points to a single video
+			downloadObjectTitle = videoTitle
+			confirmPopupTitle = "Go on with downloading audio for video ... "
 		
 		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 		
@@ -819,20 +819,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.statusBarTextInput.width = width_calc
 	
 	# --- start AudioDownloaderGUI new code ---
-	
-	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
-		"""
-		As the passed URL points either to a playlist or to a single video, the
-		method returns either a DownloadVideoInfoDic in case of playlist URL or
-		None and a video title in case of single video URL.
-
-		:param url: playlist or single video url
-		:return: downloadVideoInfoDic, videoTitle
-		"""
-		self.downloadVideoInfoDic, videoTitle = self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
-			url)
-		
-		return self.downloadVideoInfoDic, videoTitle
 	
 	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl, singleVideoTitle):
 		"""
