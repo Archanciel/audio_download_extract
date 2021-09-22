@@ -124,17 +124,19 @@ class AudioController:
 		"""
 		return self.audioDownloader.getPlaylistObjectAndTitlesFortUrl(url)
 	
-	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, playlistTitle):
+	def getDownloadVideoInfoDicForPlaylistTitle(self, playlistTitle):
 		"""
-		As the passed URL points either to a playlist or to a single video, the
-		method returns either a DownloadVideoInfoDic in case of playlist URL or
-		None and a video title in case of single video URL.
-		
-		:param url: playlist or single video url
-		
-		:return: downloadVideoInfoDic, videoTitle, accessError
+		Returns a DownloadVideoInfoDic for the passed playlistTitle. The playlistTitle
+		may contain extract / suppress info (ex: 'Test 3 short videos
+		(e0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e)$
+		(s0:0:2-0:0:4 s0:0:5-0:0:7 s0:0:10-e) (e0:0:2-0:0:3 e0:0:5-e)'), info which will be
+		added o the returned DownloadVideoInfoDic.
+
+		:param playlistTitle:
+
+		:return: downloadVideoInfoDic, accessError
 		"""
-		downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistTitle)
+		downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
 		
 		if accessError:
 			self.displayMessage(accessError.errorMsg)

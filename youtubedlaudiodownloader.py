@@ -177,26 +177,28 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		return  self.getPlaylistObjectOrVideoTitleFortUrl(url)
+		return self.getPlaylistObjectOrVideoTitleFortUrl(url)
 	
-	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, playlistTitle):
+	def getDownloadVideoInfoDicForPlaylistTitle(self, playlistTitle):
 		"""
-		As the passed URL points either to a playlist or to a single video, the method
-		returns either a DownloadVideoInfoDic in case of playlist URL or a video title in
-		case of single video URL.
+		Returns a DownloadVideoInfoDic for the passed playlistTitle. The playlistTitle
+		may contain extract / suppress info (ex: 'Test 3 short videos
+		(e0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e)$
+		(s0:0:2-0:0:4 s0:0:5-0:0:7 s0:0:10-e) (e0:0:2-0:0:3 e0:0:5-e)'), info which will be
+		added o the returned DownloadVideoInfoDic.
 		
-		:param url: playlist or single video url
+		:param playlistTitle:
 		
-		:return: downloadVideoInfoDic, videoTitle, accessError
+		:return: downloadVideoInfoDic, accessError
 		"""
-#		_, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
+		accessError = None
 		
 		if playlistTitle:
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
 		else:
 			downloadVideoInfoDic = None
 
-		return downloadVideoInfoDic, None
+		return downloadVideoInfoDic, accessError
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""

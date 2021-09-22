@@ -36,7 +36,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 
 		self.assertIsNone(downloadVideoInfoDic)
@@ -86,7 +86,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 		
 		self.assertIsNone(downloadVideoInfoDic)
@@ -146,7 +146,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 		
 		self.assertIsNone(downloadVideoInfoDic)
@@ -177,7 +177,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, downloadDir)
 		videoUrl = 'https://youtu.be/tT032M6mSGQ'
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 		
 		self.assertIsNone(downloadVideoInfoDic)
@@ -212,7 +212,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, downloadDir)
 		videoUrl = 'https://youtu.be/EHsi_KPKFqU'
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 		
 		self.assertIsNone(downloadVideoInfoDic)
@@ -264,7 +264,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
 			videoUrl)
 		
 		self.assertIsNone(downloadVideoInfoDic)
