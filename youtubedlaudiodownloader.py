@@ -161,8 +161,25 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		files.sort(key=os.path.getctime, reverse=True)
 		
 		return files[0].split(DIR_SEP)[-1]
+
+	def getPlaylistObjectAndTitlesFortUrl(self, url):
+		"""
+		Returns a pytube.Playlist instance if the passed url points to a Youtube
+		playlist, None otherwise, a playlistTitle or a videoTitle if the passed
+		url points to a Youtube single video and an AccessError instance if the
+		passed url does not contain a valid Youtube url.
 		
-	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
+		:param url: points either to a Youtube playlist or to a Youtube single video
+					or is invalid sinc obtained from the clipboard.
+		:return:    playlistObject  if url points to a playlist or None otherwise,
+					playlistTitle   if url points to a playlist or None otherwise,
+					videoTitle      if url points to a single video or None otherwise,
+					accessError     if the url is invalid (clipboard contained anything but
+									a Youtube valid url
+		"""
+		return  self.getPlaylistObjectOrVideoTitleFortUrl(url)
+	
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, playlistTitle):
 		"""
 		As the passed URL points either to a playlist or to a single video, the method
 		returns either a DownloadVideoInfoDic in case of playlist URL or a video title in
@@ -172,17 +189,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, videoTitle, accessError
 		"""
-		_, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
-		
-		if accessError:
-			return None, None, accessError
+#		_, playlistTitle, videoTitle, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(url)
 		
 		if playlistTitle:
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
 		else:
 			downloadVideoInfoDic = None
 
-		return downloadVideoInfoDic, videoTitle, accessError
+		return downloadVideoInfoDic, None
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""

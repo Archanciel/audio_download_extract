@@ -309,8 +309,15 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		self.downloadVideoInfoDic, videoTitle, accessError = \
-			self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self.playlistOrSingleVideoUrl)
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			self.audioController.getPlaylistObjectAndTitlesFortUrl(self.playlistOrSingleVideoUrl)
+		
+		if accessError is None:
+			self.downloadVideoInfoDic = \
+				self.audioController.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistTitle)
+		else:
+			# error msg have been displayed ...
+			return
 		
 		self.singleVideoTitle = videoTitle
 		

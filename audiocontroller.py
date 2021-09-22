@@ -107,7 +107,24 @@ class AudioController:
 		
 		return downloadVideoInfoDic
 	
-	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, url):
+	def getPlaylistObjectAndTitlesFortUrl(self, url):
+		"""
+		Returns a pytube.Playlist instance if the passed url points to a Youtube
+		playlist, None otherwise, a playlistTitle or a videoTitle if the passed
+		url points to a Youtube single video and an AccessError instance if the
+		passed url does not contain a valid Youtube url.
+
+		:param url: points either to a Youtube playlist or to a Youtube single video
+					or is invalid sinc obtained from the clipboard.
+		:return:    playlistObject  if url points to a playlist or None otherwise,
+					playlistTitle   if url points to a playlist or None otherwise,
+					videoTitle      if url points to a single video or None otherwise,
+					accessError     if the url is invalid (clipboard contained anything but
+									a Youtube valid url
+		"""
+		return self.audioDownloader.getPlaylistObjectAndTitlesFortUrl(url)
+	
+	def getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(self, playlistTitle):
 		"""
 		As the passed URL points either to a playlist or to a single video, the
 		method returns either a DownloadVideoInfoDic in case of playlist URL or
@@ -117,13 +134,13 @@ class AudioController:
 		
 		:return: downloadVideoInfoDic, videoTitle, accessError
 		"""
-		downloadVideoInfoDic, videoTitle, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(url)
+		downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(playlistTitle)
 		
 		if accessError:
 			self.displayMessage(accessError.errorMsg)
-			return None, None, accessError
+			return None
 		
-		return downloadVideoInfoDic, videoTitle, accessError
+		return downloadVideoInfoDic
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
