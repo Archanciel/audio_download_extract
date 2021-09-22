@@ -489,12 +489,12 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars(
 			self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
-		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard "
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard "
 		
-		epectedDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
+		expectedDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
 		
 		# deleting dic file in downloadDir
-		files = glob.glob(epectedDownloadDir + DIR_SEP + '*.txt')
+		files = glob.glob(expectedDownloadDir + DIR_SEP + '*.txt')
 		
 		for f in files:
 			os.remove(f)
@@ -502,7 +502,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
 		                                                                                                DirUtil.getTestAudioRootPath())
 		
-		self.assertEqual(epectedDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(expectedDownloadDir, downloadedVideoInfoDic.getPlaylistDownloadDir())
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma(
 			self):

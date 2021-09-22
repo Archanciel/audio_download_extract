@@ -75,7 +75,7 @@ class DirUtil:
 		:return:
 		"""
 		charToReplace = {'\\': '',
-		                 '/': ' ',
+		                 '/': '_', # since YoutubeDL replaces '/' by '_'
 		                 ':': '',
 		                 '*': ' ',
 		                 '.': '',
@@ -90,7 +90,7 @@ class DirUtil:
 		validFileName = rawFileName.translate(str.maketrans(charToReplace))
 
 		# Since YoutubeDL replaces '?' by ' ', determining if a video whose title
-		# ends with '?' has already be downloaded using
+		# ends with '?' has already been downloaded using
 		# replaceUnauthorizedDirOrFileNameChars(videoTitle) + '.mp3' can be executed
 		# if validFileName.strip() is NOT done.
 		return validFileName
