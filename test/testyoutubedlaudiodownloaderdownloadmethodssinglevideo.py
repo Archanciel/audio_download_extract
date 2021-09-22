@@ -203,6 +203,41 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	 '',
 	 ''], outputCapturingString.getvalue().split('\n'))
 	
+	def testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash(self):
+		expectedVideoTitle = 'Aimer sans peur 3/9 - Gary Renard'
+		audioSubDirName = 'Various_test_not_emptied'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
+		
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, downloadDir)
+		videoUrl = 'https://youtu.be/EHsi_KPKFqU'
+		
+		downloadVideoInfoDic, videoTitle, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			videoUrl)
+		
+		self.assertIsNone(downloadVideoInfoDic)
+		self.assertIsNone(accessError)
+		self.assertEqual(expectedVideoTitle, videoTitle)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
+ '"test/Various_test_not_emptied" dir. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
+ '"test\\Various_test_not_emptied" dir. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+	
 	def testDownloadSingleVideoForUrl_succeed_on_Windows_only(self):
 		"""
 		As unit test, works on Android although the downloaded file is not fully valid:
