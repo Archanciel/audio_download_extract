@@ -481,6 +481,60 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+	def testDownloadVideosReferencedInPlaylistForPlaylistUrlOneVideo_with_title_ending_with_question_mark_redownloading_the_playlist(self):
+		playlistName = "Test playlist with one video whose title ends with '?' char"
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(
+			playlistName)
+
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMTA4XDsubBsSfTCVLxqy1jG"
+
+		# re-downloading the playlist
+		
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicOrSingleVideoTitleFortUrl(
+			playlistUrl)
+		redownloadVideoInfoDic, accessError = youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(
+			playlistUrl, downloadVideoInfoDic)
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+
+		if os.name == 'posix':
+			self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
+			                  '"test/Test playlist with one video whose title ends with \'\' char" dir. '
+			                  'Video skipped.',
+			                  '',
+			                  '"Test playlist with one video whose title ends with \'?\' char" playlist '
+			                  'audio(s) download terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
+	 '"test\\Test playlist with one video whose title ends with \'\' char" dir. '
+	 'Video skipped.',
+	 '',
+	 '"Test playlist with one video whose title ends with \'?\' char" playlist '
+	 'audio(s) download terminated.',
+	 '',
+	 ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertEqual(downloadDir, targetAudioDir)
+		self.assertEqual('Comment Etudier Un Cours En Miracles ?',
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['Comment Etudier Un Cours En Miracles .mp3',
+ "Test playlist with one video whose title ends with '' char_dic.txt"]), sorted(fileNameLst))
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)

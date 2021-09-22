@@ -489,7 +489,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars(
 			self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
-		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard"
+		expectedFileName = "Audio - ET L'UNIVERS DISPARAÎTRA La nature   illusoire de notre réalité et le pouvoir transcendant du véritable pardon + commentaires de Gary Renard "
 		
 		epectedDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
 		
