@@ -100,7 +100,8 @@ class GuiUtil:
         if previousSplitIndex == len(sourceStr):
             formattedStr = formattedStr[:-1] # removing the end \n
         else:
-            formattedStr += sourceStr[previousSplitIndex:]
+            lastSplitStr = sourceStr[previousSplitIndex:]
+            formattedStr += lastSplitStr.strip()
     
         return formattedStr
 

@@ -872,9 +872,9 @@ class AudioDownloaderGUI(AudioGUI):
 			msgWidth = 45
 		elif platform == 'win':
 			popupSize = (500, 100)
-			msgWidth = 65
+			msgWidth = 68
 		
-		confirmPopupFormattedMsg = self.formatPopupConfirmMsg(confirmPopupMsg, msgWidth)
+		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
 		self.confirmPopup = ConfirmPopup(self, text=confirmPopupFormattedMsg)
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
@@ -886,11 +886,6 @@ class AudioDownloaderGUI(AudioGUI):
 					  auto_dismiss=False)
 		
 		return popup
-	
-	def formatPopupConfirmMsg(self, rawMsg, maxLineWidth, replaceUnderscoreBySpace=False):
-		resizedMsg = GuiUtil.reformatString(rawMsg, maxLineWidth)
-
-		return resizedMsg
 	
 	def displayError(self, msg):
 		pass

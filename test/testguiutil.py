@@ -87,6 +87,15 @@ class TestGuiUtil(unittest.TestCase):
 
 		self.assertEqual("Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT\nL'histoire d'une noble amitié de Gary Renard",
 			formattedMessage)
+	
+	def testReformatString_maxLength_68(self):
+		msg = "Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur Keller"
+		maxLength = 68
+		formattedMessage = GuiUtil.reformatString(msg, maxLength)
+		
+		self.assertEqual(
+			"Les imaginaires effondristes sont les seuls qui tiennent la route -\nArthur Keller",
+			formattedMessage)
 
 
 if __name__ == '__main__':
