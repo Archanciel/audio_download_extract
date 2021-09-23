@@ -75,12 +75,12 @@ class DirUtil:
 		:return:
 		"""
 		charToReplace = {'\\': '',
-		                 '/': '_', # since YoutubeDL replaces '/' by '_'
+		                 '/': '_', # since YoutubeDL replaces / by _
 		                 ':': '',
 		                 '*': ' ',
 		                 '.': '',
 		                 '?': '',
-		                 '"': '',
+		                 '"': "'", # since YoutubeDL replaces " by '
 		                 '<': '',
 		                 '>': '',
 		                 '|': ''}
