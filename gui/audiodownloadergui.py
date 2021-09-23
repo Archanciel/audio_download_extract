@@ -313,8 +313,9 @@ class AudioDownloaderGUI(AudioGUI):
 			self.audioController.getPlaylistObjectAndTitlesFortUrl(self.playlistOrSingleVideoUrl)
 		
 		if accessError is None:
-			self.downloadVideoInfoDic = \
-				self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
+			if playlistTitle is not None:
+				self.downloadVideoInfoDic = \
+					self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
 		else:
 			# error msg have been displayed ...
 			return

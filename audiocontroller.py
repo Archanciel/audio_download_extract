@@ -110,9 +110,9 @@ class AudioController:
 	def getPlaylistObjectAndTitlesFortUrl(self, url):
 		"""
 		Returns a pytube.Playlist instance if the passed url points to a Youtube
-		playlist, None otherwise, a playlistTitle or a videoTitle if the passed
-		url points to a Youtube single video and an AccessError instance if the
-		passed url does not contain a valid Youtube url.
+		playlist, None otherwise, as well as a playlistTitle or a videoTitle if
+		the passed url points to a Youtube single video and an AccessError instance
+		if the passed url does not contain a valid Youtube url.
 
 		:param url: points either to a Youtube playlist or to a Youtube single video
 					or is invalid sinc obtained from the clipboard.

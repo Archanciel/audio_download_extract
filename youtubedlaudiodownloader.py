@@ -1,9 +1,9 @@
 import glob, re, logging
-from urllib.error import URLError
+from urllib.error import URLError, HTTPError
 from urllib.error import HTTPError
-from pytube import Playlist
+from pytube import Playlist, YouTube
 from pytube import YouTube
-from pytube.exceptions import RegexMatchError
+from pytube.exceptions import RegexMatchError, VideoUnavailable
 from pytube.exceptions import VideoUnavailable
 import http.client
 import youtube_dl
@@ -60,7 +60,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
-		playlistObject, _, _, accessError = self.getPlaylistObjectOrVideoTitleFortUrl(playlistUrl)
+		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		if accessError:
 			return None, accessError
@@ -165,9 +165,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def getPlaylistObjectAndTitlesFortUrl(self, url):
 		"""
 		Returns a pytube.Playlist instance if the passed url points to a Youtube
-		playlist, None otherwise, a playlistTitle or a videoTitle if the passed
-		url points to a Youtube single video and an AccessError instance if the
-		passed url does not contain a valid Youtube url.
+		playlist, None otherwise, as well as a playlistTitle or a videoTitle if
+		the passed url points to a Youtube single video and an AccessError instance
+		if the passed url does not contain a valid Youtube url.
 		
 		:param url: points either to a Youtube playlist or to a Youtube single video
 					or is invalid sinc obtained from the clipboard.
@@ -177,7 +177,43 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		return self.getPlaylistObjectOrVideoTitleFortUrl(url)
+		playlistObject = None
+		playlistTitle = None
+		videoTitle = None
+		accessError = None
+
+		try:
+			playlistObject = Playlist(url)
+			playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
+			playlistTitle = playlistObject.title
+		except http.client.InvalidURL as e:
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
+		except AttributeError as e:
+			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
+		except URLError:
+			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
+		except KeyError:
+			# this happens if the url in the clipboard points to a single video !
+			pass
+
+		if url != '' and accessError is None and playlistTitle is None:
+			# the case if the url points to a single video instead of a playlist
+			# or if the URL obtained from the clipboard is invalid.
+			try:
+				youtube = YouTube(url)
+				video = youtube.streams.first()
+				videoTitle = video.title
+			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError) as e:
+				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
+				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
+
+		if accessError is None and playlistTitle is None and videoTitle is None:
+			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
+
+		if accessError is None and playlistTitle is not None and ('Oops' in playlistTitle or 'Hoppla' in playlistTitle):
+			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
+
+		return playlistObject, playlistTitle, videoTitle, accessError
 	
 	def getDownloadVideoInfoDicForPlaylistTitle(self, playlistTitle):
 		"""
@@ -191,14 +227,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
-		accessError = None
-		
-		if playlistTitle:
-			downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
-		else:
-			downloadVideoInfoDic = None
-
-		return downloadVideoInfoDic, accessError
+		return PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""
