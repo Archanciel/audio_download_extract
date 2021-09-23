@@ -868,8 +868,12 @@ class AudioDownloaderGUI(AudioGUI):
 		msgWidth = 100
 		
 		if platform == 'android':
-			popupSize = (980, 100)
-			msgWidth = 45
+			if GuiUtil.onSmartPhone():
+				popupSize = (1350, 100)
+				msgWidth = 65
+			else:
+				popupSize = (980, 100)
+				msgWidth = 65
 		elif platform == 'win':
 			popupSize = (500, 100)
 			msgWidth = 68
