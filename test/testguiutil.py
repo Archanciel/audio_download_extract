@@ -96,6 +96,25 @@ class TestGuiUtil(unittest.TestCase):
 		self.assertEqual(
 			"Les imaginaires effondristes sont les seuls qui tiennent la route -\nArthur Keller",
 			formattedMessage)
+	
+	def testReformatString_maxLength_68_2(self):
+		"""
+		In ConfirmPopup dialog, the fact that the text contains upper case letters
+		displays
+		"Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT
+		L'histoire
+		d'une noble amitié de Gary Renard"
+		instead of
+		"Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT L'histoire
+		d'une noble amitié de Gary Renard" !
+		"""
+		msg = "Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT L'histoire d'une noble amitié de Gary Renard"
+		maxLength = 68
+		formattedMessage = GuiUtil.reformatString(msg, maxLength)
+		
+		self.assertEqual(
+			"Audio - LES VIES OÙ JÉSUS ET BOUDDHA SE CONNAISSAIENT L'histoire\nd'une noble amitié de Gary Renard",
+			formattedMessage)
 
 
 if __name__ == '__main__':
