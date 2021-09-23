@@ -759,7 +759,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 
-	@unittest.skip
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -783,9 +782,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl)
-		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl,
-		                                                                                                   downloadVideoInfoDic)
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
+
+		downloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(
+			playlistTitle)
+
+		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -828,7 +831,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		redownloadVideoInfoDic, _, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl)
+		redownloadVideoInfoDic, accessError = youtubeAccess.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
 		redownloadVideoInfoDic.removeVideoInfoForVideoTitle('Funny suspicious looking dog')
 		
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
