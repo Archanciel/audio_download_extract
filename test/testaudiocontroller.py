@@ -54,8 +54,64 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName)
 		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
 
+	def testGetPlaylistObjectAndTitlesForUrl_empty_url(self):
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		playlistUrl = ""
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			audioController.getPlaylistObjectAndTitlesForUrl(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual('the URL obtained from clipboard is empty.\nnothing to download.', accessError.errorMsg)
+	
+	def testGetPlaylistObjectAndTitlesForValidPlaylistUrl(self):
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			audioController.getPlaylistObjectAndTitlesForUrl(playlistUrl)
+		
+		sys.stdout = stdout
+
+		self.assertIsNone(accessError)
+		self.assertIsNone(videoTitle)
+		self.assertEqual('Test_title_one_time_frame_extract (e0:0:5-0:0:10)', playlistTitle)
+		self.assertIsNotNone(playlistObject)
+	
+	def testGetPlaylistObjectAndTitlesForValidVideotUrl(self):
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		videoUrl = "https://youtu.be/LhH9uX3kgTI"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			audioController.getPlaylistObjectAndTitlesForUrl(videoUrl)
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+		self.assertIsNone(playlistTitle)
+		self.assertEqual('Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀', videoTitle)
+		self.assertIsNotNone(playlistObject)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testExtractAudioFromVideoFile()
+	tst.testGetPlaylistObjectAndTitlesForValidPlaylistUrl()

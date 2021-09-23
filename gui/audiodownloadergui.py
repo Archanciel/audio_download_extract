@@ -310,16 +310,13 @@ class AudioDownloaderGUI(AudioGUI):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			self.audioController.getPlaylistObjectAndTitlesFortUrl(self.playlistOrSingleVideoUrl)
+			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 		
-		if accessError is None:
-			if playlistTitle is not None:
-				self.downloadVideoInfoDic = \
-					self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
-		else:
-			# error msg have been displayed ...
+		if accessError is not None:
+			# the case if the url is neither pointing to a playlist nor to a
+			# single video. Here, an error message was displayed in the UI !
 			return
-		
+
 		self.singleVideoTitle = videoTitle
 		
 		if 'mp3' in self.playlistOrSingleVideoUrl:
@@ -341,12 +338,11 @@ class AudioDownloaderGUI(AudioGUI):
 			self.manager.transition.direction = "left"
 			
 			return
-		elif accessError is not None:
-			# the case if the url is neither pointing to a playlist nor to a
-			# single video. Here, an error message was displayed in the UI !
-			return
 		elif videoTitle is None:
 			# url obtained from clipboard points to a playlist
+			self.downloadVideoInfoDic = \
+				self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
+
 			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
 			confirmPopupTitle = "Go on with processing playlist ..."
 		else:
