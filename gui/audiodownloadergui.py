@@ -277,6 +277,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLineBold = True
 		self.downloadVideoInfoDic = None
 		self.isPlaylistDownload = None
+		self.playlistTitle = None
+		self.singleVideoTitle = None
 		
 		self._doOnStart()
 	
@@ -309,15 +311,13 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		playlistObject, playlistTitle, videoTitle, accessError = \
+		playlistObject, self.playlistTitle, self.singleVideoTitle, accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 		
 		if accessError is not None:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
 			return
-
-		self.singleVideoTitle = videoTitle
 		
 		if 'mp3' in self.playlistOrSingleVideoUrl:
 			# This is useful in order to facilitate opening the AudioSplitterGUI
@@ -338,16 +338,13 @@ class AudioDownloaderGUI(AudioGUI):
 			self.manager.transition.direction = "left"
 			
 			return
-		elif videoTitle is None:
+		elif self.singleVideoTitle is None:
 			# url obtained from clipboard points to a playlist
-			self.downloadVideoInfoDic = \
-				self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
-
-			downloadObjectTitle = self.downloadVideoInfoDic.getPlaylistTitle()
+			downloadObjectTitle = self.playlistTitle
 			confirmPopupTitle = "Go on with processing playlist ..."
 		else:
 			# url obtained from clipboard points to a single video
-			downloadObjectTitle = videoTitle
+			downloadObjectTitle = self.singleVideoTitle
 			confirmPopupTitle = "Go on with downloading audio for video ... "
 		
 		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
@@ -364,8 +361,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
-			self.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
-													self.singleVideoTitle)
+			self.downloadPlaylistOrSingleVideoAudio()
 			self.popup.dismiss()
 		elif answer == 'no':
 			self.popup.dismiss()
@@ -824,20 +820,12 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	# --- start AudioDownloaderGUI new code ---
 	
-	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl, singleVideoTitle):
+	def downloadPlaylistOrSingleVideoAudio(self):
 		"""
 		This method launch downloading audios for the videos referenced in the playlist
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
-
-		:param playlistOrSingleVideoUrl: URL pointing to a playlist or to a single
-										 video
-		:param singleVideoTitle: None in case of playlist, not None in case of single
-								 video. Avoids re-obtaining the single video title.
 		"""
-		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
-		self.singleVideoTitle = singleVideoTitle
-		
 		t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
 		t.daemon = True
 		t.start()
@@ -848,8 +836,8 @@ class AudioDownloaderGUI(AudioGUI):
 		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
-																			 self.downloadVideoInfoDic,
-																			 self.singleVideoTitle)
+		                                                                     self.playlistTitle,
+		                                                                     self.singleVideoTitle)
 	
 	def setMessage(self, msgText):
 		pass

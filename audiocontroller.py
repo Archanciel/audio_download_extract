@@ -22,7 +22,7 @@ class AudioController:
 		self.audioGUI = audioGUI
 		self.audioDownloader = YoutubeDlAudioDownloader(self, configMgr.dataPath)
 		
-	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, downloadVideoInfoDic, singleVideoTitle):
+	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, playlistTitle, singleVideoTitle):
 		'''
 		In case we are downloading videos referenced in a playlist, this method first
 		execute the download of the audio of the videos and then execute the extraction
@@ -40,8 +40,11 @@ class AudioController:
 		:param downloadVideoInfoDic: if url points to a playlist
 		:param singleVideoTitle: if the url points to a single video
 		'''
-		if downloadVideoInfoDic:
+		if playlistTitle is not None:
 			# downloading a playlist
+			downloadVideoInfoDic = \
+				self.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
+
 			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(url, downloadVideoInfoDic)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
