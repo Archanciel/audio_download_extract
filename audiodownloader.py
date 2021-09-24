@@ -2,9 +2,15 @@ from abc import ABCMeta, abstractmethod
 
 
 class AudioDownloader(metaclass=ABCMeta):
-	def __init__(self, audioController, audioDir):
+	def __init__(self, audioController, audioDirRoot):
+		"""
+		Ctor.
+		
+		:param audioController:
+		:param audioDirRoot: audio dir as defined in the GUI settings.
+		"""
 		self.audioController = audioController
-		self.audioDir = audioDir
+		self.audioDirRoot = audioDirRoot
 	
 	@abstractmethod
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):

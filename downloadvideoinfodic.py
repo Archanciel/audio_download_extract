@@ -8,7 +8,11 @@ from dirutil import DirUtil
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_TITLE = 'pl_title'
 KEY_PLAYLIST_NAME = 'pl_name'
+
+# playlist download dir name. This name DOES NOT contain the
+# audio dir root dir (defined in uthe GUI settings)
 KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
+
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
 KEY_VIDEOS = 'videos'
@@ -32,7 +36,7 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, audioDir, playlistTitle='', playlistName=''):
+	def __init__(self, audioDirRoot, playlistTitle='', playlistName=''):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
@@ -40,16 +44,18 @@ class DownloadVideoInfoDic:
 		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
 		the passed information.
 		
-		:param audioDir:        base dir containing the extracted audio files
+		:param audioDirRoot:    base dir set in the GUI settings containing
+								the extracted audio files
 		:param playlistTitle:   may contain extract and/or suppress information.
 								Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
 		:param playlistName:    contains only the playlist title part without extract 
 								and/or suppress information. May contain chars which
 								would be unacceptable for Windows dir or file names.
 		"""
-		downloadDir = audioDir + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		downloadDir = audioDirRoot + sep + playlistDirName
 		
-		dic = self._loadDicIfExist(downloadDir, playlistName)
+		dic = self._loadDicIfExist(downloadDir, playlistDirName)
 		
 		if dic:
 			self.dic = dic
@@ -58,8 +64,7 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST] = {}
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME] = playlistName
-			downloadDir = audioDir + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = downloadDir
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = playlistDirName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
@@ -69,19 +74,19 @@ class DownloadVideoInfoDic:
 		except Exception as e:
 			print(e)
 	
-	def _loadDicIfExist(self, downloadDir, playlistName):
+	def _loadDicIfExist(self, downloadDir, validPlaylistDirName):
 		"""
 		If a file containing the dictionary data for the corresponding playlist,
 		it is loaded using json.
 		
-		:param downloadDir:     dir containing the playlist extracted audio files
-		:param playlistDirName: contains the playlistName purged from any invalid
-								Windows dir or file names chars.
+		:param downloadDir:             dir containing the playlist extracted audio files
+		:param validPlaylistDirName:    contains the playlistName purged from any invalid
+										Windows dir or file names chars.
 								
-		:return None or loaded dir
+		:return None or loaded dictionary
 		"""
 		dic = None
-		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, playlistName)
+		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, validPlaylistDirName)
 
 		if os.path.isfile(infoDicFilePathName):
 			try:
@@ -100,13 +105,15 @@ class DownloadVideoInfoDic:
 		# must be changed !!!
 		return playlistTitle
 	
-	def saveDic(self):
-		with open(self.getInfoDicFilePathName(self.getPlaylistDownloadDir(), self.getPlaylistName()), 'w') as f:
+	def saveDic(self, audioDirRoot):
+		validPlaylistDirName = self.getPlaylistDownloadDir()
+
+		with open(self.getInfoDicFilePathName(audioDirRoot + sep + validPlaylistDirName, validPlaylistDirName), 'w') as f:
 			try:
 				json.dump(self.dic,
-				          f,
-				          indent=4,
-				          sort_keys=True)
+						  f,
+						  indent=4,
+						  sort_keys=True)
 			except Exception as e:
 				print(self)
 				print(e)
@@ -142,15 +149,28 @@ class DownloadVideoInfoDic:
 			return None
 	
 	def getPlaylistDownloadDir(self):
+		"""
+		Returns the playlist download dir name. This name does not contain the
+		audio dir root dir (defined in the GUI settings).
+		
+		:return: playlist download dir name
+		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR]
 		else:
 			return None
 	
-	def getInfoDicFilePathName(self, downloadDir, playlistName):
-		validPlaylistName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+	def getInfoDicFilePathName(self, downloadDir, validPlaylistDirName):
+		"""
+		Builds the playlist DownloadVideoInfoDic file path name.
+		
+		:param downloadDir:             audio root dir + sep + validPlaylistDirName
+		:param validPlaylistDirName:    contains the playlistName purged from any invalid
+										Windows dir or file names chars.
 
-		return downloadDir + sep + validPlaylistName + '_dic.txt'
+		:return: playlist DownloadVideoInfoDic file path name
+		"""
+		return downloadDir + sep + validPlaylistDirName + '_dic.txt'
 	
 	def getVideoIndexes(self):
 		'''
@@ -302,10 +322,10 @@ class DownloadVideoInfoDic:
 			return None
 
 	def addVideoInfoForVideoIndex(self,
-	                              videoIndex,
-	                              videoTitle,
-	                              videoUrl,
-	                              downloadedFileName):
+								  videoIndex,
+								  videoTitle,
+								  videoUrl,
+								  downloadedFileName):
 		"""
 		Creates the video info sub-dic for the video index if necessary.
 		
@@ -338,14 +358,14 @@ class DownloadVideoInfoDic:
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
 	
 	def removeVideoInfoForVideoTitle(self,
-	                                 videoTitle):
+									 videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 
 		if videoIndex:
 			del self.dic[KEY_VIDEOS][videoIndex]
 	
 	def removeVideoInfoForVideoIndex(self,
-	                                 videoIndex):
+									 videoIndex):
 		videoIndexStr = str(videoIndex)
 		
 		if videoIndexStr in self.dic[KEY_VIDEOS].keys():
@@ -382,10 +402,10 @@ class DownloadVideoInfoDic:
 		return None
 	
 	def addExtractedFileInfoForVideoIndexTimeFrameIndex(self,
-	                                                    videoIndex,
-	                                                    timeFrameIndex,
-	                                                    extractedFileName,
-	                                                    startEndHHMMSS_TimeFramesList):
+														videoIndex,
+														timeFrameIndex,
+														extractedFileName,
+														startEndHHMMSS_TimeFramesList):
 		"""
 		Creates the extracted files info dic if necessary.
 		
@@ -407,7 +427,7 @@ class DownloadVideoInfoDic:
 			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			
 		extractedFilesSubDic[timeFrameIndex] = {KEY_FILENAME: extractedFileName,
-		                                        KEY_FILE_TIMEFRAME_HHMMSS: startEndHHMMSS_TimeFramesList}
+												KEY_FILE_TIMEFRAME_HHMMSS: startEndHHMMSS_TimeFramesList}
 	
 	def isExtractedFileInfoAvailableForVideoIndex(self, videoIndex):
 		"""
@@ -449,8 +469,8 @@ class DownloadVideoInfoDic:
 					return extractedFilesSubDic[key][KEY_FILE_TIMEFRAME_HHMMSS]
 	
 	def getExtractedFilePathNameForVideoIndexTimeFrameIndex(self,
-	                                                        videoIndex,
-	                                                        timeFrameIndex):
+															videoIndex,
+															timeFrameIndex):
 		"""
 		Returns the extracted file path name for the passed video index and
 		time frame index.
@@ -459,7 +479,7 @@ class DownloadVideoInfoDic:
 		:param timeFrameIndex:
 
 		:return: file path name. Example:
-			     D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audiobooks\\\\Various\\\\Wear a mask. Help slow the spread of Covid-19._1.mp3
+				 D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audiobooks\\\\Various\\\\Wear a mask. Help slow the spread of Covid-19._1.mp3
 		"""
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
@@ -468,13 +488,14 @@ class DownloadVideoInfoDic:
 		else:
 			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			timeFrameIndexExtractedFileInfo = extractedFilesSubDic[str(timeFrameIndex)]
+			
 			return self.getPlaylistDownloadDir() + sep + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
 	
 	def addSuppressedFileInfoForVideoIndex(self,
-	                                       videoIndex,
-	                                       suppressedFileName,
-	                                       HHMMSS_suppressedTimeFramesList,
-	                                       HHMMSS_keptTimeFramesList):
+										   videoIndex,
+										   suppressedFileName,
+										   HHMMSS_suppressedTimeFramesList,
+										   HHMMSS_keptTimeFramesList):
 		"""
 		Creates the extracted files info dic if necessary.
 

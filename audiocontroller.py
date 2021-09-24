@@ -1,3 +1,4 @@
+from os.path import sep
 import traceback
 
 from constants import *
@@ -20,7 +21,7 @@ class AudioController:
 		"""
 		self.configMgr = configMgr
 		self.audioGUI = audioGUI
-		self.audioDownloader = YoutubeDlAudioDownloader(self, configMgr.dataPath)
+		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, playlistTitle, singleVideoTitle):
 		'''
@@ -55,14 +56,15 @@ class AudioController:
 					self.displayMessage(msgText)
 				else:
 					# extraction/suppression possible only on Windows !
-					targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+					audioDirRoot = self.configMgr.dataPath
+					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
 					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
 					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 				
 					# saving the content of the downloadVideoInfoDic which has been completed
 					# by AudioExtractor in the directory containing the extracted audio files
 					try:
-						downloadVideoInfoDic.saveDic()
+						downloadVideoInfoDic.saveDic(audioDirRoot)
 					except TypeError as e:
 						print(e)
 						traceback.print_exc()

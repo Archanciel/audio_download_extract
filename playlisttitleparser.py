@@ -8,7 +8,7 @@ from dirutil import DirUtil
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(playlistTitle, audioDir):
+	def createDownloadVideoInfoDicForPlaylist(playlistTitle, audioDirRoot):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -18,6 +18,10 @@ class PlaylistTitleParser:
 		Example of playlist title with extract/suppress information:
 		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
+
+		:param playlistTitle: contains  playlist name plus, possibly, extract/suppress
+										information
+		:param audioDirRoot:            audio dir base as defined in the GUI settings.
 
 		:return downloadVideoInfoDic
 				accessError in case of problem, None otherwise
@@ -30,7 +34,7 @@ class PlaylistTitleParser:
 		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
 		playlistName = playlistName.strip() # removing playlistName last space if exist
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic(audioDir, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playlistName)
 		accessError = None
 		
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':

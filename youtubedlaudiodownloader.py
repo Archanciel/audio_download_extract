@@ -1,3 +1,4 @@
+from os.path import sep
 import glob, re, logging
 from urllib.error import URLError, HTTPError
 from urllib.error import HTTPError
@@ -18,8 +19,14 @@ from accesserror import AccessError
 YOUTUBE_DL_QUIET = True
 
 class YoutubeDlAudioDownloader(AudioDownloader):
-	def __init__(self, audioController, audioDir):
-		super().__init__(audioController, audioDir)
+	def __init__(self, audioController, audioDirRoot):
+		"""
+		Ctor.
+
+		:param audioController:
+		:param audioDirRoot: audio dir as defined in the GUI settings.
+		"""
+		super().__init__(audioController, audioDirRoot)
 	
 		if os.name == 'posix':
 			# on AndroidAndroid, FFmpegExtractAudio not available !
@@ -65,7 +72,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		if accessError:
 			return None, accessError
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
 		targetAudioDirShort = DirUtil.getLastSubDirs(targetAudioDir, subDirsNumber=2)
 		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		
@@ -123,7 +130,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# was downloaded successfully enables to retry downloading the playlist.
 					# The failed video download will be retried.
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
-					downloadVideoInfoDic.saveDic()
+					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
 					
 					msgText = '[b]{}[/b] audio downloaded.\n'.format(videoTitle)
@@ -226,7 +233,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
-		return PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDir)
+		return PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDirRoot)
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""
