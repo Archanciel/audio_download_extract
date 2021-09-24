@@ -86,7 +86,7 @@ class DownloadVideoInfoDic:
 		:return None or loaded dictionary
 		"""
 		dic = None
-		infoDicFilePathName = self.getInfoDicFilePathName(downloadDir, validPlaylistDirName)
+		infoDicFilePathName = self.buildInfoDicFilePathName(downloadDir, validPlaylistDirName)
 
 		if os.path.isfile(infoDicFilePathName):
 			try:
@@ -106,9 +106,14 @@ class DownloadVideoInfoDic:
 		return playlistTitle
 	
 	def saveDic(self, audioDirRoot):
+		"""
+		
+		:param audioDirRoot: audio dir as defined in the GUI settings.
+		:return:
+		"""
 		validPlaylistDirName = self.getPlaylistDownloadDir()
 
-		with open(self.getInfoDicFilePathName(audioDirRoot + sep + validPlaylistDirName, validPlaylistDirName), 'w') as f:
+		with open(self.buildInfoDicFilePathName(audioDirRoot + sep + validPlaylistDirName, validPlaylistDirName), 'w') as f:
 			try:
 				json.dump(self.dic,
 						  f,
@@ -160,7 +165,7 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getInfoDicFilePathName(self, downloadDir, validPlaylistDirName):
+	def buildInfoDicFilePathName(self, downloadDir, validPlaylistDirName):
 		"""
 		Builds the playlist DownloadVideoInfoDic file path name.
 		

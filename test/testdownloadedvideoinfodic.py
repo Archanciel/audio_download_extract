@@ -54,8 +54,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 	def testAddVideoInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
-
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		playlistTitle = playListName
+		
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		downloadDir = audioDirRoot + sep + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -68,7 +70,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
@@ -84,10 +86,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
 
-		dvi.saveDic()
+		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
@@ -106,10 +108,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
 
-		reloadedDvi.saveDic()
+		reloadedDvi.saveDic(audioDirRoot)
 
 		# creating new extended video info dic, reloading newly created video info dic file
-		newReloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', newReloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -132,8 +134,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	
 	def testRemoveVideoInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
+		playlistTitle = playListName
 		
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		downloadDir = audioDirRoot + sep + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -146,7 +150,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
@@ -162,10 +166,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
 		
-		dvi.saveDic()
+		dvi.saveDic(audioDirRoot)
 		
 		# reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		reloadedDvi.removeVideoInfoForVideoTitle('title 1')
 		self.assertIsNone(reloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', reloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -184,10 +188,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
 		
-		reloadedDvi.saveDic()
+		reloadedDvi.saveDic(audioDirRoot)
 		
 		# creating new extended video info dic, reloading newly created video info dic file
-		newReloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		
 		self.assertIsNone(newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', newReloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -203,8 +207,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	
 	def testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
-
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		playlistTitle = playListName
+		
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		downloadDir = audioDirRoot + sep + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -217,7 +223,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
@@ -245,10 +251,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual([startEndSecondsList_two], dvi.getExtractStartEndSecondsListsForVideoIndex(2))
 		self.assertEqual([], dvi.getSuppressStartEndSecondsListsForVideoIndex(2))
 
-		dvi.saveDic()
+		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		
@@ -273,10 +279,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		reloadedDvi.addExtractStartEndSecondsListForVideoIndex(3, startEndSecondsList_two_for_3)
 		reloadedDvi.addSuppressStartEndSecondsListForVideoIndex(3, startEndSecondsList_two_for_3)
 
-		reloadedDvi.saveDic()
+		reloadedDvi.saveDic(audioDirRoot)
 		
 		# creating new extended video info dic, reloading newly created video info dic file
-		newReloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
 		                 newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -297,8 +303,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	
 	def testAddExtractedFileInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
+		playlistTitle = playListName
 		
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		downloadDir = audioDirRoot + sep + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -311,7 +319,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
@@ -348,10 +356,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(HHMMSS_TimeFrameList_1_1, dvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_1))
 		self.assertEqual(HHMMSS_TimeFrameList_1_2, dvi.getStartEndHHMMSS_TimeFrameForExtractedFileName(1, extractedMp3FileName_1_2))
 
-		dvi.saveDic()
+		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -367,8 +375,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	
 	def testAddSuppressedFileInfoForVideoIndex_existing_info_dic_file(self):
 		playListName = 'test_download_vid_info_dic'
+		playlistTitle = playListName
 		
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		downloadDir = audioDirRoot + sep + playListName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -381,7 +391,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
@@ -429,10 +439,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(suppressTimeFrameList, dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
 		self.assertEqual(keptTimeFrameList, dvi.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(1))
 
-		dvi.saveDic()
+		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(downloadDir, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -454,6 +464,6 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 
 if __name__ == '__main__':
-	unittest.main()
-#	tst = TestTransferFiles()
-#	tst.testPathUploadToCloud_invalid_fileName()
+#	unittest.main()
+	tst = TestDownloadVideoInfoDic()
+	tst.testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file()
