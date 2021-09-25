@@ -4,6 +4,7 @@ import traceback
 from constants import *
 from downloadvideoinfodic import DownloadVideoInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
+from dirutil import DirUtil
 
 if os.name == 'posix':
 	# sound file extraction is not possible on Android
@@ -73,10 +74,10 @@ class AudioController:
 			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.configMgr.singleVideoDataPath)
 	
 	def trimAudioFile(self,
-	                  audioFilePathName,
-	                  trimStartHHMMSS,
-	                  trimEndHHMMSS,
-	                  floatSpeed=1.0):
+					  audioFilePathName,
+					  trimStartHHMMSS,
+					  trimEndHHMMSS,
+					  floatSpeed=1.0):
 		"""
 		
 		:param audioFilePathName: the file which will be trimmed
@@ -86,14 +87,21 @@ class AudioController:
 		
 		:return: the trimmed file pathname
 		"""
-		audioFileName = audioFilePathName.split(DIR_SEP)[-1]
-		audioFileDir = audioFilePathName.replace(DIR_SEP + audioFileName, '')
+		audioFileName = DirUtil.extractFileNameFromPathFileName(audioFilePathName)
+		audioFileFullDir = DirUtil.extractPathFromPathFileName(audioFilePathName)
+		videoTitle = audioFileName.split('.')[0]
+		playlistTitleAndName = audioFileFullDir.replace(self.configMgr.dataPath + sep, '')
 		
-		# initializing a partially filled DownloadVideoInfoDic with only the informations
-		# required to trim the audio file
-		downloadVideoInfoDic = DownloadVideoInfoDic(audioFileDir)
-		downloadVideoInfoDic.addVideoInfoForVideoIndex(1, audioFileName.split('.')[0],
-		                                               '', audioFileName)
+		# initializing a partially filled DownloadVideoInfoDic with only the
+		# information required by the AudioExtractor to split the audio file
+		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot='', # avoids that the existing DownloadVideoInfoDic text file is loaded
+		                                                  playlistTitle=playlistTitleAndName,
+		                                                  playlistName=playlistTitleAndName)
+
+		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
+		                                                     videoTitle=videoTitle,
+		                                                     videoUrl='',
+		                                                     downloadedFileName=audioFileName)
 		
 		# getting the extract time frames specified as command line argument
 		# and adding them to the DownloadVideoInfoDic
@@ -101,16 +109,19 @@ class AudioController:
 		extractStartEndSecondsLists = [PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame)]
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
-			downloadVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
+			audioExtractorVideoInfoDic.addExtractStartEndSecondsListForVideoIndex(1, extractStartEndSecondsList)
 		
 		# now trimming the audio file
-		audioExtractor = AudioExtractor(self, audioFileDir, downloadVideoInfoDic)
-		audioExtractor.extractAudioPortions(videoIndex=1,
-		                                    videoFileName=audioFileName,
-		                                    downloadVideoInfoDic=downloadVideoInfoDic,
-		                                    floatSpeed=floatSpeed)
+		audioExtractor = AudioExtractor(audioController=self,
+		                                targetAudioDir=audioFileFullDir,
+		                                downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
 		
-		return downloadVideoInfoDic
+		audioExtractor.extractAudioPortions(videoIndex=1,
+											videoFileName=audioFileName,
+											downloadVideoInfoDic=audioExtractorVideoInfoDic,
+											floatSpeed=floatSpeed)
+		
+		return audioExtractorVideoInfoDic
 	
 	def getPlaylistObjectAndTitlesForUrl(self, url):
 		"""

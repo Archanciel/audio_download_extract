@@ -1,4 +1,4 @@
-from kivy.clock import Clock
+from os.path import sep
 from kivy.core.audio import SoundLoader
 
 import threading, time
@@ -298,7 +298,7 @@ class AudioSplitterGUI(AudioPositionGUI):
 			return
 		
 		downloadVideoInfoDic = self.audioController.trimAudioFile(self.sourceAudioFilePathName.text, startPos, endPos, speed)
-		createdSplitFilePathName = downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+		createdSplitFilePathName = self.audiobookPath + sep + downloadVideoInfoDic.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		self.splitAudioFilePathNameInitValue = createdSplitFilePathName
 		self.splitAudioFilePathName.text = createdSplitFilePathName
 		self.soundloaderSplitMp3Obj = SoundLoader.load(createdSplitFilePathName)
