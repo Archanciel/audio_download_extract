@@ -36,7 +36,7 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, audioDirRoot, playlistTitle='', playlistName=''):
+	def __init__(self, audioDirRoot, playlistTitle, playlistName):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist

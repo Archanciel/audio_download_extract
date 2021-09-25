@@ -13,9 +13,10 @@ from dirutil import DirUtil
 			
 class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testAddVideoInfoForVideoIndex_new_info_dic_file(self):
-		playListName = 'test_download_vid_info_dic'
+		playlistTitle = 'test_download_vid_info_dic'
+		playlistName = playlistTitle
 
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + playListName
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
@@ -26,7 +27,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(downloadDir, playListName)
+		dvi = DownloadVideoInfoDic(downloadDir, playlistTitle, playlistName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
