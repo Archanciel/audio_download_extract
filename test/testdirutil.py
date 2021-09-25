@@ -32,7 +32,13 @@ class TestDirUtil(unittest.TestCase):
 		pathFileName = expectedPath + sep + 'file.mp3'
 		
 		self.assertEqual(expectedPath, DirUtil.extractPathFromPathFileName(pathFileName))
-
+	
+	def testExtractFileNameFromPathFileName(self):
+		expectedFileName = 'file.mp3'
+		pathFileName = 'c:' + sep + 'users' + sep + 'jean-pierre' + sep + expectedFileName
+		
+		self.assertEqual(expectedFileName, DirUtil.extractFileNameFromPathFileName(pathFileName))
+	
 	def testGetLastSubDirs(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'
 		expectedShortDir = 'Audio\\Test 3 short videos'

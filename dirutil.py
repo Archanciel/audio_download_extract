@@ -28,7 +28,13 @@ class DirUtil:
 		pathElemLst = pathFileName.split(sep)
 
 		return sep.join(pathElemLst[:-1])
-
+	
+	@staticmethod
+	def extractFileNameFromPathFileName(pathFileName):
+		pathElemLst = pathFileName.split(sep)
+		
+		return pathElemLst[-1]
+	
 	@staticmethod
 	def getConfigFilePathName():
 		
