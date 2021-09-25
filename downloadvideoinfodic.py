@@ -36,7 +36,11 @@ class DownloadVideoInfoDic:
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
-	def __init__(self, audioDirRoot, playlistTitle, playlistName):
+	def __init__(self,
+	             audioDirRoot,
+	             playlistTitle,
+	             playlistName,
+	             loadDicIfExist=True):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
@@ -51,15 +55,19 @@ class DownloadVideoInfoDic:
 		:param playlistName:    contains only the playlist title part without extract 
 								and/or suppress information. May contain chars which
 								would be unacceptable for Windows dir or file names.
+		:param loadDicIfExist   set to False if the DownloadVideoInfoDic is created
+								in order to pass extraction info to the AudioExtractor.
+								Typically when executing
+								AudioSplitterGUI.createSplitFileOnNewThread()
 		"""
 		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = audioDirRoot + sep + playlistDirName
+		self.dic = None
 		
-		dic = self._loadDicIfExist(downloadDir, playlistDirName)
+		if loadDicIfExist:
+			self.dic = self._loadDicIfExist(downloadDir, playlistDirName)
 		
-		if dic:
-			self.dic = dic
-		else:
+		if self.dic is None:
 			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle

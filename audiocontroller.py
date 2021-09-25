@@ -94,9 +94,10 @@ class AudioController:
 		
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
-		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot='', # avoids that the existing DownloadVideoInfoDic text file is loaded
+		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=self.configMgr.dataPath,
 		                                                  playlistTitle=playlistTitleAndName,
-		                                                  playlistName=playlistTitleAndName)
+		                                                  playlistName=playlistTitleAndName,
+		                                                  loadDicIfExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
 		                                                     videoTitle=videoTitle,
