@@ -25,7 +25,7 @@ class CustomDropDown(DropDown):
 
 	def showClipAudioFile(self):
 		if platform == 'android':
-			self.owner.displayPopupWarning('Audio file split is not possible on Android !')
+			self.owner.displayPopupWarning('Audio file clip is not possible on Android !')
 			self.dismiss()
 			return
 		
