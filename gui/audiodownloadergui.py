@@ -280,7 +280,11 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isPlaylistDownload = None
 		self.playlistTitle = None
 		self.singleVideoTitle = None
-		
+		self.downloadThreadCreated = False  # used to fix a problem on Android
+											# where two download threads are
+											# created after clicking on 'Yes'
+											# button on the ConfirmPopup dialog
+
 		self._doOnStart()
 	
 	def _doOnStart(self):
@@ -666,9 +670,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SPLIT)
 		self.popup = FileToClipLoadFileChooserPopup(title=popupTitle,
-		                                            rootGUI=self,
-		                                            load=self.load,
-		                                            cancel=self.dismissPopup)
+													rootGUI=self,
+													load=self.load,
+													cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openShareAudioPopup(self):
@@ -827,23 +831,33 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
-		t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
-# 		import traceback
-# 		for line in traceback.format_stack():
-# #			if "audiodownload" in line:
-# 			logging.info(line.strip())
-# 		logging.info(t.getName())
-		t.daemon = True
-		t.start()
-	
+		if not self.downloadThreadCreated:
+			t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
+	# 		import traceback
+	# 		for line in traceback.format_stack():
+	# #			if "audiodownload" in line:
+	# 			logging.info(line.strip())
+	# 		logging.info(t.getName())
+			t.daemon = True
+			t.start()
+			self.downloadThreadCreated = True   # used to fix a problem on Android
+												# where two download threads are
+												# created after clicking on 'Yes'
+												# button on the ConfirmPopup dialog
+			
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
 		This method executed on a separated thread launch downloading audios for
 		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
-		                                                                     self.playlistTitle,
-		                                                                     self.singleVideoTitle)
+																			 self.playlistTitle,
+																			 self.singleVideoTitle)
+	
+		self.downloadThreadCreated = False  # used to fix a problem on Android
+											# where two download threads are
+											# created after clicking on 'Yes'
+											# button on the ConfirmPopup dialog
 	
 	def setMessage(self, msgText):
 		pass
