@@ -1,3 +1,4 @@
+import logging
 import os,sys,inspect
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -827,6 +828,11 @@ class AudioDownloaderGUI(AudioGUI):
 		new thread.
 		"""
 		t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
+# 		import traceback
+# 		for line in traceback.format_stack():
+# #			if "audiodownload" in line:
+# 			logging.info(line.strip())
+# 		logging.info(t.getName())
 		t.daemon = True
 		t.start()
 	
@@ -867,7 +873,7 @@ class AudioDownloaderGUI(AudioGUI):
 			msgWidth = 68
 		
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
-		self.confirmPopup = ConfirmPopup(self, text=confirmPopupFormattedMsg)
+		self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
 		popup = Popup(title=confirmPopupTitle,
@@ -878,9 +884,6 @@ class AudioDownloaderGUI(AudioGUI):
 					  auto_dismiss=False)
 		
 		return popup
-	
-	def displayError(self, msg):
-		pass
 
 	def getAudiobookPath(self):
 		"""
