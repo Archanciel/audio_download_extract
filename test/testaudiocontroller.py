@@ -24,7 +24,7 @@ class TestAudioController(unittest.TestCase):
 		expectedExtractedAudioFileDuration = 964.661
 		
 		# deleting mp3 files in test dir
-		files = glob.glob(targetAudioDir + DIR_SEP + '*.mp3')
+		files = glob.glob(targetAudioDir + sep + '*.mp3')
 		
 		for f in files:
 			os.remove(f)
@@ -51,7 +51,7 @@ class TestAudioController(unittest.TestCase):
 		
 		from mutagen.mp3 import MP3
 		extractedMp3FileName = videoAndAudioFileList[1]
-		audio = MP3(targetAudioDir + DIR_SEP + extractedMp3FileName)
+		audio = MP3(targetAudioDir + sep + extractedMp3FileName)
 		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
 
 	def testGetPlaylistObjectAndTitlesForUrl_empty_url(self):
@@ -110,8 +110,49 @@ class TestAudioController(unittest.TestCase):
 		self.assertEqual('Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀', videoTitle)
 		self.assertIsNotNone(playlistObject)
 
+	def testClipAudioFile(self):
+		playlistTitle = 'test_audio_controller_clip'
+		playlistName = playlistTitle
+		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		audioFileName = 'LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3'
+		audioFilePathName = targetAudioDir + sep + audioFileName
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+
+		if not os.path.isdir(targetAudioDir):
+			os.mkdir(targetAudioDir)
+		
+		# deleting clipped mp3 files in test dir
+		files = glob.glob(targetAudioDir + sep + '*_*.mp3')
+		
+		for f in files:
+			os.remove(f)
+		
+		clipStartHHMMSS = '00:00:17'
+		clipEndHHMMSS = '00:00:49'
+		expectedClipFileDuration_1 = 32
+		
+		audioExtractorVideoInfoDic = audioController.clipAudioFile(audioFilePathName=audioFilePathName,
+		                                                           clipStartHHMMSS=clipStartHHMMSS,
+		                                                           clipEndHHMMSS=clipEndHHMMSS,
+		                                                           floatSpeed=1.0)
+		createdClipFilePathName = targetAudioDir + sep + audioExtractorVideoInfoDic.\
+			getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+		audioFileList = os.listdir(targetAudioDir)
+		
+		self.assertEqual(
+			['LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3',
+			 'LExpérience de Mort Imminente de Madame Mirjana Uzoh_1.mp3'],
+			audioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName_1 = audioFileList[1]
+		audio = MP3(targetAudioDir + sep + extractedMp3FileName_1)
+		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testGetPlaylistObjectAndTitlesForValidPlaylistUrl()
+	tst.testClipAudioFile()

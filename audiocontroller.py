@@ -82,8 +82,8 @@ class AudioController:
 		Extracts a portion of the audio file referred by the passed audioFilePathName.
 		
 		:param audioFilePathName:   the file which will be trimmed
-		:param clipStartHHMMSS:
-		:param clipEndHHMMSS:
+		:param clipStartHHMMSS:     format = HH:MM:SS, 00:05:23
+		:param clipEndHHMMSS:       format = HH:MM:SS, 00:07:21
 		:param floatSpeed:          trimmed mp3 file speed modification
 		
 		:return:    the created (but not saved) DownloadVideoInfoDic which contains
