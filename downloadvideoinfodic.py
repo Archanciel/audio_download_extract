@@ -58,7 +58,7 @@ class DownloadVideoInfoDic:
 		:param loadDicIfExist   set to False if the DownloadVideoInfoDic is created
 								in order to pass extraction info to the AudioExtractor.
 								Typically when executing
-								AudioSplitterGUI.createSplitFileOnNewThread()
+								AudioClipperGUI.createClipFileOnNewThread()
 		"""
 		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = audioDirRoot + sep + playlistDirName

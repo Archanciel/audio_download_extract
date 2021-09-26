@@ -170,10 +170,10 @@ class AudioGUI(Screen):
 		
 		if self.isExtractFileDropDownMenuItemDisplayed:
 			# set drop down menu items visible
-			self.dropDownMenu.gridLayoutSplit.height = dropDownMenuItemheight
+			self.dropDownMenu.gridLayoutClip.height = dropDownMenuItemheight
 		else:
 			# hide drop down menu items
-			self.dropDownMenu.gridLayoutSplit.height = 0
+			self.dropDownMenu.gridLayoutClip.height = 0
 		
 		if self.isShareFileDropDownMenuItemDisplayed:
 			# set drop down menu items visible

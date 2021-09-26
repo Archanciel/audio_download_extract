@@ -2,13 +2,13 @@ import time
 
 class AsynchSliderUpdater:
 	def __init__(self,
-	             audioSplitterGUI,
+	             audioClipperGUI,
 	             soundloaderMp3Obj,
 	             slider,
 	             stopSliderUpdaterThread):
-		self.audioSplitterGUI = audioSplitterGUI
+		self.audioClipperGUI = audioClipperGUI
 		self.soundloaderMp3Obj = soundloaderMp3Obj
-		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - audioSplitterGUI.sliderUpdateEverySecondsNumber
+		self.mp3PosSliderStop = self.soundloaderMp3Obj.length - audioClipperGUI.sliderUpdateEverySecondsNumber
 		self.slider = slider
 		self.stopSliderUpdaterThread = stopSliderUpdaterThread
 	
@@ -20,18 +20,18 @@ class AsynchSliderUpdater:
 		:return:
 		"""
 		mp3Pos = self.soundloaderMp3Obj.get_pos()
-		sliderUpdateFrequency = self.audioSplitterGUI.sliderUpdateEverySecondsNumber
+		sliderUpdateFrequency = self.audioClipperGUI.sliderUpdateEverySecondsNumber
 		
 		while not self.stopSliderUpdaterThread:
-			if self.audioSplitterGUI.userClickedOnSourceSoundPositionButton:
+			if self.audioClipperGUI.userClickedOnSourceSoundPositionButton:
 				# since the user clicked on one of the source sound position buttons
 				# (<| << < Play Stop > >> |>), this avoids that the updateSlider()
 				# method overwrite the user position modification action ...
-				self.audioSplitterGUI.userClickedOnSourceSoundPositionButton = False
+				self.audioClipperGUI.userClickedOnSourceSoundPositionButton = False
 			else:
 				self.slider.value = mp3Pos
-				self.audioSplitterGUI.disablePlayButton()
-				self.audioSplitterGUI.updateCurrentSoundPosTextInput(mp3Pos)
+				self.audioClipperGUI.disablePlayButton()
+				self.audioClipperGUI.updateCurrentSoundPosTextInput(mp3Pos)
 				#print('AsynchSliderUpdater.updateSlider() mp3 pos: {}'.format(mp3Pos))
 
 			time.sleep(sliderUpdateFrequency)

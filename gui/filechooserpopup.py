@@ -67,7 +67,7 @@ class FileChooserPopup(AbstractPopup):
 	SAVE_FILE_POPUP_TITLE = 'Save history to file'
 	SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE = 'Select or create directory where the playlist video audios will be downloaded'
 	SELECT_OR_CREATE_DIR_SINGLE_VIDEO_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
-	SELECT_FILE_TO_SPLIT = 'Select audio file to split'
+	SELECT_FILE_TO_CLIP = 'Select audio file to clip'
 	SELECT_FILE_TO_SHARE = 'Select audio file to share'
 
 	load = ObjectProperty(None)
@@ -393,21 +393,21 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		self.rootGUI.dismissPopup()
 
 
-class FileToSplitLoadFileChooserPopup(LoadFileChooserPopup):
+class FileToClipLoadFileChooserPopup(LoadFileChooserPopup):
 	"""
 	This file chooser popup is used to select the file which will be transmitted to the
-	split audio file class.
+	clip audio file class.
 	"""
 	
 	def __init__(self, rootGUI, **kwargs):
-		super(FileToSplitLoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
-		self.loadButton.text = 'Split file'
+		super(FileToClipLoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		self.loadButton.text = 'Clip file'
 		
 	def loadFile(self, path, selection):
-		audioSplitterScreen = self.rootGUI.manager.get_screen('audioSplitterScreen')
-		audioSplitterScreen.initSoundFile(sourceFilePathName=selection[0])
+		audioClipperScreen = self.rootGUI.manager.get_screen('audioClipperScreen')
+		audioClipperScreen.initSoundFile(sourceFilePathName=selection[0])
 		self.rootGUI.dismissPopup()
-		self.rootGUI.parent.current = "audioSplitterScreen"
+		self.rootGUI.parent.current = "audioClipperScreen"
 		self.rootGUI.manager.transition.direction = "left"
 
 

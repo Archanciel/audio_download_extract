@@ -73,19 +73,21 @@ class AudioController:
 			# downloading a single video in the single video default dir
 			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.configMgr.singleVideoDataPath)
 	
-	def trimAudioFile(self,
-					  audioFilePathName,
-					  trimStartHHMMSS,
-					  trimEndHHMMSS,
-					  floatSpeed=1.0):
+	def clipAudioFile(self,
+	                  audioFilePathName,
+	                  clipStartHHMMSS,
+	                  clipEndHHMMSS,
+	                  floatSpeed=1.0):
 		"""
+		Extracts a portion of the audio file referred by the passed audioFilePathName.
 		
-		:param audioFilePathName: the file which will be trimmed
-		:param trimStartHHMMSS:
-		:param trimEndHHMMSS:
-		:param floatSpeed: trimmed mp3 file speed modification
+		:param audioFilePathName:   the file which will be trimmed
+		:param clipStartHHMMSS:
+		:param clipEndHHMMSS:
+		:param floatSpeed:          trimmed mp3 file speed modification
 		
-		:return: the trimmed file pathname
+		:return:    the created (but not saved) DownloadVideoInfoDic which contains
+					the clip information
 		"""
 		audioFileName = DirUtil.extractFileNameFromPathFileName(audioFilePathName)
 		audioFileFullDir = DirUtil.extractPathFromPathFileName(audioFilePathName)
@@ -106,7 +108,7 @@ class AudioController:
 		
 		# getting the extract time frames specified as command line argument
 		# and adding them to the DownloadVideoInfoDic
-		startEndTimeFrame = trimStartHHMMSS + '-' + trimEndHHMMSS
+		startEndTimeFrame = clipStartHHMMSS + '-' + clipEndHHMMSS
 		extractStartEndSecondsLists = [PlaylistTitleParser.convertToStartEndSeconds(startEndTimeFrame)]
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:

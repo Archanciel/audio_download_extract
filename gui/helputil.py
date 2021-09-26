@@ -14,7 +14,7 @@ class HelpUtil:
     @staticmethod
     def _splitLongLineToShorterLines(longLine, shorterLinesMaxLen):
         '''
-        Splits the longLine string into lines not exceeding shorterLinesMaxLen and returns the lines
+        Clips the longLine string into lines not exceeding shorterLinesMaxLen and returns the lines
         into a list.
 
         :param longLine:
@@ -46,7 +46,7 @@ class HelpUtil:
 
     def _splitTabbedLineToShorterTabbedLines(longLine, shorterLinesMaxLen):
         '''
-        Splits the longLine string into lines starting with a tab code and not exceeding
+        Clips the longLine string into lines starting with a tab code and not exceeding
         shorterLinesMaxLen and returns the shortened lines into a list of tab coded lines.
 
         This method takes care of the existence of any Kivy markup, which must not be accounted

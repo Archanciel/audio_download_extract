@@ -1,5 +1,5 @@
 <CustomDropDown>
-	gridLayoutSplit: gridlayout_splitButton
+	gridLayoutClip: gridlayout_clipButton
 	gridLayoutShare: gridlayout_shareButton
 	gridLayoutSettings: gridlayout_settingsButton
 	saveButton: save_Button
@@ -25,18 +25,18 @@
 		height: '28dp'
 		disabled: True
 		on_release: root.showSave()
-    GridLayout: # enable to hide or display 'Split audio' menu item
-        id: gridlayout_splitButton
+    GridLayout: # enable to hide or display 'Clip audio' menu item
+        id: gridlayout_clipButton
 		cols: 1
         size_hint_y: None
         height: "0dp"
         Button:
-            id: splitAudioFile_Button
-            text: 'Split audio'
+            id: clipAudioFile_Button
+            text: 'Clip audio'
             size_hint_y: None
             height: '28dp'
             disabled: False
-            on_release: root.showSplitAudioFile()
+            on_release: root.showClipAudioFile()
     GridLayout: # enable to hide or display 'Share audio' menu item
         id: gridlayout_shareButton
 		cols: 1

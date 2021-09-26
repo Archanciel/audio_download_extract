@@ -28,7 +28,7 @@ from kivy.utils import platform
 
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToSplitLoadFileChooserPopup, FileToShareLoadFileChooserPopup
+from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToClipLoadFileChooserPopup, FileToShareLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 
 from audiogui import AudioGUI
@@ -40,9 +40,9 @@ from gui.guiutil import GuiUtil
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 
-# WARNING: without importing AudioSplitterGUI, the AudioSplitterGUI methods
+# WARNING: without importing AudioClipperGUI, the AudioClipperGUI methods
 # called when pressing a button defined in the audiosplittergui.kv file
-# raises an error AttributeError: 'AudioSplitterGUI' object has no attribute
+# raises an error AttributeError: 'AudioClipperGUI' object has no attribute
 # <method name>
 
 # global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
@@ -320,15 +320,15 @@ class AudioDownloaderGUI(AudioGUI):
 			return
 		
 		if 'mp3' in self.playlistOrSingleVideoUrl:
-			# This is useful in order to facilitate opening the AudioSplitterGUI
+			# This is useful in order to facilitate opening the AudioClipperGUI
 			# screen during its development. Once dev is finished, this code
 			# can be commented out.
 			# example:
 			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
 			
-			# audioSplitterGUI = self.manager.get_screen('audioSplitterScreen')
-			# audioSplitterGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
-			# self.parent.current = "audioSplitterScreen"
+			# audioClipperGUI = self.manager.get_screen('audioClipperScreen')
+			# audioClipperGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
+			# self.parent.current = "audioClipperScreen"
 			# self.manager.transition.direction = "left"
 			# return
 			
@@ -661,13 +661,13 @@ class AudioDownloaderGUI(AudioGUI):
 													   cancel=self.dismissPopup)
 		self.popup.open()
 
-	def openFileToSplitLoadPopup(self):
+	def openFileToClipLoadPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SPLIT)
-		self.popup = FileToSplitLoadFileChooserPopup(title=popupTitle,
-													 rootGUI=self,
-													 load=self.load,
-													 cancel=self.dismissPopup)
+		self.popup = FileToClipLoadFileChooserPopup(title=popupTitle,
+		                                            rootGUI=self,
+		                                            load=self.load,
+		                                            cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openShareAudioPopup(self):
@@ -701,7 +701,7 @@ class AudioDownloaderGUI(AudioGUI):
 				# if a playlist is downloaded, the passed singleVideoTitle is None
 				return SaveFileChooserPopup.SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT:
-			return SaveFileChooserPopup.SELECT_FILE_TO_SPLIT
+			return SaveFileChooserPopup.SELECT_FILE_TO_CLIP
 		else:
 			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
 			return SaveFileChooserPopup.SELECT_FILE_TO_SHARE
@@ -931,7 +931,7 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')
-		Builder.load_file('audiosplittergui.kv')
+		Builder.load_file('audioclippergui.kv')
 		Builder.load_file('audiosharegui.kv')
 		
 		windowManager = Builder.load_file('windowmanager.kv')

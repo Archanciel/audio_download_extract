@@ -1,7 +1,7 @@
-# ---------- audiosplittergui.kv  ----------
+# ---------- audioclippergui.kv  ----------
 
-<AudioSplitterGUI>: # sub-class of Screen
-	name: "audioSplitterScreen"
+<AudioClipperGUI>: # sub-class of AudioPositionGUI
+	name: "audioClipperScreen"
 	nameTextInputField: name_TextInput
 	emailTextInputField: email_TextInput
 	phoneNumberTextInputField: phoneNumber_TextInput
@@ -19,17 +19,17 @@
 	startTextInput: text_input_start
 	currentTextInput: text_input_current
 	endTextInput: text_input_end
-	splitAudioFilePathName: split_file_path_name
-	splitFilePlayButton: button_play_split_file
-	splitFileStartButton: button_go_start_split_file
-	splitFileBackwardButton: button_backward_split_file
-	splitFileStopButton: button_stop_split_file
-	splitFileForwardButton: button_forward_split_file
-	splitFileEndButton: button_go_end_split_file
+	clipAudioFilePathName: clip_file_path_name
+	clipFilePlayButton: button_play_clip_file
+	clipFileStartButton: button_go_start_clip_file
+	clipFileBackwardButton: button_backward_clip_file
+	clipFileStopButton: button_stop_clip_file
+	clipFileForwardButton: button_forward_clip_file
+	clipFileEndButton: button_go_end_clip_file
 	outputScrollView: scrlv_out
-	outputLabel: label_output_split
+	outputLabel: label_output_clip
 	speedTextInput: text_input_speed
-	splitFileShareButton: button_share_split_file
+	clipFileShareButton: button_share_clip_file
 	BoxLayout:
 		orientation: "vertical"
 
@@ -302,16 +302,16 @@
 				Label:
 					size_hint: (None, 0.03)
 					valign: 'bottom'
-					text: 'Split file name'
+					text: 'Clip file name'
 				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
-					id: split_file_path_name
+					id: clip_file_path_name
 					size_hint_y: 0.05
 					halign: 'left'
 					text: ''
 					multiline: False
 					readonly: True
 					readonly: False # necessary in order to be able to move into text
-					on_text: root.ensureTextNotChanged('split_file_path_name')
+					on_text: root.ensureTextNotChanged('clip_file_path_name')
 			GridLayout:
 				cols: 9
 				rows: 1
@@ -320,41 +320,41 @@
 					cols: 1
 					size_hint_x: 0.4
 				Button:
-					id: button_go_start_split_file
+					id: button_go_start_clip_file
 					size_hint_x: 0.09
 					text: '<|'
 					disabled: True
-					on_press: root.goToSplitFileStartPos()
+					on_press: root.goToClipFileStartPos()
 				Button:
-					id: button_backward_split_file
+					id: button_backward_clip_file
 					size_hint_x: 0.09
 					text: '<'
 					disabled: True
-					on_press: root.backwardSplitFileTenSeconds()
+					on_press: root.backwardClipFileTenSeconds()
 				Button:
-					id: button_play_split_file
+					id: button_play_clip_file
 					size_hint_x: 0.09
 					text: 'Play'
 					disabled: True
-					on_press: root.playSplitFile()
+					on_press: root.playClipFile()
 				Button:
-					id: button_stop_split_file
+					id: button_stop_clip_file
 					size_hint_x: 0.09
 					text: 'Stop'
 					disabled: True
-					on_press: root.stopSplitFile()
+					on_press: root.stopClipFile()
 				Button:
-					id: button_forward_split_file
+					id: button_forward_clip_file
 					size_hint_x: 0.09
 					text: '>'
 					disabled: True
-					on_press: root.forwardSplitFileTenSeconds()
+					on_press: root.forwardClipFileTenSeconds()
 				Button:
-					id: button_go_end_split_file
+					id: button_go_end_clip_file
 					size_hint_x: 0.09
 					text: '|>'
 					disabled: True
-					on_press: root.goToSplitFileEndPos()
+					on_press: root.goToClipFileEndPos()
 				GridLayout:
 					cols: 1
 					size_hint_x: 0.4
@@ -376,7 +376,7 @@
 					do_scroll_y: True
 
 					Label:
-						id: label_output_split
+						id: label_output_clip
 						size_hint_y: None
 						height: self.texture_size[1]
 						text_size: (self.width-20), None
@@ -403,19 +403,19 @@
 					text: '1.0'
 				Button:
 					size_hint_x: 0.1
-					text: 'Split'
-					on_release: root.createSplitFile()
+					text: 'Clip'
+					on_release: root.createClipFile()
 				Button:
-					id: button_share_split_file
+					id: button_share_clip_file
 					size_hint_x: 0.1
 					text: 'Share'
-					disabled: True # will be enabled after the split file was created
-					on_release: root.shareSplitFile()
+					disabled: True # will be enabled after the clip file was created
+					on_release: root.shareClipFile()
 				Button:
 					size_hint_x: 0.1
 					text: 'Cancel'
 					on_release:
-						root.cancelSplitFile()
+						root.cancelClipFile()
 						app.root.current = "audioDownloaderScreen"
 						root.manager.transition.direction = "right"
 				GridLayout:

@@ -1,7 +1,7 @@
 # youtube_audio_downloader
 
 ## Status
-In development. Split audio function working.
+In development. Clip audio function working.
 
 ## Purpose
 This Python utility automates the download and extraction of the audio track of 

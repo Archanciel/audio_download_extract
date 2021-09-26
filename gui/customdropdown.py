@@ -23,7 +23,7 @@ class CustomDropDown(DropDown):
 		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
 			self.owner.openFileSavePopup()
 
-	def showSplitAudioFile(self):
+	def showClipAudioFile(self):
 		if platform == 'android':
 			self.owner.displayPopupWarning('Audio file split is not possible on Android !')
 			self.dismiss()
@@ -32,7 +32,7 @@ class CustomDropDown(DropDown):
 		message = 'Data path ' + self.owner.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
-			self.owner.openFileToSplitLoadPopup()
+			self.owner.openFileToClipLoadPopup()
 
 	def shareAudio(self):
 		self.owner.openShareAudioPopup()
