@@ -1,5 +1,3 @@
-from os.path import sep
-
 from kivy import platform
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
