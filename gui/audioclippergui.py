@@ -510,6 +510,13 @@ class AudioClipperGUI(AudioPositionGUI):
 		self.emailTextInputField.text = ''
 		self.phoneNumberTextInputField.text = ''
 
+	def copyCurrentToStart(self):
+		self.startTextInput.text = self.currentTextInput.text
+		self.goToSourceFileStartPos()
+
+	def copyCurrentToEnd(self):
+		self.endTextInput.text = self.currentTextInput.text
+		self.goToSourceFileEndPos()
 
 if __name__ == '__main__':
 	audioGUI = AudioClipperGUI()

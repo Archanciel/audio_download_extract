@@ -251,15 +251,25 @@
 								Button:
 									text: '<<'
 									on_press: root.backwardSourceFileThirtySeconds()
-								Button:
-									text: '<'
-									on_press: root.backwardSourceFileTenSeconds()
+								GridLayout: # left second pos buttons
+									cols: 2
+									Button:
+										text: 'c'
+										on_press: root.copyCurrentToStart()
+									Button:
+										text: '<'
+										on_press: root.backwardSourceFileTenSeconds()
 							GridLayout: # right pos buttons
 								cols: 3
 								size_hint_y: 0.15
-								Button:
-									text: '>'
-									on_press: root.forwardSourceFileTenSeconds()
+								GridLayout: # left second pos buttons
+									cols: 2
+									Button:
+										text: '>'
+										on_press: root.forwardSourceFileTenSeconds()
+									Button:
+										text: 'c'
+										on_press: root.copyCurrentToEnd()
 								Button:
 									text: '>>'
 									on_press: root.forwardSourceFileThirtySeconds()
