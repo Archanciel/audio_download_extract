@@ -324,26 +324,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# single video. Here, an error message was displayed in the UI !
 			return
 		
-		if 'mp3' in self.playlistOrSingleVideoUrl:
-			# This is useful in order to facilitate opening the AudioClipperGUI
-			# screen during its development. Once dev is finished, this code
-			# can be commented out.
-			# example:
-			# D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Various\\Wear a mask. Help slow the spread of Covid-19..mp3
-			
-			# audioClipperGUI = self.manager.get_screen('audioClipperScreen')
-			# audioClipperGUI.initSoundFile(sourceAudioFilePathName=self.playlistOrSingleVideoUrl)
-			# self.parent.current = "audioClipperScreen"
-			# self.manager.transition.direction = "left"
-			# return
-			
-			audioShareGUI = self.manager.get_screen('audioShareScreen')
-			audioShareGUI.initSoundFile(sharedAudioFilePathName=self.playlistOrSingleVideoUrl)
-			self.parent.current = "audioShareScreen"
-			self.manager.transition.direction = "left"
-			
-			return
-		elif self.singleVideoTitle is None:
+		if self.singleVideoTitle is None:
 			# url obtained from clipboard points to a playlist
 			downloadObjectTitle = self.playlistTitle
 			confirmPopupTitle = "Go on with processing playlist ..."
