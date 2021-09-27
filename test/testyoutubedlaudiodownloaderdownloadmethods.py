@@ -54,7 +54,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
- '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ 'download complete.',
  '',
  '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
  '',
@@ -121,7 +121,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
- '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ 'download complete.',
  '',
  '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
  '',
@@ -167,11 +167,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
- '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ 'download complete.',
  '',
  'downloading "Here to help: Give him what he wants" audio ...',
  '',
- '"Here to help: Give him what he wants" audio downloaded.',
+ 'download complete.',
  '',
  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
@@ -236,11 +236,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 			 '',
-			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
-			 '"Here to help: Give him what he wants" audio downloaded.',
+			 'download complete.',
 			 '',
 			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
 			 '',
@@ -354,7 +354,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
  '',
- '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+ 'download complete.',
  '',
  '"Test_title_one_time_frame_extract" playlist audio(s) download terminated.',
  '',
@@ -421,11 +421,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 			 '',
-			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
-			 '"Here to help: Give him what he wants" audio downloaded.',
+			 'download complete.',
 			 '',
 			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
 			 '',
@@ -529,7 +529,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 		
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlOneVideo_with_title_ending_with_question_mark_redownloading_the_playlist(self):
-		playlistName = "Test playlist with one video whose title ends with '?' char"
+		playlistName = "Test playlist with one video whose title ends with ? char"
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
 
@@ -569,13 +569,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
-	 '"test\\Test playlist with one video whose title ends with \'\' char" dir. '
-	 'Video skipped.',
-	 '',
-	 '"Test playlist with one video whose title ends with \'?\' char" playlist '
-	 'audio(s) download terminated.',
-	 '',
-	 ''], outputCapturingString.getvalue().split('\n'))
+ '"test\\Test playlist with one video whose title ends with  char" dir. Video '
+ 'skipped.',
+ '',
+ '"Test playlist with one video whose title ends with ? char" playlist '
+ 'audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(validPlaylistDirName, targetAudioDir)
 		self.assertEqual('Comment Etudier Un Cours En Miracles ?',
@@ -583,7 +583,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Comment Etudier Un Cours En Miracles .mp3',
- "Test playlist with one video whose title ends with '' char_dic.txt"]), sorted(fileNameLst))
+ "Test playlist with one video whose title ends with  char_dic.txt"]), sorted(fileNameLst))
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -624,11 +624,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 			 '',
-			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
-			 '"Here to help: Give him what he wants" audio downloaded.',
+			 'download complete.',
 			 '',
 			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
 			 '',
@@ -801,15 +801,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 			 '',
-			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
-			 '"Here to help: Give him what he wants" audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Funny suspicious looking dog" audio ...',
 			 '',
-			 '"Funny suspicious looking dog" audio downloaded.',
+			 'download complete.',
 			 '',
 			 '"Test 3 short videos" playlist audio(s) download terminated.',
 			 '',
@@ -854,7 +854,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading "Funny suspicious looking dog" audio ...',
  '',
- '"Funny suspicious looking dog" audio downloaded.',
+ 'download complete.',
  '',
  '"Test 3 short videos" playlist audio(s) download terminated.',
  '',
@@ -951,7 +951,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
@@ -960,8 +960,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'directory. Playlist target dir '
  '"C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length is 169 chars which exceeds the max '
- 'acceptable length of 168 chars !',
+ 'problème impossible à analyser" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
  'download terminated.',
@@ -976,7 +976,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
@@ -985,8 +985,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'directory. Playlist target dir '
  '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length is 169 chars which exceeds the max '
- 'acceptable length of 168 chars !',
+ 'problème impossible à analyser" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
  'download terminated.',
@@ -1048,7 +1048,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
@@ -1057,8 +1057,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'directory. Playlist target dir '
  '"C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length is 169 chars which exceeds the max '
- 'acceptable length of 168 chars !',
+ 'problème impossible à analyser" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser" playlist '
  'audio(s) download terminated.',
@@ -1073,7 +1073,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
@@ -1082,8 +1082,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'directory. Playlist target dir '
  '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length is 169 chars which exceeds the max '
- 'acceptable length of 168 chars !',
+ 'problème impossible à analyser" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser" playlist '
  'audio(s) download terminated.',
@@ -1098,7 +1098,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 	def testDownloadMaxNamePlaylist_minus_one_char(self):
 		"""
-		Verifying that downloading a playlist whose name length is one char less than
+		Verifying that downloading a playlist whose name length = one char less than
 		the max possible playlist name is ok.
 		"""
 		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyse'
@@ -1152,9 +1152,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
 			                  'route - Arthur Keller" audio ...',
 			                  '',
-			                  '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
-			                  'Keller" audio downloaded.',
-			                  '',
+			                  'download complete.',
+'',
 			                  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
 			                  'à être fatigué de ce problème impossible à analyse" playlist audio(s) '
 			                  'download terminated.',
@@ -1169,7 +1168,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadMaxNamePlaylist_minus_one_char_with_point(self):
 		"""
-		Verifying that downloading a playlist whose name length is one char less than
+		Verifying that downloading a playlist whose name length = one char less than
 		the max possible playlist name is ok.
 
 		In this test, the playlist name contains a point. The point will be removed
@@ -1228,8 +1227,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
- 'Keller" audio downloaded.',
+ 'download complete.',
  '',
  '"G commence à être fatigué de ce problème impossible à analyser. Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
@@ -1279,7 +1277,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
@@ -1287,8 +1285,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
  'Playlist target dir "C:/Users/Jean-Pierre/Downloads/Audio/test/127 '
  'char_____playlist name is very long and will cause a problem if the target '
- 'dir name exceeds a maximum possible too big name" length is 169 chars which '
- 'exceeds the max acceptable length of 168 chars !',
+ 'dir name exceeds a maximum possible too big name" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"127 char_____playlist name is very long and will cause a problem if the '
  'target dir name exceeds a maximum possible too big name." playlist audio(s) '
  'download terminated.',
@@ -1303,7 +1301,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- 'Downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
+ 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
@@ -1311,8 +1309,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
  'Playlist target dir "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 '
  'char_____playlist name is very long and will cause a problem if the target '
- 'dir name exceeds a maximum possible too big name" length is 169 chars which '
- 'exceeds the max acceptable length of 168 chars !',
+ 'dir name exceeds a maximum possible too big name" length = 169 chars (max '
+ 'acceptable length = 168 chars) !',
  '"127 char_____playlist name is very long and will cause a problem if the '
  'target dir name exceeds a maximum possible too big name." playlist audio(s) '
  'download terminated.',
@@ -1368,8 +1366,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
  'route - Arthur Keller" audio ...',
  '',
- '"Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
- 'Keller" audio downloaded.',
+ 'download complete.',
  '',
  '"test short_n\'ame pl, aylist: avec deux points" playlist audio(s) download '
  'terminated.',
@@ -1421,11 +1418,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 			 '',
-			 '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			 'download complete.',
 			 '',
 			 'downloading "Here to help: Give him what he wants" audio ...',
 			 '',
-			 '"Here to help: Give him what he wants" audio downloaded.',
+			 'download complete.',
 			 '',
 			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
 			 '',

@@ -92,7 +92,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
 				except AttributeError as e:
-					msgText = 'Obtaining video title failed with error {}.\n'.format(e)
+					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayMessage(msgText)
 				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
@@ -114,9 +114,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					self.audioController.displayError("Downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 				except DownloadError as e:
-					self.audioController.displayError("Downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length is {} chars which exceeds the max acceptable length of 168 chars !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
@@ -133,9 +133,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
 					
-					msgText = '[b]{}[/b] audio downloaded.\n'.format(videoTitle)
+					msgText = 'download complete.\n'
 				else:
-					msgText = '[b]{}[/b] audio download failed. Please retry downloading the playlist later.\n'.format(videoTitle)
+					msgText = 'audio download failed. Please retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayMessage(msgText)
 		
@@ -330,7 +330,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			except AttributeError as e:
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
-				logging.info("Downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
+				logging.info("downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
 			
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
