@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+import time
 from os.path import sep
 
 class GuiUtil:
@@ -105,3 +107,13 @@ class GuiUtil:
     
         return formattedStr
 
+    @staticmethod
+    def convertTimeStringToSeconds(timeString):
+        dateTimeStart1900 = datetime.strptime(timeString, "%H:%M:%S")
+        dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
+        
+        return dateTimeDelta.total_seconds()
+
+    @staticmethod
+    def convertSecondsToTimeString(seconds):
+        return time.strftime('%H:%M:%S', time.gmtime(seconds))

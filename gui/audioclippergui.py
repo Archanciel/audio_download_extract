@@ -9,6 +9,8 @@ from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 
 # constants below were copied from AudioShareGUI and will be deleted
+from gui.guiutil import GuiUtil
+
 GO_TO_END_PREVIOUS_SECONDS = 3
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
@@ -79,8 +81,8 @@ class AudioClipperGUI(AudioPositionGUI):
 
 		self.soundloaderSourceMp3Obj = SoundLoader.load(sourceFilePathName)
 		soundLength = self.soundloaderSourceMp3Obj.length
-		self.startTextInput.text = self.convertSecondsToTimeString(0)
-		self.endTextInput.text = self.convertSecondsToTimeString(soundLength)
+		self.startTextInput.text = GuiUtil.convertSecondsToTimeString(0)
+		self.endTextInput.text = GuiUtil.convertSecondsToTimeString(soundLength)
 
 		self.audioSlider.value = 0
 		self.audioSlider.max = soundLength
@@ -281,10 +283,7 @@ class AudioClipperGUI(AudioPositionGUI):
 		self.sourceFilePlayButton.disabled = True
 		
 	def updateCurrentSoundPosTextInput(self, seconds):
-		self.currentTextInput.text = self.convertSecondsToTimeString(seconds)
-	
-	def convertSecondsToTimeString(self, pos):
-		return time.strftime('%H:%M:%S', time.gmtime(int(pos)))
+		self.currentTextInput.text = GuiUtil.convertSecondsToTimeString(seconds)
 	
 	def createClipFile(self):
 		"""
@@ -340,7 +339,7 @@ class AudioClipperGUI(AudioPositionGUI):
 			# modification action ...
 			self.userClickedOnSourceSoundPositionButton = True
 			
-			startPos = self.convertTimeStringToSeconds(hhmmssStartPos)
+			startPos = GuiUtil.convertTimeStringToSeconds(hhmmssStartPos)
 			self.updateSourceFileSoundPos(startPos)
 		except ValueError as e:
 			self.outputResult('Start position invalid. {}. Value ignored.'.format(e))
@@ -358,7 +357,7 @@ class AudioClipperGUI(AudioPositionGUI):
 			# modification action ...
 			self.userClickedOnSourceSoundPositionButton = True
 			
-			endPos = self.convertTimeStringToSeconds(hhmmssEndPos)
+			endPos = GuiUtil.convertTimeStringToSeconds(hhmmssEndPos)
 			
 			# subtracting a couple of seconds to the end position set in the
 			# source file end position field so that the sound file is played
@@ -382,7 +381,7 @@ class AudioClipperGUI(AudioPositionGUI):
 		hhmmssEndPos = self.currentTextInput.text
 		
 		try:
-			currentPos = self.convertTimeStringToSeconds(hhmmssEndPos)
+			currentPos = GuiUtil.convertTimeStringToSeconds(hhmmssEndPos)
 			self.updateSourceFileSoundPos(currentPos)
 		except ValueError as e:
 			self.outputResult('Current position invalid. {}. Value ignored.'.format(e))
@@ -553,9 +552,9 @@ class AudioClipperGUI(AudioPositionGUI):
 		Method called when pressing the end pos - button
 		"""
 		hhmmssEndPos = self.endTextInput.text
-		endPos = self.convertTimeStringToSeconds(hhmmssEndPos)		
+		endPos = GuiUtil.convertTimeStringToSeconds(hhmmssEndPos)
 		endPos -= 1
-		self.endTextInput.text = self.convertSecondsToTimeString(endPos)
+		self.endTextInput.text = GuiUtil.convertSecondsToTimeString(endPos)
 		self.goToSourceFileEndPos()
 
 	def increaseEndPos(self):
@@ -563,9 +562,9 @@ class AudioClipperGUI(AudioPositionGUI):
 		Method called when pressing the end pos + button
 		"""
 		hhmmssEndPos = self.endTextInput.text
-		endPos = self.convertTimeStringToSeconds(hhmmssEndPos)		
+		endPos = GuiUtil.convertTimeStringToSeconds(hhmmssEndPos)
 		endPos += 1
-		self.endTextInput.text = self.convertSecondsToTimeString(endPos)
+		self.endTextInput.text = GuiUtil.convertSecondsToTimeString(endPos)
 		self.goToSourceFileEndPos()
 
 	def reduceStartPos(self):
@@ -573,9 +572,9 @@ class AudioClipperGUI(AudioPositionGUI):
 		Method called when pressing the start pos - button
 		"""
 		hhmmssStartPos = self.startTextInput.text
-		startPos = self.convertTimeStringToSeconds(hhmmssStartPos)		
+		startPos = GuiUtil.convertTimeStringToSeconds(hhmmssStartPos)
 		startPos -= 1
-		self.startTextInput.text = self.convertSecondsToTimeString(startPos)
+		self.startTextInput.text = GuiUtil.convertSecondsToTimeString(startPos)
 		self.goToSourceFileStartPos()
 
 	def increaseStartPos(self):
@@ -583,13 +582,11 @@ class AudioClipperGUI(AudioPositionGUI):
 		Method called when pressing the start pos + button
 		"""
 		hhmmssStartPos = self.startTextInput.text
-		startPos = self.convertTimeStringToSeconds(hhmmssStartPos)		
+		startPos = GuiUtil.convertTimeStringToSeconds(hhmmssStartPos)
 		startPos += 1
-		self.startTextInput.text = self.convertSecondsToTimeString(startPos)
+		self.startTextInput.text = GuiUtil.convertSecondsToTimeString(startPos)
 		self.goToSourceFileStartPos()
 
 
 if __name__ == '__main__':
 	audioGUI = AudioClipperGUI()
-	time_string = "01:01:09"
-	audioGUI.convertTimeStringToSeconds(time_string)
