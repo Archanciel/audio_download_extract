@@ -1,5 +1,6 @@
 from os.path import sep
 from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
 
 import threading, time
 
@@ -8,6 +9,7 @@ from asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 
 # constants below were copied from AudioShareGUI and will be deleted
+GO_TO_END_PREVIOUS_SECONDS = 3
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'
 PHONE_NUMBER_LABEL_KEY = 'phoneNumberLabel'
@@ -225,9 +227,17 @@ class AudioClipperGUI(AudioPositionGUI):
 		                                                newSoundPos,
 		                                                soundFilePlayButton)
 
-	def stopSourceFile(self):
+	def stopSourceFile(self, unusedParm=None):
 		"""
-		Method called when pressing the source file Stop button
+		Method called when pressing the source file Stop button or
+		by kivy.Clock in goToSourceFileEndPos() method.
+		
+		:param unusedParm   when this method is called by kivy.Clock,
+							it must accept one parm set by the caller.
+							
+		:return False       when this method is called by kivy.Clock,
+							returning False ensures it is called only
+							one time
 		"""
 		if self.soundloaderSourceMp3Obj:
 			if self.audioSlider.value >= self.soundloaderSourceMp3Obj.length - 2 * self.sliderUpdateEverySecondsNumber:
@@ -243,6 +253,8 @@ class AudioClipperGUI(AudioPositionGUI):
 				self.sliderUpdaterThread.join()
 				
 			self.sourceFilePlayButton.disabled = False
+			
+		return False
 	
 	def stopClipFile(self):
 		"""
@@ -335,7 +347,8 @@ class AudioClipperGUI(AudioPositionGUI):
 	
 	def goToSourceFileEndPos(self):
 		"""
-		Method called when source file |> button is pressed.
+		Method called when source file |> button or source file right c button
+		is pressed.
 		"""
 		hhmmssEndPos = self.endTextInput.text
 		
@@ -346,7 +359,18 @@ class AudioClipperGUI(AudioPositionGUI):
 			self.userClickedOnSourceSoundPositionButton = True
 			
 			endPos = self.convertTimeStringToSeconds(hhmmssEndPos)
-			self.updateSourceFileSoundPos(endPos)
+			
+			# subtracting a couple of seconds to the end position set in the
+			# source file end position field so that the sound file is played
+			# from endPosBefore to the end pos. This enables to test if the end
+			# pos value is what we wants.
+			endPosBefore = endPos - GO_TO_END_PREVIOUS_SECONDS
+			
+			self.updateSourceFileSoundPos(endPosBefore)
+			
+			# stops sound play after GO_TO_END_PREVIOUS_SECONDS
+			Clock.schedule_once(self.stopSourceFile, GO_TO_END_PREVIOUS_SECONDS)
+		
 		except ValueError as e:
 			self.outputResult('End position invalid. {}. Value ignored.'.format(e))
 	
@@ -427,7 +451,7 @@ class AudioClipperGUI(AudioPositionGUI):
 		"""
 		Method called when clip file |> button is pressed.
 		"""
-		endPos = self.soundloaderClipMp3Obj.length - 5
+		endPos = self.soundloaderClipMp3Obj.length - GO_TO_END_PREVIOUS_SECONDS
 		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderClipMp3Obj,
 		                        newSoundPos=endPos,
 		                        soundFilePlayButton=self.clipFilePlayButton)
