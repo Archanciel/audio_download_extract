@@ -535,12 +535,59 @@ class AudioClipperGUI(AudioPositionGUI):
 		self.phoneNumberTextInputField.text = ''
 
 	def copyCurrentToStart(self):
+		"""
+		Method called when pressing the left c button.
+		"""
 		self.startTextInput.text = self.currentTextInput.text
 		self.goToSourceFileStartPos()
 
 	def copyCurrentToEnd(self):
+		"""
+		Method called when pressing the right c button.
+		"""
 		self.endTextInput.text = self.currentTextInput.text
 		self.goToSourceFileEndPos()
+
+	def reduceEndPos(self):
+		"""
+		Method called when pressing the end pos - button
+		"""
+		hhmmssEndPos = self.endTextInput.text
+		endPos = self.convertTimeStringToSeconds(hhmmssEndPos)		
+		endPos -= 1
+		self.endTextInput.text = self.convertSecondsToTimeString(endPos)
+		self.goToSourceFileEndPos()
+
+	def increaseEndPos(self):
+		"""
+		Method called when pressing the end pos + button
+		"""
+		hhmmssEndPos = self.endTextInput.text
+		endPos = self.convertTimeStringToSeconds(hhmmssEndPos)		
+		endPos += 1
+		self.endTextInput.text = self.convertSecondsToTimeString(endPos)
+		self.goToSourceFileEndPos()
+
+	def reduceStartPos(self):
+		"""
+		Method called when pressing the start pos - button
+		"""
+		hhmmssStartPos = self.startTextInput.text
+		startPos = self.convertTimeStringToSeconds(hhmmssStartPos)		
+		startPos -= 1
+		self.startTextInput.text = self.convertSecondsToTimeString(startPos)
+		self.goToSourceFileStartPos()
+
+	def increaseStartPos(self):
+		"""
+		Method called when pressing the start pos + button
+		"""
+		hhmmssStartPos = self.startTextInput.text
+		startPos = self.convertTimeStringToSeconds(hhmmssStartPos)		
+		startPos += 1
+		self.startTextInput.text = self.convertSecondsToTimeString(startPos)
+		self.goToSourceFileStartPos()
+
 
 if __name__ == '__main__':
 	audioGUI = AudioClipperGUI()

@@ -197,7 +197,7 @@
 				size_hint: (1, 0.6)
 				GridLayout:
 					cols: 1
-					size_hint: (0.2, 0.4)
+					size_hint: (0.15, 0.4)
 				GridLayout:
 					cols: 1
 					rows: 1
@@ -207,9 +207,11 @@
 						rows: 4
 						size_hint: (0.4, 0.4)
 						GridLayout: # labels and fields
-							cols: 3
+							cols: 5
 							rows: 2
 							size_hint: (0.4, 1)
+							GridLayout: # empty grid
+								cols: 2
 							Label:
 								size_hint_y: 0.01
 								valign: 'bottom'
@@ -222,6 +224,16 @@
 								size_hint_y: 0.01
 								valign: 'bottom'
 								text: 'End'
+							GridLayout: # empty grid
+								cols: 2
+							GridLayout: # left second pos buttons
+								cols: 2
+								Button:
+									text: '-'
+									on_press: root.reduceStartPos()
+								Button:
+									text: '+'
+									on_press: root.increaseStartPos()
 							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
 								id: text_input_start
 								size_hint_y: 0.01
@@ -238,6 +250,14 @@
 								size_hint_y: 0.01
 								halign: 'right'
 								multiline: False
+							GridLayout: # right second pos buttons
+								cols: 2
+								Button:
+									text: '-'
+									on_press: root.reduceEndPos()
+								Button:
+									text: '+'
+									on_press: root.increaseEndPos()
 						GridLayout: # pos buttons
 							cols: 2
 							rows: 1
@@ -304,7 +324,7 @@
 
 				GridLayout:
 					cols: 1
-					size_hint: (0.2, 0.4)
+					size_hint: (0.15, 0.4)
 			GridLayout:
 				cols: 1
 				rows: 2

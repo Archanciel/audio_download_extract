@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 
 from audiogui import AudioGUI
 
@@ -18,7 +19,10 @@ class AudioPositionGUI(AudioGUI):
 		dateTimeDelta = dateTimeStart1900 - datetime(1900, 1, 1)
 		
 		return dateTimeDelta.total_seconds()
-	
+
+	def convertSecondsToTimeString(self, seconds):
+		return time.strftime('%H:%M:%S', time.gmtime(seconds))
+
 	def updateFileSoundPos(self,
 	                       soundloaderMp3Obj,
 	                       newSoundPos,
