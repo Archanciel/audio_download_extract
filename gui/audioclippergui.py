@@ -1,6 +1,7 @@
 from os.path import sep
 from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
+from kivy.utils import platform
 
 import threading, time
 
@@ -289,6 +290,10 @@ class AudioClipperGUI(AudioPositionGUI):
 		"""
 		Method called when Save button is pressed.
 		"""
+		if platform == 'android':
+			self.displayPopupWarning('Audio file clip is not possible on Android !')
+			return
+
 		t = threading.Thread(target=self.createClipFileOnNewThread, args=(), kwargs={})
 		t.daemon = True
 		t.start()
