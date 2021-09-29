@@ -31,6 +31,7 @@ from kivy.core.clipboard import Clipboard
 
 from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToClipLoadFileChooserPopup, FileToShareLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
+from gui.customdropdown import CustomDropDown
 
 from audiogui import AudioGUI
 from audiogui import FILE_ACTION_LOAD
@@ -240,7 +241,8 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def __init__(self, **kwargs):
 		super(AudioDownloaderGUI, self).__init__(**kwargs)
-	
+		self.dropDownMenu = CustomDropDown(owner=self)
+
 	def _finish_init(self, dt):
 		"""
 		Due to using WindowManager for managing multiple screens, the content
@@ -924,14 +926,14 @@ class AudioDownloaderGUIMainApp(App):
 		from kivy.lang import Builder
 		
 		# Loading Multiple .kv files
+		Builder.load_file('audiodownloadergui.kv')
+		Builder.load_file('audioclippergui.kv')
+		Builder.load_file('audiosharegui.kv')
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('okpopup.kv')
 		Builder.load_file('confirmpopup.kv')
 		Builder.load_file('customdropdown.kv')
-		Builder.load_file('audiodownloadergui.kv')
-		Builder.load_file('audioclippergui.kv')
-		Builder.load_file('audiosharegui.kv')
-		
+	
 		windowManager = Builder.load_file('windowmanager.kv')
 	
 		if os.name != 'posix':

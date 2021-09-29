@@ -5,7 +5,6 @@ from kivy.clock import Clock
 
 from constants import *
 from configmanager import ConfigManager
-from gui.customdropdown import CustomDropDown
 from gui.guiutil import GuiUtil
 from gui.helppopup import HelpPopup
 from gui.okpopup import OkPopup
@@ -27,7 +26,6 @@ class AudioGUI(Screen):
 		self.isExtractFileDropDownMenuItemDisplayed = True
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
-		self.dropDownMenu = CustomDropDown(owner=self)
 		self.error = False
 		
 		# WARNING: accessing MainWindow fields defined in kv file
