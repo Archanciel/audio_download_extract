@@ -83,17 +83,16 @@ class AudioGUI(Screen):
 		self.outputScrollView.scroll_y = 0
 	
 	def displayPopupWarning(self, message):
-		self.displayOkPopup('WARNING', message)
+		self.displayOkPopup(title='AudioDownloader WARNING',
+		                    message=message)
 	
 	def displayPopupError(self, message):
-		self.displayOkPopup('ERROR', message)
+		self.displayOkPopup(title='AudioDownloader ERROR',
+		                    message=message)
 	
-	def displayOkPopup(self, titleType, message):
-		guiClassName = type(self).__name__
-		title = guiClassName + ' ' + titleType
-		
+	def displayOkPopup(self, title, message):
 		popupSize = None
-		
+
 		if platform == 'android':
 			if GuiUtil.onSmartPhone():
 				popupSize = (1180, 550)
@@ -104,10 +103,10 @@ class AudioGUI(Screen):
 		elif platform == 'win':
 			popupSize = (450, 160)
 			messageMaxLength = 55
-		
+
 		# this code ensures that the popup content text does not exceeds
 		# the popup borders
-		
+
 		resizedMsg = GuiUtil.reformatString(message, messageMaxLength)
 		okPopup = OkPopup()
 		okPopup.ids.txt_input_multiline.text = resizedMsg

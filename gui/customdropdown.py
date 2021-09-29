@@ -1,5 +1,6 @@
 from kivy.properties import ObjectProperty
 from kivy.uix.dropdown import DropDown
+from kivy.utils import platform
 
 
 class CustomDropDown(DropDown):
@@ -23,6 +24,11 @@ class CustomDropDown(DropDown):
 			self.owner.openFileSavePopup()
 
 	def showClipAudioFile(self):
+		if platform == 'android':
+			self.owner.displayPopupWarning('Audio file clip is not possible on Android !')
+			self.dismiss()
+			return
+		
 		message = 'Data path ' + self.owner.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.owner.ensureDataPathExist(self.owner.audiobookPath, message):
