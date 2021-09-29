@@ -944,13 +944,6 @@ class AudioDownloaderGUIMainApp(App):
 			# WARNING: on Android, this makes impossible to open the history
 			# list as well as causing a kvy.uix.WidgetEception when trying
 			# to open the CustomDropdown menu !
-			#
-			# More precisely, the raised exception is:
-			#
-			# raise WidgetException([WARNING] stderr: kivy.uix.widget.WidgetException:
-			# Cannot add <gui.customdropdown.CustomDropDown object at 0x7aaf231d60> to
-			# window, it already has a parent <kivy.core.window.window_sdl2.WindowSDL
-			# object at 0x7ab1290f40>
 			Config.set('input', 'mouse', 'mouse,disable_multitouch')
 	
 		self.title = 'AudioDownloader GUI'

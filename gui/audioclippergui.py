@@ -95,7 +95,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		self.initializeSliderUpdateSecondsNumber(soundLength)
 	
 	def initializeSliderUpdateSecondsNumber(self, soundLength):
-		if soundLength < 30:
+		if soundLength > 0 and soundLength < 30:
+			# soundLength == 0 happens on Android !
 			self.sliderUpdateEverySecondsNumber = 1 / soundLength
 		else:
 			self.sliderUpdateEverySecondsNumber = 0.2
