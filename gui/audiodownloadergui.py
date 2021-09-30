@@ -41,13 +41,6 @@ from gui.guiutil import GuiUtil
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 
-# WARNING: without importing AudioClipperGUI, the AudioClipperGUI methods
-# called when pressing a button defined in the audiosplittergui.kv file
-# raises an error AttributeError: 'AudioClipperGUI' object has no attribute
-# <method name>
-
-# global var in order tco avoid multiple call to CryptpPricerGUI __init__ !
-
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
@@ -814,13 +807,9 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		if not self.downloadThreadCreated:
 			t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
-	# 		import traceback
-	# 		for line in traceback.format_stack():
-	# #			if "audiodownload" in line:
-	# 			logging.info(line.strip())
-	# 		logging.info(t.getName())
 			t.daemon = True
 			t.start()
+
 			self.downloadThreadCreated = True   # used to fix a problem on Android
 												# where two download threads are
 												# created after clicking on 'Yes'

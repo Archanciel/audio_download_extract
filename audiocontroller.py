@@ -24,7 +24,10 @@ class AudioController:
 		self.audioGUI = audioGUI
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
-	def downloadVideosReferencedInPlaylistOrSingleVideo(self, url, playlistTitle, singleVideoTitle):
+	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
+	                                                    url,
+	                                                    playlistTitle,
+	                                                    singleVideoTitle):
 		'''
 		In case we are downloading videos referenced in a playlist, this method first
 		execute the download of the audio of the videos and then execute the extraction
