@@ -307,6 +307,9 @@ class AudioDownloaderGUI(AudioGUI):
 		if not self.loadHistoryDataIfSet():
 			return
 		
+		self.downloadFromClipboard()
+		
+	def downloadFromClipboard(self):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		playlistObject, self.playlistTitle, self.singleVideoTitle, accessError = \
@@ -424,7 +427,6 @@ class AudioDownloaderGUI(AudioGUI):
 			outputResultStr = "ERROR - request '{}' could not be executed. Error info: {}.".format(requestStr, e)
 		
 		self.outputResult(outputResultStr)
-		self.clearResultOutputButton.disabled = False
 		
 		fullRequestListEntry = {'text': fullRequestStrNoOptions, 'selectable': True}
 

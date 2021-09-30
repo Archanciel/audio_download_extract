@@ -50,7 +50,7 @@
 					size: self.size
 
 			GridLayout:
-				cols: 2
+				cols: 3
 				TextInput:
 					id: request_TextInput
 					background_color: 0,0,0,0
@@ -61,10 +61,16 @@
 					on_text_validate: root.submitRequest()
 					on_text: root.ensureLowercase()
 				Button:
+					id: download_Button
+					text: 'Download'
+					size_hint_x: None
+					width: 80
+					on_press: root.downloadFromClipboard()
+				Button:
 					id: toggle_app_size_Button
 					text: 'Full'
 					size_hint_x: None
-					width: 130
+					width: 80
 					on_press: root.toggleAppPosAndSize()
 
 		BoxLayout:
