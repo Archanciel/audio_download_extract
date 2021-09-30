@@ -1,10 +1,10 @@
 from os.path import sep
 import glob, re, logging
-from urllib.error import URLError, HTTPError
+from urllib.error import URLError
 from urllib.error import HTTPError
-from pytube import Playlist, YouTube
+from pytube import Playlist
 from pytube import YouTube
-from pytube.exceptions import RegexMatchError, VideoUnavailable
+from pytube.exceptions import RegexMatchError
 from pytube.exceptions import VideoUnavailable
 import http.client
 import youtube_dl
@@ -12,7 +12,6 @@ from youtube_dl import DownloadError
 
 from constants import *
 from audiodownloader import AudioDownloader
-from playlisttitleparser import PlaylistTitleParser
 from dirutil import DirUtil
 from accesserror import AccessError
 
@@ -220,20 +219,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
 
 		return playlistObject, playlistTitle, videoTitle, accessError
-	
-	def getDownloadVideoInfoDicForPlaylistTitle(self, playlistTitle):
-		"""
-		Returns a DownloadVideoInfoDic for the passed playlistTitle. The playlistTitle
-		may contain extract / suppress info (ex: 'Test 3 short videos
-		(e0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e)$
-		(s0:0:2-0:0:4 s0:0:5-0:0:7 s0:0:10-e) (e0:0:2-0:0:3 e0:0:5-e)'), info which will be
-		added o the returned DownloadVideoInfoDic.
-		
-		:param playlistTitle:
-		
-		:return: downloadVideoInfoDic, accessError
-		"""
-		return PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, self.audioDirRoot)
 	
 	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
 		"""

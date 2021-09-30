@@ -163,7 +163,8 @@ class AudioController:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
-		downloadVideoInfoDic, accessError = self.audioDownloader.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
+		downloader = self.audioDownloader
+		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, downloader.audioDirRoot)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
