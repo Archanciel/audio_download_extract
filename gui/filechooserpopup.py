@@ -288,12 +288,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	
 	def __init__(self,
 	             rootGUI,
+	             rootPath,
 	             playlistOrSingleVideoUrl,
 	             playlistTitle,
 	             singleVideoTitle,
 	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
-		
+
+		self.rootPath = rootPath
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
 		self.playlistTitle = playlistTitle
@@ -323,11 +325,13 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
 		"""
+		selectedPathWithoutRootDir = selectedPath.replace(self.rootPath, '')
+
 		if self.playlistTitle is not None:
-			self.currentPathField.text = selectedPath
+			self.currentPathField.text = selectedPathWithoutRootDir
 			self.currentFileNameField.text = self.playlistTitle
 		else:
-			self.currentPathField.text = selectedPath + 'various'
+			self.currentPathField.text = selectedPathWithoutRootDir + 'various'
 			self.currentFileNameField.text = self.singleVideoTitle
 
 	def handleSelection(self, selection):
@@ -336,7 +340,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selection: ['D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Hoppla']
 		"""
-		self.currentPathField.text = selection[0] + sep
+		selectedPathWithoutRootDir = selection[0].replace(self.rootPath, '') + sep
+		self.currentPathField.text = selectedPathWithoutRootDir
 
 		if self.playlistTitle is not None:
 			self.currentFileNameField.text = self.playlistTitle
@@ -349,11 +354,18 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		currentSavePathValue = self.currentPathField.text
 		
-		# ensure path ends with / or \ according to the OS
+		# ensure path starts and ends with / or \ according to the OS
 		
-		if currentSavePathValue[-1] != sep:
-			currentSavePathValue += sep
-			self.currentPathField.text = currentSavePathValue
+		if currentSavePathValue == '':
+			currentSavePathValue = sep
+		else:
+			if currentSavePathValue[-1] != sep:
+				currentSavePathValue += sep
+	
+			if currentSavePathValue[0] != sep:
+				currentSavePathValue = sep + currentSavePathValue
+
+		self.currentPathField.text = currentSavePathValue
 
 	def updateCurrentFileNameField(self):
 		"""

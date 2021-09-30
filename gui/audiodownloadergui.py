@@ -312,7 +312,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadFromClipboard(self):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		playlistObject, self.playlistTitle, self.singleVideoTitle, accessError = \
+		_, self.playlistTitle, self.singleVideoTitle, accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 		
 		if accessError is not None:
@@ -331,7 +331,9 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 		
-		self.popup = self.createConfirmPopup(confirmPopupTitle, downloadObjectTitle, confirmPopupCallbackFunction)
+		self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
+		                                     confirmPopupMsg=downloadObjectTitle,
+		                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction)
 		self.popup.open()
 	
 	def onConfirmPopupAnswer(self, instance, answer):
@@ -349,8 +351,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.popup.dismiss()
 		elif answer == 'set_folder':  # 'set_folder' is set in confirmpopup.kv file
 			self.popup.dismiss()
-			self.openSelectOrCreateDirPopup(self.playlistOrSingleVideoUrl,
-											self.singleVideoTitle)
+			self.openSelectOrCreateDirPopup()
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
@@ -618,26 +619,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
 		self.popup.open()
 
-	def openSelectOrCreateDirPopup(self,
-								   playlistOrSingleVideoUrl,
-								   singleVideoTitle):
+	def openSelectOrCreateDirPopup(self):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, singleVideoTitle)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.singleVideoTitle)
 		
-		if singleVideoTitle is None:
-			# here, a playlist is going to be downloaded
-			playlistTitle = self.downloadVideoInfoDic.getPlaylistTitle()
-			self.isPlaylistDownload = True
-		else:
-			# here, a single video is going to be downloaded
-			self.isPlaylistDownload = False
-			playlistTitle = None
-			
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
-													   playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-													   playlistTitle=playlistTitle,
-													   singleVideoTitle=singleVideoTitle,
+		                                               rootPath=self.audiobookPath,
+													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+													   playlistTitle=self.playlistTitle,
+													   singleVideoTitle=self.singleVideoTitle,
 													   load=self.load,
 													   cancel=self.dismissPopup)
 		self.popup.open()
@@ -834,7 +825,9 @@ class AudioDownloaderGUI(AudioGUI):
 	def setMessage(self, msgText):
 		pass
 	
-	def createConfirmPopup(self, confirmPopupTitle, confirmPopupMsg, confirmPopupCallbackFunction):
+	def createConfirmPopup(self, confirmPopupTitle,
+	                       confirmPopupMsg,
+	                       confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:
