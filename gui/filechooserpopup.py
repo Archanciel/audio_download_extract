@@ -356,7 +356,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		# ensure path does not start or/and end with / or \ according to
 		# the OS
 		
-		if currentSavePathValue[0] == sep:
+		if currentSavePathValue != '' and currentSavePathValue[0] == sep:
 			currentSavePathValue = currentSavePathValue[1:]
 
 		self.currentPathField.text = currentSavePathValue
