@@ -81,7 +81,6 @@ class AudioGUI(Screen):
 
 		# scrolling to end of output text
 		self.outputScrollView.scroll_y = 0
-		self.clearResultOutputButton.disabled = False
 
 	def displayPopupWarning(self, message):
 		self.displayOkPopup(title='AudioDownloader WARNING',

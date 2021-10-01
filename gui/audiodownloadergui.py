@@ -311,10 +311,9 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def downloadFromClipboard(self):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
-		
 		_, self.playlistTitle, self.singleVideoTitle, accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
-		
+
 		if accessError is not None:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
@@ -624,13 +623,13 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.singleVideoTitle)
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-													   rootGUI=self,
-		                                               rootPath=self.audiobookPath,
-													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
-													   playlistTitle=self.playlistTitle,
-													   singleVideoTitle=self.singleVideoTitle,
-													   load=self.load,
-													   cancel=self.dismissPopup)
+		                                               rootGUI=self,
+		                                               audioRootPath=self.audiobookPath,
+		                                               playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+		                                               playlistTitle=self.playlistTitle,
+		                                               singleVideoTitle=self.singleVideoTitle,
+		                                               load=self.load,
+		                                               cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openFileToClipLoadPopup(self):
@@ -881,8 +880,10 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			return self.audiobookSingleVideoPath
 
-
-# --- end AudioDownloaderGUI new code ---
+	def outputResult(self, resultStr):
+		super(AudioDownloaderGUI, self).outputResult(resultStr)
+		
+		self.clearResultOutputButton.disabled = False
 
 
 class AudioDownloaderGUIMainApp(App):

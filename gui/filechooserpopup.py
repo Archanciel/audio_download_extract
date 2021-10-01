@@ -43,7 +43,7 @@ class SelectableLabelFileChooser(RecycleDataViewBehavior, Label):
 			selectOrCreateDirFileChooserPopup = rv.parent.parent.parent.parent.parent
 			selectedPath = rv.data[index]['pathOnly']
 			
-			selectedPath = selectedPath + sep  # adding '\\' is required, otherwise,
+#			selectedPath = selectedPath + sep  # adding '\\' is required, otherwise,
 			# on Windows, when selecting D:, the
 			# directory hosting the utility is
 			# selected ! On Android, the file save
@@ -202,10 +202,10 @@ class SaveFileChooserPopup(FileChooserPopup):
 		selectionElemLst = selectionStr.split(sep)
 		
 		if os.path.isfile(selectionStr):
-			pathContainedInSelection = sep.join(selectionElemLst[:-1]) + sep
+			pathContainedInSelection = sep.join(selectionElemLst[:-1])
 			fileNameContainedInSelection = selectionElemLst[-1]
 		else:
-			pathContainedInSelection = selectionStr + sep
+			pathContainedInSelection = selectionStr
 			fileNameContainedInSelection = ''
 			
 		self.currentPathField.text = pathContainedInSelection
@@ -223,7 +223,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 			# no file selected or file name defined. Load dialog remains open ..
 			return
 			
-		self.rootGUI.saveHistoryToFile(pathOnly, pathName + fileName, isLoadAtStart)
+		self.rootGUI.saveHistoryToFile(pathOnly, pathName + sep + fileName, isLoadAtStart)
 		self.rootGUI.dismissPopup()
 
 	def setCurrentLoadAtStartFile(self, loadAtStartFilePathName):
@@ -237,14 +237,8 @@ class SaveFileChooserPopup(FileChooserPopup):
 
 		currentSavePath = self.currentPathField.text
 
-		# ensure path ends with / or \ according to the OS
-		
-		if currentSavePath[-1] != sep:
-			currentSavePath += sep
-			self.currentPathField.text = currentSavePath
-
 		currentSaveFileName = self.currentFileNameField.text
-		currentSavePathFileName = currentSavePath + currentSaveFileName
+		currentSavePathFileName = currentSavePath + sep + currentSaveFileName
 		
 		# update load at start checkbox
 		
@@ -288,14 +282,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	
 	def __init__(self,
 	             rootGUI,
-	             rootPath,
+	             audioRootPath,
 	             playlistOrSingleVideoUrl,
 	             playlistTitle,
 	             singleVideoTitle,
 	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
 
-		self.rootPath = rootPath
+		self.audioRootPath = audioRootPath
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
 		self.playlistTitle = playlistTitle
@@ -325,13 +319,18 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
 		"""
-		selectedPathWithoutRootDir = selectedPath.replace(self.rootPath, '')
+		selectedPathWithoutRootDir = selectedPath.replace(self.audioRootPath, '')
 
 		if self.playlistTitle is not None:
 			self.currentPathField.text = selectedPathWithoutRootDir
 			self.currentFileNameField.text = self.playlistTitle
 		else:
-			self.currentPathField.text = selectedPathWithoutRootDir + 'various'
+			# downloading a single video
+			if selectedPathWithoutRootDir == '':
+				self.currentPathField.text = 'various'
+			else:
+				self.currentPathField.text = selectedPathWithoutRootDir
+
 			self.currentFileNameField.text = self.singleVideoTitle
 
 	def handleSelection(self, selection):
@@ -340,7 +339,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selection: ['D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Hoppla']
 		"""
-		selectedPathWithoutRootDir = selection[0].replace(self.rootPath, '') + sep
+		selectedPathWithoutRootDir = selection[0].replace(self.audioRootPath + sep, '')
 		self.currentPathField.text = selectedPathWithoutRootDir
 
 		if self.playlistTitle is not None:
@@ -354,16 +353,11 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		currentSavePathValue = self.currentPathField.text
 		
-		# ensure path starts and ends with / or \ according to the OS
+		# ensure path does not start or/and end with / or \ according to
+		# the OS
 		
-		if currentSavePathValue == '':
-			currentSavePathValue = sep
-		else:
-			if currentSavePathValue[-1] != sep:
-				currentSavePathValue += sep
-	
-			if currentSavePathValue[0] != sep:
-				currentSavePathValue = sep + currentSavePathValue
+		if currentSavePathValue[0] == sep:
+			currentSavePathValue = currentSavePathValue[1:]
 
 		self.currentPathField.text = currentSavePathValue
 
@@ -379,29 +373,27 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			self.singleVideoTitle = currentFileNameFieldValue
 
 		
-	def selOrCreateDir(self, rootPath, newPathName):
+	def selOrCreateDir(self, rootPath, playlistTitleOrVideoName):
 		"""
-
-		:param pathOnly:
-		:param newPathName:
-		:param isLoadAtStart:
-		:return:
-		"""
-		path = rootPath + sep + newPathName
 		
+		:param  rootPath: content of the currentPathField
+		:param  playlistTitleOrVideoName:   content of the currentFileNameField, i.e,
+											modified (or not) playlist title or
+											modified (or not) video name
+		"""
+		if self.playlistTitle is not None:
+			path = self.audioRootPath + sep + rootPath + sep + playlistTitleOrVideoName
+		else:
+			path = self.audioRootPath + sep + rootPath
+
 		if os.path.isdir(path):
 			pass
-			print("{} dir was selected".format(path))
 		else:
-			try:
-				os.mkdir(path)
-				print("{} dir was created".format(path))
-			except FileExistsError as e:
-				print("{} dir already exists".format(path))
+			os.makedirs(path)
 		
 #		self.rootGUI.singleVideoAudiobookPath = newPathName
-		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
-		                                                self.singleVideoTitle)
+#		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
+#		                                                self.singleVideoTitle)
 		self.rootGUI.dismissPopup()
 
 
