@@ -18,7 +18,7 @@ class TestDirUtil(unittest.TestCase):
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
 		
 		# deleting dic file in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*.txt')
+		files = glob.glob(downloadDir + sep + '*.txt')
 		
 		for f in files:
 			os.remove(f)

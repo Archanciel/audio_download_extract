@@ -154,7 +154,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:return:
 		"""
 		ytdlFileName = downloadedAudioFileName.replace('mp3', self.tempYdlFileExtension)
-		ytdlFilePathName = targetAudioDir + DIR_SEP + ytdlFileName
+		ytdlFilePathName = targetAudioDir + sep + ytdlFileName
 		
 		# logging.info('isAudioFileDownloadOk. ytdlFileName = {}, ytdlFilePathName = {}'.format(ytdlFileName, ytdlFilePathName))
 		# logging.info('isAudioFileDownloadOk. doesYtdlFileExist = {}'.format(os.path.isfile(ytdlFilePathName)))
@@ -162,10 +162,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		return not os.path.isfile(ytdlFilePathName)
 		
 	def getLastCreatedMp3FileName(self, dir):
-		files = glob.glob(dir + DIR_SEP + '*.mp3')
+		files = glob.glob(dir + sep + '*.mp3')
 		files.sort(key=os.path.getctime, reverse=True)
 		
-		return files[0].split(DIR_SEP)[-1]
+		return files[0].split(sep)[-1]
 
 	def getPlaylistObjectAndTitlesFortUrl(self, url):
 		"""

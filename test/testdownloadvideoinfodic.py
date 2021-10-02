@@ -23,7 +23,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -81,7 +81,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic file
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -166,7 +166,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic file
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -262,7 +262,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic file
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -334,7 +334,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic file
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -423,7 +423,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -471,7 +471,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -519,7 +519,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -547,7 +547,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -598,7 +598,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -643,7 +643,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -691,7 +691,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting video info dic files
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)

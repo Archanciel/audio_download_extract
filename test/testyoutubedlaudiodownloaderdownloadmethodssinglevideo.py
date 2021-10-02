@@ -23,7 +23,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -65,7 +65,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Funny suspicious looking dog.mp3']), sorted(fileNameLst))
 	
 	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
@@ -123,7 +123,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Funny suspicious looking dog.mp3']), sorted(fileNameLst))
 	
 	def testDownloadSingleVideoForUrl_redownloading_video(self):
@@ -135,7 +135,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -246,7 +246,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + DIR_SEP + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
@@ -293,7 +293,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
 			                 downloadDir)
 		
-		fileNameLst = [x.split(DIR_SEP)[-1] for x in glob.glob(downloadDir + DIR_SEP + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀.mp3']), sorted(fileNameLst))
 
 
