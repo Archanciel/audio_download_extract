@@ -6,8 +6,8 @@ from constants import *
 from dirutil import DirUtil
 
 KEY_PLAYLIST = 'playlist'
-KEY_PLAYLIST_TITLE = 'pl_title'
-KEY_PLAYLIST_NAME = 'pl_name'
+KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
+KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
 
 # playlist download dir name. This name DOES NOT contain the
 # audio dir root dir (defined in uthe GUI settings)
@@ -40,7 +40,7 @@ class DownloadVideoInfoDic:
 	             audioDirRoot,
 	             playlistTitle,
 	             playlistName,
-	             loadDicIfExist=True):
+	             loadDicIfDicFileExist=True):
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
@@ -48,30 +48,30 @@ class DownloadVideoInfoDic:
 		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
 		the passed information.
 		
-		:param audioDirRoot:    base dir set in the GUI settings containing
-								the extracted audio files
-		:param playlistTitle:   may contain extract and/or suppress information.
-								Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
-		:param playlistName:    contains only the playlist title part without extract 
-								and/or suppress information. May contain chars which
-								would be unacceptable for Windows dir or file names.
-		:param loadDicIfExist   set to False if the DownloadVideoInfoDic is created
-								in order to pass extraction info to the AudioExtractor.
-								Typically when executing
-								AudioClipperGUI.createClipFileOnNewThread()
+		:param audioDirRoot:            base dir set in the GUI settings containing
+										the extracted audio files
+		:param playlistTitle:           may contain extract and/or suppress information.
+										Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
+		:param playlistName:            contains only the playlist title part without extract
+										and/or suppress information. May contain chars which
+										would be unacceptable for Windows dir or file names.
+		:param loadDicIfDicFileExist.   set to False if the DownloadVideoInfoDic is created
+										in order to pass extraction info to the AudioExtractor.
+										Typically when executing
+										AudioClipperGUI.createClipFileOnNewThread()
 		"""
 		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = audioDirRoot + sep + playlistDirName
 		self.dic = None
 		
-		if loadDicIfExist:
+		if loadDicIfDicFileExist:
 			self.dic = self._loadDicIfExist(downloadDir, playlistDirName)
 		
 		if self.dic is None:
 			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME] = playlistName
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = playlistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = playlistDirName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
@@ -106,7 +106,7 @@ class DownloadVideoInfoDic:
 		return dic
 	
 	def updatePlaylistTitle(self, playlistTitle):
-		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE] = playlistTitle
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
 		#self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = self.buildDownloadDirValue(playlistTitle)
 
 	def buildDownloadDirValue(self, playlistTitle):
@@ -145,7 +145,7 @@ class DownloadVideoInfoDic:
 		:return:
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE]
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL]
 		else:
 			return None
 	
@@ -157,7 +157,7 @@ class DownloadVideoInfoDic:
 		:return:
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME]
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL]
 		else:
 			return None
 	

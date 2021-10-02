@@ -102,7 +102,7 @@ class AudioController:
 		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=self.configMgr.dataPath,
 		                                                  playlistTitle=playlistTitleAndName,
 		                                                  playlistName=playlistTitleAndName,
-		                                                  loadDicIfExist=False)
+		                                                  loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
 		                                                     videoTitle=videoTitle,
@@ -163,8 +163,9 @@ class AudioController:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
-		downloader = self.audioDownloader
-		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle, downloader.audioDirRoot)
+		downloadVideoInfoDic, accessError = \
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
+			                                                          self.audioDownloader.audioDirRoot)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
