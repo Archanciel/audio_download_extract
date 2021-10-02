@@ -8,7 +8,9 @@ from dirutil import DirUtil
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(playlistTitle, audioDirRoot):
+	def createDownloadVideoInfoDicForPlaylist(audioDirRoot,
+	                                          originalPlaylistTitle,
+	                                          modifiedPlaylistTitle=None):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -19,7 +21,7 @@ class PlaylistTitleParser:
 		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
 
-		:param playlistTitle: contains  playlist name plus, possibly, extract/suppress
+		:param originalPlaylistTitle: contains  playlist name plus, possibly, extract/suppress
 										information
 		:param audioDirRoot:            audio dir base as defined in the GUI settings.
 
@@ -28,19 +30,31 @@ class PlaylistTitleParser:
 		"""
 		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|+,\.]+)(\{.*\})?"
 		
-		match = re.match(playlistNamePattern, playlistTitle)
-		playlistName = match.group(1)
+		match = re.match(playlistNamePattern, originalPlaylistTitle)
+		originalPlaylistName = match.group(1)
 		
-		videoTimeFramesInfo = playlistTitle.replace(playlistName, '')
-		playlistName = playlistName.strip() # removing playlistName last space if exist
+		videoTimeFramesInfo = originalPlaylistTitle.replace(originalPlaylistName, '')
+		originalPlaylistName = originalPlaylistName.strip() # removing originalPlaylistName last space if exist
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playlistName)
+		if modifiedPlaylistTitle is not None:
+			match = re.match(playlistNamePattern, modifiedPlaylistTitle)
+			modifiedPlaylistName = match.group(1)
+			modifiedPlaylistName = modifiedPlaylistName.strip()  # removing originalPlaylistName last space if exist
+		else:
+			modifiedPlaylistTitle = originalPlaylistTitle
+			modifiedPlaylistName = originalPlaylistName
+		
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=audioDirRoot,
+		                                            originalPaylistTitle=originalPlaylistTitle,
+		                                            originalPlaylistName=originalPlaylistName,
+		                                            modifiedPlaylistTitle=modifiedPlaylistTitle,
+		                                            modifiedPlaylistName=modifiedPlaylistName)
 		accessError = None
 		
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
 			                                                                        videoTimeFramesInfo,
-			                                                                        playlistTitle)
+			                                                                        originalPlaylistTitle)
 		
 		return downloadVideoInfoDic, accessError
 	

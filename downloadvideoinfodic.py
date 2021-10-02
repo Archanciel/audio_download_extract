@@ -7,7 +7,9 @@ from dirutil import DirUtil
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
+KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
+KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
 
 # playlist download dir name. This name DOES NOT contain the
 # audio dir root dir (defined in uthe GUI settings)
@@ -38,8 +40,10 @@ class DownloadVideoInfoDic:
 
 	def __init__(self,
 	             audioDirRoot,
-	             playlistTitle,
-	             playlistName,
+	             originalPaylistTitle,
+	             originalPlaylistName,
+	             modifiedPlaylistTitle=None,
+	             modifiedPlaylistName=None,
 	             loadDicIfDicFileExist=True):
 		"""
 		Constructor.
@@ -50,9 +54,9 @@ class DownloadVideoInfoDic:
 		
 		:param audioDirRoot:            base dir set in the GUI settings containing
 										the extracted audio files
-		:param playlistTitle:           may contain extract and/or suppress information.
+		:param originalPaylistTitle:   may contain extract and/or suppress information.
 										Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
-		:param playlistName:            contains only the playlist title part without extract
+		:param originalPlaylistName:    contains only the playlist title part without extract
 										and/or suppress information. May contain chars which
 										would be unacceptable for Windows dir or file names.
 		:param loadDicIfDicFileExist.   set to False if the DownloadVideoInfoDic is created
@@ -60,7 +64,7 @@ class DownloadVideoInfoDic:
 										Typically when executing
 										AudioClipperGUI.createClipFileOnNewThread()
 		"""
-		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(originalPlaylistName)
 		downloadDir = audioDirRoot + sep + playlistDirName
 		self.dic = None
 		
@@ -70,8 +74,17 @@ class DownloadVideoInfoDic:
 		if self.dic is None:
 			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = playlistName
+			
+			if modifiedPlaylistTitle is None:
+				modifiedPlaylistTitle = originalPaylistTitle
+				
+			if modifiedPlaylistName is None:
+				modifiedPlaylistName = originalPlaylistName
+				
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = originalPaylistTitle
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED] = modifiedPlaylistTitle
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED] = modifiedPlaylistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = playlistDirName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
@@ -137,10 +150,10 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 		
-	def getPlaylistTitle(self):
+	def getPlaylistTitleOriginal(self):
 		"""
-		Return the play list title, which is the playlist name + the optional extract
-		or suppress time frames definitions.
+		Return the original play list title, which is the original playlist name +
+		the optional extract or suppress time frames definitions.
 	
 		:return:
 		"""
@@ -149,15 +162,39 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getPlaylistName(self):
+	def getPlaylistTitleModified(self):
 		"""
-		Return the play list name, which is the playlist title without the optional
-		extract or suppress time frames definitions.
+		Return the modified play list title, which is the modified playlist name +
+		the optional extract or suppress time frames definitions.
+
+		:return:
+		"""
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED]
+		else:
+			return None
+	
+	def getPlaylistNameOriginal(self):
+		"""
+		Return the original play list name, which is the original playlist title
+		without the optional extract or suppress time frames definitions.
 	
 		:return:
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL]
+		else:
+			return None
+	
+	def getPlaylistNameModified(self):
+		"""
+		Return the modified play list name, which is the modified playlist title
+		without the optional extract or suppress time frames definitions.
+
+		:return:
+		"""
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
 		else:
 			return None
 	

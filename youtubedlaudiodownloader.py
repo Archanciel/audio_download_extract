@@ -138,7 +138,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				self.audioController.displayMessage(msgText)
 		
-			msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistName())
+			msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 			self.audioController.displayMessage(msgText)
 		
 		return downloadVideoInfoDic, None

@@ -100,8 +100,8 @@ class AudioController:
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
 		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=self.configMgr.dataPath,
-		                                                  playlistTitle=playlistTitleAndName,
-		                                                  playlistName=playlistTitleAndName,
+		                                                  originalPaylistTitle=playlistTitleAndName,
+		                                                  originalPlaylistName=playlistTitleAndName,
 		                                                  loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
@@ -164,8 +164,7 @@ class AudioController:
 		:return: downloadVideoInfoDic, accessError
 		"""
 		downloadVideoInfoDic, accessError = \
-			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistTitle,
-			                                                          self.audioDownloader.audioDirRoot)
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(self.audioDownloader.audioDirRoot, playlistTitle)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
