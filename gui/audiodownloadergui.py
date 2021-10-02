@@ -271,7 +271,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLineBold = True
 		self.downloadVideoInfoDic = None
 		self.isPlaylistDownload = None
-		self.playlistTitle = None
+		self.originalPlaylistTitle = None
+		self.modifiedPlaylistTitle = None
 		self.singleVideoTitle = None
 		self.downloadThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
@@ -311,7 +312,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def downloadFromClipboard(self):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
-		_, self.playlistTitle, self.singleVideoTitle, accessError = \
+		_, self.originalPlaylistTitle, self.singleVideoTitle, accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 
 		if accessError is not None:
@@ -321,7 +322,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		if self.singleVideoTitle is None:
 			# url obtained from clipboard points to a playlist
-			downloadObjectTitle = self.playlistTitle
+			downloadObjectTitle = self.originalPlaylistTitle
 			confirmPopupTitle = "Go on with processing playlist ..."
 		else:
 			# url obtained from clipboard points to a single video
@@ -626,7 +627,7 @@ class AudioDownloaderGUI(AudioGUI):
 		                                               rootGUI=self,
 		                                               audioRootPath=self.audiobookPath,
 		                                               playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
-		                                               playlistTitle=self.playlistTitle,
+		                                               originalPlaylistTitle=self.originalPlaylistTitle,
 		                                               singleVideoTitle=self.singleVideoTitle,
 		                                               load=self.load,
 		                                               cancel=self.dismissPopup)
@@ -789,8 +790,6 @@ class AudioDownloaderGUI(AudioGUI):
 			width_calc = max(width_calc, line_label.width + 20)   # add 20 to avoid automatically creating a new line
 		self.statusBarTextInput.width = width_calc
 	
-	# --- start AudioDownloaderGUI new code ---
-	
 	def downloadPlaylistOrSingleVideoAudio(self):
 		"""
 		This method launch downloading audios for the videos referenced in the playlist
@@ -813,8 +812,9 @@ class AudioDownloaderGUI(AudioGUI):
 		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
-																			 self.playlistTitle,
-																			 self.singleVideoTitle)
+		                                                                     self.originalPlaylistTitle,
+		                                                                     self.modifiedPlaylistTitle,
+		                                                                     self.singleVideoTitle)
 	
 		self.downloadThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
@@ -824,7 +824,8 @@ class AudioDownloaderGUI(AudioGUI):
 	def setMessage(self, msgText):
 		pass
 	
-	def createConfirmPopup(self, confirmPopupTitle,
+	def createConfirmPopup(self,
+	                       confirmPopupTitle,
 	                       confirmPopupMsg,
 	                       confirmPopupCallbackFunction):
 		"""

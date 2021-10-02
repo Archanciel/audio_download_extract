@@ -26,7 +26,8 @@ class AudioController:
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
 	                                                    url,
-	                                                    playlistTitle,
+	                                                    originalPlaylistTitle,
+	                                                    modifiedPlaylistTitle,
 	                                                    singleVideoTitle):
 		'''
 		In case we are downloading videos referenced in a playlist, this method first
@@ -45,10 +46,10 @@ class AudioController:
 		:param downloadVideoInfoDic: if url points to a playlist
 		:param singleVideoTitle: if the url points to a single video
 		'''
-		if playlistTitle is not None:
+		if originalPlaylistTitle is not None:
 			# downloading a playlist
 			downloadVideoInfoDic = \
-				self.getDownloadVideoInfoDicForPlaylistTitle(playlistTitle)
+				self.getDownloadVideoInfoDicForPlaylistTitle(originalPlaylistTitle)
 
 			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(url, downloadVideoInfoDic)
 			

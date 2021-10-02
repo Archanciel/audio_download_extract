@@ -12,6 +12,7 @@ from kivy.utils import platform
 
 from gui.abstractpopup import AbstractPopup
 from gui.guiutil import GuiUtil
+from dirutil import DirUtil
 
 LOAD_AT_START_MSG = ' (load at start activated)'
 
@@ -284,7 +285,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	             rootGUI,
 	             audioRootPath,
 	             playlistOrSingleVideoUrl,
-	             playlistTitle,
+	             originalPlaylistTitle,
 	             singleVideoTitle,
 	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
@@ -292,7 +293,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		self.audioRootPath = audioRootPath
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
-		self.playlistTitle = playlistTitle
+		self.originalPlaylistTitle = originalPlaylistTitle
 	
 	def _sizeFileChooser(self):
 		"""
@@ -321,9 +322,9 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		selectedPathWithoutRootDir = selectedPath.replace(self.audioRootPath, '')
 
-		if self.playlistTitle is not None:
+		if self.originalPlaylistTitle is not None:
 			self.currentPathField.text = selectedPathWithoutRootDir
-			self.currentFileNameField.text = self.playlistTitle
+			self.currentFileNameField.text = self.originalPlaylistTitle
 		else:
 			# downloading a single video
 			if selectedPathWithoutRootDir == '':
@@ -342,8 +343,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		selectedPathWithoutRootDir = selection[0].replace(self.audioRootPath + sep, '')
 		self.currentPathField.text = selectedPathWithoutRootDir
 
-		if self.playlistTitle is not None:
-			self.currentFileNameField.text = self.playlistTitle
+		if self.originalPlaylistTitle is not None:
+			self.currentFileNameField.text = self.originalPlaylistTitle
 		else:
 			self.currentFileNameField.text = self.singleVideoTitle
 	
@@ -367,24 +368,28 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		"""
 		currentFileNameFieldValue = self.currentFileNameField.text
 
-		if self.playlistTitle is not None:
-			self.playlistTitle = currentFileNameFieldValue
-		else:
+		if self.originalPlaylistTitle is None:
 			self.singleVideoTitle = currentFileNameFieldValue
-
 		
 	def selOrCreateDir(self, rootPath, playlistTitleOrVideoName):
 		"""
 		
-		:param  rootPath: content of the currentPathField
+		:param  rootPath:                   content of the currentPathField
 		:param  playlistTitleOrVideoName:   content of the currentFileNameField, i.e,
 											modified (or not) playlist title or
 											modified (or not) video name
 		"""
-		if self.playlistTitle is not None:
-			path = self.audioRootPath + sep + rootPath + sep + playlistTitleOrVideoName
+		if self.originalPlaylistTitle is not None:
+			path = self.audioRootPath + sep + rootPath + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitleOrVideoName)
+			
+			if playlistTitleOrVideoName == self.originalPlaylistTitle:
+				# original playlist title was not modified
+				self.rootGUI.modifiedPlaylistTitle = None
+			else:
+				self.rootGUI.modifiedPlaylistTitle = playlistTitleOrVideoName
 		else:
 			path = self.audioRootPath + sep + rootPath
+			self.rootGUI.singleVideoTitle = playlistTitleOrVideoName
 
 		if os.path.isdir(path):
 			pass
@@ -392,8 +397,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			os.makedirs(path)
 		
 #		self.rootGUI.singleVideoAudiobookPath = newPathName
-#		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl,
-#		                                                self.singleVideoTitle)
+		self.rootGUI.downloadPlaylistOrSingleVideoAudio()
 		self.rootGUI.dismissPopup()
 
 
