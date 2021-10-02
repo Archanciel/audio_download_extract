@@ -823,6 +823,32 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		                 expectedVideo2ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2),
 		                 expectedVideo2SuppressTimeFramesList)
+	
+	def testCreateDownloadVideoInfoDicWithoutTimeFramesAndModifiedPlaylistTitle(self):
+		# Example of playlist title: playlist_title {(s01:05:52-01:07:23 e01:15:52-e  E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
+		expectedOriginalPlayListName = "Audio: - ET L'UNIVERS DISPARAÎTRA La nature illusoire de notre réalité et le pouvoir transcendant du véritable pardon de Gary Renard"
+		expectedModifiedPlayListName = "ET L'UNIVERS DISPARAÎTRA La nature illusoire de notre réalité et le pouvoir transcendant du véritable pardon"
+		originalPlaylistTitle = expectedOriginalPlayListName
+		modifiedPlaylistTitle = expectedModifiedPlayListName
+		
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedOriginalPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + sep + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = \
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+				DirUtil.getTestAudioRootPath(),
+				originalPlaylistTitle,
+				modifiedPlaylistTitle)
+		
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedModifiedPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 
 
 if __name__ == '__main__':
