@@ -278,7 +278,8 @@ class AudioDownloaderGUI(AudioGUI):
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
-
+		self.playlistOrSingleVideoDownloadPath = None
+		
 		self._doOnStart()
 	
 	def _doOnStart(self):
@@ -332,8 +333,8 @@ class AudioDownloaderGUI(AudioGUI):
 		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 		
 		self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
-		                                     confirmPopupMsg=downloadObjectTitle,
-		                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction)
+											 confirmPopupMsg=downloadObjectTitle,
+											 confirmPopupCallbackFunction=confirmPopupCallbackFunction)
 		self.popup.open()
 	
 	def onConfirmPopupAnswer(self, instance, answer):
@@ -624,13 +625,13 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.singleVideoTitle)
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-		                                               rootGUI=self,
-		                                               audioRootPath=self.audiobookPath,
-		                                               playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
-		                                               originalPlaylistTitle=self.originalPlaylistTitle,
-		                                               singleVideoTitle=self.singleVideoTitle,
-		                                               load=self.load,
-		                                               cancel=self.dismissPopup)
+													   rootGUI=self,
+													   audioRootPath=self.audiobookPath,
+													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+													   originalPlaylistTitle=self.originalPlaylistTitle,
+													   singleVideoTitle=self.singleVideoTitle,
+													   load=self.load,
+													   cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openFileToClipLoadPopup(self):
@@ -812,6 +813,7 @@ class AudioDownloaderGUI(AudioGUI):
 		the videos referenced in a playlist or the audio of a single video.
 		"""
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
+		                                                                     self.playlistOrSingleVideoDownloadPath,
 		                                                                     self.originalPlaylistTitle,
 		                                                                     self.modifiedPlaylistTitle,
 		                                                                     self.singleVideoTitle)
@@ -825,9 +827,9 @@ class AudioDownloaderGUI(AudioGUI):
 		pass
 	
 	def createConfirmPopup(self,
-	                       confirmPopupTitle,
-	                       confirmPopupMsg,
-	                       confirmPopupCallbackFunction):
+						   confirmPopupTitle,
+						   confirmPopupMsg,
+						   confirmPopupCallbackFunction):
 		"""
 
 		:param confirmPopupTitle:

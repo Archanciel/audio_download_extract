@@ -72,7 +72,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			return None, accessError
 
 		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-		targetAudioDirShort = DirUtil.getLastSubDirs(targetAudioDir, subDirsNumber=2)
+		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=self.audioDirRoot,
+		                                                     fullDir=targetAudioDir,
+		                                                     remainingRootSubDirNumber=1)
 		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		
 		if dirCreationMessage:

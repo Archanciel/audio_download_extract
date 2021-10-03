@@ -25,7 +25,8 @@ class AudioController:
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
-	                                                    url,
+	                                                    playlistOrSingleVideoUrl,
+	                                                    playlistOrSingleVideoDownloadPath,
 	                                                    originalPlaylistTitle,
 	                                                    modifiedPlaylistTitle,
 	                                                    singleVideoTitle):
@@ -42,16 +43,18 @@ class AudioController:
 		If we are downloading a single video audio, no extraction/suppression will
 		be performed.
 
-		:param url: playlist or single video url
-		:param downloadVideoInfoDic: if url points to a playlist
-		:param singleVideoTitle: if the url points to a single video
+		:param playlistOrSingleVideoUrl:    playlist or single video url
+		:param singleVideoTitle:            if the playlistOrSingleVideoUrl points
+											to a single video
 		'''
 		if originalPlaylistTitle is not None:
 			# downloading a playlist
 			downloadVideoInfoDic = \
-				self.getDownloadVideoInfoDicForPlaylistTitle(originalPlaylistTitle)
+				self.getDownloadVideoInfoDicForPlaylistTitle(playlistOrSingleVideoDownloadPath,
+				                                             originalPlaylistTitle,
+				                                             modifiedPlaylistTitle)
 
-			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(url, downloadVideoInfoDic)
+			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistOrSingleVideoUrl, downloadVideoInfoDic)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
 	
@@ -75,7 +78,7 @@ class AudioController:
 						traceback.print_exc()
 		else:
 			# downloading a single video in the single video default dir
-			self.audioDownloader.downloadSingleVideoForUrl(url, singleVideoTitle, self.configMgr.singleVideoDataPath)
+			self.audioDownloader.downloadSingleVideoForUrl(playlistOrSingleVideoUrl, singleVideoTitle, self.configMgr.singleVideoDataPath)
 	
 	def clipAudioFile(self,
 	                  audioFilePathName,
@@ -100,9 +103,12 @@ class AudioController:
 		
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
-		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=self.configMgr.dataPath,
+		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioRootDir=self.configMgr.dataPath,
+		                                                  playlistDownloadRootPath=self.configMgr.dataPath,
 		                                                  originalPaylistTitle=playlistTitleAndName,
 		                                                  originalPlaylistName=playlistTitleAndName,
+		                                                  modifiedPlaylistTitle=playlistTitleAndName,
+		                                                  modifiedPlaylistName=playlistTitleAndName,
 		                                                  loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
@@ -152,7 +158,10 @@ class AudioController:
 			
 		return playlistObject, playlistTitle, videoTitle, accessError
 	
-	def getDownloadVideoInfoDicForPlaylistTitle(self, playlistTitle):
+	def getDownloadVideoInfoDicForPlaylistTitle(self,
+	                                            playlistOrSingleVideoDownloadPath,
+	                                            originalPlaylistTitle,
+	                                            modifiedPlaylistTitle):
 		"""
 		Returns a DownloadVideoInfoDic for the passed playlistTitle. The playlistTitle
 		may contain extract / suppress info (ex: 'Test 3 short videos
@@ -160,12 +169,15 @@ class AudioController:
 		(s0:0:2-0:0:4 s0:0:5-0:0:7 s0:0:10-e) (e0:0:2-0:0:3 e0:0:5-e)'), info which will be
 		added o the returned DownloadVideoInfoDic.
 
-		:param playlistTitle:
+		:param originalPlaylistTitle:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
 		downloadVideoInfoDic, accessError = \
-			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(self.audioDownloader.audioDirRoot, playlistTitle)
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(audioRootDir=self.configMgr.dataPath,
+			                                                          playlistDownloadRootPath=playlistOrSingleVideoDownloadPath,
+			                                                          originalPlaylistTitle=originalPlaylistTitle,
+			                                                          modifiedPlaylistTitle=modifiedPlaylistTitle)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)

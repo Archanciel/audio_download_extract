@@ -371,16 +371,23 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		if self.originalPlaylistTitle is None:
 			self.singleVideoTitle = currentFileNameFieldValue
 		
-	def selOrCreateDir(self, rootPath, playlistTitleOrVideoName):
+	def selOrCreateDir(self, specifiedSubDirPath, playlistTitleOrVideoName):
 		"""
 		
-		:param  rootPath:                   content of the currentPathField
+		:param  specifiedSubDirPath:        content of the currentPathField
 		:param  playlistTitleOrVideoName:   content of the currentFileNameField, i.e,
 											modified (or not) playlist title or
 											modified (or not) video name
 		"""
+		if specifiedSubDirPath != '' and specifiedSubDirPath[-1] == sep:
+			specifiedSubDirPath = specifiedSubDirPath[:-1]
+			
 		if self.originalPlaylistTitle is not None:
-			path = self.audioRootPath + sep + rootPath + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitleOrVideoName)
+			# means we are downloading a playlist ...
+			if specifiedSubDirPath != '':
+				downloadPath = self.audioRootPath + sep + specifiedSubDirPath
+			else:
+				downloadPath = self.audioRootPath
 			
 			if playlistTitleOrVideoName == self.originalPlaylistTitle:
 				# original playlist title was not modified
@@ -388,15 +395,18 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			else:
 				self.rootGUI.modifiedPlaylistTitle = playlistTitleOrVideoName
 		else:
-			path = self.audioRootPath + sep + rootPath
+			# a single video is downloaded ...
+			downloadPath = self.audioRootPath + sep + specifiedSubDirPath
 			self.rootGUI.singleVideoTitle = playlistTitleOrVideoName
 
-		if os.path.isdir(path):
+		# creating the video download path if not exist
+
+		if os.path.isdir(downloadPath):
 			pass
 		else:
-			os.makedirs(path)
-		
-#		self.rootGUI.singleVideoAudiobookPath = newPathName
+			os.makedirs(downloadPath)
+
+		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio()
 		self.rootGUI.dismissPopup()
 

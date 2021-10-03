@@ -28,7 +28,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
 		videoIndex = dvi.getNextVideoIndex()
@@ -88,7 +88,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		videoIndex = dvi.getNextVideoIndex()
 		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
@@ -109,7 +109,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
@@ -132,7 +132,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		reloadedDvi.saveDic(audioDirRoot)
 
 		# creating new extended video info dic, reloading newly created video info dic file
-		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', newReloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -173,7 +173,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
@@ -204,7 +204,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		
@@ -232,7 +232,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		reloadedDvi.saveDic(audioDirRoot)
 		
 		# creating new extended video info dic, reloading newly created video info dic file
-		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		newReloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk',
 		                 newReloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -269,7 +269,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
@@ -309,7 +309,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -341,7 +341,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic file and saving it
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
@@ -392,7 +392,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
-		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		reloadedDvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
@@ -428,7 +428,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -476,7 +476,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -524,7 +524,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		title_1 = 'title 1'
 		
@@ -552,7 +552,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -603,7 +603,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -648,7 +648,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -696,7 +696,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadVideoInfoDic(audioDirRoot, playlistTitle, playListName)
+		dvi = DownloadVideoInfoDic(audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'

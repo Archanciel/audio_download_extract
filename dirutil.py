@@ -59,11 +59,24 @@ class DirUtil:
 			dirCreationMessage = "directory\n{}\nwas created.\n".format(targetAudioDirShort)
 		
 		return targetAudioDirShort, dirCreationMessage
-	
+
 	@staticmethod
 	def getLastSubDirs(fullDir, subDirsNumber):
 		fullDirComponentList = fullDir.split(sep)
 		targetAudioDirShort = sep.join(fullDirComponentList[-subDirsNumber:])
+		
+		return targetAudioDirShort
+
+	@staticmethod
+	def getFullDirMinusRootDir(rootDir,
+	                           fullDir,
+	                           remainingRootSubDirNumber=None):
+		if remainingRootSubDirNumber is None:
+			return fullDir.replace(rootDir + sep, '')
+		
+		rootDirElementLst = rootDir.split(sep)
+		remainingRootDir = sep.join(rootDirElementLst[:-remainingRootSubDirNumber])
+		targetAudioDirShort = fullDir.replace(remainingRootDir + sep, '')
 		
 		return targetAudioDirShort
 	

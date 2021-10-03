@@ -39,7 +39,8 @@ class DownloadVideoInfoDic:
 	cachedRateAccessNumber = 0
 
 	def __init__(self,
-	             audioDirRoot,
+	             audioRootDir,
+	             playlistDownloadRootPath,
 	             originalPaylistTitle,
 	             originalPlaylistName,
 	             modifiedPlaylistTitle=None,
@@ -48,28 +49,28 @@ class DownloadVideoInfoDic:
 		"""
 		Constructor.
 		If a file containing the dictionary data for the corresponding playlist exist
-		in the passed downloadDir + playlistDirName, it is loaded and set into the
+		in the passed playlistVideoDownloadDir + playlistDirName, it is loaded and set into the
 		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
 		the passed information.
 		
-		:param audioDirRoot:            base dir set in the GUI settings containing
-										the extracted audio files
-		:param originalPaylistTitle:   may contain extract and/or suppress information.
-										Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
-		:param originalPlaylistName:    contains only the playlist title part without extract
-										and/or suppress information. May contain chars which
-										would be unacceptable for Windows dir or file names.
-		:param loadDicIfDicFileExist.   set to False if the DownloadVideoInfoDic is created
-										in order to pass extraction info to the AudioExtractor.
-										Typically when executing
-										AudioClipperGUI.createClipFileOnNewThread()
+		:param playlistDownloadRootPath:    base dir set in the GUI settings containing
+											the extracted audio files
+		:param originalPaylistTitle:        may contain extract and/or suppress information.
+											Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
+		:param originalPlaylistName:        contains only the playlist title part without extract
+											and/or suppress information. May contain chars which
+											would be unacceptable for Windows dir or file names.
+		:param loadDicIfDicFileExist:       set to False if the DownloadVideoInfoDic is created
+											in order to pass extraction info to the AudioExtractor.
+											Typically when executing
+											AudioClipperGUI.createClipFileOnNewThread()
 		"""
-		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(originalPlaylistName)
-		downloadDir = audioDirRoot + sep + playlistDirName
+		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
+		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistDirName
 		self.dic = None
 		
 		if loadDicIfDicFileExist:
-			self.dic = self._loadDicIfExist(downloadDir, playlistDirName)
+			self.dic = self._loadDicIfExist(playlistVideoDownloadDir, playlistDirName)
 		
 		if self.dic is None:
 			self.dic = {}
@@ -85,7 +86,8 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED] = modifiedPlaylistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED] = modifiedPlaylistName
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = playlistDirName
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
+			                                                                                   fullDir=playlistVideoDownloadDir)
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
@@ -132,9 +134,12 @@ class DownloadVideoInfoDic:
 		:param audioDirRoot: audio dir as defined in the GUI settings.
 		:return:
 		"""
-		validPlaylistDirName = self.getPlaylistDownloadDir()
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getPlaylistNameModified())
+		playlistDownloadDir = self.getPlaylistDownloadDir()
+		
+		dicFilePathName = self.buildInfoDicFilePathName(audioDirRoot + sep + playlistDownloadDir, validPlaylistDirName)
 
-		with open(self.buildInfoDicFilePathName(audioDirRoot + sep + validPlaylistDirName, validPlaylistDirName), 'w') as f:
+		with open(dicFilePathName, 'w') as f:
 			try:
 				json.dump(self.dic,
 						  f,

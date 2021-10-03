@@ -8,7 +8,8 @@ from dirutil import DirUtil
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(audioDirRoot,
+	def createDownloadVideoInfoDicForPlaylist(audioRootDir,
+	                                          playlistDownloadRootPath,
 	                                          originalPlaylistTitle,
 	                                          modifiedPlaylistTitle=None):
 		"""
@@ -23,7 +24,7 @@ class PlaylistTitleParser:
 
 		:param originalPlaylistTitle: contains  playlist name plus, possibly, extract/suppress
 										information
-		:param audioDirRoot:            audio dir base as defined in the GUI settings.
+		:param playlistDownloadRootPath:            audio dir base as defined in the GUI settings.
 
 		:return downloadVideoInfoDic
 				accessError in case of problem, None otherwise
@@ -39,12 +40,14 @@ class PlaylistTitleParser:
 		if modifiedPlaylistTitle is not None:
 			match = re.match(playlistNamePattern, modifiedPlaylistTitle)
 			modifiedPlaylistName = match.group(1)
+			videoTimeFramesInfo = modifiedPlaylistTitle.replace(modifiedPlaylistName, '')
 			modifiedPlaylistName = modifiedPlaylistName.strip()  # removing originalPlaylistName last space if exist
 		else:
 			modifiedPlaylistTitle = originalPlaylistTitle
 			modifiedPlaylistName = originalPlaylistName
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic(audioDirRoot=audioDirRoot,
+		downloadVideoInfoDic = DownloadVideoInfoDic(audioRootDir=audioRootDir,
+		                                            playlistDownloadRootPath=playlistDownloadRootPath,
 		                                            originalPaylistTitle=originalPlaylistTitle,
 		                                            originalPlaylistName=originalPlaylistName,
 		                                            modifiedPlaylistTitle=modifiedPlaylistTitle,

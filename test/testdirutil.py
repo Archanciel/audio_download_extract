@@ -43,7 +43,32 @@ class TestDirUtil(unittest.TestCase):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'
 		expectedShortDir = 'Audio\\Test 3 short videos'
 		
-		self.assertEqual(expectedShortDir, DirUtil.getLastSubDirs(fullDir, subDirsNumber=2))
+		self.assertEqual(expectedShortDir, DirUtil.getLastSubDirs(fullDir,
+		                                                          subDirsNumber=2))
+	
+	def testGetFullDirMinusRootDir_several_sub_dirs(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
+		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
+		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur'
+
+		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
+		                                                                  fullDir=fullDir,
+		                                                                  remainingRootSubDirNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
+		                                                                    fullDir=fullDir))
+
+	def testGetFullDirMinusRootDir_one_sub_dir(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
+		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		expectedShortDir = 'Audio\\Aimer sans peur'
+		expectedShorterDir = 'Aimer sans peur'
+		
+		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
+		                                                                  fullDir=fullDir,
+		                                                                  remainingRootSubDirNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
+		                                                                    fullDir=fullDir))
 
 
 if __name__ == '__main__':
