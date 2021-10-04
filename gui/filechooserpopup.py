@@ -400,7 +400,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 				self.rootGUI.modifiedPlaylistTitle = playlistTitleOrVideoName
 		else:
 			# a single video is downloaded ...
-			downloadPath = self.audioRootPath + sep + specifiedSubDirPath
+			downloadPath = self.rootGUI.configMgr.dataPath + sep + specifiedSubDirPath
 			self.rootGUI.singleVideoTitle = playlistTitleOrVideoName
 
 		# creating the video download path if not exist

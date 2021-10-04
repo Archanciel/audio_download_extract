@@ -78,7 +78,9 @@ class AudioController:
 						traceback.print_exc()
 		else:
 			# downloading a single video in the single video default dir
-			self.audioDownloader.downloadSingleVideoForUrl(playlistOrSingleVideoUrl, singleVideoTitle, self.configMgr.singleVideoDataPath)
+			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
+			                                               videoTitle=singleVideoTitle,
+			                                               targetAudioDir=playlistOrSingleVideoDownloadPath)
 	
 	def clipAudioFile(self,
 	                  audioFilePathName,
