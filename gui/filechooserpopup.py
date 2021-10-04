@@ -408,7 +408,11 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		if os.path.isdir(downloadPath):
 			pass
 		else:
-			os.makedirs(downloadPath)
+			targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(downloadPath)
+			
+			if dirCreationMessage:
+				# target dir was created
+				self.rootGUI.outputResult(dirCreationMessage)
 
 		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio()
