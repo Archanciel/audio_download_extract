@@ -625,7 +625,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
-#													   audioRootPath=self.getAudiobookPath(),
+													   audioRootPath=self.getAudiobookPath(),
 													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
 													   originalPlaylistTitle=self.originalPlaylistTitle,
 													   singleVideoTitle=self.singleVideoTitle,

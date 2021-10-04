@@ -320,21 +320,17 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selectedPath: 'C:\\' or 'D:\\' or 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\'
 		"""
-		selectedPathWithoutRootDir = selectedPath.replace(self.rootGUI.configMgr.dataPath, '')
-#		selectedPathWithoutRootDir = selectedPath.replace(self.audioRootPath, '')
+		selectedPathWithoutRootDir = selectedPath.replace(self.audioRootPath, '')
 
 		if self.originalPlaylistTitle is not None:
-			# downloading a playlist
 			self.currentPathField.text = selectedPathWithoutRootDir
 			self.currentFileNameField.text = self.originalPlaylistTitle
 		else:
 			# downloading a single video
-			# if selectedPathWithoutRootDir == '':
-			# 	defaultSingleVideoSubDirName = DirUtil.getFullDirMinusRootDir(rootDir=self.rootGUI.configMgr.dataPath,
-			# 	                                                              fullDir=self.audioRootPath)
-			# 	self.currentPathField.text = defaultSingleVideoSubDirName
-			# else:
-			self.currentPathField.text = selectedPathWithoutRootDir
+			if selectedPathWithoutRootDir == '':
+				self.currentPathField.text = 'various'
+			else:
+				self.currentPathField.text = selectedPathWithoutRootDir
 
 			self.currentFileNameField.text = self.singleVideoTitle
 
