@@ -345,6 +345,11 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
+			# if answer is yes, the playlist dir will be created as sub dir
+			# off the audio dir or the single video will be downloaded in the
+			# default single video dir as defined in the audiodownloader.ini
+			# file.
+			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
 			self.downloadPlaylistOrSingleVideoAudio()
 			self.popup.dismiss()
 		elif answer == 'no':
@@ -865,7 +870,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		return popup
 
-	def getAudiobookPath(self):
+	def getRootAudiobookPath(self):
 		"""
 		Method called by FileChooserPopup.fillDriveOrMemoryList() in order to determine
 		the value of the disk/memory item selected by default when opening the

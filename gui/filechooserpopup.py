@@ -88,7 +88,7 @@ class FileChooserPopup(AbstractPopup):
 
 		self.sdCardDir = None
 		self.rootGUI = rootGUI
-		self.audioRootPath = rootGUI.getAudiobookPath()
+		self.audioRootPath = rootGUI.getRootAudiobookPath()
 
 		# filling the drive list (on Windows) or memory list (on Android)
 		self.fillDriveOrMemoryList()
