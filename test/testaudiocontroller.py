@@ -153,19 +153,18 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(targetAudioDir + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 	
-	def testClipAudioFile_file_in_sub_dir(self):
-		playlistTitle = 'Test 3 short videos time frame deleted now should be ok'
-		playlistName = playlistTitle
+	def testClipAudioFile_file_in_sub_dirs(self):
+		playlistName = 'Test 3 short videos time frame deleted now should be ok'
 		audioFileName = 'Here to help - Give him what he wants.mp3'
 		playlistDownloadRootPath = 'Various\\test_to_del\\time frame supprimé\\{}'.format(playlistName)
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistDownloadRootPath
-		audioFilePathName = targetAudioDir + sep + audioFileName
+		audioFilePath = DirUtil.getTestAudioRootPath() + sep + playlistDownloadRootPath
+		audioFilePathName = audioFilePath + sep + audioFileName
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		# deleting clipped mp3 files in test dir
-		files = glob.glob(targetAudioDir + sep + '*_*.mp3')
+		files = glob.glob(audioFilePath + sep + '*_*.mp3')
 		
 		for f in files:
 			os.remove(f)
@@ -184,7 +183,7 @@ class TestAudioController(unittest.TestCase):
 		self.assertEqual('test\\Various\\test_to_del\\time frame supprimé\\Test 3 short videos time frame deleted now should be ok\\Here to help - Give him what he wants_1.mp3',
 		                 createdClipFilePathName)
 		
-		audioFileList = os.listdir(targetAudioDir)
+		audioFileList = os.listdir(audioFilePath)
 		
 		self.assertEqual(
 			['Funny suspicious looking dog.mp3',
@@ -196,7 +195,7 @@ class TestAudioController(unittest.TestCase):
 		
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = audioFileList[2]
-		audio = MP3(targetAudioDir + sep + extractedMp3FileName_1)
+		audio = MP3(audioFilePath + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
 
