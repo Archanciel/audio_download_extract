@@ -88,7 +88,8 @@ class FileChooserPopup(AbstractPopup):
 
 		self.sdCardDir = None
 		self.rootGUI = rootGUI
-		
+		self.audioRootPath = rootGUI.getAudiobookPath()
+
 		# filling the drive list (on Windows) or memory list (on Android)
 		self.fillDriveOrMemoryList()
 
@@ -117,11 +118,9 @@ class FileChooserPopup(AbstractPopup):
 		
 		:return:
 		"""
-		dataLocationFromSetting = self.rootGUI.getAudiobookPath()
-		
 		if platform == 'android':
 			self.pathList.data.append({'text': 'Data file location setting', 'selectable': True,
-			                           'pathOnly': dataLocationFromSetting})
+			                           'pathOnly': self.audioRootPath})
 			self.pathList.data.append({'text': 'Main RAM', 'selectable': True, 'pathOnly': '/storage/emulated/0'})
 			
 			if self.onSmartPhone():
@@ -135,7 +134,7 @@ class FileChooserPopup(AbstractPopup):
 			available_drives = ['%s:' % d for d in string.ascii_uppercase if os.path.exists('%s:' % d)]
 			
 			self.pathList.data.append(
-				{'text': 'Data file location setting', 'selectable': True, 'pathOnly': dataLocationFromSetting})
+				{'text': 'Data file location setting', 'selectable': True, 'pathOnly': self.audioRootPath})
 			
 			for drive in available_drives:
 				self.pathList.data.append({'text': drive, 'selectable': True, 'pathOnly': drive})
@@ -283,14 +282,12 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	
 	def __init__(self,
 	             rootGUI,
-	             audioRootPath,
 	             playlistOrSingleVideoUrl,
 	             originalPlaylistTitle,
 	             singleVideoTitle,
 	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
 
-		self.audioRootPath = audioRootPath
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
 		self.singleVideoTitle = singleVideoTitle
 		self.originalPlaylistTitle = originalPlaylistTitle
@@ -344,12 +341,15 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 		:param selection: ['D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\Hoppla']
 		"""
-		selectedPathWithoutRootDir = selection[0].replace(self.audioRootPath + sep, '')
+#		selectedPathWithoutRootDir = selection[0].replace(self.audioRootPath + sep, '')
+		selectedPathWithoutRootDir = selection[0].replace(self.rootGUI.configMgr.dataPath + sep, '')
 		self.currentPathField.text = selectedPathWithoutRootDir
 
 		if self.originalPlaylistTitle is not None:
+			# downloading a playlist
 			self.currentFileNameField.text = self.originalPlaylistTitle
 		else:
+			# downloading a single video
 			self.currentFileNameField.text = self.singleVideoTitle
 	
 	def formatCurrentPathField(self):
@@ -357,14 +357,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		Method called when the currentPath TextInput field content is modified.
 		"""
 		currentSavePathValue = self.currentPathField.text
-		
-		# ensure path does not start or/and end with / or \ according to
-		# the OS
-		
-		if currentSavePathValue != '' and currentSavePathValue[0] == sep:
-			currentSavePathValue = currentSavePathValue[1:]
+#		selectedPathWithoutRootDir = currentSavePathValue.replace(self.audioRootPath, '')
+		selectedPathWithoutRootDir = currentSavePathValue.replace(self.rootGUI.configMgr.dataPath, '')
 
-		self.currentPathField.text = currentSavePathValue
+		if selectedPathWithoutRootDir != '' and selectedPathWithoutRootDir[0] == sep:
+			# ensure path does not start with / or \ according to the OS
+			self.currentPathField.text = selectedPathWithoutRootDir[1:]
+		else:
+			self.currentPathField.text = selectedPathWithoutRootDir
 
 	def updateCurrentFileNameField(self):
 		"""
