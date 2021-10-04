@@ -7,7 +7,15 @@ from os.path import sep
 
 class DirUtil:
 	@staticmethod
-	def getAudioRootPath():
+	def getDefaultAudioRootPath():
+		"""
+		Essentially used by ConfigManager to initialize the default audio
+		root path. Since this information can be modified with the settings
+		dialog which updates the audiodownload.ini file, obtaining the
+		real audiobook root path must be done using the ConfigManager.
+		
+		:return:
+		"""
 		if os.name == 'posix':
 			audioRootPath = '/sdcard/'
 		else:
@@ -19,7 +27,7 @@ class DirUtil:
 	
 	@staticmethod
 	def getTestAudioRootPath():
-		audioRootPath = DirUtil.getAudioRootPath()
+		audioRootPath = DirUtil.getDefaultAudioRootPath()
 		
 		return audioRootPath + sep + 'test'
 	

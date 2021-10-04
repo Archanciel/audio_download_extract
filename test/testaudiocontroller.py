@@ -30,7 +30,7 @@ class TestAudioController(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -56,7 +56,7 @@ class TestAudioController(unittest.TestCase):
 
 	def testGetPlaylistObjectAndTitlesForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		playlistUrl = ""
 		
 		stdout = sys.stdout
@@ -73,7 +73,7 @@ class TestAudioController(unittest.TestCase):
 	def testGetPlaylistObjectAndTitlesForValidPlaylistUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -93,7 +93,7 @@ class TestAudioController(unittest.TestCase):
 	def testGetPlaylistObjectAndTitlesForValidVideotUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		videoUrl = "https://youtu.be/LhH9uX3kgTI"
 		
 		stdout = sys.stdout
@@ -118,7 +118,7 @@ class TestAudioController(unittest.TestCase):
 		audioFilePathName = targetAudioDir + sep + audioFileName
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -161,7 +161,7 @@ class TestAudioController(unittest.TestCase):
 		audioFilePathName = audioFilePath + sep + audioFileName
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		# deleting clipped mp3 files in test dir
 		files = glob.glob(audioFilePath + sep + '*_*.mp3')

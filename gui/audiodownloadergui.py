@@ -270,7 +270,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
 		self.downloadVideoInfoDic = None
-		self.isPlaylistDownload = None
 		self.originalPlaylistTitle = None
 		self.modifiedPlaylistTitle = None
 		self.singleVideoTitle = None
@@ -626,7 +625,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
-													   audioRootPath=self.audiobookPath,
+#													   audioRootPath=self.getAudiobookPath(),
 													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
 													   originalPlaylistTitle=self.originalPlaylistTitle,
 													   singleVideoTitle=self.singleVideoTitle,
@@ -874,13 +873,11 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		:return:
 		"""
-		if self.isPlaylistDownload is None or self.isPlaylistDownload:
-			# self.isPlaylistDownload is True or False only if we are
-			# going to download video(s). Else, if called from
-			# FileChooserPopup.fillDriveOrMemoryList(), then this
-			# self attribute was not defined.
+		if self.originalPlaylistTitle is not None:
+			# downloading playlist
 			return self.audiobookPath
 		else:
+			# downloading single video
 			return self.audiobookSingleVideoPath
 
 	def outputResult(self, resultStr):

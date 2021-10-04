@@ -41,7 +41,7 @@ class TestConfigManager(unittest.TestCase):
 		self.assertEqual('0.62', configMgr.appSizeHalfProportion)
 	
 	def instanciateConfigManager(self):
-		defaultDataPath = DirUtil.getAudioRootPath()
+		defaultDataPath = DirUtil.getDefaultAudioRootPath()
 
 		configMgr = ConfigManager(self.configFilePathName)
 

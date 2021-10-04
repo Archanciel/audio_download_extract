@@ -10,12 +10,12 @@ class ConfigManager:
 	CONFIG_SECTION_LAYOUT = 'Layout'
 	
 	CONFIG_KEY_DATA_PATH = 'datapath'
-	DEFAULT_DATA_PATH_ANDROID = DirUtil.getAudioRootPath()
-	DEFAULT_DATA_PATH_WINDOWS = DirUtil.getAudioRootPath()
+	DEFAULT_DATA_PATH_ANDROID = DirUtil.getDefaultAudioRootPath()
+	DEFAULT_DATA_PATH_WINDOWS = DirUtil.getDefaultAudioRootPath()
 	
 	CONFIG_KEY_SINGLE_VIDEO_DATA_PATH = 'singlevideodatapath'
-	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = DirUtil.getAudioRootPath()
-	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = DirUtil.getAudioRootPath()
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = DirUtil.getDefaultAudioRootPath()
+	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = DirUtil.getDefaultAudioRootPath()
 	
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
