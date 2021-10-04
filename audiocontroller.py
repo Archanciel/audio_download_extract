@@ -97,18 +97,21 @@ class AudioController:
 					the clip information
 		"""
 		audioFileName = DirUtil.extractFileNameFromPathFileName(audioFilePathName)
-		audioFileFullDir = DirUtil.extractPathFromPathFileName(audioFilePathName)
+		audioFilePath = DirUtil.extractPathFromPathFileName(audioFilePathName)
 		videoTitle = audioFileName.split('.')[0]
-		playlistTitleAndName = audioFileFullDir.replace(self.configMgr.dataPath + sep, '')
+		playlistDownloadRootPath = audioFilePath.replace(self.configMgr.dataPath + sep, '')
+		playlistDownloadRootPathComponentLst = playlistDownloadRootPath.split(sep)
+		playlistTitle = playlistDownloadRootPathComponentLst[-1]
+		playlistDownloadRootPathWithoutPlaylistTitle = sep.join(playlistDownloadRootPathComponentLst[:-1])
 		
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
 		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioRootDir=self.configMgr.dataPath,
-		                                                  playlistDownloadRootPath=self.configMgr.dataPath,
-		                                                  originalPaylistTitle=playlistTitleAndName,
-		                                                  originalPlaylistName=playlistTitleAndName,
-		                                                  modifiedPlaylistTitle=playlistTitleAndName,
-		                                                  modifiedPlaylistName=playlistTitleAndName,
+		                                                  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
+		                                                  originalPaylistTitle=playlistTitle,
+		                                                  originalPlaylistName=playlistTitle,
+		                                                  modifiedPlaylistTitle=playlistTitle,
+		                                                  modifiedPlaylistName=playlistTitle,
 		                                                  loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
@@ -126,7 +129,7 @@ class AudioController:
 		
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(audioController=self,
-		                                targetAudioDir=audioFileFullDir,
+		                                targetAudioDir=audioFilePath,
 		                                downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
 		
 		audioExtractor.extractAudioPortions(videoIndex=1,

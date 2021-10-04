@@ -141,6 +141,8 @@ class TestAudioController(unittest.TestCase):
 			getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		audioFileList = os.listdir(targetAudioDir)
 		
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_controller_clip\\test\\test_audio_controller_clip\\LExpérience de Mort Imminente de Madame Mirjana Uzoh_1.mp3',
+		                 createdClipFilePathName)
 		self.assertEqual(
 			['LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3',
 			 'LExpérience de Mort Imminente de Madame Mirjana Uzoh_1.mp3'],
@@ -148,6 +150,52 @@ class TestAudioController(unittest.TestCase):
 		
 		from mutagen.mp3 import MP3
 		extractedMp3FileName_1 = audioFileList[1]
+		audio = MP3(targetAudioDir + sep + extractedMp3FileName_1)
+		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
+	
+	def testClipAudioFile_file_in_sub_dir(self):
+		playlistTitle = 'Test 3 short videos time frame deleted now should be ok'
+		playlistName = playlistTitle
+		audioFileName = 'Here to help - Give him what he wants.mp3'
+		playlistDownloadRootPath = 'Various\\test_to_del\\time frame supprimé\\{}'.format(playlistName)
+		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistDownloadRootPath
+		audioFilePathName = targetAudioDir + sep + audioFileName
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(DirUtil.getAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		# deleting clipped mp3 files in test dir
+		files = glob.glob(targetAudioDir + sep + '*_*.mp3')
+		
+		for f in files:
+			os.remove(f)
+		
+		clipStartHHMMSS = '00:00:04'
+		clipEndHHMMSS = '00:00:08'
+		expectedClipFileDuration_1 = 4
+		
+		audioExtractorVideoInfoDic = audioController.clipAudioFile(audioFilePathName=audioFilePathName,
+		                                                           clipStartHHMMSS=clipStartHHMMSS,
+		                                                           clipEndHHMMSS=clipEndHHMMSS,
+		                                                           floatSpeed=1.0)
+		createdClipFilePathName = audioExtractorVideoInfoDic. \
+			getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
+
+		self.assertEqual('test\\Various\\test_to_del\\time frame supprimé\\Test 3 short videos time frame deleted now should be ok\\Here to help - Give him what he wants_1.mp3',
+		                 createdClipFilePathName)
+		
+		audioFileList = os.listdir(targetAudioDir)
+		
+		self.assertEqual(
+			['Funny suspicious looking dog.mp3',
+			 'Here to help - Give him what he wants.mp3',
+			 'Here to help - Give him what he wants_1.mp3',
+			 'Test 3 short videos time frame deleted now should be ok_dic.txt',
+			 'Wear a mask. Help slow the spread of Covid-19..mp3'],
+			audioFileList)
+		
+		from mutagen.mp3 import MP3
+		extractedMp3FileName_1 = audioFileList[2]
 		audio = MP3(targetAudioDir + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
