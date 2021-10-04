@@ -1534,5 +1534,5 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlOneVideo_with_title_ending_with_question_mark_redownloading_the_playlist()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
 	#tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
