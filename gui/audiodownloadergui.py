@@ -253,12 +253,18 @@ class AudioDownloaderGUI(AudioGUI):
 		if os.name == 'posix':
 			if GuiUtil.onSmartPhone():
 				self.boxLayoutContainingStatusBar.height = "73dp"
+				self.toggleAppSizeButton.width = 150
+				self.downloadButton.width = 300
 			else:
 				self.boxLayoutContainingStatusBar.height = "43dp"
+				self.toggleAppSizeButton.width = 80
+				self.downloadButton.width = 190
 
 		else:
 			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
+			self.toggleAppSizeButton.width = 40
+			self.downloadButton.width = 80
 
 		self.audioController = AudioController(self, self.configMgr)
 		self.appSize = self.configMgr.appSize

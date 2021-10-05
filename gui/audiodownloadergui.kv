@@ -65,13 +65,17 @@
 					id: download_Button
 					text: 'Download'
 					size_hint_x: None
-					width: 80
+		#			width: 80 # Windows
+		#			width: 180 # tablet
+					width: 300 # smartphone
 					on_press: root.downloadFromClipboard()
 				Button:
 					id: toggle_app_size_Button
 					text: 'Full'
 					size_hint_x: None
-					width: 80
+		#			width: 40 # Windows
+		#			width: 80 # tablet
+					width: 130 # smartphone
 					on_press: root.toggleAppPosAndSize()
 
 		BoxLayout:
