@@ -589,19 +589,21 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
-		playlistName = 'test_audio_downloader_two_files_with_time_frames'
-		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
+		originalPlaylistName = 'test_audio_downloader_two_files_with_time_frames'
+		modifiedPlaylistName = 'test_audio_downloader_two_files_with_time_frames_redownloading'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + modifiedPlaylistName
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + sep + '*')
+		targerAudioPath = downloadDir + sep + modifiedPlaylistName
+		
+		files = glob.glob(targerAudioPath + sep + '*.*')
 		
 		for f in files:
 			os.remove(f)
-		
+
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
@@ -610,15 +612,18 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		playlistObject, playlistTitle, videoTitle, accessError = \
+		playlistObject, originalPlaylistTitle, videoTitle, accessError = \
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
+		
+		modifiedPlaylistTitle = originalPlaylistTitle.replace(originalPlaylistName, modifiedPlaylistName)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			audioRootDir=youtubeAccess.audioDirRoot,
+			playlistDownloadRootPath=downloadDir,
+			originalPlaylistTitle=originalPlaylistTitle,
+			modifiedPlaylistTitle=modifiedPlaylistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
-
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
 		sys.stdout = stdout
 		
@@ -654,7 +659,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
 		                 downloadVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2))
 		
-		self.assertEqual(validPlaylistDirName, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
@@ -682,11 +686,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targerAudioPath + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
-			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
+			        'test_audio_downloader_two_files_with_time_frames_redownloading_dic.txt']), sorted(fileNameLst))
 
 		# re-downloading the playlist
 		
@@ -696,15 +700,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		playlistObject, playlistTitle, videoTitle, accessError = \
+		playlistObject, originalPlaylistTitle, videoTitle, accessError = \
 			youtubeAccess_redownload.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
+			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, originalPlaylistTitle)
 
 		youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
-
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 
 		sys.stdout = stdout
 		
@@ -731,7 +733,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                  startEndSecondsList_suppress_secondVideo_secondTimeFrame],
 		                 redownloadVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(2))
 		
-		self.assertEqual(validPlaylistDirName, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
 		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
@@ -759,11 +760,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targerAudioPath + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
-			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
+			        'test_audio_downloader_two_files_with_time_frames_redownloading_dic.txt']), sorted(fileNameLst))
 
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
@@ -1534,5 +1535,5 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
 	#tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
