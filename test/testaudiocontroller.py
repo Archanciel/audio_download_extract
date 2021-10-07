@@ -198,8 +198,67 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(audioFilePath + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
+	def testDownloadVideosReferencedInPlaylistOrSingleVideo(self):
+		playlistOrSingleVideoUrl = 'https://youtu.be/vU1NEZ9sTOM'
+		originalPlaylistTitle = None
+		modifiedPlaylistTitle = None
+		singleVideoTitle = 'Funny suspicious looking dog short video'
+		
+		testBaseRootDir = 'Various' + sep + 'single_video dir'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		playlistOrSingleVideoDownloadRootSubdirs = 'new dir' + sep + 'new sub dir'
+		playlistOrSingleVideoDownloadPath = testBaseRootPath + sep + playlistOrSingleVideoDownloadRootSubdirs
+		
+		# removing test dir and sub dirs and its files
+		DirUtil.removeDirectoryTree(testBaseRootPath)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+		                                                                playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+		                                                                originalPlaylistTitle=originalPlaylistTitle,
+		                                                                modifiedPlaylistTitle=modifiedPlaylistTitle,
+		                                                                singleVideoTitle=singleVideoTitle)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
+			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalPlaylistTitle=originalPlaylistTitle,
+			modifiedPlaylistTitle=modifiedPlaylistTitle,
+			singleVideoTitle=singleVideoTitle)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['downloading "Funny suspicious looking dog short video" audio ...',
+ '',
+ '"Funny suspicious looking dog short video" audio downloaded in "new dir/new '
+ 'sub dir" directory.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading "Funny suspicious looking dog short video" audio ...',
+ '',
+ '"Funny suspicious looking dog short video" audio downloaded in "new dir\\new '
+ 'sub dir" directory.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		createdFileLst = os.listdir(playlistOrSingleVideoDownloadPath)
+		
+		self.assertEqual(
+			['Funny suspicious looking dog.mp3'],
+			createdFileLst)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testClipAudioFile()
+	tst.testDownloadVideosReferencedInPlaylistOrSingleVideo()
