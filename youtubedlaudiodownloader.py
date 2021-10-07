@@ -279,7 +279,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		return playlistObject, playlistTitle, videoTitle, accessError
 
-	def downloadSingleVideoForUrl(self, singleVideoUrl, videoTitle, targetAudioDir):
+	def downloadSingleVideoForUrl(self,
+	                              singleVideoUrl,
+	                              videoTitle,
+	                              targetAudioDir):
 		"""
 		Downloads in the passed targetAudioDir the single video referenced in the passed
 		singleVideoUrl.
