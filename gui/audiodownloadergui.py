@@ -317,7 +317,12 @@ class AudioDownloaderGUI(AudioGUI):
 		self.downloadFromClipboard()
 		
 	def downloadFromClipboard(self):
+		"""
+		Method called either at application start or when pressing the
+		download button defined in the audiodownloadergui.kv file.
+		"""
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
+		
 		_, self.originalPlaylistTitle, self.singleVideoTitle, accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 
@@ -636,7 +641,6 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
-#													   audioRootPath=self.getAudiobookPath(),
 													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
 													   originalPlaylistTitle=self.originalPlaylistTitle,
 													   singleVideoTitle=self.singleVideoTitle,

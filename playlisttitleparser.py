@@ -21,13 +21,14 @@ class PlaylistTitleParser:
 		Example of playlist title with extract/suppress information:
 		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
-
-		:param originalPlaylistTitle: contains  playlist name plus, possibly, extract/suppress
-										information
-		:param playlistDownloadRootPath:            audio dir base as defined in the GUI settings.
-
-		:return downloadVideoInfoDic
-				accessError in case of problem, None otherwise
+		
+		:param audioRootDir:                audio dir as specified in the app
+											settings.
+		:param playlistDownloadRootPath:    full playlist path in which the
+											playlist dir will be created.
+		:param originalPlaylistTitle:
+		:param modifiedPlaylistTitle:
+		:return:
 		"""
 		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|+,\.]+)(\{.*\})?"
 		
