@@ -70,6 +70,32 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                    fullDir=fullDir))
 
+	def testRemoveDirectoryTree(self):
+		createdFileName = 'temp.txt'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		createdSubdirs = 'new dir' + sep + 'new sub dir'
+		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
+		
+		DirUtil.createTargetDirIfNotExist(createdSubdirsPath)
+		
+		createdFilePathName = createdSubdirsPath + sep + createdFileName
+
+		with open(createdFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(createdFilePathName))
+		filePathNameComponents = createdFilePathName.split(sep)
+		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-1])))
+		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-2])))
+
+		# removing test dir and sub dirs and its files
+		DirUtil.removeDirectoryTree(testBaseRootPath)
+
+		self.assertFalse(os.path.isfile(createdFilePathName))
+		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-1])))
+		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-2])))
 
 if __name__ == '__main__':
 	#unittest.main()

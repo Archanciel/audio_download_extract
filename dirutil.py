@@ -1,9 +1,9 @@
 import os
 from os import listdir
-from os.path import isfile, join, sep
-
+from os.path import isfile, join
 from pathlib import Path
 from os.path import sep
+import shutil
 
 class DirUtil:
 	@staticmethod
@@ -121,3 +121,15 @@ class DirUtil:
 		# replaceUnauthorizedDirOrFileNameChars(videoTitle) + '.mp3' can be executed
 		# if validFileName.strip() is NOT done.
 		return validFileName
+	
+	@staticmethod
+	def removeDirectoryTree(dirsToRemoveContainingDir):
+		"""
+		Removes recursively the sub dirs contained in the passed
+		dirsToRemoveContainingDir. Any file contained in the sub dirs are
+		deleted as well.
+		
+		:param dirsToRemoveContainingDir:
+		"""
+		if os.path.isdir(dirsToRemoveContainingDir):
+			shutil.rmtree(dirsToRemoveContainingDir)
