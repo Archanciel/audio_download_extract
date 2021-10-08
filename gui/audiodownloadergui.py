@@ -40,6 +40,7 @@ from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
 from selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
+from septhreadexec import SepThreadExec
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
@@ -284,6 +285,7 @@ class AudioDownloaderGUI(AudioGUI):
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
 		self.playlistOrSingleVideoDownloadPath = None
+		self.accessError = None
 		
 		self._doOnStart()
 	
@@ -323,30 +325,53 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		_, self.originalPlaylistTitle, self.singleVideoTitle, accessError = \
-			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
-
-		if accessError is not None:
+		self.getDownloadObjectTitle()
+	
+	def executeDownload(self):
+		self.enableButtons()
+		
+		if self.accessError is None:
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
-			return
-		
-		if self.singleVideoTitle is None:
-			# url obtained from clipboard points to a playlist
-			downloadObjectTitle = self.originalPlaylistTitle
-			confirmPopupTitle = "Go on with processing playlist ..."
+			
+			if self.singleVideoTitle is None:
+				# url obtained from clipboard points to a playlist
+				downloadObjectTitle = self.originalPlaylistTitle
+				confirmPopupTitle = "Go on with processing playlist ..."
+			else:
+				# url obtained from clipboard points to a single video
+				downloadObjectTitle = self.singleVideoTitle
+				confirmPopupTitle = "Go on with downloading audio for video ... "
+			
+			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
+			
+			self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
+			                                     confirmPopupMsg=downloadObjectTitle,
+			                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction)
+			self.popup.open()
 		else:
-			# url obtained from clipboard points to a single video
-			downloadObjectTitle = self.singleVideoTitle
-			confirmPopupTitle = "Go on with downloading audio for video ... "
-		
-		confirmPopupCallbackFunction = self.onConfirmPopupAnswer
-		
-		self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
-											 confirmPopupMsg=downloadObjectTitle,
-											 confirmPopupCallbackFunction=confirmPopupCallbackFunction)
-		self.popup.open()
+			pass
 	
+	def getDownloadObjectTitle(self):
+		self.disableButtons()
+		
+		sepThreadExec = SepThreadExec(callerGUI=self,
+		                              func=self.getDownloadObjectTitleOnNewThread,
+		                              endFunc=self.executeDownload)
+		sepThreadExec.start()
+	
+	def getDownloadObjectTitleOnNewThread(self):
+		_, self.originalPlaylistTitle, self.singleVideoTitle, self.accessError = \
+			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
+
+	def enableButtons(self):
+		self.downloadButton.disabled = False
+		self.clearResultOutputButton.disabled = False
+
+	def disableButtons(self):
+		self.downloadButton.disabled = True
+		self.clearResultOutputButton.disabled = True
+
 	def onConfirmPopupAnswer(self, instance, answer):
 		"""
 		Method called when one of the ConfirmPopup button is pushed.
