@@ -1,4 +1,3 @@
-import logging
 import os,sys,inspect
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -325,7 +324,11 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
-		self.getDownloadObjectTitle()
+		self.disableButtons()
+		sepThreadExec = SepThreadExec(callerGUI=self,
+		                              func=self.getDownloadObjectTitleOnNewThread,
+		                              endFunc=self.executeDownload)
+		sepThreadExec.start()
 	
 	def executeDownload(self):
 		self.enableButtons()
@@ -351,14 +354,6 @@ class AudioDownloaderGUI(AudioGUI):
 			self.popup.open()
 		else:
 			pass
-	
-	def getDownloadObjectTitle(self):
-		self.disableButtons()
-		
-		sepThreadExec = SepThreadExec(callerGUI=self,
-		                              func=self.getDownloadObjectTitleOnNewThread,
-		                              endFunc=self.executeDownload)
-		sepThreadExec.start()
 	
 	def getDownloadObjectTitleOnNewThread(self):
 		_, self.originalPlaylistTitle, self.singleVideoTitle, self.accessError = \
