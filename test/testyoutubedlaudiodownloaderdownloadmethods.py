@@ -587,6 +587,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Comment Etudier Un Cours En Miracles .mp3',
  "Test playlist with one video whose title ends with  char_dic.txt"]), sorted(fileNameLst))
 	
+	#@unittest.skip
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		originalPlaylistName = 'test_audio_downloader_two_files_with_time_frames'
@@ -1383,7 +1384,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  "test short_n'ame pl, aylist avec deux points_dic.txt"]), sorted(fileNameLst))
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
-
+	#@unittest.skip second
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -1535,5 +1536,5 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
-	#tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames()
+#	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
