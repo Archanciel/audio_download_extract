@@ -55,7 +55,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
 
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
+	                                                     playlistUrl,
+	                                                     downloadVideoInfoDic):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -119,7 +121,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
 						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
-					return
+					
+					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 					continue
