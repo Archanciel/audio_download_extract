@@ -1,7 +1,11 @@
 import threading, time
 
 class SepThreadExec:
-	def __init__(self, callerGUI, func, endFunc, funcArgs=None, endFuncArgs=None):
+	def __init__(self, callerGUI,
+	             func,
+	             endFunc=None,
+	             funcArgs=None,
+	             endFuncArgs=None):
 		self.callerGUI = callerGUI
 		
 		if endFuncArgs is None:
@@ -13,7 +17,9 @@ class SepThreadExec:
 		
 		def _callback(func, endFunc, *a, **kw):
 			func(**kw)
-			endFunc(*a)
+			
+			if endFunc is not None:
+				endFunc(*a)
 		
 		self.t = threading.Thread(target=_callback, args=args, kwargs=funcArgs)
 		self.t.setName('Exec thread ' + self.t.getName())
