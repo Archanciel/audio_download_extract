@@ -116,6 +116,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
+						downloadVideoInfoDic.getPlaylistNameOriginal())
+					self.audioController.displayMessage(msgText)
+					return
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
 					continue
@@ -165,6 +169,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 	def getLastCreatedMp3FileName(self, dir):
 		files = glob.glob(dir + sep + '*.mp3')
+		
+		if files == []:
+			# the case if a problem (an AttributeError) occurred which prevented
+			# youtube-dl to convert the downloaded video to a mp3 file.
+			return ''
+		
 		files.sort(key=os.path.getctime, reverse=True)
 		
 		return files[0].split(sep)[-1]
