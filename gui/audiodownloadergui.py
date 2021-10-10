@@ -283,6 +283,10 @@ class AudioDownloaderGUI(AudioGUI):
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
+		self.downloadObjectTitleThreadCreated = False   # used to fix a problem on Android
+														# where two download threads are
+														# created after clicking on 'Yes'
+														# button on the ConfirmPopup dialog
 		self.playlistOrSingleVideoDownloadPath = None
 		self.accessError = None
 		
@@ -329,6 +333,11 @@ class AudioDownloaderGUI(AudioGUI):
 		                              func=self.getDownloadObjectTitleOnNewThread,
 		                              endFunc=self.executeDownload)
 		sepThreadExec.start()
+		
+		self.downloadObjectTitleThreadCreated = True    # used to fix a problem on Android
+														# where two download threads are
+														# created after clicking on 'Yes'
+														# button on the ConfirmPopup dialog
 	
 	def executeDownload(self):
 		self.enableButtons()
@@ -358,7 +367,9 @@ class AudioDownloaderGUI(AudioGUI):
 	def getDownloadObjectTitleOnNewThread(self):
 		_, self.originalPlaylistTitle, self.singleVideoTitle, self.accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
-
+	
+		self.downloadObjectTitleThreadCreated = False
+		
 	def enableButtons(self):
 		self.downloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
