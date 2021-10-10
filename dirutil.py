@@ -110,7 +110,8 @@ class DirUtil:
 		                 '"': "'", # since YoutubeDL replaces " by '
 		                 '<': '',
 		                 '>': '',
-		                 '|': ''}
+		                 '|': '',
+		                 "'": '_'}
 		
 		# Replace all multiple characters in a string
 		# based on translation table created by dictionary
