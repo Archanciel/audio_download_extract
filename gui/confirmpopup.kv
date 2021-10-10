@@ -1,13 +1,13 @@
 <ConfirmPopup>:
-    editableTextInput: txt_input_multiline
+	editableTextInput: txt_input_multiline
 	cols:1
 	rows: 2
 	TextInput:
-	    id: txt_input_multiline
-	    background_color: [0,0,0,1]
-	    foreground_color: [1,1,1,1]
-        size_hint_y: None
-        height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
+		id: txt_input_multiline
+		background_color: [0,0,0,1]
+		foreground_color: [1,1,1,1]
+		size_hint_y: None
+		height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
 		text: root.text
 		readonly: True
 
@@ -19,7 +19,7 @@
 			text: 'Yes'
 			on_release: root.dispatch('on_answer','yes')
 		Button:
-		    id: set_folder_btn
+			id: set_folder_btn
 			text: 'Set folder/name'
 			on_release: root.dispatch('on_answer', 'set_folder')
 		Button:
