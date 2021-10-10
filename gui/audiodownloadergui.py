@@ -832,6 +832,11 @@ class AudioDownloaderGUI(AudioGUI):
 		new thread.
 		"""
 		if not self.downloadThreadCreated:
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
+			                              endFunc=self.executeDownload)
+			sepThreadExec.start()
+			
 			t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
 			t.daemon = True
 			t.start()
