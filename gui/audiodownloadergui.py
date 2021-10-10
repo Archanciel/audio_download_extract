@@ -836,10 +836,6 @@ class AudioDownloaderGUI(AudioGUI):
 			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
 			                              endFunc=self.executeDownload)
 			sepThreadExec.start()
-			
-			t = threading.Thread(target=self.downloadPlaylistOrSingleVideoAudioOnNewThread, args=())
-			t.daemon = True
-			t.start()
 
 			self.downloadThreadCreated = True   # used to fix a problem on Android
 												# where two download threads are

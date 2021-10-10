@@ -6,7 +6,7 @@ currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
-from constants import  *
+from constants import *
 from dirutil import DirUtil
 
 class TestDirUtil(unittest.TestCase):
