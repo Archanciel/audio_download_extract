@@ -283,10 +283,7 @@ class AudioDownloaderGUI(AudioGUI):
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
-		self.downloadObjectTitleThreadCreated = False   # used to fix a problem on Android
-														# where two download threads are
-														# created after clicking on 'Yes'
-														# button on the ConfirmPopup dialog
+		self.downloadObjectTitleThreadCreated = False
 		self.playlistOrSingleVideoDownloadPath = None
 		self.accessError = None
 		
@@ -329,16 +326,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		self.disableButtons()
-		sepThreadExec = SepThreadExec(callerGUI=self,
-		                              func=self.getDownloadObjectTitleOnNewThread,
-		                              endFunc=self.executeDownload)
-		sepThreadExec.start()
 		
-		self.downloadObjectTitleThreadCreated = True    # used to fix a problem on Android
-														# where two download threads are
-														# created after clicking on 'Yes'
-														# button on the ConfirmPopup dialog
-	
+		if not self.downloadObjectTitleThreadCreated:
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.getDownloadObjectTitleOnNewThread,
+			                              endFunc=self.executeDownload)
+			
+			self.downloadObjectTitleThreadCreated = True
+
+			sepThreadExec.start()
+			
 	def executeDownload(self):
 		self.enableButtons()
 		
@@ -846,12 +843,13 @@ class AudioDownloaderGUI(AudioGUI):
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
 			                              endFunc=self.executeDownload)
-			sepThreadExec.start()
 
 			self.downloadThreadCreated = True   # used to fix a problem on Android
 												# where two download threads are
 												# created after clicking on 'Yes'
 												# button on the ConfirmPopup dialog
+
+			sepThreadExec.start()
 			
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
