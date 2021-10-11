@@ -1,3 +1,4 @@
+import time
 import unittest
 import os, sys, inspect, shutil, glob
 from os.path import sep
@@ -587,9 +588,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Comment Etudier Un Cours En Miracles .mp3',
  "Test playlist with one video whose title ends with  char_dic.txt"]), sorted(fileNameLst))
 	
-	#@unittest.skip
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		time.sleep(1)   # required to avoid uncomprehensible test failure when executing all unit tsts
 		originalPlaylistName = 'test_audio_downloader_two_files_with_time_frames'
 		modifiedPlaylistName = 'test_audio_downloader_two_files_with_time_frames_redownloading'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + modifiedPlaylistName
@@ -1327,8 +1328,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Keller.m4a']), sorted(fileNameLst))
 	
 	def testDownloadPlaylistWithName_two_points(self):
-		playlistName = "test short_n'ame pl, aylist: avec deux points"
-		playlistDirName = "test short_n'ame pl, aylist avec deux points"
+		playlistName = "test short_n\'ame pl, aylist: avec deux points"
+		playlistDirName = "test short_n_ame pl, aylist avec deux points"
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + playlistDirName
 		
 		# deleting downloadDir (dir and content)
@@ -1365,7 +1366,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- "test\\test short_n'ame pl, aylist avec deux points",
+ "test\\test short_n_ame pl, aylist avec deux points",
  'was created.',
  '',
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
@@ -1381,10 +1382,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3',
- "test short_n'ame pl, aylist avec deux points_dic.txt"]), sorted(fileNameLst))
+ "test short_n_ame pl, aylist avec deux points_dic.txt"]), sorted(fileNameLst))
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
-	#@unittest.skip second
+
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -1536,5 +1537,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames()
-#	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_redownloading_the_playlist()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
