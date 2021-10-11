@@ -178,9 +178,10 @@ class AudioController:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
-		# ensuring the modified playlist title which will be used to create a
-		# directory has no illegal Windows10 file or dir name character
-		modifiedPlaylistTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistTitle)
+		if modifiedPlaylistTitle is not None:
+			# ensuring the modified playlist title which will be used to create a
+			# directory has no illegal Windows10 file or dir name character
+			modifiedPlaylistTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistTitle)
 		
 		downloadVideoInfoDic, accessError = \
 			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(audioRootDir=self.configMgr.dataPath,
