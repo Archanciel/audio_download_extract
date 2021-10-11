@@ -384,6 +384,12 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		"""
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
+			
+			# correcting a bug if you first downloaded a playlist after
+			# modifying the playlist name and then download a playlist
+			# without setting the dir ar modifying the playlist name
+			self.modifiedPlaylistTitle = None
+			
 			# if answer is yes, the playlist dir will be created as sub dir
 			# off the audio dir or the single video will be downloaded in the
 			# default single video dir as defined in the audiodownloader.ini
