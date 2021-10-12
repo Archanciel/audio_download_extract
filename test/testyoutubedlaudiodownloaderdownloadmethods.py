@@ -201,6 +201,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		time.sleep(1)   # required to avoid uncomprehensible test failure when executing all unit tsts
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
@@ -1387,6 +1388,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
 
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
+		time.sleep(1)
 		playlistName = 'test_audio_downloader_two_files'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
@@ -1537,4 +1539,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
+	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames()
