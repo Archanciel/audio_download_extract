@@ -7,6 +7,7 @@ class AccessError:
 	ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST = 7
 	ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR = 8
 	ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM = 9
+	ERROR_TYPE_LOADING_DOWNLOAD_DIC = 10
 
 	def __init__(self, errorType, errorMsg):
 		self.errorType = errorType
@@ -28,6 +29,9 @@ class AccessError:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM:
 			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed.\n{}\nnothing to download.".format(errorMsg)
+		elif errorType == AccessError.ERROR_TYPE_LOADING_DOWNLOAD_DIC:
+			self.errorMsg = "trying to load the existing download dictionary failed.\n{}\ndownload interrupted.".format(
+				errorMsg)
 		else:
 			if errorMsg == '':
 				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."

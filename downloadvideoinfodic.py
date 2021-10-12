@@ -112,11 +112,8 @@ class DownloadVideoInfoDic:
 		infoDicFilePathName = self.buildInfoDicFilePathName(downloadDir, validPlaylistDirName)
 
 		if os.path.isfile(infoDicFilePathName):
-			try:
-				with open(infoDicFilePathName, 'r') as f:
-					dic = json.load(f)
-			except Exception as e:
-				print(e)
+			with open(infoDicFilePathName, 'r') as f:
+				dic = json.load(f)
 
 		return dic
 	
