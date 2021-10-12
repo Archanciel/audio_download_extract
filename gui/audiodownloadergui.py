@@ -327,6 +327,9 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.disableButtons()
 		
+		# obtaining the playlist or single video title using a separate thread
+		# for the playlist or single video referenced by the url obtained from
+		# the clipboard, url which is stored in self.playlistOrSingleVideoUrl.
 		if not self.downloadObjectTitleThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.getDownloadObjectTitleOnNewThread,
@@ -845,6 +848,7 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
+		# downloading the playlist or single video title using a separate thread
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread)
