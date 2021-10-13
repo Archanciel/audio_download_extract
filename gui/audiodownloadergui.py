@@ -930,9 +930,12 @@ class AudioDownloaderGUI(AudioGUI):
 		if self.originalPlaylistTitle is not None:
 			# downloading playlist
 			return self.audiobookPath
-		else:
+		elif self.singleVideoTitle is not None:
 			# downloading single video
 			return self.audiobookSingleVideoPath
+		else:
+			# not downloading (clip or share file ...)
+			return self.audiobookPath
 
 	def outputResult(self, resultStr):
 		super(AudioDownloaderGUI, self).outputResult(resultStr)
