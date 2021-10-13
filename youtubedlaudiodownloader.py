@@ -56,8 +56,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.tempYdlFileExtension = 'm4a.ytdl'
 
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
-	                                                     playlistUrl,
-	                                                     downloadVideoInfoDic):
+														 playlistUrl,
+														 downloadVideoInfoDic):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -75,8 +75,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
 		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=self.audioDirRoot,
-		                                                     fullDir=targetAudioDir,
-		                                                     remainingRootSubDirNumber=1)
+															 fullDir=targetAudioDir,
+															 remainingRootSubDirNumber=1)
 		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		
 		if dirCreationMessage:
@@ -293,16 +293,18 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		return playlistObject, playlistTitle, videoTitle, accessError
 
 	def downloadSingleVideoForUrl(self,
-	                              singleVideoUrl,
-	                              videoTitle,
-	                              targetAudioDir):
+								  singleVideoUrl,
+								  originalVideoTitle,
+								  modifiedVideoTitle,
+								  targetAudioDir):
 		"""
 		Downloads in the passed targetAudioDir the single video referenced in the passed
 		singleVideoUrl.
 		
-		:param singleVideoUrl:
-		:param videoTitle:
-		:param targetAudioDir:
+		:param singleVideoUrl:      single video url
+		:param originalVideoTitle:  always passed
+		:param modifiedVideoTitle:  None if the video title was not modified
+		:param targetAudioDir:      path where the single video will be downloaded
 		"""
 		targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
 		targetAudioDirFileNameList = []
@@ -315,8 +317,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			# may already be downloaded
 			targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
 
-		purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-		
+		if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
+			videoTitle = originalVideoTitle
+			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(originalVideoTitle)
+		else:
+			videoTitle = modifiedVideoTitle
+			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedVideoTitle)
+
 		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
 			msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
@@ -337,3 +344,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
+		
+		# renaming the downloaded video if its name was modified
+		
+		if modifiedVideoTitle is not None and originalVideoTitle != modifiedVideoTitle:
+			downloadedAudioFilePathName = targetAudioDir + sep + originalVideoTitle + '.mp3'
+			
+			DirUtil.renameFile(originalFilePathName=downloadedAudioFilePathName,
+							   newFileName=modifiedVideoTitle + '.mp3')
+			
+			

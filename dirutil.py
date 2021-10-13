@@ -134,3 +134,8 @@ class DirUtil:
 		"""
 		if os.path.isdir(dirsToRemoveContainingDir):
 			shutil.rmtree(dirsToRemoveContainingDir)
+			
+	@staticmethod
+	def renameFile(originalFilePathName, newFileName):
+		newFilePathName = DirUtil.extractPathFromPathFileName(originalFilePathName) + sep + newFileName
+		os.rename(originalFilePathName, newFilePathName)

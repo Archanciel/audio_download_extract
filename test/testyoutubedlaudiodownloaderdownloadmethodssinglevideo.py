@@ -42,7 +42,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
 		
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		sys.stdout = stdout
 		
@@ -91,7 +94,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
 		
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		sys.stdout = stdout
 		
@@ -150,13 +156,19 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
 
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 
 		sys.stdout = stdout
 		
@@ -184,7 +196,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		sys.stdout = stdout
 
@@ -218,7 +233,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		sys.stdout = stdout
 		
@@ -265,7 +283,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
 		
-		youtubeAccess.downloadSingleVideoForUrl(videoUrl, videoTitle, downloadDir)
+		youtubeAccess.downloadSingleVideoForUrl(singleVideoUrl=videoUrl,
+		                                        originalVideoTitle=videoTitle,
+		                                        modifiedVideoTitle=None,
+		                                        targetAudioDir=downloadDir)
 		
 		sys.stdout = stdout
 		

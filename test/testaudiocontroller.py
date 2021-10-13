@@ -221,7 +221,7 @@ class TestAudioController(unittest.TestCase):
 		                                                                playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
 		                                                                originalPlaylistTitle=originalPlaylistTitle,
 		                                                                modifiedPlaylistTitle=modifiedPlaylistTitle,
-		                                                                singleVideoTitle=singleVideoTitle)
+		                                                                originalSingleVideoTitle=singleVideoTitle)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -232,7 +232,7 @@ class TestAudioController(unittest.TestCase):
 			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
 			originalPlaylistTitle=originalPlaylistTitle,
 			modifiedPlaylistTitle=modifiedPlaylistTitle,
-			singleVideoTitle=singleVideoTitle)
+			originalSingleVideoTitle=singleVideoTitle)
 		
 		sys.stdout = stdout
 		

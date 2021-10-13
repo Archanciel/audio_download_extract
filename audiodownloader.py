@@ -23,12 +23,18 @@ class AudioDownloader(metaclass=ABCMeta):
 		pass
 
 	@abstractmethod
-	def downloadSingleVideoForUrl(self, singleVideoUrl, videoTitle, targetAudioDir):
+	def downloadSingleVideoForUrl(self,
+	                              singleVideoUrl,
+	                              originalVideoTitle,
+	                              modifiedVideoTitle,
+	                              targetAudioDir):
 		"""
-		
-		:param singleVideoUrl:
-		:param videoTitle:
-		:param targetAudioDir:
-		:return:
+		Downloads in the passed targetAudioDir the single video referenced in the passed
+		singleVideoUrl.
+
+		:param singleVideoUrl:      single video url
+		:param originalVideoTitle:  always passed
+		:param modifiedVideoTitle:  None if the video title was not modified
+		:param targetAudioDir:      path where the single video will be downloaded
 		"""
 		pass

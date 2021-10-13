@@ -97,6 +97,32 @@ class TestDirUtil(unittest.TestCase):
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-1])))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-2])))
 
+	def testRenameFile(self):
+		createdFileName = 'temp.txt'
+		renamedFileName = 'renamed_temp.txt'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(testBaseRootPath)
+		
+		createdFilePathName = testBaseRootPath + sep + createdFileName
+		
+		with open(createdFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(createdFilePathName))
+
+		DirUtil.renameFile(createdFilePathName, renamedFileName)
+
+		renamedFilePathName = testBaseRootPath + sep + renamedFileName
+
+		self.assertTrue(os.path.isfile(renamedFilePathName))
+
+		# removing test dir and its file
+		DirUtil.removeDirectoryTree(testBaseRootPath)
+
+
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestDirUtil()

@@ -284,13 +284,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	             rootGUI,
 	             playlistOrSingleVideoUrl,
 	             originalPlaylistTitle,
-	             singleVideoTitle,
+	             originalSingleVideoTitle,
 	             **kwargs):
 		super(SelectOrCreateDirFileChooserPopup, self).__init__(rootGUI, **kwargs)
 
 		self.playlistOrSingleVideoUrl = playlistOrSingleVideoUrl
-		self.singleVideoTitle = singleVideoTitle
+		self.singleVideoTitle = originalSingleVideoTitle
 		self.originalPlaylistTitle = originalPlaylistTitle
+		self.originalSingleVideoTitle = originalSingleVideoTitle
 	
 	def _sizeFileChooser(self):
 		"""
@@ -401,7 +402,12 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		else:
 			# a single video is downloaded ...
 			downloadPath = self.rootGUI.configMgr.dataPath + sep + specifiedSubDirPath
-			self.rootGUI.singleVideoTitle = playlistTitleOrVideoName
+
+			if playlistTitleOrVideoName == self.originalSingleVideoTitle:
+				# original single video title was not modified
+				self.rootGUI.modifiedSingleVideoTitle = None
+			else:
+				self.rootGUI.modifiedSingleVideoTitle = playlistTitleOrVideoName
 
 		# creating the video download path if not exist
 

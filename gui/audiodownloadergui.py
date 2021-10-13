@@ -278,7 +278,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.downloadVideoInfoDic = None
 		self.originalPlaylistTitle = None
 		self.modifiedPlaylistTitle = None
-		self.singleVideoTitle = None
+		self.modifiedSingleVideoTitle = None
+		self.originalSingleVideoTitle = None
 		self.downloadThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
 											# created after clicking on 'Yes'
@@ -346,13 +347,13 @@ class AudioDownloaderGUI(AudioGUI):
 			# the case if the url is neither pointing to a playlist nor to a
 			# single video. Here, an error message was displayed in the UI !
 			
-			if self.singleVideoTitle is None:
+			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
 				confirmPopupTitle = "Go on with processing playlist ..."
 			else:
 				# url obtained from clipboard points to a single video
-				downloadObjectTitle = self.singleVideoTitle
+				downloadObjectTitle = self.originalSingleVideoTitle
 				confirmPopupTitle = "Go on with downloading audio for video ... "
 			
 			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
@@ -365,7 +366,7 @@ class AudioDownloaderGUI(AudioGUI):
 			pass
 	
 	def getDownloadObjectTitleOnNewThread(self):
-		_, self.originalPlaylistTitle, self.singleVideoTitle, self.accessError = \
+		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
 	
 		self.downloadObjectTitleThreadCreated = False
@@ -674,15 +675,15 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def openSelectOrCreateDirPopup(self):
 		self.dropDownMenu.dismiss()
-		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.singleVideoTitle)
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.originalSingleVideoTitle)
 		
 		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-													   rootGUI=self,
-													   playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
-													   originalPlaylistTitle=self.originalPlaylistTitle,
-													   singleVideoTitle=self.singleVideoTitle,
-													   load=self.load,
-													   cancel=self.dismissPopup)
+		                                               rootGUI=self,
+		                                               playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+		                                               originalPlaylistTitle=self.originalPlaylistTitle,
+		                                               originalSingleVideoTitle=self.originalSingleVideoTitle,
+		                                               load=self.load,
+		                                               cancel=self.dismissPopup)
 		self.popup.open()
 
 	def openFileToClipLoadPopup(self):
@@ -869,7 +870,8 @@ class AudioDownloaderGUI(AudioGUI):
 		                                                                     self.playlistOrSingleVideoDownloadPath,
 		                                                                     self.originalPlaylistTitle,
 		                                                                     self.modifiedPlaylistTitle,
-		                                                                     self.singleVideoTitle)
+		                                                                     self.originalSingleVideoTitle,
+		                                                                     self.modifiedSingleVideoTitle)
 	
 		self.downloadThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
@@ -930,7 +932,7 @@ class AudioDownloaderGUI(AudioGUI):
 		if self.originalPlaylistTitle is not None:
 			# downloading playlist
 			return self.audiobookPath
-		elif self.singleVideoTitle is not None:
+		elif self.originalSingleVideoTitle is not None:
 			# downloading single video
 			return self.audiobookSingleVideoPath
 		else:

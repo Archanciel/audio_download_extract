@@ -29,8 +29,9 @@ class AudioController:
 	                                                    playlistOrSingleVideoDownloadPath,
 	                                                    originalPlaylistTitle,
 	                                                    modifiedPlaylistTitle,
-	                                                    singleVideoTitle):
-		'''
+	                                                    originalSingleVideoTitle,
+	                                                    modifiedVideoTitle=None):
+		"""
 		In case we are downloading videos referenced in a playlist, this method first
 		execute the download of the audio of the videos and then execute the extraction
 		or suppression of audio parts as specified in the playlist title, this,
@@ -43,10 +44,16 @@ class AudioController:
 		If we are downloading a single video audio, no extraction/suppression will
 		be performed.
 
-		:param playlistOrSingleVideoUrl:    playlist or single video url
-		:param singleVideoTitle:            if the playlistOrSingleVideoUrl points
-											to a single video
-		'''
+		:param playlistOrSingleVideoUrl:            playlist or single video url
+		:param playlistOrSingleVideoDownloadPath:   path where the playlist dir will be created
+													or where the single video will be downloaded
+		:param originalPlaylistTitle:               if the playlistOrSingleVideoUrl points
+													to a playlist
+		:param modifiedPlaylistTitle:               None if the playlist title was not modified
+		:param originalSingleVideoTitle:            if the playlistOrSingleVideoUrl points
+													to a single video
+		:param modifiedVideoTitle:                  None if the video title was not modified
+		"""
 		if originalPlaylistTitle is not None:
 			# downloading a playlist
 			downloadVideoInfoDic = \
@@ -79,7 +86,8 @@ class AudioController:
 		else:
 			# downloading a single video in the single video default dir
 			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
-			                                               videoTitle=singleVideoTitle,
+			                                               originalVideoTitle=originalSingleVideoTitle,
+			                                               modifiedVideoTitle=modifiedVideoTitle,
 			                                               targetAudioDir=playlistOrSingleVideoDownloadPath)
 	
 	def clipAudioFile(self,
