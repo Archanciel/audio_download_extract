@@ -89,6 +89,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
+				if self.audioController.stopDownloading:
+					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
+						downloadVideoInfoDic.getPlaylistNameOriginal())
+					self.audioController.displayMessage(msgText)
+					
+					return downloadVideoInfoDic, None
+				
 				videoTitle = ''
 				
 				try:
@@ -146,8 +153,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = 'audio download failed. Please retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayMessage(msgText)
-		
-			msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+			
+			if not self.audioController.stopDownloading:
+				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+			else:
+				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+
 			self.audioController.displayMessage(msgText)
 		
 		return downloadVideoInfoDic, None

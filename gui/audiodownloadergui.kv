@@ -22,7 +22,7 @@
 	statusBarScrollView: scrlv_status_bar
 	statusBarTextInput: status_bar
 	clearResultOutputButton: clear_output_Button
-	toggleAppSizeButton: toggle_app_size_Button
+	stopDownloadButton: stop_download_Button
 	requestListRVSelBoxLayout: selectable_recyclebox_layout
 	boxLayoutContainingRV: boxlayout_recycleview
 	downloadButton: download_Button
@@ -70,13 +70,13 @@
 					width: 300 # smartphone
 					on_press: root.downloadFromClipboard()
 				Button:
-					id: toggle_app_size_Button
-					text: 'Full'
+					id: stop_download_Button
+					text: 'Stop'
 					size_hint_x: None
 		#			width: 40 # Windows
 		#			width: 80 # tablet
 					width: 130 # smartphone
-					on_press: root.toggleAppPosAndSize()
+					on_press: root.stopDownload()
 
 		BoxLayout:
 			size_hint_y: None

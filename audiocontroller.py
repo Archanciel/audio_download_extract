@@ -24,6 +24,8 @@ class AudioController:
 		self.audioGUI = audioGUI
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
+		self.stopDownloading = False
+		
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
 	                                                    playlistOrSingleVideoUrl,
 	                                                    playlistOrSingleVideoDownloadPath,
@@ -54,6 +56,8 @@ class AudioController:
 													to a single video
 		:param modifiedVideoTitle:                  None if the video title was not modified
 		"""
+		self.stopDownloading = False
+		
 		if originalPlaylistTitle is not None:
 			# downloading a playlist
 			downloadVideoInfoDic = \
@@ -64,25 +68,26 @@ class AudioController:
 			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistOrSingleVideoUrl, downloadVideoInfoDic)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
-	
+
 			if accessError is None:
 				if os.name == 'posix':
 					msgText = 'skipping extraction/suppression on Android.\n'
 					self.displayMessage(msgText)
 				else:
-					# extraction/suppression possible only on Windows !
-					audioDirRoot = self.configMgr.dataPath
-					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
-				
-					# saving the content of the downloadVideoInfoDic which has been completed
-					# by AudioExtractor in the directory containing the extracted audio files
-					try:
-						downloadVideoInfoDic.saveDic(audioDirRoot)
-					except TypeError as e:
-						print(e)
-						traceback.print_exc()
+					if not self.stopDownloading:
+						# extraction/suppression possible only on Windows !
+						audioDirRoot = self.configMgr.dataPath
+						targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+						audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+						audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+					
+						# saving the content of the downloadVideoInfoDic which has been completed
+						# by AudioExtractor in the directory containing the extracted audio files
+						try:
+							downloadVideoInfoDic.saveDic(audioDirRoot)
+						except TypeError as e:
+							print(e)
+							traceback.print_exc()
 		else:
 			# downloading a single video in the single video default dir
 			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,

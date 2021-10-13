@@ -253,24 +253,24 @@ class AudioDownloaderGUI(AudioGUI):
 		if os.name == 'posix':
 			if GuiUtil.onSmartPhone():
 				self.boxLayoutContainingStatusBar.height = "73dp"
-				self.toggleAppSizeButton.width = 150
+				self.stopDownloadButton.width = 150
 				self.downloadButton.width = 300
 			else:
 				self.boxLayoutContainingStatusBar.height = "43dp"
-				self.toggleAppSizeButton.width = 80
+				self.stopDownloadButton.width = 80
 				self.downloadButton.width = 190
 
 		else:
-			self.toggleAppSizeButton.text = 'Half'  # correct on Windows !
+			#self.stopDownloadButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
-			self.toggleAppSizeButton.width = 40
+			self.stopDownloadButton.width = 40
 			self.downloadButton.width = 80
 
 		self.audioController = AudioController(self, self.configMgr)
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
-		self.applyAppPosAndSize()
+		#self.applyAppPosAndSize()
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
@@ -373,10 +373,12 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def enableButtons(self):
 		self.downloadButton.disabled = False
+		self.stopDownloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
 
 	def disableButtons(self):
 		self.downloadButton.disabled = True
+		self.stopDownloadButton.disabled = True
 		self.clearResultOutputButton.disabled = True
 
 	def onConfirmPopupAnswer(self, instance, answer):
@@ -419,7 +421,13 @@ class AudioDownloaderGUI(AudioGUI):
 		if self.showRequestList:
 			self.adjustRequestListSize()
 	
+	def stopDownload(self):
+		self.audioController.stopDownloading = True
+		
 	def toggleAppPosAndSize(self):
+		"""
+		No longer used, but ...
+		"""
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			self.appSize = self.configMgr.APP_SIZE_FULL
 
@@ -442,11 +450,11 @@ class AudioDownloaderGUI(AudioGUI):
 			sizeHintY = float(self.appSizeHalfProportion)
 			self.size_hint_y = sizeHintY
 			self.pos_hint = {'x': 0, 'y': 1 - sizeHintY}
-			self.toggleAppSizeButton.text = 'Full'
+			self.stopDownloadButton.text = 'Full'
 		else:
 			self.size_hint_y = 1
 			self.pos_hint = {'x': 0, 'y': 0}
-			self.toggleAppSizeButton.text = 'Half'
+			self.stopDownloadButton.text = 'Half'
 	
 	def submitRequest(self):
 		'''
