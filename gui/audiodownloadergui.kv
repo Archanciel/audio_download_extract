@@ -76,6 +76,7 @@
 		#			width: 40 # Windows
 		#			width: 80 # tablet
 					width: 130 # smartphone
+					disabled: True
 					on_press: root.stopDownload()
 
 		BoxLayout:
@@ -211,15 +212,19 @@
 					id: scrlv_status_bar
 	#				do_scroll_y: False # limiting to horizontal scrolling
 					effect_cls: ScrollEffect #prevents overscrolling
-					TextInput:
+					Label:
 						id: status_bar
-						size_hint: (None, 1) # if remooved, scrolling no longer working. 1 required for correct 2 lines display !
-						background_color: 0,0,0,0
-						foreground_color: 1,1,1,1
-						width: scrlv_status_bar.width
-						readonly: True
-						multiline: True
-						on_text: root.statusBarTextChanged()
+                        size_hint_y: None
+                        height: self.texture_size[1]
+            #			size_hint: (1, None)
+            #			height: max(self.minimum_height, scrlv_out.height) #required to enable scrolling when output starts to grow
+                        text_size: (self.width-20), None
+                        # max_lines: 1000 no effect !
+                        line_height: 0.9
+                        background_color: 0,0,0,0
+                        foreground_color: 1,1,1,1
+                        valign: "top"
+                        markup: True
 				Button:
 					id: clear_output_Button
 					text: 'Clear'

@@ -88,6 +88,7 @@ class AudioController:
 						except TypeError as e:
 							print(e)
 							traceback.print_exc()
+							
 		else:
 			# downloading a single video in the single video default dir
 			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
@@ -261,6 +262,13 @@ class AudioController:
 		audioExtractor = AudioExtractor(self, videoFilePathName, {})
 		
 		return audioExtractor.extractAudioFromVideoFile(videoFilePathName)
+
+	def downloadStopped(self):
+		"""
+		Method called by YoutubeDlAudioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl()
+		after the playlist current download has been interrupted.
+		"""
+		self.audioGUI.downloadStopped()
 
 
 if __name__ == "__main__":

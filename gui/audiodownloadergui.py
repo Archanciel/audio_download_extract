@@ -373,7 +373,6 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def enableButtons(self):
 		self.downloadButton.disabled = False
-		self.stopDownloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
 
 	def disableButtons(self):
@@ -422,8 +421,24 @@ class AudioDownloaderGUI(AudioGUI):
 			self.adjustRequestListSize()
 	
 	def stopDownload(self):
+		"""
+		Method called when clicking on the stop download button. Setting the
+		AudioController stopDownloading instance variable to True will cause
+		YoutubeDlAudioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl()
+		to stop downloading the videos referenced in the currently downloading
+		playlist.
+		"""
+		self.stopDownloadButton.disabled = True
+		msgText = '[b]{}[/b] playlist audio(s) download stopping ....\n'.format(
+			self.originalPlaylistTitle)
+		self.updateStatusBar(msgText)
+#		self.outputResult(msgText)
 		self.audioController.stopDownloading = True
-		
+
+	def downloadStopped(self):
+		self.stopDownloadButton.disabled = False
+		self.updateStatusBar("")
+
 	def toggleAppPosAndSize(self):
 		"""
 		No longer used, but ...
@@ -844,12 +859,6 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def isLoadAtStart(self, filePathName):
 		return self.configMgr.loadAtStartPathFilename == filePathName
-
-	def statusBarTextChanged(self):
-		width_calc = self.statusBarScrollView.width
-		for line_label in self.statusBarTextInput._lines_labels:
-			width_calc = max(width_calc, line_label.width + 20)   # add 20 to avoid automatically creating a new line
-		self.statusBarTextInput.width = width_calc
 	
 	def downloadPlaylistOrSingleVideoAudio(self):
 		"""
@@ -874,6 +883,11 @@ class AudioDownloaderGUI(AudioGUI):
 		This method executed on a separated thread launch downloading audios for
 		the videos referenced in a playlist or the audio of a single video.
 		"""
+		if self.originalPlaylistTitle is not None:
+			# if a playlist is downloading, zhe stop download button is
+			# activated
+			self.stopDownloadButton.disabled = False
+		
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
 		                                                                     self.playlistOrSingleVideoDownloadPath,
 		                                                                     self.originalPlaylistTitle,
@@ -885,6 +899,8 @@ class AudioDownloaderGUI(AudioGUI):
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
+
+		self.stopDownloadButton.disabled = True
 	
 	def setMessage(self, msgText):
 		pass

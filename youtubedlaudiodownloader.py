@@ -93,6 +93,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
 						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
+					self.audioController.downloadStopped()
 					
 					return downloadVideoInfoDic, None
 				
@@ -148,7 +149,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
 					
-					msgText = 'download complete.\n'
+					msgText = 'video download complete.\n'
 				else:
 					msgText = 'audio download failed. Please retry downloading the playlist later to download the failed audio only.\n'
 
