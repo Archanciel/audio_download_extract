@@ -352,7 +352,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			except AttributeError as e:
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
-				logging.info("downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
+				self.audioController.displayError(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. Video target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(
+						videoTitle, e, targetAudioDir, len(targetAudioDir)))
+
+				return
 			
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
