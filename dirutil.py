@@ -58,7 +58,8 @@ class DirUtil:
 		return configFilePathName
 	
 	@staticmethod
-	def createTargetDirIfNotExist(targetAudioDir):
+	def createTargetDirIfNotExist(rootDir,
+	                              targetAudioDir):
 		targetAudioDirShort = DirUtil.getLastSubDirs(targetAudioDir, subDirsNumber=2)
 		dirCreationMessage = None
 		
@@ -124,7 +125,7 @@ class DirUtil:
 		return validFileName
 	
 	@staticmethod
-	def removeDirectoryTree(dirsToRemoveContainingDir):
+	def removeSubDirsContainedInDir(dirsToRemoveContainingDir):
 		"""
 		Removes recursively the sub dirs contained in the passed
 		dirsToRemoveContainingDir. Any file contained in the sub dirs are

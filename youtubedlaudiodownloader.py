@@ -77,7 +77,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=self.audioDirRoot,
 															 fullDir=targetAudioDir,
 															 remainingRootSubDirNumber=1)
-		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
+		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
+		                                                          targetAudioDir=targetAudioDir)
 		
 		if dirCreationMessage:
 			self.audioController.displayMessage(dirCreationMessage)
@@ -318,7 +319,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param modifiedVideoTitle:  None if the video title was not modified
 		:param targetAudioDir:      path where the single video will be downloaded
 		"""
-		targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
+		targetAudioDirShort, dirCreationMessage = \
+			DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
+			                                  targetAudioDir=targetAudioDir)
 		targetAudioDirFileNameList = []
 		
 		if dirCreationMessage:
