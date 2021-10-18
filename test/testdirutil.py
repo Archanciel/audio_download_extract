@@ -54,7 +54,7 @@ class TestDirUtil(unittest.TestCase):
 
 		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                  fullDir=fullDir,
-		                                                                  remainingRootSubDirNumber=1))
+		                                                                  eliminatedRootLastSubDirsNumber=1))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                    fullDir=fullDir))
 
@@ -66,7 +66,7 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                  fullDir=fullDir,
-		                                                                  remainingRootSubDirNumber=1))
+		                                                                  eliminatedRootLastSubDirsNumber=1))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                    fullDir=fullDir))
 
@@ -139,13 +139,13 @@ class TestDirUtil(unittest.TestCase):
 		self.assertFalse(os.path.isdir(sep.join(subdirs[:-2])))
 		
 		targetAudioDirShort, dirCreationMessage = \
-			DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+			DirUtil.createTargetDirIfNotExist(rootDir=DirUtil.getTestAudioRootPath() + sep + 'Audio',
 			                                  targetAudioDir=createdSubdirsPath)
 		
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-1])))
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
 		self.assertEqual('Audio' + sep + 'Various' + sep + 'France' + sep + 'politique', targetAudioDirShort)
-		self.assertEqual("directory\nFrance' + sep + 'politique\nwas created in\n{}.", dirCreationMessage, 'Audio' + sep + 'Various')
+		self.assertEqual("directory\nAudio" + sep + 'Various' + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
 	
 	def testCreateTargetDirIfNotExist_playlist(self):
 		testBaseRootDir = 'Audio'
@@ -168,10 +168,10 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-1])))
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
 		self.assertEqual('Audio' + sep + 'France' + sep + 'politique', targetAudioDirShort)
-		self.assertEqual("directory\nFrance' + sep + 'politique\nwas created in {}.", dirCreationMessage,'Audio')
+		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
 
 
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestDirUtil()
-	tst.testCreateTargetDirIfNotExist()
+	tst.testCreateTargetDirIfNotExist_singleVideo()

@@ -246,8 +246,8 @@ class TestAudioController(unittest.TestCase):
 		else:
 			self.assertEqual(['downloading "Funny suspicious looking dog short video" audio ...',
  '',
- '"Funny suspicious looking dog short video" audio downloaded in "new dir\\new '
- 'sub dir" directory.',
+ '"Funny suspicious looking dog short video" audio downloaded in '
+ '"Audio\\test\\Various\\single_video dir\\new dir\\new sub dir" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		

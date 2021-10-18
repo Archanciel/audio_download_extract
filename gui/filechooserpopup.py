@@ -401,7 +401,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 				self.rootGUI.modifiedPlaylistTitle = playlistTitleOrVideoName
 		else:
 			# a single video is downloaded ...
-			downloadPath = self.rootGUI.configMgr.dataPath + sep + specifiedSubDirPath
+			rootDir = self.rootGUI.configMgr.dataPath
+			downloadPath = rootDir + sep + specifiedSubDirPath
 
 			if playlistTitleOrVideoName == self.originalSingleVideoTitle:
 				# original single video title was not modified
@@ -414,7 +415,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 				pass
 			else:
 				targetAudioDirShort, dirCreationMessage = \
-					DirUtil.createTargetDirIfNotExist(rootDir=self.rootGUI.configMgr.dataPath,
+					DirUtil.createTargetDirIfNotExist(rootDir=rootDir,
 					                                  targetAudioDir=downloadPath)
 				
 				if dirCreationMessage:

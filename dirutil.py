@@ -60,7 +60,9 @@ class DirUtil:
 	@staticmethod
 	def createTargetDirIfNotExist(rootDir,
 	                              targetAudioDir):
-		targetAudioDirShort = DirUtil.getLastSubDirs(targetAudioDir, subDirsNumber=2)
+		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=rootDir,
+		                                                     fullDir=targetAudioDir,
+		                                                     eliminatedRootLastSubDirsNumber=1)
 		dirCreationMessage = None
 		
 		if not os.path.isdir(targetAudioDir):
@@ -79,12 +81,12 @@ class DirUtil:
 	@staticmethod
 	def getFullDirMinusRootDir(rootDir,
 	                           fullDir,
-	                           remainingRootSubDirNumber=None):
-		if remainingRootSubDirNumber is None:
+	                           eliminatedRootLastSubDirsNumber=None):
+		if eliminatedRootLastSubDirsNumber is None:
 			return fullDir.replace(rootDir + sep, '')
 		
 		rootDirElementLst = rootDir.split(sep)
-		remainingRootDir = sep.join(rootDirElementLst[:-remainingRootSubDirNumber])
+		remainingRootDir = sep.join(rootDirElementLst[:-eliminatedRootLastSubDirsNumber])
 		targetAudioDirShort = fullDir.replace(remainingRootDir + sep, '')
 		
 		return targetAudioDirShort
