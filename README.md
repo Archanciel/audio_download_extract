@@ -88,7 +88,7 @@ downloaded to a directory specified in the app settings.
 - pydub
 - soundfile
 - pyrubberband
-- pyautogui
+- pyautogui (not installable on Android !)
 - ffpyplayer 4.3.2
 - decorator 4.4.2 (updated version 5 ... causes audio extraction problems)
 
