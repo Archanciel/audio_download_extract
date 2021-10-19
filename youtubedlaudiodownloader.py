@@ -105,7 +105,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					videoTitle = meta['title']
 				except AttributeError as e:
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
+					self.audioController.displayError(msgText)
+					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
+						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
+					
+					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
 				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					if downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle) in targetAudioDirFileNameList:
@@ -137,10 +142,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
-				
-				if videoTitle == '':
-					# the case if ydl.extract_info() raised an AttributeError
-					videoTitle = downloadedAudioFileName.replace('.mp3', '')
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
 					# updating and saving the downloadVideoInfoDic only if the audio file
