@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime
 from os.path import sep
 
@@ -405,6 +406,9 @@ class DownloadVideoInfoDic:
 		:param videoUrl:
 		:param downloadedFileName:
 		"""
+#		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+#		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+
 		if not KEY_VIDEOS in self.dic.keys():
 			self.dic[KEY_VIDEOS] = {}
 			
