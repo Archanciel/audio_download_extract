@@ -203,14 +203,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		if os.name == 'posix':
-			self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
-			                  '"test\\Various_test_not_emptied" dir. Video skipped.',
-			                  '',
-			                  ''], outputCapturingString.getvalue().split('\n'))
-		else:
-			self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
-	 '"test\\Various_test_not_emptied" dir. Video skipped.',
+		self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
+	 '"Various_test_not_emptied" dir. Video skipped.',
 	 '',
 	 ''], outputCapturingString.getvalue().split('\n'))
 	
@@ -240,14 +234,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		if os.name == 'posix':
-			self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
- '"test/Various_test_not_emptied" dir. Video skipped.',
- '',
- ''], outputCapturingString.getvalue().split('\n'))
-		else:
-			self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
- '"test\\Various_test_not_emptied" dir. Video skipped.',
+		self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
+ '"Various_test_not_emptied" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 	
@@ -322,4 +310,4 @@ if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadSingleVideoForUrl_redownloading_video()
+	tst.testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash()

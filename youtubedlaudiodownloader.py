@@ -14,6 +14,7 @@ from constants import *
 from audiodownloader import AudioDownloader
 from dirutil import DirUtil
 from accesserror import AccessError
+from youtubedldownloadextractor import YoutubeDlDownloadInfoExtractor
 
 YOUTUBE_DL_QUIET = True
 
@@ -36,7 +37,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 											 # Android when used by AudioDownloaderGUI !
 				'format': 'worstaudio/worst',# this fixes the error AttributeError:
 											 # 'str' object has no attribute 'write'
-				'quiet': YOUTUBE_DL_QUIET
+				'quiet': YOUTUBE_DL_QUIET,
+				"progress_hooks": [YoutubeDlDownloadInfoExtractor(audioController).ydlCallableHook]
 			}
 			
 			self.tempYdlFileExtension = 'mp3.ytdl'
@@ -50,7 +52,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					'preferredcodec': 'mp3',
 					'preferredquality': '64',
 				}],
-				'quiet': YOUTUBE_DL_QUIET
+				'quiet': YOUTUBE_DL_QUIET,
+				"progress_hooks": [YoutubeDlDownloadInfoExtractor(audioController).ydlCallableHook]
 			}
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
@@ -75,9 +78,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
 		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=self.audioDirRoot,
-															 fullDir=targetAudioDir,
-															 remainingRootSubDirNumber=1)
-		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
+		                                                     fullDir=targetAudioDir,
+		                                                     eliminatedRootLastSubDirsNumber=1)
+		_, dirCreationMessage = DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
+		                                                          targetAudioDir=targetAudioDir)
 		
 		if dirCreationMessage:
 			self.audioController.displayMessage(dirCreationMessage)
@@ -104,7 +108,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					videoTitle = meta['title']
 				except AttributeError as e:
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
+					self.audioController.displayError(msgText)
+					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
+						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
+					
+					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
 				
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					if downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle) in targetAudioDirFileNameList:
@@ -136,10 +145,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
-				
-				if videoTitle == '':
-					# the case if ydl.extract_info() raised an AttributeError
-					videoTitle = downloadedAudioFileName.replace('.mp3', '')
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
 					# updating and saving the downloadVideoInfoDic only if the audio file
@@ -318,7 +323,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param modifiedVideoTitle:  None if the video title was not modified
 		:param targetAudioDir:      path where the single video will be downloaded
 		"""
-		targetAudioDirShort, dirCreationMessage = DirUtil.createTargetDirIfNotExist(targetAudioDir)
+		targetAudioDirShort, dirCreationMessage = \
+			DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
+			                                  targetAudioDir=targetAudioDir)
 		targetAudioDirFileNameList = []
 		
 		if dirCreationMessage:
@@ -352,7 +359,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			except AttributeError as e:
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
-				logging.info("downloading video {} caused this Attribute exception: {}".format(videoTitle, e))
+				self.audioController.displayError(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. Video target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(
+						videoTitle, e, targetAudioDir, len(targetAudioDir)))
+
+				return
 			
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(videoTitle, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)

@@ -7,10 +7,11 @@ from accesserror import AccessError
 class PlaylistTitleParser:
 	
 	@staticmethod
-	def createDownloadVideoInfoDicForPlaylist(audioRootDir,
-	                                          playlistDownloadRootPath,
-	                                          originalPlaylistTitle,
-	                                          modifiedPlaylistTitle=None):
+	def createDownloadVideoInfoDicForPlaylist(playlistUrl,
+											  audioRootDir,
+											  playlistDownloadRootPath,
+											  originalPlaylistTitle,
+											  modifiedPlaylistTitle=None):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -21,6 +22,8 @@ class PlaylistTitleParser:
 		E_Klein - le temps {(s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)}
 		-e or -E means "to end"
 		
+		:param playlistUrl:                 playlist url to add to the
+											download video info div
 		:param audioRootDir:                audio dir as specified in the app
 											settings.
 		:param playlistDownloadRootPath:    full playlist path in which the
@@ -50,12 +53,13 @@ class PlaylistTitleParser:
 		downloadVideoInfoDic = None
 		
 		try:
-			downloadVideoInfoDic = DownloadVideoInfoDic(audioRootDir=audioRootDir,
-			                                            playlistDownloadRootPath=playlistDownloadRootPath,
-			                                            originalPaylistTitle=originalPlaylistTitle,
-			                                            originalPlaylistName=originalPlaylistName,
-			                                            modifiedPlaylistTitle=modifiedPlaylistTitle,
-			                                            modifiedPlaylistName=modifiedPlaylistName)
+			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=playlistUrl,
+														audioRootDir=audioRootDir,
+														playlistDownloadRootPath=playlistDownloadRootPath,
+														originalPaylistTitle=originalPlaylistTitle,
+														originalPlaylistName=originalPlaylistName,
+														modifiedPlaylistTitle=modifiedPlaylistTitle,
+														modifiedPlaylistName=modifiedPlaylistName)
 		except Exception as e:
 			errorInfoStr = 'loading download video info dic located in {} failed\nerror info: {}'.format(playlistDownloadRootPath + sep + modifiedPlaylistTitle, str(e))
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR, errorInfoStr)
@@ -63,8 +67,8 @@ class PlaylistTitleParser:
 		
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
-			                                                                        videoTimeFramesInfo,
-			                                                                        originalPlaylistTitle)
+																					videoTimeFramesInfo,
+																					originalPlaylistTitle)
 		
 		return downloadVideoInfoDic, accessError
 	

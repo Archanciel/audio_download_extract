@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import datetime
 from os.path import sep
 
@@ -6,6 +7,7 @@ from constants import *
 from dirutil import DirUtil
 
 KEY_PLAYLIST = 'playlist'
+KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
 KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
@@ -39,6 +41,7 @@ class DownloadVideoInfoDic:
 	cachedRateAccessNumber = 0
 
 	def __init__(self,
+	             playlistUrl,
 	             audioRootDir,
 	             playlistDownloadRootPath,
 	             originalPaylistTitle,
@@ -53,6 +56,8 @@ class DownloadVideoInfoDic:
 		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
 		the passed information.
 		
+		:param playlistUrl:                 playlist url to add to the
+											download video info div
 		:param playlistDownloadRootPath:    base dir set in the GUI settings containing
 											the extracted audio files
 		:param originalPaylistTitle:        may contain extract and/or suppress information.
@@ -82,6 +87,7 @@ class DownloadVideoInfoDic:
 			if modifiedPlaylistName is None:
 				modifiedPlaylistName = originalPlaylistName
 				
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL] = playlistUrl
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = originalPaylistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED] = modifiedPlaylistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
@@ -209,6 +215,17 @@ class DownloadVideoInfoDic:
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR]
+		else:
+			return None
+	
+	def getPlaylistUrl(self):
+		"""
+		Returns the playlist url.
+
+		:return: playlist url
+		"""
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL]
 		else:
 			return None
 	
@@ -389,6 +406,9 @@ class DownloadVideoInfoDic:
 		:param videoUrl:
 		:param downloadedFileName:
 		"""
+#		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+#		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+
 		if not KEY_VIDEOS in self.dic.keys():
 			self.dic[KEY_VIDEOS] = {}
 			

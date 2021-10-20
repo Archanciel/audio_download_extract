@@ -50,7 +50,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -108,7 +108,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -170,7 +170,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -241,7 +241,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -315,7 +315,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistUrl)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistUrl)
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
@@ -370,7 +370,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -439,7 +439,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -509,7 +509,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess_redownload.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
 
 		youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 
@@ -584,7 +584,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess_redownload.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
 
 		youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 
@@ -623,18 +623,17 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
-		time.sleep(1)   # required to avoid uncomprehensible test failure when executing all unit tsts
 		originalPlaylistName = 'test_audio_downloader_two_files_with_time_frames'
 		modifiedPlaylistName = 'test_audio_downloader_two_files_with_time_frames_redownloading'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + modifiedPlaylistName
+		downloadDir = DirUtil.getTestAudioRootPath()
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		targerAudioPath = downloadDir + sep + modifiedPlaylistName
+		targetAudioPath = downloadDir + sep + modifiedPlaylistName
 		
-		files = glob.glob(targerAudioPath + sep + '*.*')
+		files = glob.glob(targetAudioPath + sep + '*.*')
 		
 		for f in files:
 			os.remove(f)
@@ -656,6 +655,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		modifiedPlaylistTitle = originalPlaylistTitle.replace(originalPlaylistName, modifiedPlaylistName)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+			playlistUrl=playlistUrl,
 			audioRootDir=youtubeAccess.audioDirRoot,
 			playlistDownloadRootPath=downloadDir,
 			originalPlaylistTitle=originalPlaylistTitle,
@@ -724,7 +724,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targerAudioPath + sep + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targetAudioPath + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
@@ -745,7 +745,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess_redownload.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, originalPlaylistTitle)
+			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, originalPlaylistTitle)
 
 		youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 
@@ -801,7 +801,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexes())
 		
-		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targerAudioPath + sep + '*.*')]
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(targetAudioPath + sep + '*.*')]
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
@@ -838,7 +838,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -884,7 +884,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 		redownloadVideoInfoDic.removeVideoInfoForVideoTitle('Funny suspicious looking dog')
 		
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(
@@ -987,7 +987,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1087,7 +1087,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1177,7 +1177,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1255,7 +1255,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1325,7 +1325,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1408,7 +1408,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 		
@@ -1447,7 +1447,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
 
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
-		time.sleep(1)
 		playlistName = 'test_audio_downloader_two_files'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
@@ -1476,7 +1475,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
 
 		youtubeAccess.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, downloadVideoInfoDic)
 
@@ -1549,7 +1548,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			youtubeAccess_redownload.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
+			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
 
 		youtubeAccess_redownload.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl, redownloadVideoInfoDic)
 
@@ -1604,4 +1603,4 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames()
+	tst.testRedownloading_the_playlist_with_deleted_audio_files()

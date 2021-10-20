@@ -54,7 +54,7 @@ class TestDirUtil(unittest.TestCase):
 
 		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                  fullDir=fullDir,
-		                                                                  remainingRootSubDirNumber=1))
+		                                                                  eliminatedRootLastSubDirsNumber=1))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                    fullDir=fullDir))
 
@@ -66,11 +66,11 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                  fullDir=fullDir,
-		                                                                  remainingRootSubDirNumber=1))
+		                                                                  eliminatedRootLastSubDirsNumber=1))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
 		                                                                    fullDir=fullDir))
 
-	def testRemoveDirectoryTree(self):
+	def testRemoveSubDirsContainedInDir(self):
 		createdFileName = 'temp.txt'
 		
 		testBaseRootDir = 'test dir util'
@@ -78,7 +78,8 @@ class TestDirUtil(unittest.TestCase):
 		createdSubdirs = 'new dir' + sep + 'new sub dir'
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
 		
-		DirUtil.createTargetDirIfNotExist(createdSubdirsPath)
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=createdSubdirsPath)
 		
 		createdFilePathName = createdSubdirsPath + sep + createdFileName
 
@@ -91,7 +92,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-2])))
 
 		# removing test dir and sub dirs and its files
-		DirUtil.removeDirectoryTree(testBaseRootPath)
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 
 		self.assertFalse(os.path.isfile(createdFilePathName))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-1])))
@@ -104,7 +105,8 @@ class TestDirUtil(unittest.TestCase):
 		testBaseRootDir = 'test dir util'
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
 		
-		DirUtil.createTargetDirIfNotExist(testBaseRootPath)
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
 		
 		createdFilePathName = testBaseRootPath + sep + createdFileName
 		
@@ -120,10 +122,56 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(renamedFilePathName))
 
 		# removing test dir and its file
-		DirUtil.removeDirectoryTree(testBaseRootPath)
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+
+	def testCreateTargetDirIfNotExist_singleVideo(self):
+		testBaseRootDir = 'Audio' + sep + 'Various'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		createdSubdirs = 'France' + sep + 'politique'
+		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
+
+		# removing test dir and sub dirs and its files
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		
+		subdirs = createdSubdirsPath.split(sep)
+
+		self.assertFalse(os.path.isdir(sep.join(subdirs[:-1])))
+		self.assertFalse(os.path.isdir(sep.join(subdirs[:-2])))
+		
+		targetAudioDirShort, dirCreationMessage = \
+			DirUtil.createTargetDirIfNotExist(rootDir=DirUtil.getTestAudioRootPath() + sep + 'Audio',
+			                                  targetAudioDir=createdSubdirsPath)
+		
+		self.assertTrue(os.path.isdir(sep.join(subdirs[:-1])))
+		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
+		self.assertEqual('Audio' + sep + 'Various' + sep + 'France' + sep + 'politique', targetAudioDirShort)
+		self.assertEqual("directory\nAudio" + sep + 'Various' + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
+	
+	def testCreateTargetDirIfNotExist_playlist(self):
+		testBaseRootDir = 'Audio'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		createdSubdirs = 'France' + sep + 'politique'
+		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
+		
+		# removing test dir and sub dirs and its files
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		
+		subdirs = createdSubdirsPath.split(sep)
+		
+		self.assertFalse(os.path.isdir(sep.join(subdirs[:-1])))
+		self.assertFalse(os.path.isdir(sep.join(subdirs[:-2])))
+		
+		targetAudioDirShort, dirCreationMessage = \
+			DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+			                                  targetAudioDir=createdSubdirsPath)
+		
+		self.assertTrue(os.path.isdir(sep.join(subdirs[:-1])))
+		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
+		self.assertEqual('Audio' + sep + 'France' + sep + 'politique', targetAudioDirShort)
+		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
 
 
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestDirUtil()
-	tst.testReplaceUnauthorizedDirNameChars()
+	tst.testCreateTargetDirIfNotExist_singleVideo()

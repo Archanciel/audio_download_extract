@@ -61,11 +61,14 @@ class AudioController:
 		if originalPlaylistTitle is not None:
 			# downloading a playlist
 			downloadVideoInfoDic = \
-				self.getDownloadVideoInfoDicForPlaylistTitle(playlistOrSingleVideoDownloadPath,
-				                                             originalPlaylistTitle,
-				                                             modifiedPlaylistTitle)
+				self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
+				                                             playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+				                                             originalPlaylistTitle=originalPlaylistTitle,
+				                                             modifiedPlaylistTitle=modifiedPlaylistTitle)
 
-			_, accessError = self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistOrSingleVideoUrl, downloadVideoInfoDic)
+			_, accessError = \
+				self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl=playlistOrSingleVideoUrl,
+				                                                                      downloadVideoInfoDic=downloadVideoInfoDic)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
 
@@ -122,7 +125,8 @@ class AudioController:
 		
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
-		audioExtractorVideoInfoDic = DownloadVideoInfoDic(audioRootDir=self.configMgr.dataPath,
+		audioExtractorVideoInfoDic = DownloadVideoInfoDic(playlistUrl='',
+		                                                  audioRootDir=self.configMgr.dataPath,
 		                                                  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
 		                                                  originalPaylistTitle=playlistTitle,
 		                                                  originalPlaylistName=playlistTitle,
@@ -178,6 +182,7 @@ class AudioController:
 		return playlistObject, playlistTitle, videoTitle, accessError
 	
 	def getDownloadVideoInfoDicForPlaylistTitle(self,
+	                                            playlistUrl,
 	                                            playlistOrSingleVideoDownloadPath,
 	                                            originalPlaylistTitle,
 	                                            modifiedPlaylistTitle):
@@ -188,7 +193,11 @@ class AudioController:
 		(s0:0:2-0:0:4 s0:0:5-0:0:7 s0:0:10-e) (e0:0:2-0:0:3 e0:0:5-e)'), info which will be
 		added o the returned DownloadVideoInfoDic.
 
+		:param playlistUrl:                         playlist url to add to the
+													download video info div
+		:param playlistOrSingleVideoDownloadPath:
 		:param originalPlaylistTitle:
+		:param modifiedPlaylistTitle:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
@@ -198,7 +207,8 @@ class AudioController:
 			modifiedPlaylistTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistTitle)
 		
 		downloadVideoInfoDic, accessError = \
-			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(audioRootDir=self.configMgr.dataPath,
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistUrl=playlistUrl,
+			                                                          audioRootDir=self.configMgr.dataPath,
 			                                                          playlistDownloadRootPath=playlistOrSingleVideoDownloadPath,
 			                                                          originalPlaylistTitle=originalPlaylistTitle,
 			                                                          modifiedPlaylistTitle=modifiedPlaylistTitle)
@@ -208,6 +218,31 @@ class AudioController:
 			return None
 		
 		return downloadVideoInfoDic
+	
+	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+		"""
+		Method called every n seconds by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+		
+		:param currentDownloadInfoTuple:    3 elements tuple containing current
+											download size in bytes, download size
+											percent string and current download
+											speed string (in KiB/s)
+		"""
+		self.audioGUI.displayCurrentDownloadInfo(currentDownloadInfoTuple)
+	
+	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+		"""
+		Method called when the video download is finished by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+
+		:param endDownloadInfoTuple:    2 elements tuple containing final download
+										size in bytes and total download time in
+										seconds
+		"""
+		self.audioGUI.displayEndDownloadInfo(endDownloadInfoTuple)
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
