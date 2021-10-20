@@ -3,7 +3,7 @@ import time
 PRINT_SECONDS = 1
 
 
-class YdlDownloadInfoExtractor:
+class YoutubeDlDownloadInfoExtractor:
 	def __init__(self):
 		self.lstExtractTime = time.time()
 	
