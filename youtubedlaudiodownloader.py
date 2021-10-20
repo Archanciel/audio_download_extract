@@ -14,6 +14,7 @@ from constants import *
 from audiodownloader import AudioDownloader
 from dirutil import DirUtil
 from accesserror import AccessError
+from ydldownloadextractor import YdlDownloadInfoExtractor
 
 YOUTUBE_DL_QUIET = True
 
@@ -36,7 +37,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 											 # Android when used by AudioDownloaderGUI !
 				'format': 'worstaudio/worst',# this fixes the error AttributeError:
 											 # 'str' object has no attribute 'write'
-				'quiet': YOUTUBE_DL_QUIET
+				'quiet': YOUTUBE_DL_QUIET,
+				"progress_hooks": [YdlDownloadInfoExtractor().ydlCallableHook]
 			}
 			
 			self.tempYdlFileExtension = 'mp3.ytdl'
@@ -50,7 +52,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					'preferredcodec': 'mp3',
 					'preferredquality': '64',
 				}],
-				'quiet': YOUTUBE_DL_QUIET
+				'quiet': YOUTUBE_DL_QUIET,
+				"progress_hooks": [YdlDownloadInfoExtractor().ydlCallableHook]
 			}
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
