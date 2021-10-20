@@ -14,7 +14,7 @@ from constants import *
 from audiodownloader import AudioDownloader
 from dirutil import DirUtil
 from accesserror import AccessError
-from youtubedldownloadextractor import YoutubeDlDownloadInfoExtractor
+from youtubedldownloadinfoextractor import YoutubeDlDownloadInfoExtractor
 
 YOUTUBE_DL_QUIET = True
 

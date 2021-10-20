@@ -25,3 +25,25 @@ class GuiOutputStub:
 	def clearClipboard(self):
 		from tkinter import Tk
 		Tk().clipboard_clear()
+	
+	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+		"""
+		Method called every n seconds by AudioController.displayDownloadInfo().
+
+		:param currentDownloadInfoTuple:    3 elements tuple containing current
+											download size in bytes, download size
+											percent string and current download
+											speed string (in KiB/s)
+		"""
+		pass
+	
+	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+		"""
+		Method called when the video download is finished by
+		AudioController.displayEndDownloadInfo().
+
+		:param endDownloadInfoTuple:    2 elements tuple containing final download
+										size in bytes and total download time in
+										seconds
+		"""
+		pass
