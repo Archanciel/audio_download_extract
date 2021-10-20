@@ -967,7 +967,28 @@ class AudioDownloaderGUI(AudioGUI):
 		super(AudioDownloaderGUI, self).outputResult(resultStr)
 		
 		self.clearResultOutputButton.disabled = False
+	
+	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+		"""
+		Method called every n seconds by AudioController.displayDownloadInfo().
 
+		:param currentDownloadInfoTuple:    3 elements tuple containing current
+											download size in bytes, download size
+											percent string and current download
+											speed string (in KiB/s)
+		"""
+		print(currentDownloadInfoTuple)
+	
+	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+		"""
+		Method called when the video download is finished by
+		AudioController.displayEndDownloadInfo().
+
+		:param endDownloadInfoTuple:    2 elements tuple containing final download
+										size in bytes and total download time in
+										seconds
+		"""
+		print(endDownloadInfoTuple)
 
 class AudioDownloaderGUIMainApp(App):
 	"""

@@ -219,6 +219,31 @@ class AudioController:
 		
 		return downloadVideoInfoDic
 	
+	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+		"""
+		Method called every n seconds by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+		
+		:param currentDownloadInfoTuple:    3 elements tuple containing current
+											download size in bytes, download size
+											percent string and current download
+											speed string (in KiB/s)
+		"""
+		self.audioGUI.displayCurrentDownloadInfo(currentDownloadInfoTuple)
+	
+	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+		"""
+		Method called when the video download is finished by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+
+		:param endDownloadInfoTuple:    2 elements tuple containing final download
+										size in bytes and total download time in
+										seconds
+		"""
+		self.audioGUI.displayEndDownloadInfo(endDownloadInfoTuple)
+	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
 	
