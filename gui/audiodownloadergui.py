@@ -883,8 +883,10 @@ class AudioDownloaderGUI(AudioGUI):
 		This method executed on a separated thread launch downloading audios for
 		the videos referenced in a playlist or the audio of a single video.
 		"""
+		self.isFirstCurrentDownloadInfo = True
+		
 		if self.originalPlaylistTitle is not None:
-			# if a playlist is downloading, zhe stop download button is
+			# if a playlist is downloading, the stop download button is
 			# activated
 			self.stopDownloadButton.disabled = False
 		
@@ -977,7 +979,19 @@ class AudioDownloaderGUI(AudioGUI):
 											percent string and current download
 											speed string (in KiB/s)
 		"""
-		print(currentDownloadInfoTuple)
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		currentDownloadInfoStr = '{} bytes, {}, {}\n'.format(currentDownloadInfoTuple[0],
+		                                                   currentDownloadInfoTuple[1],
+		                                                   currentDownloadInfoTuple[2])
+
+		if self.isFirstCurrentDownloadInfo:
+			outputLabelLineLst.append(currentDownloadInfoStr)
+			self.isFirstCurrentDownloadInfo = False
+		else:
+			outputLabelLineLst = outputLabelLineLst[:-2]
+			outputLabelLineLst.append(currentDownloadInfoStr)
+
+		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 	
 	def displayEndDownloadInfo(self, endDownloadInfoTuple):
 		"""
@@ -988,7 +1002,15 @@ class AudioDownloaderGUI(AudioGUI):
 										size in bytes and total download time in
 										seconds
 		"""
-		print(endDownloadInfoTuple)
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		endDownloadInfoStr = '{} bytes, {} s\n'.format(endDownloadInfoTuple[0],
+		                                               endDownloadInfoTuple[1])
+		outputLabelLineLst = outputLabelLineLst[:-1]
+		outputLabelLineLst.append(endDownloadInfoStr)
+
+		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
+		self.isFirstCurrentDownloadInfo = True
+
 
 class AudioDownloaderGUIMainApp(App):
 	"""
