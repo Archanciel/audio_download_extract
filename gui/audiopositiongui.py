@@ -29,8 +29,9 @@ class AudioPositionGUI(AudioGUI):
 		if soundloaderMp3Obj.status == 'stop':
 			# here, the mp3 was played until its end
 			soundloaderMp3Obj.play()
-
-		soundFilePlayButton.disabled = True
+			soundFilePlayButton.disabled = False
+		else:
+			soundFilePlayButton.disabled = True
 	
 	def ensureTextNotChanged(self, id):
 		"""
