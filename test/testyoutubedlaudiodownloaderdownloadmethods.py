@@ -810,7 +810,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadVideosReferencedInPlaylistForPlaylistUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
-		playlistName = 'Test 3 short videos'
+		playlistName = 'Test download three short videos'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
 		
@@ -828,7 +828,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
-		playlistUrl = 'https://www.youtube.com/playlist?list=PLzwWSJNcZTMShenMgwyjHC8o5bU8QUPbn'
+		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -858,7 +858,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '',
 			 'video download complete.',
 			 '',
-			 '"Test 3 short videos" playlist audio(s) download terminated.',
+			 '"Test download three short videos" playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -866,7 +866,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			sorted(['Funny suspicious looking dog.mp3',
  'Here to help - Give him what he wants.mp3',
- 'Test 3 short videos_dic.txt',
+ 'Test download three short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		
 		# re-downloading the playlist after suppressing the files and data for
@@ -895,16 +895,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19." audio already downloaded in '
- '"test\\Test 3 short videos" dir. Video skipped.',
+ '"test\\Test download three short videos" dir. Video skipped.',
  '',
  '"Here to help: Give him what he wants" audio already downloaded in '
- '"test\\Test 3 short videos" dir. Video skipped.',
+ '"test\\Test download three short videos" dir. Video skipped.',
  '',
  'downloading "Funny suspicious looking dog" audio ...',
  '',
  'video download complete.',
  '',
- '"Test 3 short videos" playlist audio(s) download terminated.',
+ '"Test download three short videos" playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -950,7 +950,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			sorted(['Funny suspicious looking dog.mp3',
  'Here to help - Give him what he wants.mp3',
- 'Test 3 short videos_dic.txt',
+ 'Test download three short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 
 	def testDownloadMaxNamePlaylist(self):
