@@ -1,5 +1,6 @@
 from os.path import sep
 import traceback
+import datetime
 
 from constants import *
 from downloadvideoinfodic import DownloadVideoInfoDic
@@ -232,17 +233,20 @@ class AudioController:
 		"""
 		self.audioGUI.displayCurrentDownloadInfo(currentDownloadInfoTuple)
 	
-	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+	def displayEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
 		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
 		YoutubeDL options.
 
-		:param endDownloadInfoTuple:    2 elements tuple containing final download
-										size in bytes and total download time in
-										seconds
+		:param endDownloadInfoLst:  2 elements tuple containing final download
+									size in bytes and total download time in
+									seconds
 		"""
-		self.audioGUI.displayEndDownloadInfo(endDownloadInfoTuple)
+		hhmmssStr = datetime.timedelta(seconds=int(endDownloadInfoLst[1]))
+		endDownloadInfoLst[1] = hhmmssStr
+		
+		self.audioGUI.displayEndDownloadInfo(endDownloadInfoLst)
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)

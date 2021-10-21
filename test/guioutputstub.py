@@ -37,13 +37,13 @@ class GuiOutputStub:
 		"""
 		pass # avoid printing variable info values when running unit tests
 	
-	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+	def displayEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
 		AudioController.displayEndDownloadInfo().
 
-		:param endDownloadInfoTuple:    2 elements tuple containing final download
-										size in bytes and total download time in
-										seconds
+		:param endDownloadInfoLst:  2 elements tuple containing final download
+									size in bytes and total download time in
+									seconds
 		"""
 		pass # avoid printing variable info values when running unit tests
