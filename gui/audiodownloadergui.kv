@@ -12,7 +12,7 @@
 	requestListRV: request_RecycleView_list
 	outputScrollView: scrlv_out
 	outputLabel: ro_output_Label
-	toggleHistoButton: toggle_history_list_Button
+	toggleVideoHistoButton: toggle_video_history_list_Button
 	deleteButton: delete_Button
 	replaceButton: replace_Button
 	replayAllButton: replay_all_Button
@@ -83,11 +83,17 @@
 			size_hint_y: None
 			height: "28dp"
 			ToggleButton:
-				id: toggle_history_list_Button
-				text: "History"
+				id: toggle_video_history_list_Button
+				text: "Videos"
 				size_hint_x: 15
 				disabled:True
-				on_press: root.toggleRequestList()
+				on_press: root.toggleVideoHistoryList()
+			ToggleButton:
+				id: toggle_playlist_history_list_Button
+				text: "Playlists"
+				size_hint_x: 15
+				disabled:True
+				on_press: root.togglePlaylistHistoryList()
 			Button:
 				id: delete_Button
 				text: "Delete"
@@ -129,8 +135,13 @@
 			Button:
 				id: replay_all_Button
 				text: "Repl All"
-				size_hint_x: 15
+				# disabling the button without removing it definitively
+				width: 0
+				height: 0
+				opacity: 0
+				size_hint: None, None
 				disabled: True
+				#size_hint_x: 15
 				on_press: root.replayAllRequests()
 			Button:
 				id: menu_Button
