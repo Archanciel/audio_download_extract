@@ -35,7 +35,7 @@ class GuiOutputStub:
 											percent string and current download
 											speed string (in KiB/s)
 		"""
-		pass
+		pass # avoid printing variable info values when running unit tests
 	
 	def displayEndDownloadInfo(self, endDownloadInfoTuple):
 		"""
@@ -46,4 +46,4 @@ class GuiOutputStub:
 										size in bytes and total download time in
 										seconds
 		"""
-		pass
+		pass # avoid printing variable info values when running unit tests
