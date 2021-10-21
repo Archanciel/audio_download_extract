@@ -634,11 +634,12 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.replayAllButton.disabled = True
 		self.clearResultOutputButton.disabled = True
-
-		t = threading.Thread(target=asyncOnlineRequestFunction, args=(), kwargs=kwargs)
-		t.daemon = True
-		t.start()
-
+		
+		sepThreadExec = SepThreadExec(callerGUI=self,
+		                              func=asyncOnlineRequestFunction)
+		
+		sepThreadExec.start()
+	
 	def replayAllRequestsOnNewThread(self):
 		# output blank line
 		self.outputResult('')
