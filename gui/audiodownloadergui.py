@@ -994,18 +994,18 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 	
-	def displayEndDownloadInfo(self, endDownloadInfoTuple):
+	def displayEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
 		AudioController.displayEndDownloadInfo().
 
-		:param endDownloadInfoTuple:    2 elements tuple containing final download
-										size in bytes and total download time in
-										seconds
+		:param endDownloadInfoLst:  2 elements tuple containing final download
+									size in bytes and total download time in
+									seconds
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
-		endDownloadInfoStr = '{} bytes, {} s\n'.format(endDownloadInfoTuple[0],
-		                                               endDownloadInfoTuple[1])
+		endDownloadInfoStr = '{} bytes, {}\n'.format(endDownloadInfoLst[0],
+		                                             endDownloadInfoLst[1])
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 
