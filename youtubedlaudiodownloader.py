@@ -1,4 +1,5 @@
 from os.path import sep
+from datetime import datetime
 import glob, re, logging
 from urllib.error import URLError
 from urllib.error import HTTPError
@@ -101,14 +102,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					return downloadVideoInfoDic, None
 				
-				videoTitle = ''
-				
 				try:
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
 				except AttributeError as e:
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
+
 					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
 						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
@@ -333,25 +333,47 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displayMessage(dirCreationMessage)
 		else:
 			# target dir already existed which means that the single video
-			# may already be downloaded
+			# may be already downloaded
 			targetAudioDirFileNameList = DirUtil.getFileNamesInDir(targetAudioDir)
 
-		if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
-			videoTitle = originalVideoTitle
-			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(originalVideoTitle)
-		else:
-			videoTitle = modifiedVideoTitle
-			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedVideoTitle)
-
-		if purgedVideoTitle + '.mp3' in targetAudioDirFileNameList:
-			msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
-			self.audioController.displayMessage(msgText)
-			return
-		
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
-		
+
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
-			msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
+			
+			# obtaining the single video upload date. This information will
+			# be added to the video mp3 audio file name so it is visible in
+			# the Smart Audiobook player app.
+
+			formattedUploadDate = ''
+			
+			try:
+				meta = ydl.extract_info(singleVideoUrl, download=False)
+				uploadDate = meta['upload_date']
+				formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
+			except AttributeError as e:
+				msgText = 'obtaining video upload date failed with error {}.\n'.format(e)
+				self.audioController.displayError(msgText)
+			
+			if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
+				videoTitle = originalVideoTitle
+			else:
+				videoTitle = modifiedVideoTitle
+			
+			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+			purgedOriginalOrModifiedVideoTitleWithDateMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+			
+			# testing if the single video has already been downloaded in the
+			# target audio dir. If yes, we do not re download it.
+			
+			if purgedOriginalOrModifiedVideoTitleWithDateMp3 in targetAudioDirFileNameList:
+				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
+				self.audioController.displayMessage(msgText)
+				
+				return
+		
+			# now downloading the single video ...
+			
+			msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3)
 			self.audioController.displayMessage(msgText)
 
 			try:
@@ -361,19 +383,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				# is no longer a problem
 				self.audioController.displayError(
 					"downloading video [b]{}[/b] caused this Attribute exception: {}. Video target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(
-						videoTitle, e, targetAudioDir, len(targetAudioDir)))
+						purgedOriginalOrModifiedVideoTitleWithDateMp3, e, targetAudioDir, len(targetAudioDir)))
 
 				return
 			
-			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(videoTitle, targetAudioDirShort)
+			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
 		
-		# renaming the downloaded video if its name was modified
+		# finally, renaming the downloaded video to a name which is either
+		# the original video title or the modified video title, in both cases
+		# with including the upload date
 		
-		if modifiedVideoTitle is not None and originalVideoTitle != modifiedVideoTitle:
-			downloadedAudioFilePathName = targetAudioDir + sep + originalVideoTitle + '.mp3'
-			
-			DirUtil.renameFile(originalFilePathName=downloadedAudioFilePathName,
-							   newFileName=modifiedVideoTitle + '.mp3')
+		ydlDownloadedAudioFilePathName = targetAudioDir + sep + originalVideoTitle + '.mp3'
+		
+		DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
+		                   newFileName=purgedOriginalOrModifiedVideoTitleWithDateMp3)
 			
 			

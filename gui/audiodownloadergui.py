@@ -890,7 +890,12 @@ class AudioDownloaderGUI(AudioGUI):
 			# if a playlist is downloading, the stop download button is
 			# activated
 			self.stopDownloadButton.disabled = False
-		
+		else:
+			# if a single video is downloading, the stop download button is
+			# disabled since interrupting a single video download is not
+			# possible
+			self.stopDownloadButton.disabled = True
+
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
 		                                                                     self.playlistOrSingleVideoDownloadPath,
 		                                                                     self.originalPlaylistTitle,

@@ -202,7 +202,7 @@ class TestAudioController(unittest.TestCase):
 		playlistOrSingleVideoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		originalPlaylistTitle = None
 		modifiedPlaylistTitle = None
-		singleVideoTitle = 'Funny suspicious looking dog short video'
+		singleVideoTitle = 'Funny suspicious looking dog'
 		
 		testBaseRootDir = 'Various' + sep + 'single_video dir'
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
@@ -237,24 +237,22 @@ class TestAudioController(unittest.TestCase):
 		sys.stdout = stdout
 		
 		if os.name == 'posix':
-			self.assertEqual(['downloading "Funny suspicious looking dog short video" audio ...',
- '',
- '"Funny suspicious looking dog short video" audio downloaded in "new dir/new '
- 'sub dir" directory.',
+			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+ '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
+ 'skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "Funny suspicious looking dog short video" audio ...',
- '',
- '"Funny suspicious looking dog short video" audio downloaded in '
- '"Audio\\test\\Various\\single_video dir\\new dir\\new sub dir" directory.',
+			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+ '"Audio\\test\\Various\\single_video dir\\new dir\\new sub dir" dir. Video '
+ 'skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		createdFileLst = os.listdir(playlistOrSingleVideoDownloadPath)
 		
 		self.assertEqual(
-			['Funny suspicious looking dog.mp3'],
+			['Funny suspicious looking dog 2013-11-05.mp3'],
 			createdFileLst)
 
 
