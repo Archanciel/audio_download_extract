@@ -14,5 +14,8 @@ class ConfirmPopup(GridLayout):
 
 		self.register_event_type('on_answer')
 
+	def toggleAddUploadDate(self, isActive):
+		pass
+
 	def on_answer(self, *args):
 		pass
