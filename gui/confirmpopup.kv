@@ -9,6 +9,7 @@
             pos: self.pos
             size: self.size
 	GridLayout:
+	    id: grd
 		cols: 2
 		size_hint_y: None
 		height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
@@ -20,7 +21,6 @@
 				background_color: [0,0,0,1]
 				foreground_color: [1,1,1,1]
 				size_hint_y: None
-				height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
 				text: root.text
 				readonly: True
 		CheckBox:
@@ -28,7 +28,7 @@
 			active: True
 			#size_hint_x: 0.17 # smartphone
 			size_hint_x: 0.06 # tablet, Windows
-			size_hint_y: None
+			height: int(grd.height / 2)
 			on_press: root.toggleAddUploadDate(self.active)
 	GridLayout:
 		cols: 4
