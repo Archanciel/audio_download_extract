@@ -350,17 +350,20 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
-				confirmPopupTitle = "Go on with processing playlist ..."
+				confirmPopupTitle = "Go on with processing playlist (upload date added) ..."
+				enableAddUploadDateChkBox = True
 			else:
 				# url obtained from clipboard points to a single video
 				downloadObjectTitle = self.originalSingleVideoTitle
 				confirmPopupTitle = "Go on with downloading audio for video ... "
-			
+				enableAddUploadDateChkBox = False
+
 			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 			
 			self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
 			                                     confirmPopupMsg=downloadObjectTitle,
-			                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction)
+			                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction,
+			                                     enableAddUploadDateChkBox=enableAddUploadDateChkBox)
 			self.popup.open()
 		else:
 			pass
@@ -916,7 +919,8 @@ class AudioDownloaderGUI(AudioGUI):
 	def createConfirmPopup(self,
 						   confirmPopupTitle,
 						   confirmPopupMsg,
-						   confirmPopupCallbackFunction):
+						   confirmPopupCallbackFunction,
+	                       enableAddUploadDateChkBox):
 		"""
 
 		:param confirmPopupTitle:
@@ -941,7 +945,14 @@ class AudioDownloaderGUI(AudioGUI):
 			msgWidth = 68
 		
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
-		self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg)
+		
+		if enableAddUploadDateChkBox:
+			self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
+			                                 isPlaylist=True)
+		else:
+			self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
+			                                 isPlaylist=False)
+
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
 		popup = Popup(title=confirmPopupTitle,
