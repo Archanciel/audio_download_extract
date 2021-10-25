@@ -105,10 +105,10 @@ class DirUtil:
 		:return:
 		"""
 		charToReplace = {'\\': '',
-		                 '/': '_', # since YoutubeDL replaces / by _
-		                 ':': '',
+		                 '/': '_', # since YoutubeDL replaces '/' by '_'
+		                 ':': ' -', # since YoutubeDL replaces ':' by ' -'
 		                 '*': ' ',
-		                 '.': '',
+		                 #'.': '', point is not illegal in file name
 		                 '?': '',
 		                 '"': "'", # since YoutubeDL replaces " by '
 		                 '<': '',

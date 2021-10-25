@@ -4,6 +4,8 @@ from kivy.clock import Clock
 
 
 class ConfirmPopup(GridLayout):
+	POPUP_TITLE_UPLOAD_DATE = ' (upload date added) ...'
+	POPUP_TITLE_NO_UPLOAD_DATE = ' ...'
 	text = StringProperty()
 	
 	def __init__(self, **kwargs):
@@ -39,9 +41,14 @@ class ConfirmPopup(GridLayout):
 		containingPopup = self.parent.parent.parent
 
 		if isActive:
-			containingPopup.title = 'Ciao'
+			containingPopup.title = containingPopup.title.replace(self.POPUP_TITLE_NO_UPLOAD_DATE,
+			                                                      self.POPUP_TITLE_UPLOAD_DATE)
 		else:
-			containingPopup.title = 'Hola'
+			containingPopup.title = containingPopup.title.replace(self.POPUP_TITLE_UPLOAD_DATE,
+			                                                      self.POPUP_TITLE_NO_UPLOAD_DATE)
 
 	def on_answer(self, *args):
 		pass
+	
+	def isUploadDateAdded(self):
+		return self.addUploadDateChkBox.active

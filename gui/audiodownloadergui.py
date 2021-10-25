@@ -287,6 +287,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.downloadObjectTitleThreadCreated = False
 		self.playlistOrSingleVideoDownloadPath = None
 		self.accessError = None
+		self.isUploadDateAddedToPlaylistVideo = False
 		
 		self._doOnStart()
 	
@@ -350,7 +351,7 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
-				confirmPopupTitle = "Go on with processing playlist (upload date added) ..."
+				confirmPopupTitle = "Go on with processing playlist{}".format(ConfirmPopup.POPUP_TITLE_UPLOAD_DATE)
 				enableAddUploadDateChkBox = True
 			else:
 				# url obtained from clipboard points to a single video
@@ -383,14 +384,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.stopDownloadButton.disabled = True
 		self.clearResultOutputButton.disabled = True
 
-	def onConfirmPopupAnswer(self, instance, answer):
+	def onConfirmPopupAnswer(self, confirmPopupInstance, answer):
 		"""
 		Method called when one of the ConfirmPopup button is pushed.
 		
-		:param instance:
+		:param confirmPopupInstance:
 		:param answer:
 		:return:
 		"""
+		self.isUploadDateAddedToPlaylistVideo = confirmPopupInstance.isUploadDateAdded()
+		
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			
 			# correcting a bug if you first downloaded a playlist after
@@ -904,6 +907,7 @@ class AudioDownloaderGUI(AudioGUI):
 		                                                                     self.originalPlaylistTitle,
 		                                                                     self.modifiedPlaylistTitle,
 		                                                                     self.originalSingleVideoTitle,
+		                                                                     self.isUploadDateAddedToPlaylistVideo,
 		                                                                     self.modifiedSingleVideoTitle)
 	
 		self.downloadThreadCreated = False  # used to fix a problem on Android

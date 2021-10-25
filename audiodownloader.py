@@ -13,11 +13,18 @@ class AudioDownloader(metaclass=ABCMeta):
 		self.audioDirRoot = audioDirRoot
 	
 	@abstractmethod
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self, playlistUrl, downloadVideoInfoDic):
+	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
+	                                                     playlistUrl,
+	                                                     downloadVideoInfoDic,
+	                                                     isUploadDateAddedToPlaylistVideo):
 		"""
 		
 		:param playlistUrl:
 		:param downloadVideoInfoDic:
+		:param isUploadDateAddedToPlaylistVideo if True, the name of the video
+												audio files referenced in the
+												playlist will be terminated by
+												the video upload date.
 		:return:
 		"""
 		pass

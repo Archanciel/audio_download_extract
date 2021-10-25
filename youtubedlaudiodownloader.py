@@ -61,7 +61,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
 														 playlistUrl,
-														 downloadVideoInfoDic):
+														 downloadVideoInfoDic,
+	                                                     isUploadDateAddedToPlaylistVideo):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -69,6 +70,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		:param playlistUrl:
 		:param downloadVideoInfoDic:
+		:param isUploadDateAddedToPlaylistVideo if True, the name of the video
+												audio files referenced in the
+												playlist will be terminated by
+												the video upload date.
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
@@ -102,9 +107,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					return downloadVideoInfoDic, None
 				
+				formattedUploadDate = ''
+				
 				try:
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
+					
+					if isUploadDateAddedToPlaylistVideo:
+						uploadDate = meta['upload_date']
+						formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
@@ -115,18 +126,40 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
 				
+				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+
+				if isUploadDateAddedToPlaylistVideo:
+					purgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+				else:
+					purgedVideoTitleMp3 = purgedVideoTitle + '.mp3'
+
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
-					if downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle) in targetAudioDirFileNameList:
+					audioFileNameInDic = downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle)
+					if audioFileNameInDic in targetAudioDirFileNameList:
 						# the video was already downloaded and converted to audio file
-						msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+						if audioFileNameInDic == purgedVideoTitleMp3:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(purgedVideoTitleMp3, targetAudioDirShort)
+						else:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
+								purgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 					else:
 						# the video audio file was already downloaded and was deleted
-						msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(videoTitle, targetAudioDirShort)
+						if audioFileNameInDic == purgedVideoTitleMp3:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(purgedVideoTitleMp3, targetAudioDirShort)
+						else:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] but was deleted. Video skipped.\n'.format(
+								purgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 
 					self.audioController.displayMessage(msgText)
 					continue
+				
+				if isUploadDateAddedToPlaylistVideo:
+					purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+					purgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+					msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedVideoTitleMp3)
+				else:
+					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 
-				msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 				self.audioController.displayMessage(msgText)
 
 				try:
@@ -145,12 +178,26 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					continue
 					
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
+
+				if isUploadDateAddedToPlaylistVideo:
+					# finally, renaming the downloaded video to a name which
+					# includes the video upload date.
+					
+					ydlDownloadedAudioFilePathName = targetAudioDir + sep + purgedVideoTitle + '.mp3'
+					
+					DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
+					                   newFileName=purgedVideoTitleMp3)
+				else:
+					purgedVideoTitleMp3 = downloadedAudioFileName
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
 					# updating and saving the downloadVideoInfoDic only if the audio file
 					# was downloaded successfully enables to retry downloading the playlist.
 					# The failed video download will be retried.
-					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, videoTitle, videoUrl, downloadedAudioFileName)
+					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex,
+					                                               videoTitle,
+					                                               videoUrl,
+					                                               purgedVideoTitleMp3)
 					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
 					
@@ -181,9 +228,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		"""
 		ytdlFileName = downloadedAudioFileName.replace('mp3', self.tempYdlFileExtension)
 		ytdlFilePathName = targetAudioDir + sep + ytdlFileName
-		
-		# logging.info('isAudioFileDownloadOk. ytdlFileName = {}, ytdlFilePathName = {}'.format(ytdlFileName, ytdlFilePathName))
-		# logging.info('isAudioFileDownloadOk. doesYtdlFileExist = {}'.format(os.path.isfile(ytdlFilePathName)))
 		
 		return not os.path.isfile(ytdlFilePathName)
 		
