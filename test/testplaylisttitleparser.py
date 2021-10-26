@@ -566,7 +566,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars(
 			self):
 		originalPlaylistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
-		expectedPlaylistDirName = "Audio - ET L_UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
+		expectedPlaylistDirName = "Audio - - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
 		
 		expectedDownloadDir = DirUtil.getTestAudioRootPath() + sep + expectedPlaylistDirName
 		
@@ -644,7 +644,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			self):
 		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
 		expectedOriginalPlayListName = "test playlist avec un point. Et la fin du nom"
-		playListNameForDirName = "test playlist avec un point Et la fin du nom"
+		playListNameForDirName = "test playlist avec un point. Et la fin du nom"
 		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = ""
 		
@@ -672,7 +672,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			self):
 		expectedPlayListTitle = "test playlist avec un point. Et la fin du nom"
 		expectedOriginalPlayListName = "test playlist avec un point. Et la fin du nom"
-		playListNameForDirName = "test playlist avec un point Et la fin du nom"
+		playListNameForDirName = "test playlist avec un point. Et la fin du nom"
 		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
 		
@@ -715,7 +715,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			self):
 		expectedPlayListTitle = "test short_n_ame pl, playlist: avec deux points"
 		expectedOriginalPlayListName = "test short_n_ame pl, playlist: avec deux points"
-		playListNameForDirName = "test short_n_ame pl, playlist avec deux points"
+		playListNameForDirName = "test short_n_ame pl, playlist - avec deux points"
 		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = ""
 		
@@ -743,7 +743,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			self):
 		expectedPlayListTitle = "test short_n_ame pl, playlist: avec deux points"
 		expectedOriginalPlayListName = "test short_n_ame pl, playlist: avec deux points"
-		playListNameForDirName = "test short_n_ame pl, playlist avec deux points"
+		playListNameForDirName = "test short_n_ame pl, playlist - avec deux points"
 		expectedPlayListDownloadDir = DirUtil.getTestAudioRootPath() + sep + playListNameForDirName
 		timeInfo = "{(E0:05:52-0:07:23 S0:10:52-e) (e1:05:52-E s1:10:52-1:10:53)}"
 		
