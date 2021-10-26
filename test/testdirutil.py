@@ -13,7 +13,7 @@ class TestDirUtil(unittest.TestCase):
 
 	def testReplaceUnauthorizedDirNameChars(self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
-		expectedFileName = "Audio - ET L_UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
+		expectedFileName = "Audio - - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
 		
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
 		
@@ -123,7 +123,28 @@ class TestDirUtil(unittest.TestCase):
 
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
-
+	
+	def testRenameFile_file_not_exist(self):
+		createdFileName = 'temp.txt'
+		renamedFileName = 'renamed_temp.txt'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		createdFilePathName = testBaseRootPath + sep + createdFileName
+		
+		self.assertFalse(os.path.isfile(createdFilePathName))
+		
+		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
+		
+		self.assertEqual("[WinError 2] Le fichier spécifié est introuvable: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'", errorInfo)
+		
+		# removing test dir
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
 	def testCreateTargetDirIfNotExist_singleVideo(self):
 		testBaseRootDir = 'Audio' + sep + 'Various'
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir

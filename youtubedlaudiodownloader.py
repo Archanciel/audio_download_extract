@@ -147,7 +147,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						if audioFileNameInDic == purgedVideoTitleMp3:
 							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(purgedVideoTitleMp3, targetAudioDirShort)
 						else:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] but was deleted. Video skipped.\n'.format(
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
 								purgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 
 					self.audioController.displayMessage(msgText)
@@ -185,8 +185,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					ydlDownloadedAudioFilePathName = targetAudioDir + sep + purgedVideoTitle + '.mp3'
 					
-					DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
-					                   newFileName=purgedVideoTitleMp3)
+					fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
+					                              newFileName=purgedVideoTitleMp3)
+					
+					if fileNotFoundErrorInfo is not None:
+						self.audioController.displayError(fileNotFoundErrorInfo)				
 				else:
 					purgedVideoTitleMp3 = downloadedAudioFileName
 				

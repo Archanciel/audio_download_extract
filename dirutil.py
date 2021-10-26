@@ -98,13 +98,15 @@ class DirUtil:
 	@staticmethod
 	def replaceUnauthorizedDirOrFileNameChars(rawFileName):
 		"""
-		This method replaces chars in the passed raw file name which are unauthorized on
-		Windows.
+		This method replaces chars in the passed raw file name which are
+		unauthorized on Windows. The replacements are conform to how
+		youtube_dl names the downloaded audio file.
 		
 		:param rawFileName:
 		:return:
 		"""
-		charToReplace = {'\\': '',
+		charToReplace = {
+						 '\\': '',
 		                 '/': '_', # since YoutubeDL replaces '/' by '_'
 		                 ':': ' -', # since YoutubeDL replaces ':' by ' -'
 		                 '*': ' ',
@@ -113,8 +115,9 @@ class DirUtil:
 		                 '"': "'", # since YoutubeDL replaces " by '
 		                 '<': '',
 		                 '>': '',
-		                 '|': '',
-		                 "'": '_'}
+		                 '|': ''
+		                 #"'": '_' apostrophe is not illegal in file name
+		                 }
 		
 		# Replace all multiple characters in a string
 		# based on translation table created by dictionary
@@ -141,4 +144,8 @@ class DirUtil:
 	@staticmethod
 	def renameFile(originalFilePathName, newFileName):
 		newFilePathName = DirUtil.extractPathFromPathFileName(originalFilePathName) + sep + newFileName
-		os.rename(originalFilePathName, newFilePathName)
+		
+		try:
+			os.rename(originalFilePathName, newFilePathName)
+		except FileNotFoundError as e:
+			return str(e)
