@@ -1,4 +1,5 @@
 from kivy.properties import StringProperty
+from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
 
@@ -7,10 +8,14 @@ class ConfirmPopup(GridLayout):
 	POPUP_TITLE_UPLOAD_DATE = ' (upload date added) ...'
 	POPUP_TITLE_NO_UPLOAD_DATE = ' ...'
 	text = StringProperty()
+	cols = ObjectProperty
 	
 	def __init__(self, **kwargs):
 		# removing new line char which may cause an exception in Kivy
 		text = kwargs['text']
+		#cols = 1   # required to avoid [WARNING] <kivy.uix.gridlayout.GridLayout
+					# object at 0x000001DE3BFBF3C0> have no cols or rows set,
+					# layout is not triggered.
 		self.isPlaylist = kwargs['isPlaylist']
 		
 		# removing the isPlaylist arg is necessary otherwise the superclass
