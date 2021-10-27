@@ -13,7 +13,7 @@ class ConfirmPopup(GridLayout):
 	def __init__(self, **kwargs):
 		# removing new line char which may cause an exception in Kivy
 		text = kwargs['text']
-		#cols = 1   # required to avoid [WARNING] <kivy.uix.gridlayout.GridLayout
+		cols = 1    # required to avoid [WARNING] <kivy.uix.gridlayout.GridLayout
 					# object at 0x000001DE3BFBF3C0> have no cols or rows set,
 					# layout is not triggered.
 		self.isPlaylist = kwargs['isPlaylist']
