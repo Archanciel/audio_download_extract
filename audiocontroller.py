@@ -70,9 +70,9 @@ class AudioController:
 				                                             modifiedPlaylistTitle=modifiedPlaylistTitle)
 
 			_, accessError = \
-				self.audioDownloader.downloadVideosReferencedInPlaylistForPlaylistUrl(playlistUrl=playlistOrSingleVideoUrl,
-				                                                                      downloadVideoInfoDic=downloadVideoInfoDic,
-				                                                                      isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+				self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
+				                                                  downloadVideoInfoDic=downloadVideoInfoDic,
+				                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
 

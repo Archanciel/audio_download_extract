@@ -13,10 +13,10 @@ class AudioDownloader(metaclass=ABCMeta):
 		self.audioDirRoot = audioDirRoot
 	
 	@abstractmethod
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
-	                                                     playlistUrl,
-	                                                     downloadVideoInfoDic,
-	                                                     isUploadDateAddedToPlaylistVideo):
+	def downloadPlaylistVideosForUrl(self,
+	                                 playlistUrl,
+	                                 downloadVideoInfoDic,
+	                                 isUploadDateAddedToPlaylistVideo):
 		"""
 		
 		:param playlistUrl:

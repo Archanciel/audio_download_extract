@@ -59,10 +59,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
 
-	def downloadVideosReferencedInPlaylistForPlaylistUrl(self,
-														 playlistUrl,
-														 downloadVideoInfoDic,
-	                                                     isUploadDateAddedToPlaylistVideo):
+	def downloadPlaylistVideosForUrl(self,
+	                                 playlistUrl,
+	                                 downloadVideoInfoDic,
+	                                 isUploadDateAddedToPlaylistVideo):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -117,14 +117,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						uploadDate = meta['upload_date']
 						formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
-					msgText = 'obtaining video title failed with error {}.\n'.format(e)
+					msgText = 'obtaining video title failed with error {}.'.format(e)
 					self.audioController.displayError(msgText)
-
-					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
-						downloadVideoInfoDic.getPlaylistNameOriginal())
-					self.audioController.displayMessage(msgText)
+					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
-					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
+					continue
 				
 				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 
@@ -168,15 +165,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
-					msgText = '\n[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
-						downloadVideoInfoDic.getPlaylistNameOriginal())
-					self.audioController.displayMessage(msgText)
+					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
-					return downloadVideoInfoDic, AccessError(AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE, str(e))
+					continue
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
-					continue
+					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
+					continue
+				
 				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
 
 				if isUploadDateAddedToPlaylistVideo:
@@ -218,7 +215,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displayMessage(msgText)
 		
 		return downloadVideoInfoDic, None
-
+	
+	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
+		msgText = '\nplease retry downloading the playlist later to download the failed audio only ...\n'.format(
+			downloadVideoInfoDic.getPlaylistNameOriginal())
+		self.audioController.displayMessage(msgText)
+	
 	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
 		"""
 		Return True if no ytdl file version for the passed downloadedAudioFileName
