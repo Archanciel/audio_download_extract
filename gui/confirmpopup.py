@@ -35,12 +35,13 @@ class ConfirmPopup(GridLayout):
 		Clock.schedule_once(self._finish_init)
 	
 	def _finish_init(self, dt):
-		if self.isPlaylist:
-			self.addUploadDateChkBox.active = True
-			self.addUploadDateChkBox.disabled = False
-		else:
-			self.addUploadDateChkBox.active = False
-			self.addUploadDateChkBox.disabled = True
+		pass
+		# if self.isPlaylist:
+		# 	self.addUploadDateChkBox.active = True
+		# 	self.addUploadDateChkBox.disabled = False
+		# else:
+		# 	self.addUploadDateChkBox.active = False
+		# 	self.addUploadDateChkBox.disabled = True
 
 	def toggleAddUploadDate(self, isActive):
 		containingPopup = self.parent.parent.parent
@@ -56,4 +57,5 @@ class ConfirmPopup(GridLayout):
 		pass
 	
 	def isUploadDateAdded(self):
-		return self.addUploadDateChkBox.active
+#		return self.addUploadDateChkBox.active
+		return True
