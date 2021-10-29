@@ -246,7 +246,14 @@ class AudioController:
 									size in bytes and total download time in
 									seconds
 		"""
-		hhmmssStr = datetime.timedelta(seconds=int(endDownloadInfoLst[1]))
+		downloadTime = endDownloadInfoLst[1]
+		
+		if downloadTime is None:
+			# the case for some videos on Android
+			hhmmssStr = '?'
+		else:
+			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
+	
 		endDownloadInfoLst[1] = hhmmssStr
 		
 		self.audioGUI.displayEndDownloadInfo(endDownloadInfoLst)

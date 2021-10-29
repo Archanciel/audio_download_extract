@@ -21,7 +21,13 @@ class YoutubeDlDownloadInfoExtractor:
 				                                                 response["_speed_str"]))
 				self.lstExtractTime = now
 		elif response['status'] == 'finished':
+			if self.downloadStartTime is None:
+				# happens for some videos on Android
+				downloadTime = None
+			else:
+				downloadTime = time.time() - self.downloadStartTime
+			
 			self.audioController.displayEndDownloadInfo([response["total_bytes"],
-			                                             time.time() - self.downloadStartTime])
+			                                             downloadTime])
 			self.downloadStartTime = None
 			
