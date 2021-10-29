@@ -117,7 +117,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						uploadDate = meta['upload_date']
 						formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
-					msgText = 'obtaining video title failed with error {}.'.format(e)
+					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
@@ -162,12 +162,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				try:
 					ydl.download([videoUrl])
 				except AttributeError as e:
-					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !".format(videoTitle, e))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
 					#continue
 				except DownloadError as e:
-					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.".format(videoTitle, e))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
 					continue
@@ -184,7 +184,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					                              newFileName=purgedVideoTitleMp3)
 					
 					if fileNotFoundErrorInfo is not None:
-						self.audioController.displayError(fileNotFoundErrorInfo)				
+						self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 				else:
 					purgedVideoTitleMp3 = downloadedAudioFileName
 				
@@ -427,7 +427,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
 				self.audioController.displayError(
-					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !".format(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
 						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
 
 				#return
@@ -441,7 +441,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		ydlDownloadedAudioFilePathName = targetAudioDir + sep + originalVideoTitle + '.mp3'
 		
-		DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
-		                   newFileName=purgedOriginalOrModifiedVideoTitleWithDateMp3)
-			
-			
+		fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
+		                                           newFileName=purgedOriginalOrModifiedVideoTitleWithDateMp3)
+
+		if fileNotFoundErrorInfo is not None:
+			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
+
