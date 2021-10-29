@@ -162,12 +162,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				try:
 					ydl.download([videoUrl])
 				except AttributeError as e:
-					# typically 'str' object has no attribute 'write'. This error
-					# is no longer a problem
-					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}.".format(videoTitle, e))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
-					continue
+					#continue
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
@@ -428,13 +426,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			try:
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
-				# typically 'str' object has no attribute 'write'. This error
-				# is no longer a problem
 				self.audioController.displayError(
-					"downloading video [b]{}[/b] caused this Attribute exception: {}.".format(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !".format(
 						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
 
-				return
+				#return
 			
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
 			self.audioController.displayMessage(msgText)
