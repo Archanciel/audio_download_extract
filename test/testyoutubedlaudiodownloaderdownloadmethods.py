@@ -1651,6 +1651,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
+	def testDownloadSingleVideoForUrl_renamedFile_already_exist(self):
+		self.assertEqual('', 'do unit test !')
+
+	def testDownloadPlaylistVideosForUrl_renamedFile_already_exist(self):
+		self.assertEqual('', 'do unit test !')
 
 if __name__ == '__main__':
 #	unittest.main()
