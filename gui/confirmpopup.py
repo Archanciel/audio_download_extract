@@ -11,8 +11,9 @@ class ConfirmPopup(GridLayout):
 	cols = ObjectProperty
 	
 	def __init__(self, **kwargs):
-		# removing new line char which may cause an exception in Kivy
 		text = kwargs['text']
+		# removing new line char which may cause an exception in Kivy
+		self.textStr = kwargs['text']
 		cols = 1    # required to avoid [WARNING] <kivy.uix.gridlayout.GridLayout
 					# object at 0x000001DE3BFBF3C0> have no cols or rows set,
 					# layout is not triggered.
@@ -22,7 +23,7 @@ class ConfirmPopup(GridLayout):
 		# constructor will fail !
 		del kwargs['isPlaylist']
 		
-		kwargs['text'] = text.replace("\n", " ")
+		kwargs['text'] = self.textStr.replace("\n", " ")
 
 		super(ConfirmPopup, self).__init__(**kwargs)
 
@@ -35,6 +36,8 @@ class ConfirmPopup(GridLayout):
 		Clock.schedule_once(self._finish_init)
 	
 	def _finish_init(self, dt):
+		self.editableTextInput.text = self.textStr
+		
 		if self.isPlaylist:
 			self.addUploadDateChkBox.active = True
 			self.addUploadDateChkBox.disabled = False
