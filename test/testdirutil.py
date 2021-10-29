@@ -124,7 +124,7 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
-	def testRenameFile_file_not_exist(self):
+	def testRenameFile_file_to_rename_not_exist(self):
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'
 		
@@ -141,6 +141,39 @@ class TestDirUtil(unittest.TestCase):
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
 		self.assertEqual("[WinError 2] Le fichier spécifié est introuvable: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'", errorInfo)
+		
+		# removing test dir
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
+	def testRenameFile_file_with_new_name_already_exist(self):
+		createdFileName = 'temp.txt'
+		renamedFileName = 'renamed_temp.txt'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		createdFilePathName = testBaseRootPath + sep + createdFileName
+		
+		with open(createdFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(createdFilePathName))
+		
+		renamedFilePathName = testBaseRootPath + sep + renamedFileName
+		
+		with open(renamedFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(renamedFilePathName))
+		
+		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
+		
+		self.assertEqual(
+			"[WinError 183] Impossible de créer un fichier déjà existant: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			errorInfo)
 		
 		# removing test dir
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)

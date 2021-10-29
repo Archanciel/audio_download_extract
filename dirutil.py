@@ -147,5 +147,5 @@ class DirUtil:
 		
 		try:
 			os.rename(originalFilePathName, newFilePathName)
-		except FileNotFoundError as e:
+		except (FileNotFoundError, FileExistsError) as e:
 			return str(e)
