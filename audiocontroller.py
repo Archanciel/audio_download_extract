@@ -249,7 +249,8 @@ class AudioController:
 		downloadTime = endDownloadInfoLst[1]
 		
 		if downloadTime is None:
-			# the case for some videos on Android
+			# the case for some videos on Android Maybe for videos which were
+			# almost fully partially downloaded ...
 			hhmmssStr = '?'
 		else:
 			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))

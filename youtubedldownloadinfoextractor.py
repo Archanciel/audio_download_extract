@@ -22,7 +22,8 @@ class YoutubeDlDownloadInfoExtractor:
 				self.lstExtractTime = now
 		elif response['status'] == 'finished':
 			if self.downloadStartTime is None:
-				# happens for some videos on Android
+				# happens for some videos on Android. Maybe for videos which were
+				# almost fully partially downloaded ...
 				downloadTime = None
 			else:
 				downloadTime = time.time() - self.downloadStartTime
