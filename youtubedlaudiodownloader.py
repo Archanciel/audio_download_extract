@@ -164,12 +164,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					# typically 'str' object has no attribute 'write'. This error
 					# is no longer a problem
-					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}.".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
 					continue
 				except DownloadError as e:
-					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}. Playlist target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(videoTitle, e, targetAudioDir, len(targetAudioDir)))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					
 					continue
@@ -431,8 +431,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				# typically 'str' object has no attribute 'write'. This error
 				# is no longer a problem
 				self.audioController.displayError(
-					"downloading video [b]{}[/b] caused this Attribute exception: {}. Video target dir [b]{}[/b] length = {} chars (max acceptable length = 168 chars) !".format(
-						purgedOriginalOrModifiedVideoTitleWithDateMp3, e, targetAudioDir, len(targetAudioDir)))
+					"downloading video [b]{}[/b] caused this Attribute exception: {}.".format(
+						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
 
 				return
 			
