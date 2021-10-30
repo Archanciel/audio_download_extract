@@ -431,19 +431,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
 
 				#return
-			
-			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
-			self.audioController.displayMessage(msgText)
 		
 		# finally, renaming the downloaded video to a name which is either
 		# the original video title or the modified video title, in both cases
 		# with including the upload date
 		
-		ydlDownloadedAudioFilePathName = targetAudioDir + sep + originalVideoTitle + '.mp3'
-		
+		ydlDownloadedAudioFilePathName = targetAudioDir + sep + purgedVideoTitle + '.mp3'
+
 		fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
 		                                           newFileName=purgedOriginalOrModifiedVideoTitleWithDateMp3)
 
-		if fileNotFoundErrorInfo is not None:
+		if fileNotFoundErrorInfo is None:
+			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(
+				purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
+			self.audioController.displayMessage(msgText)
+		else:
 			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 
