@@ -124,6 +124,33 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
+	def testRenameFile_with_invalid_file_name(self):
+		createdFileName = 'temp.txt'
+		invalidCreatedFileName = 'temp ?.txt'
+		renamedFileName = 'renamed_temp.txt'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		createdFilePathName = testBaseRootPath + sep + createdFileName
+		
+		with open(createdFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(createdFilePathName))
+		
+		errorInfo = DirUtil.renameFile(invalidCreatedFileName, renamedFileName)
+		
+		self.assertEqual(
+			"[WinError 123] La syntaxe du nom de fichier, de répertoire ou de volume est incorrecte: 'temp ?.txt' -> '\\\\renamed_temp.txt'",
+			errorInfo)
+		
+		# removing test dir
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
 	def testRenameFile_file_to_rename_not_exist(self):
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'

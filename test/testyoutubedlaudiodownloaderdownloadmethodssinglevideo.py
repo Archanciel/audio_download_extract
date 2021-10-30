@@ -204,10 +204,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertEqual(['"Comment Etudier Un Cours En Miracles ?" audio already downloaded in '
-	 '"Various_test_not_emptied" dir. Video skipped.',
-	 '',
-	 ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['"Comment Etudier Un Cours En Miracles  2018-12-16.mp3" audio already '
+ 'downloaded in "Various_test_not_emptied" dir. Video skipped.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash(self):
 		expectedVideoTitle = 'Aimer sans peur 3/9 - Gary Renard'
@@ -235,8 +235,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['"Aimer sans peur 3/9 - Gary Renard" audio already downloaded in '
- '"Various_test_not_emptied" dir. Video skipped.',
+		self.assertEqual(['"Aimer sans peur 3_9 - Gary Renard 2013-03-26.mp3" audio already downloaded '
+ 'in "Various_test_not_emptied" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 	
@@ -288,11 +288,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio '
- '...',
+			self.assertEqual(['downloading "Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
+ '2020-09-26.mp3" audio ...',
  '',
- '"Is NEO Worth Buying? - Price Prediction 2020/2021 🚀🚀🚀" audio downloaded in '
- '"test\\Various_test" directory.',
+ '"Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 2020-09-26.mp3" audio '
+ 'downloaded in "test\\Various_test" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -304,11 +304,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			                 downloadDir)
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀.mp3']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 2020-09-26.mp3']), sorted(fileNameLst))
 
 
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash()
+	tst.testDownloadSingleVideoForUrl_redownloading_video_title_ending_with_question_mark()

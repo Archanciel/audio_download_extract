@@ -1064,14 +1064,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
- 'directory. Playlist target dir '
- '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être fatigué '
- 'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length = 169 chars (max acceptable length = '
- '168 chars) !',
+ 'directory.',
  '',
- 'please retry downloading the playlist later to download the failed audio '
- 'only ...',
+ '',
+ 'retry downloading the playlist later to download the failed audio only ...',
  '',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
@@ -1100,7 +1096,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		AudioDownloaderGUI succeeds !
 		"""
 		playlistName = 'Il commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
-		playlistNameWindowsAcceptable = 'Il commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
+		playlistNameWindowsAcceptable = 'Il commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
@@ -1157,7 +1153,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\Il commence à être fatigué de ce problème impossible à analyser Je '
+ 'test\\Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
@@ -1167,14 +1163,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
- 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
+ 'fatigué de ce problème impossible à analyser. Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
- 'directory. Playlist target dir '
- '"C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être fatigué '
- 'de ce problème impossible à analyser Je commence à être fatigué de ce '
- 'problème impossible à analyser" length = 169 chars (max '
- 'acceptable length = 168 chars) !',
+ 'directory.',
+ '',
+ '',
+ 'retry downloading the playlist later to download the failed audio only ...',
+ '',
  '"Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser" playlist '
  'audio(s) download terminated.',
@@ -1271,9 +1267,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		from the created dir name. The point does not alter the fact that the playlist
 		download succeeds.
 		"""
-		playlistName = 'G commence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
-		playlistNameWindowsAcceptable = 'G commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
+		longPlaylistNameMinusOneChar = 'Gcommence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
+		longPlaylistNameMinusOneCharWindowsAcceptable = 'Gcommence à être fatigué de ce problème impossible à analyser. Je commence à être fatigué de ce problème impossible à analyser'
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(longPlaylistNameMinusOneCharWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1284,7 +1280,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
-		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQBqzowzbM5XlJkYw0Ovl5W"
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSkA0--6AhpekQXmAZXbAmz"
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -1324,7 +1320,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\G commence à être fatigué de ce problème impossible à analyser Je '
+ 'test\\Gcommence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
@@ -1333,19 +1329,19 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'video download complete.',
  '',
- '"G commence à être fatigué de ce problème impossible à analyser. Je commence '
+ '"Gcommence à être fatigué de ce problème impossible à analyser. Je commence '
  'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['G commence à être fatigué de ce problème impossible à analyser Je commence à '
+		self.assertEqual(sorted(['Gcommence à être fatigué de ce problème impossible à analyser. Je commence à '
  'être fatigué de ce problème impossible à analyser_dic.txt',
  'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
 
-		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(longPlaylistNameMinusOneChar, downloadVideoInfoDic.getPlaylistNameOriginal())
 
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
 		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
@@ -1404,7 +1400,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		else:
 			self.assertEqual(['directory',
  'test\\127 char_____playlist name is very long and will cause a problem if '
- 'the target dir name exceeds a maximum possible too big name',
+ 'the target dir name exceeds a maximum possible too big name.',
  'was created.',
  '',
  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
@@ -1414,12 +1410,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
- 'maximum possible too big name\\Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
- 'Playlist target dir "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 '
- 'char_____playlist name is very long and will cause a problem if the target '
- 'dir name exceeds a maximum possible too big name" length = 169 chars (max '
- 'acceptable length = 168 chars) !',
+ 'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
+ 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory.',
+ '',
+ '',
+ 'retry downloading the playlist later to download the failed audio only ...',
+ '',
  '"127 char_____playlist name is very long and will cause a problem if the '
  'target dir name exceeds a maximum possible too big name." playlist audio(s) '
  'download terminated.',
@@ -1427,8 +1423,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
- 'Keller.m4a']), sorted(fileNameLst))
+		self.assertEqual(sorted([]), sorted(fileNameLst))
 	
 	def testDownloadPlaylistWithName_two_points(self):
 		playlistName = "test short_n\'ame pl, aylist: avec deux points"
@@ -1651,14 +1646,80 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
-	def testDownloadSingleVideoForUrl_renamedFile_already_exist(self):
-		self.assertEqual('', 'do unit test !')
-
 	def testDownloadPlaylistVideosForUrl_renamedFile_already_exist(self):
-		self.assertEqual('', 'do unit test !')
+		playlistName = 'test_audio_downloader_two_files'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName + '_renamedFile_already_exist'
+		playlistDownloadDir = downloadDir + sep + playlistName
+		
+		if not os.path.exists(playlistDownloadDir):
+			os.mkdir(downloadDir)
+		
+		# deleting files in downloadDir
+		files = glob.glob(playlistDownloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+
+		renamedFileName = 'Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'
+		
+		renamedFilePathName = playlistDownloadDir + sep + renamedFileName
+		
+		with open(renamedFilePathName, 'w') as f:
+			f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(renamedFilePathName))
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			youtubeAccess.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
+		
+		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+			playlistUrl=playlistUrl,
+			audioRootDir=youtubeAccess.audioDirRoot,
+			playlistDownloadRootPath=downloadDir,
+			originalPlaylistTitle=playlistTitle)
+		
+		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
+		                                           downloadVideoInfoDic=downloadVideoInfoDic,
+		                                           isUploadDateAddedToPlaylistVideo=True)
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+		self.assertEqual(
+			['downloading "Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3" '
+			 'audio ...',
+			 '',
+			 '[WinError 183] Impossible de créer un fichier déjà existant: '
+			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test_audio_downloader_two_files_renamedFile_already_exist\\\\test_audio_downloader_two_files\\\\Wear "
+			 "a mask. Help slow the spread of Covid-19..mp3' -> "
+			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test_audio_downloader_two_files_renamedFile_already_exist\\\\test_audio_downloader_two_files\\\\Wear "
+			 "a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'",
+			 '',
+			 'video download complete.',
+			 '',
+			 'downloading "Here to help - Give him what he wants 2019-06-07.mp3" audio ...',
+			 '',
+			 'video download complete.',
+			 '',
+			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 '',
+			 ''], outputCapturingString.getvalue().split('\n'))
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 	#tst.testDownloadPlaylistWithName_two_points()
-	tst.testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist()
+	tst.testDownloadMaxNamePlaylist_minus_one_char_with_point()
