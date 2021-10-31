@@ -1732,7 +1732,33 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	tst.testDownloadPlaylistVideosForUrlMultipleVideo()
-	tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
-	tst.testRedownloading_the_playlist_with_deleted_audio_files()
-	tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
+
+	try:
+		tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
+	except Exception as e:
+		print(e)
+
+	try:
+		tst.testDownloadPlaylistVideosForUrlMultipleVideo()
+	except Exception as e:
+		print(e)
+
+	try:
+		tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
+	except Exception as e:
+		print(e)
+	
+	try:
+		tst.testRedownloading_the_playlist_with_deleted_audio_files()
+	except Exception as e:
+		print(e)
+	
+	try:
+		tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
+	except Exception as e:
+		print(e)
+	
+	try:
+		tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
+	except Exception as e:
+		print(e)
