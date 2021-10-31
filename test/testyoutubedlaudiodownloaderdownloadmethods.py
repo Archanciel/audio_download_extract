@@ -147,12 +147,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadPlaylistVideosForUrlMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = '1'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
 		
-		if not os.path.exists(downloadDir):
-			os.mkdir(downloadDir)
-		
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
 		# deleting files in downloadDir
 		files = glob.glob(downloadDir + sep + '*')
 		
@@ -163,7 +165,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -425,11 +427,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = '2'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
 		
-		if not os.path.exists(downloadDir):
-			os.mkdir(downloadDir)
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
 		
 		# deleting files in downloadDir
 		files = glob.glob(downloadDir + sep + '*')
@@ -441,7 +446,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -515,7 +520,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -537,10 +542,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertIsNone(accessError)
 		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "test\\test_audio_downloader_two_files" dir. Video skipped.',
+ 'downloaded in "2\\test_audio_downloader_two_files" dir. Video skipped.',
  '',
  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"test\\test_audio_downloader_two_files" dir. Video skipped.',
+ '"2\\test_audio_downloader_two_files" dir. Video skipped.',
  '',
  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
@@ -927,7 +932,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloaded in "test\\Test download three short videos" dir. Video skipped.',
  '',
  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"test\\Test download three short videos" dir. Video skipped.',
+ '"test\\Test download three short videos" dir as "Wear a mask. Help slow the '
+ 'spread of Covid-19..mp3". Video skipped.',
  '',
  'downloading "Funny suspicious looking dog" audio ...',
  '',
@@ -1491,11 +1497,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = '3'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
 		
-		if not os.path.exists(downloadDir):
-			os.mkdir(downloadDir)
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
 		
 		# deleting files in downloadDir
 		files = glob.glob(downloadDir + sep + '*')
@@ -1507,7 +1516,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -1583,7 +1592,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -1605,10 +1614,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "test\\test_audio_downloader_two_files" dir. Video skipped.',
+ 'downloaded in "3\\test_audio_downloader_two_files" dir. Video skipped.',
  '',
  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"test\\test_audio_downloader_two_files" dir but was deleted. Video skipped.',
+ '"3\\test_audio_downloader_two_files" dir but was deleted. Video skipped.',
  '',
  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
  '',
@@ -1648,22 +1657,24 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 	def testDownloadPlaylistVideosForUrl_renamedFile_already_exist(self):
 		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = '4'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName + '_renamedFile_already_exist'
-		playlistDownloadDir = downloadDir + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
 		
-		if not os.path.exists(playlistDownloadDir):
-			os.mkdir(downloadDir)
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(playlistDownloadDir + sep + '*')
+		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
 
 		renamedFileName = 'Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'
 		
-		renamedFilePathName = playlistDownloadDir + sep + renamedFileName
+		renamedFilePathName = downloadDir + sep + renamedFileName
 		
 		with open(renamedFilePathName, 'w') as f:
 			f.write('Hello World')
@@ -1674,7 +1685,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
 		
 		stdout = sys.stdout
@@ -1687,7 +1698,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
 			playlistUrl=playlistUrl,
 			audioRootDir=youtubeAccess.audioDirRoot,
-			playlistDownloadRootPath=downloadDir,
+			playlistDownloadRootPath=youtubeAccess.audioDirRoot,
 			originalPlaylistTitle=playlistTitle)
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
@@ -1702,9 +1713,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 'audio ...',
 			 '',
 			 '[WinError 183] Impossible de créer un fichier déjà existant: '
-			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test_audio_downloader_two_files_renamedFile_already_exist\\\\test_audio_downloader_two_files\\\\Wear "
+			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19..mp3' -> "
-			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test_audio_downloader_two_files_renamedFile_already_exist\\\\test_audio_downloader_two_files\\\\Wear "
+			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'",
 			 '',
 			 'video download complete.',
@@ -1721,5 +1732,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
-	#tst.testDownloadPlaylistWithName_two_points()
-	tst.testDownloadMaxNamePlaylist_minus_one_char_with_point()
+	tst.testDownloadPlaylistVideosForUrlMultipleVideo()
+	tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
+	tst.testRedownloading_the_playlist_with_deleted_audio_files()
+	tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
