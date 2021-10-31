@@ -700,8 +700,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'downloaded in "test\\Test download three short videos" dir. Video skipped.',
  '',
  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"test\\Test download three short videos" dir as "Wear a mask. Help slow the '
- 'spread of Covid-19..mp3". Video skipped.',
+ '"test\\Test download three short videos" dir. Video skipped.',
  '',
  'downloading "Funny suspicious looking dog" audio ...',
  '',
@@ -1500,6 +1499,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
+
+	try:
+		tst.testDownloadPlaylistVideosForUrlMultipleVideo()
+	except Exception as e:
+		print('testDownloadPlaylistVideosForUrlMultipleVideo()')
+		print(e)
+
 	try:
 		tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
 	except Exception as e:
