@@ -124,36 +124,35 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					continue
 				
 				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-
+				purgedVideoTitleMp3 = purgedVideoTitle + '.mp3'
+				
 				if isUploadDateAddedToPlaylistVideo:
-					purgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+					finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 				else:
-					purgedVideoTitleMp3 = purgedVideoTitle + '.mp3'
+					finalPurgedVideoTitleMp3 = purgedVideoTitleMp3
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					audioFileNameInDic = downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle)
 					if audioFileNameInDic in targetAudioDirFileNameList:
 						# the video was already downloaded and converted to audio file
-						if audioFileNameInDic == purgedVideoTitleMp3:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(purgedVideoTitleMp3, targetAudioDirShort)
+						if audioFileNameInDic == finalPurgedVideoTitleMp3:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
 						else:
 							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
-								purgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
+								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 					else:
 						# the video audio file was already downloaded and was deleted
-						if audioFileNameInDic == purgedVideoTitleMp3:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(purgedVideoTitleMp3, targetAudioDirShort)
+						if audioFileNameInDic == finalPurgedVideoTitleMp3:
+							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
 						else:
 							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
-								purgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
+								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 
 					self.audioController.displayMessage(msgText)
 					continue
 				
 				if isUploadDateAddedToPlaylistVideo:
-					purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-					purgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
-					msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedVideoTitleMp3)
+					msgText = 'downloading [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
 				else:
 					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 
@@ -172,9 +171,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					continue
 					
-				#downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
-				downloadedAudioFileName = purgedVideoTitle + '.mp3'
-				
 				if isUploadDateAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
 					# includes the video upload date.
@@ -182,27 +178,25 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					ydlDownloadedAudioFilePathName = targetAudioDir + sep + purgedVideoTitle + '.mp3'
 					
 					fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
-					                              newFileName=purgedVideoTitleMp3)
+					                                           newFileName=finalPurgedVideoTitleMp3)
 					
 					if fileNotFoundErrorInfo is not None:
 						self.audioController.displayError(fileNotFoundErrorInfo + '\n')
-				else:
-					purgedVideoTitleMp3 = downloadedAudioFileName
 				
-				if self.isAudioFileDownloadOk(targetAudioDir, downloadedAudioFileName):
+				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitleMp3):
 					# updating and saving the downloadVideoInfoDic only if the audio file
 					# was downloaded successfully enables to retry downloading the playlist.
 					# The failed video download will be retried.
 					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex,
 					                                               videoTitle,
 					                                               videoUrl,
-					                                               purgedVideoTitleMp3)
+					                                               finalPurgedVideoTitleMp3)
 					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
 					
 					msgText = 'video download complete.\n'
 				else:
-					msgText = 'audio download failed. Please retry downloading the playlist later to download the failed audio only.\n'
+					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayMessage(msgText)
 			
