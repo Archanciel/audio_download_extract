@@ -172,7 +172,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					continue
 				
-				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
+#				downloadedAudioFileName = self.getLastCreatedMp3FileName(targetAudioDir)
+				downloadedAudioFileName = purgedVideoTitle + '.mp3'
 
 				if isUploadDateAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
