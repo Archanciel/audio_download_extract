@@ -991,7 +991,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.clearResultOutputButton.disabled = False
 	
-	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
 		Method called every n seconds by AudioController.displayDownloadInfo().
 
@@ -1002,8 +1002,8 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		currentDownloadInfoStr = '{} bytes, {}, {}\n'.format(currentDownloadInfoTuple[0],
-		                                                   currentDownloadInfoTuple[1],
-		                                                   currentDownloadInfoTuple[2])
+		                                                     currentDownloadInfoTuple[1],
+		                                                     currentDownloadInfoTuple[2])
 
 		if self.isFirstCurrentDownloadInfo:
 			outputLabelLineLst.append(currentDownloadInfoStr)
@@ -1014,7 +1014,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 	
-	def displayEndDownloadInfo(self, endDownloadInfoLst):
+	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
 		AudioController.displayEndDownloadInfo().

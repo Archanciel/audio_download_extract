@@ -1,5 +1,6 @@
+import time
+import datetime
 from os.path import sep
-from datetime import datetime
 import glob, re, logging
 from urllib.error import URLError
 from urllib.error import HTTPError
@@ -79,6 +80,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
+		self.downloadInfoExtractor.initPlaylistDownloadInfo()
+		playlistStartDownloadTime = time.time()
 		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		if accessError:
@@ -117,7 +120,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					if isUploadDateAddedToPlaylistVideo:
 						uploadDate = meta['upload_date']
-						formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
+						formattedUploadDate = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
@@ -203,7 +206,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displayMessage(msgText)
 			
 			if not self.audioController.stopDownloading:
-				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
+				hhmmssStr = datetime.timedelta(seconds=int(playlistTotalDownloadTime))
+				playlistTotalDownloadSize = self.downloadInfoExtractor.getPlaylistDownloadInfo()[0]
+				msgText = '[b]{}[/b] playlist audio(s) download terminated. {} bytes. {}\n'.format(
+					downloadVideoInfoDic.getPlaylistNameOriginal(),
+					playlistTotalDownloadSize,
+					hhmmssStr)
 			else:
 				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 
@@ -393,7 +402,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			try:
 				meta = ydl.extract_info(singleVideoUrl, download=False)
 				uploadDate = meta['upload_date']
-				formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
+				formattedUploadDate = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 			except AttributeError as e:
 				msgText = 'obtaining video upload date failed with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)

@@ -8,6 +8,7 @@ class YoutubeDlDownloadInfoExtractor:
 		self.audioController = audioController
 		self.videoDownloadStartTime = None
 		self.lstDisplayedVideoDownloadTime = None
+		self.playlistTotalDownloadSize = 0
 	
 	def ydlCallableHook(self, response):
 		if response['status'] == 'downloading':
@@ -17,9 +18,9 @@ class YoutubeDlDownloadInfoExtractor:
 				self.videoDownloadStartTime = now
 				self.lstDisplayedVideoDownloadTime = now
 			if now - self.lstDisplayedVideoDownloadTime >= DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS:
-				self.audioController.displayCurrentDownloadInfo((response["downloaded_bytes"],
-				                                                 response["_percent_str"],
-				                                                 response["_speed_str"]))
+				self.audioController.displayVideoCurrentDownloadInfo((response["downloaded_bytes"],
+				                                                      response["_percent_str"],
+				                                                      response["_speed_str"]))
 				self.lstDisplayedVideoDownloadTime = now
 		elif response['status'] == 'finished':
 			if self.videoDownloadStartTime is None:
@@ -29,8 +30,15 @@ class YoutubeDlDownloadInfoExtractor:
 			else:
 				videoTotalDownloadTime = time.time() - self.videoDownloadStartTime
 			
-			self.audioController.displayEndDownloadInfo([response["total_bytes"],
-			                                             videoTotalDownloadTime
-			                                             ])
+			videoTotalDownloadSize = response["total_bytes"]
+			self.playlistTotalDownloadSize += videoTotalDownloadSize
+			self.audioController.displayVideoEndDownloadInfo([videoTotalDownloadSize,
+			                                                  videoTotalDownloadTime
+			                                                  ])
 			self.videoDownloadStartTime = None
 			
+	def initPlaylistDownloadInfo(self):
+		self.playlistTotalDownloadSize = 0
+
+	def getPlaylistDownloadInfo(self):
+		return (self.playlistTotalDownloadSize,)

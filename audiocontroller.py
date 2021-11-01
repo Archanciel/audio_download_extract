@@ -223,7 +223,7 @@ class AudioController:
 		
 		return downloadVideoInfoDic
 	
-	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
 		Method called every n seconds by
 		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
@@ -234,9 +234,9 @@ class AudioController:
 											percent string and current download
 											speed string (in KiB/s)
 		"""
-		self.audioGUI.displayCurrentDownloadInfo(currentDownloadInfoTuple)
+		self.audioGUI.displayVideoCurrentDownloadInfo(currentDownloadInfoTuple)
 	
-	def displayEndDownloadInfo(self, endDownloadInfoLst):
+	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
 		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
@@ -257,7 +257,7 @@ class AudioController:
 	
 		endDownloadInfoLst[1] = hhmmssStr
 		
-		self.audioGUI.displayEndDownloadInfo(endDownloadInfoLst)
+		self.audioGUI.displayVideoEndDownloadInfo(endDownloadInfoLst)
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
