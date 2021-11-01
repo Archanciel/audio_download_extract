@@ -28,7 +28,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param audioDirRoot: audio dir as defined in the GUI settings.
 		"""
 		super().__init__(audioController, audioDirRoot)
-	
+		
+		self.downloadInfoExtractor = YoutubeDlDownloadInfoExtractor(audioController)
+		
 		if os.name == 'posix':
 			# on AndroidAndroid, FFmpegExtractAudio not available !
 			self.ydlOutTmplFormat = '/%(title)s.mp3'
@@ -39,7 +41,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				'format': 'worstaudio/worst',# this fixes the error AttributeError:
 											 # 'str' object has no attribute 'write'
 				'quiet': YOUTUBE_DL_QUIET,
-				"progress_hooks": [YoutubeDlDownloadInfoExtractor(audioController).ydlCallableHook]
+				"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
 			}
 			
 			self.tempYdlFileExtension = 'mp3.ytdl'
@@ -54,7 +56,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					'preferredquality': '64',
 				}],
 				'quiet': YOUTUBE_DL_QUIET,
-				"progress_hooks": [YoutubeDlDownloadInfoExtractor(audioController).ydlCallableHook]
+				"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
 			}
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
