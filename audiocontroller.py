@@ -262,6 +262,9 @@ class AudioController:
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
 	
+	def handleDisplayMessage(self, msgType, msgArgTuple):
+		self.audioGUI.handleOutputResult(msgType, msgArgTuple)
+	
 	def displayError(self, msg):
 		self.audioGUI.outputResult(msg)
 

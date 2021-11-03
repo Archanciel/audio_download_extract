@@ -10,6 +10,7 @@ from gui.guiutil import GuiUtil
 from gui.helppopup import HelpPopup
 from gui.okpopup import OkPopup
 from dirutil import DirUtil
+from outputresultformatter import OutputResultFormatter
 
 AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.0'
 FILE_ACTION_LOAD = 0
@@ -29,6 +30,7 @@ class AudioGUI(Screen):
 		self.isSettingsDropDownMenuItemDisplayed = True
 		self.dropDownMenu = CustomDropDown(owner=self)
 		self.error = False
+		self.outputResultFormatter = OutputResultFormatter()
 		
 		# WARNING: accessing MainWindow fields defined in kv file
 		# in the __init__ ctor is no longer possible when using
@@ -74,6 +76,17 @@ class AudioGUI(Screen):
 								requestListRVSpacing)
 
 	def outputResult(self, resultStr):
+		if len(self.outputLabel.text) == 0:
+			self.outputLabel.text = resultStr
+		else:
+			self.outputLabel.text = self.outputLabel.text + '\n' + resultStr
+
+		# scrolling to end of output text
+		self.outputScrollView.scroll_y = 0
+
+	def handleOutputResult(self, msgType, msgArgTuple):
+		resultStr = self.outputResultFormatter.buildOutputResultStr(msgType, msgArgTuple)
+		
 		if len(self.outputLabel.text) == 0:
 			self.outputLabel.text = resultStr
 		else:

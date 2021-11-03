@@ -102,9 +102,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
 				if self.audioController.stopDownloading:
-					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
-						downloadVideoInfoDic.getPlaylistNameOriginal())
-					self.audioController.displayMessage(msgText)
+					self.audioController.handleDisplayMessage(MSG_TYPE_STOP_DOWNLOADING,
+					                                          (downloadVideoInfoDic.getPlaylistNameOriginal(),))
 					self.audioController.downloadStopped()
 					
 					return downloadVideoInfoDic, None
@@ -119,9 +118,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						uploadDate = meta['upload_date']
 						formattedUploadDate = datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
-					msgText = 'obtaining video title failed with error {}.\n'.format(e)
-					self.audioController.displayError(msgText)
-					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+					self.audioController.handleDisplayMessage(MSG_TYPE_ATTRIBUTE_ERROR_VIDEO_TITLE,
+					                                          (e,))
+					self.displayRetryPlaylistDownloadMsg()
 					
 					continue
 				
@@ -138,10 +137,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					if audioFileNameInDic in targetAudioDirFileNameList:
 						# the video was already downloaded and converted to audio file
 						if audioFileNameInDic == finalPurgedVideoTitleMp3:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
+							self.audioController.handleDisplayMessage(MSG_TYPE_AUDIO_ALREADY_DOWNLOADED_SAME_FILE_NAME,
+							                                          (finalPurgedVideoTitleMp3, targetAudioDirShort))
 						else:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
-								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
+							self.audioController.handleDisplayMessage(MSG_TYPE_AUDIO_ALREADY_DOWNLOADED_DIFF_FILE_NAME,
+							                                          (finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic))
+							STAYED HERE
 					else:
 						# the video audio file was already downloaded and was deleted
 						if audioFileNameInDic == finalPurgedVideoTitleMp3:
@@ -164,12 +165,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					ydl.download([videoUrl])
 				except AttributeError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(videoTitle, e))
-					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+					self.displayRetryPlaylistDownloadMsg()
 					
 					#continue
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
-					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+					self.displayRetryPlaylistDownloadMsg()
 					
 					continue
 					
@@ -211,10 +212,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return downloadVideoInfoDic, None
 	
-	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
-		msgText = '\nretry downloading the playlist later to download the failed audio only ...\n'.format(
-			downloadVideoInfoDic.getPlaylistNameOriginal())
-		self.audioController.displayMessage(msgText)
+	def displayRetryPlaylistDownloadMsg(self):
+		self.audioController.handleDisplayMessage(MSG_TYPE_DISPLAY_RETRY_DOWNLOAD,
+		                                          ())
 	
 	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
 		"""
