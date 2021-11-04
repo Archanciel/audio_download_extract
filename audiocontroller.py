@@ -265,12 +265,13 @@ class AudioController:
 		Method called when the playlist videos download is finished by
 		YoutubeDlAudioDownloader.downloadPlaylistVideosForUrl().
 
-		:param endDownloadInfoLst:  3 elements list containing number of
-									videos downloaded, playlist total download
-									size in bytes and playlist total download
-									time in	seconds
+		:param endDownloadInfoLst:  4 elements list containing number of
+									videos successfully downloaded, number od
+									video download failure,  playlist total
+									download size in bytes and playlist total
+									download time in seconds
 		"""
-		downloadTime = endDownloadInfoLst[2]
+		downloadTime = endDownloadInfoLst[3]
 		
 		if downloadTime is None:
 			# the case for some videos on Android Maybe for videos which were
@@ -279,7 +280,7 @@ class AudioController:
 		else:
 			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
 		
-		endDownloadInfoLst[2] = hhmmssStr
+		endDownloadInfoLst[3] = hhmmssStr
 		
 		self.audioGUI.displayPlaylistEndDownloadInfo(endDownloadInfoLst)
 	

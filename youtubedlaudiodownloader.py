@@ -82,7 +82,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		"""
 		self.downloadInfoExtractor.initPlaylistDownloadInfo()
 		playlistStartDownloadTime = time.time()
-		playlistDownloadedVideoNb = 0
+		playlistDownloadedVideoNb_succeed = 0
+		playlistDownloadedVideoNb_failed = 0
 		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
 
 		if accessError:
@@ -126,7 +127,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = 'obtaining video title failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
-					
+					playlistDownloadedVideoNb_failed += 1
+
 					continue
 				
 				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
@@ -155,6 +157,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 
 					self.audioController.displayMessage(msgText)
+
 					continue
 				
 				if isUploadDateAddedToPlaylistVideo:
@@ -174,7 +177,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
-					
+					playlistDownloadedVideoNb_failed += 1
+
 					continue
 					
 				if isUploadDateAddedToPlaylistVideo:
@@ -188,6 +192,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					if fileNotFoundErrorInfo is not None:
 						self.audioController.displayError(fileNotFoundErrorInfo + '\n')
+						playlistDownloadedVideoNb_failed += 1
+						
+						continue
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitleMp3):
 					# updating and saving the downloadVideoInfoDic only if the audio file
@@ -199,7 +206,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					                                               finalPurgedVideoTitleMp3)
 					downloadVideoInfoDic.saveDic(self.audioDirRoot)
 					videoIndex += 1
-					playlistDownloadedVideoNb += 1
+					playlistDownloadedVideoNb_succeed += 1
 					
 					msgText = 'video download complete.\n'
 				else:
@@ -213,7 +220,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(
 					downloadVideoInfoDic.getPlaylistNameOriginal())
 				self.audioController.displayMessage(msgText)
-				self.audioController.displayPlaylistEndDownloadInfo([playlistDownloadedVideoNb,
+				self.audioController.displayPlaylistEndDownloadInfo([playlistDownloadedVideoNb_succeed,
+				                                                     playlistDownloadedVideoNb_failed,
 				                                                     playlistTotalDownloadSize,
 				                                                     playlistTotalDownloadTime
 				                                                     ])

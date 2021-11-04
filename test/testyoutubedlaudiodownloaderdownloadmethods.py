@@ -1717,8 +1717,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'",
 			 '',
-			 'video download complete.',
-			 '',
 			 'downloading "Here to help - Give him what he wants 2019-06-07.mp3" audio ...',
 			 '',
 			 'video download complete.',
@@ -1732,37 +1730,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
-	try:
-		tst.testDownloadPlaylistVideosForUrlMultipleVideo()
-	except Exception as e:
-		print('testDownloadPlaylistVideosForUrlMultipleVideo()')
-		print(e)
-
-	try:
-		tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
-	except Exception as e:
-		print('testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()')
-		print(e)
-	
-	try:
-		tst.testRedownloading_the_playlist_with_deleted_audio_files()
-	except Exception as e:
-		print('testRedownloading_the_playlist_with_deleted_audio_files()')
-		print(e)
-	
-	try:
-		tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
-	except Exception as e:
-		print(e)
-	
-	try:
-		tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist()
-	except Exception as e:
-		print(e)
-
-	try:
-		tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()
-	except Exception as e:
-		print('testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video()')
-		print(e)
+	tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
