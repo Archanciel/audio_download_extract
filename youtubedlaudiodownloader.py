@@ -124,7 +124,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						uploadDate = meta['upload_date']
 						formattedUploadDate = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
 				except AttributeError as e:
-					msgText = 'obtaining video title failed with error {}.\n'.format(e)
+					msgText = 'obtaining video title and upload date failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1

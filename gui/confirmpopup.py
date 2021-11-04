@@ -5,7 +5,7 @@ from kivy.clock import Clock
 
 
 class ConfirmPopup(GridLayout):
-	POPUP_TITLE_UPLOAD_DATE = ' (upload date added) ...'
+	POPUP_TITLE_UPLOAD_DATE = ' (adding upload date) ...'
 	POPUP_TITLE_NO_UPLOAD_DATE = ' ...'
 	text = StringProperty()
 	cols = ObjectProperty
