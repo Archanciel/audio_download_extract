@@ -1037,13 +1037,23 @@ class AudioDownloaderGUI(AudioGUI):
 		Method called when the playlist videos download is finished by
 		AudioController.displayPlaylistEndDownloadInfo().
 
-		:param endDownloadInfoLst:  2 elements tuple containing final download
-									size in bytes and total download time in
-									seconds
+		:param endDownloadInfoLst:  3 elements list containing number of
+									videos downloaded, playlist total download
+									size in bytes and playlist total download
+									time hh:mm:ss string
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
-		endDownloadInfoStr = '{} bytes, {}\n'.format(endDownloadInfoLst[0],
-		                                             endDownloadInfoLst[1])
+		videoNb = endDownloadInfoLst[0]
+		
+		if videoNb < 2:
+			videoStr = 'video'
+		else:
+			videoStr = 'videos'
+		
+		endDownloadInfoStr = '{} {}, {} bytes, {}\n'.format(videoNb,
+		                                                    videoStr,
+		                                                    endDownloadInfoLst[1],
+		                                                    endDownloadInfoLst[2])
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 		

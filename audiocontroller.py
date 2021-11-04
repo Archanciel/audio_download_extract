@@ -243,7 +243,7 @@ class AudioController:
 		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
 		YoutubeDL options.
 
-		:param endDownloadInfoLst:  2 elements tuple containing final download
+		:param endDownloadInfoLst:  2 elements list containing final download
 									size in bytes and total download time in
 									seconds
 		"""
@@ -263,13 +263,14 @@ class AudioController:
 	def displayPlaylistEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the playlist videos download is finished by
-		AudioController.displayPlaylistEndDownloadInfo().
+		YoutubeDlAudioDownloader.downloadPlaylistVideosForUrl().
 
-		:param endDownloadInfoLst:  2 elements tuple containing final download
-									size in bytes and total download time in
-									seconds
+		:param endDownloadInfoLst:  3 elements list containing number of
+									videos downloaded, playlist total download
+									size in bytes and playlist total download
+									time in	seconds
 		"""
-		downloadTime = endDownloadInfoLst[1]
+		downloadTime = endDownloadInfoLst[2]
 		
 		if downloadTime is None:
 			# the case for some videos on Android Maybe for videos which were
@@ -278,7 +279,7 @@ class AudioController:
 		else:
 			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
 		
-		endDownloadInfoLst[1] = hhmmssStr
+		endDownloadInfoLst[2] = hhmmssStr
 		
 		self.audioGUI.displayPlaylistEndDownloadInfo(endDownloadInfoLst)
 	
