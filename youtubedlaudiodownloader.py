@@ -232,7 +232,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		return downloadVideoInfoDic, None
 	
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
-		msgText = '\nretry downloading the playlist later to download the failed audio only ...\n'.format(
+		msgText = 'retry downloading the playlist later to download the failed audio only ...\n'.format(
 			downloadVideoInfoDic.getPlaylistNameOriginal())
 		self.audioController.displayMessage(msgText)
 	

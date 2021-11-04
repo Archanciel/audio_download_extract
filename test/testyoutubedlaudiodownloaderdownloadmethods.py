@@ -1071,7 +1071,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory.',
  '',
- '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
@@ -1172,7 +1171,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
  'directory.',
- '',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
@@ -1417,7 +1415,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory.',
- '',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
