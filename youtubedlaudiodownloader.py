@@ -207,19 +207,17 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			if not self.audioController.stopDownloading:
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
-				hhmmssStr = datetime.timedelta(seconds=int(playlistTotalDownloadTime))
 				playlistTotalDownloadSize = self.downloadInfoExtractor.getPlaylistDownloadInfo()[0]
-				msgText = '[b]{}[/b] playlist audio(s) download terminated. {} bytes. {}\n'.format(
-					downloadVideoInfoDic.getPlaylistNameOriginal(),
-					playlistTotalDownloadSize,
-					hhmmssStr)
 				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(
 					downloadVideoInfoDic.getPlaylistNameOriginal())
+				self.audioController.displayMessage(msgText)
+				self.audioController.displayPlaylistEndDownloadInfo([playlistTotalDownloadSize,
+				                                                     playlistTotalDownloadTime
+				                                                     ])
 			else:
 				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+				self.audioController.displayMessage(msgText)
 
-			self.audioController.displayMessage(msgText)
-		
 		return downloadVideoInfoDic, None
 	
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):

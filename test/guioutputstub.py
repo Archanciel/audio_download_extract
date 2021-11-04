@@ -26,9 +26,9 @@ class GuiOutputStub:
 		from tkinter import Tk
 		Tk().clipboard_clear()
 	
-	def displayCurrentDownloadInfo(self, currentDownloadInfoTuple):
+	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
-		Method called every n seconds by AudioController.displayDownloadInfo().
+		Method called every n seconds by AudioController.displayVideoCurrentDownloadInfo().
 
 		:param currentDownloadInfoTuple:    3 elements tuple containing current
 											download size in bytes, download size
@@ -37,10 +37,21 @@ class GuiOutputStub:
 		"""
 		pass # avoid printing variable info values when running unit tests
 	
-	def displayEndDownloadInfo(self, endDownloadInfoLst):
+	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
-		AudioController.displayEndDownloadInfo().
+		AudioController.displayVideoEndDownloadInfo().
+
+		:param endDownloadInfoLst:  2 elements tuple containing final download
+									size in bytes and total download time in
+									seconds
+		"""
+		pass # avoid printing variable info values when running unit tests
+
+	def displayPlaylistEndDownloadInfo(self, endDownloadInfoLst):
+		"""
+		Method called when the playlist videos download is finished by
+		AudioController.displayPlaylistEndDownloadInfo().
 
 		:param endDownloadInfoLst:  2 elements tuple containing final download
 									size in bytes and total download time in

@@ -260,6 +260,28 @@ class AudioController:
 		
 		self.audioGUI.displayVideoEndDownloadInfo(endDownloadInfoLst)
 	
+	def displayPlaylistEndDownloadInfo(self, endDownloadInfoLst):
+		"""
+		Method called when the playlist videos download is finished by
+		AudioController.displayPlaylistEndDownloadInfo().
+
+		:param endDownloadInfoLst:  2 elements tuple containing final download
+									size in bytes and total download time in
+									seconds
+		"""
+		downloadTime = endDownloadInfoLst[1]
+		
+		if downloadTime is None:
+			# the case for some videos on Android Maybe for videos which were
+			# almost fully partially downloaded ...
+			hhmmssStr = '?'
+		else:
+			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
+		
+		endDownloadInfoLst[1] = hhmmssStr
+		
+		self.audioGUI.displayPlaylistEndDownloadInfo(endDownloadInfoLst)
+	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
 	
