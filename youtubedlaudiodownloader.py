@@ -1,4 +1,4 @@
-import time
+import time, os
 import datetime
 from os.path import sep
 import glob, re, logging
@@ -213,6 +213,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					downloadVideoInfoDic.getPlaylistNameOriginal(),
 					playlistTotalDownloadSize,
 					hhmmssStr)
+				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(
+					downloadVideoInfoDic.getPlaylistNameOriginal())
 			else:
 				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 
