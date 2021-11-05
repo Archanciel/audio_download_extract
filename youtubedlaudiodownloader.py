@@ -19,6 +19,7 @@ from accesserror import AccessError
 from youtubedldownloadinfoextractor import YoutubeDlDownloadInfoExtractor
 
 YOUTUBE_DL_QUIET = True
+MAX_VIDEO_INDEX = 100
 
 class YoutubeDlAudioDownloader(AudioDownloader):
 	def __init__(self, audioController, audioDirRoot):
@@ -65,7 +66,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def downloadPlaylistVideosForUrl(self,
 	                                 playlistUrl,
 	                                 downloadVideoInfoDic,
-	                                 isUploadDateAddedToPlaylistVideo):
+	                                 isUploadDateAddedToPlaylistVideo,
+	                                 isIndexAddedToPlaylistVideo):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -77,6 +79,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 												audio files referenced in the
 												playlist will be terminated by
 												the video upload date.
+		:param isIndexAddedToPlaylistVideo      if True, the name of the video
+												audio files referenced in the
+												playlist will be started by
+												100 minus the video index.
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
@@ -135,9 +141,21 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				purgedVideoTitleMp3 = purgedVideoTitle + '.mp3'
 				
 				if isUploadDateAddedToPlaylistVideo:
-					finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+					if isIndexAddedToPlaylistVideo:
+						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
+						finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
+					else:
+						if isIndexAddedToPlaylistVideo:
+							addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
+							finalPurgedVideoTitleMp3 =addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
+						else:
+							finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 				else:
-					finalPurgedVideoTitleMp3 = purgedVideoTitleMp3
+					if isIndexAddedToPlaylistVideo:
+						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
+						finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + '.mp3'
+					else:
+						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					audioFileNameInDic = downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle)
@@ -160,7 +178,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 					continue
 				
-				if isUploadDateAddedToPlaylistVideo:
+				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
 					msgText = 'downloading [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
 				else:
 					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
@@ -181,7 +199,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 					continue
 					
-				if isUploadDateAddedToPlaylistVideo:
+				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
 					# includes the video upload date.
 					

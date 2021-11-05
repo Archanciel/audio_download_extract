@@ -35,6 +35,7 @@ class AudioController:
 	                                                    modifiedPlaylistTitle,
 	                                                    originalSingleVideoTitle,
 	                                                    isUploadDateAddedToPlaylistVideo,
+	                                                    isIndexAddedToPlaylistVideo,
 	                                                    modifiedVideoTitle=None):
 		"""
 		In case we are downloading videos referenced in a playlist, this method first
@@ -58,6 +59,7 @@ class AudioController:
 		:param originalSingleVideoTitle:            if the playlistOrSingleVideoUrl points
 													to a single video
 		:param isUploadDateAddedToPlaylistVideo     parameter used for playlist only
+		:param isIndexAddedToPlaylistVideo          parameter used for playlist only
 		:param modifiedVideoTitle:                  None if the video title was not modified
 		"""
 		self.stopDownloading = False
@@ -73,7 +75,8 @@ class AudioController:
 			_, accessError = \
 				self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
 				                                                  downloadVideoInfoDic=downloadVideoInfoDic,
-				                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+				                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
+				                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
 			
 			# extracting/suppressing the audio portions for the downloaded audio tracks
 

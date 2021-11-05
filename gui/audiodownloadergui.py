@@ -288,6 +288,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.playlistOrSingleVideoDownloadPath = None
 		self.accessError = None
 		self.isUploadDateAddedToPlaylistVideo = False
+		self.isIndexAddedToPlaylistVideo = False
 		
 		self._doOnStart()
 	
@@ -351,12 +352,12 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
-				confirmPopupTitle = "Go on with processing playlist{}".format(ConfirmPopup.POPUP_TITLE_UPLOAD_DATE)
+				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_PLAYLIST + ConfirmPopup.POPUP_TITLE_UPLOAD_DATE_INDEX
 				enableAddUploadDateChkBox = True
 			else:
 				# url obtained from clipboard points to a single video
 				downloadObjectTitle = self.originalSingleVideoTitle
-				confirmPopupTitle = "Go on with downloading audio for video ... "
+				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_VIDEO
 				enableAddUploadDateChkBox = False
 
 			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
@@ -393,6 +394,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		"""
 		self.isUploadDateAddedToPlaylistVideo = confirmPopupInstance.isUploadDateAdded()
+		self.isIndexAddedToPlaylistVideo = confirmPopupInstance.isIndexAdded()
 		
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			
@@ -908,6 +910,7 @@ class AudioDownloaderGUI(AudioGUI):
 		                                                                     self.modifiedPlaylistTitle,
 		                                                                     self.originalSingleVideoTitle,
 		                                                                     self.isUploadDateAddedToPlaylistVideo,
+		                                                                     self.isIndexAddedToPlaylistVideo,
 		                                                                     self.modifiedSingleVideoTitle)
 	
 		self.downloadThreadCreated = False  # used to fix a problem on Android
