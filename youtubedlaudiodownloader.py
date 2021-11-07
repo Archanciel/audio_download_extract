@@ -234,7 +234,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				self.audioController.displayMessage(msgText)
 				self.convertingVideoToMp3 = False
-				
 			
 			if not self.audioController.stopDownloading:
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
@@ -470,6 +469,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
 
 				#return
+		
+		self.convertingVideoToMp3 = False
 		
 		# finally, renaming the downloaded video to a name which is either
 		# the original video title or the modified video title, in both cases

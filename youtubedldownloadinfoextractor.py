@@ -2,6 +2,7 @@ import time
 from gui.septhreadexec import SepThreadExec
 
 DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS = 1
+DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS = 1
 
 
 class YoutubeDlDownloadInfoExtractor:
@@ -61,10 +62,12 @@ class YoutubeDlDownloadInfoExtractor:
 			now = time.time()
 			
 			if self.videoMp3ConversionStartTime is None:
-				# new playlist video starts downloading
+				# new video to mp3 conversion starts
 				self.videoMp3ConversionStartTime = now
 				self.lstDisplayedVideoMp3ConversionTime = now
 			
-			if now - self.lstDisplayedVideoMp3ConversionTime >= DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS:
+			if now - self.lstDisplayedVideoMp3ConversionTime >= DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS:
 				self.audioController.displayVideoMp3ConversionInfo((now - self.videoMp3ConversionStartTime,))
 				self.lstDisplayedVideoMp3ConversionTime = now
+		
+		self.videoMp3ConversionStartTime = None
