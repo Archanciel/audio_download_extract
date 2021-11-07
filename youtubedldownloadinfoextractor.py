@@ -1,16 +1,22 @@
 import time
+from gui.septhreadexec import SepThreadExec
 
 DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS = 1
 
 
 class YoutubeDlDownloadInfoExtractor:
-	def __init__(self, audioController):
+	def __init__(self, audioDownloader, audioController):
+		self.audioDownloader = audioDownloader
 		self.audioController = audioController
 		self.videoDownloadStartTime = None
 		self.lstDisplayedVideoDownloadTime = None
 		self.playlistTotalDownloadSize = 0
-	
+		self.videoMp3ConversionStartTime = None
+		self.lstDisplayedVideoMp3ConversionTime = None
+
 	def ydlCallableHook(self, response):
+		isVideoDownloadFinished = False
+		
 		if response['status'] == 'downloading':
 			now = time.time()
 			if self.videoDownloadStartTime is None:
@@ -36,9 +42,29 @@ class YoutubeDlDownloadInfoExtractor:
 			                                                  videoTotalDownloadTime
 			                                                  ])
 			self.videoDownloadStartTime = None
+			isVideoDownloadFinished = True
+			
+		if isVideoDownloadFinished:
+			self.audioDownloader.convertingVideoToMp3 = True
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.displayVideoMp3ConversionInfo)
+			sepThreadExec.start()
 			
 	def initPlaylistDownloadInfo(self):
 		self.playlistTotalDownloadSize = 0
 
 	def getPlaylistDownloadInfo(self):
 		return (self.playlistTotalDownloadSize,)
+	
+	def displayVideoMp3ConversionInfo(self):
+		while self.audioDownloader.convertingVideoToMp3:
+			now = time.time()
+			
+			if self.videoMp3ConversionStartTime is None:
+				# new playlist video starts downloading
+				self.videoMp3ConversionStartTime = now
+				self.lstDisplayedVideoMp3ConversionTime = now
+			
+			if now - self.lstDisplayedVideoMp3ConversionTime >= DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS:
+				self.audioController.displayVideoMp3ConversionInfo((now - self.videoMp3ConversionStartTime,))
+				self.lstDisplayedVideoMp3ConversionTime = now

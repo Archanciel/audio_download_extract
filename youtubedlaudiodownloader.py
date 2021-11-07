@@ -31,7 +31,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		"""
 		super().__init__(audioController, audioDirRoot)
 		
-		self.downloadInfoExtractor = YoutubeDlDownloadInfoExtractor(audioController)
+		self.downloadInfoExtractor = YoutubeDlDownloadInfoExtractor(audioDownloader=self,
+		                                                            audioController=audioController)
 		
 		if os.name == 'posix':
 			# on AndroidAndroid, FFmpegExtractAudio not available !
@@ -62,7 +63,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			}
 
 			self.tempYdlFileExtension = 'm4a.ytdl'
-
+			self.convertingVideoToMp3 = False
+	
 	def downloadPlaylistVideosForUrl(self,
 	                                 playlistUrl,
 	                                 downloadVideoInfoDic,
@@ -198,7 +200,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					playlistDownloadedVideoNb_failed += 1
 
 					continue
-					
+				
 				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
 					# includes the video upload date.
@@ -231,6 +233,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayMessage(msgText)
+				self.convertingVideoToMp3 = False
+				
 			
 			if not self.audioController.stopDownloading:
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime

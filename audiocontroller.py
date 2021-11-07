@@ -347,6 +347,32 @@ class AudioController:
 		after the playlist current download has been interrupted.
 		"""
 		self.audioGUI.downloadStopped()
+	
+	def displayVideoMp3ConversionInfo(self, videoCurrentMp3ConversionInfoTuple):
+		"""
+		Method called every n seconds by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+
+		:param videoCurrentMp3ConversionInfoTuple:    3 elements tuple containing current
+											download size in bytes, download size
+											percent string and current download
+											speed string (in KiB/s)
+		"""
+		downloadTime = videoCurrentMp3ConversionInfoTuple[0]
+		
+		if downloadTime is None:
+			# the case for some videos on Android Maybe for videos which were
+			# almost fully partially downloaded ...
+			hhmmssStr = '?'
+		else:
+			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
+		
+#		endDownloadInfoLst[1] = hhmmssStr
+
+#		self.audioGUI.displayVideoEndDownloadInfo(endDownloadInfoLst)
+		print(hhmmssStr)
+		#self.audioGUI.displayVideoCurrentDownloadInfo(currentDownloadInfoTuple)
 
 
 if __name__ == "__main__":
