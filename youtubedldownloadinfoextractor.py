@@ -1,5 +1,5 @@
 import time
-from gui.septhreadexec import SepThreadExec
+from septhreadexec import SepThreadExec
 
 DISPLAY_VIDEO_DOWNLOAD_TIME_EVERY_N_SECONDS = 1
 DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS = 1

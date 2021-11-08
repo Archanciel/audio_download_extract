@@ -1,6 +1,5 @@
 import unittest
-import os, sys, inspect, glob
-from os.path import sep
+import os, sys, inspect
 import time
 from io import StringIO
 
@@ -8,7 +7,7 @@ currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
-from gui.septhreadexec import SepThreadExec
+from septhreadexec import SepThreadExec
 
 class TestSepThreadExec(unittest.TestCase):
 	def testInitWithFuncAndEndFunc_with_funcArguments_with_endFuncArguments(self):
