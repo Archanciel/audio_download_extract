@@ -348,33 +348,29 @@ class AudioController:
 		"""
 		self.audioGUI.downloadStopped()
 	
-	def displayVideoMp3ConversionInfo(self, videoCurrentMp3ConversionInfoTuple):
+	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
 		"""
-		Method called every n seconds by
+		Method called every n seconds by a new SepThreadExec instance created
+		and started once the video download is finished by
 		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
 		YoutubeDL options.
 
-		:param videoCurrentMp3ConversionInfoTuple:    3 elements tuple containing current
-											download size in bytes, download size
-											percent string and current download
-											speed string (in KiB/s)
+		:param videoCurrentMp3ConversionInfoList:   1 element list containing current
+													conversion time in seconds.
 		"""
-		downloadTime = videoCurrentMp3ConversionInfoTuple[0]
+		mp3ConversionTime = videoCurrentMp3ConversionInfoList[0]
 		
-		if downloadTime is None:
+		if mp3ConversionTime is None:
 			# the case for some videos on Android Maybe for videos which were
 			# almost fully partially downloaded ...
 			hhmmssStr = '?'
 		else:
-			hhmmssStr = datetime.timedelta(seconds=int(downloadTime))
+			hhmmssStr = datetime.timedelta(seconds=int(mp3ConversionTime))
 		
-#		endDownloadInfoLst[1] = hhmmssStr
+		videoCurrentMp3ConversionInfoList[0] = hhmmssStr
 
-#		self.audioGUI.displayVideoEndDownloadInfo(endDownloadInfoLst)
-		print(hhmmssStr)
-		#self.audioGUI.displayVideoCurrentDownloadInfo(currentDownloadInfoTuple)
+		self.audioGUI.displayVideoMp3ConversionCurrentInfo(videoCurrentMp3ConversionInfoList)
 
 
 if __name__ == "__main__":
 	downloader = AudioController()
-	downloader.downloadPlaylistAudio()

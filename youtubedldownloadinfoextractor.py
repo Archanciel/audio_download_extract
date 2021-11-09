@@ -12,8 +12,6 @@ class YoutubeDlDownloadInfoExtractor:
 		self.videoDownloadStartTime = None
 		self.lstDisplayedVideoDownloadTime = None
 		self.playlistTotalDownloadSize = 0
-		self.videoMp3ConversionStartTime = None
-		self.lstDisplayedVideoMp3ConversionTime = None
 
 	def ydlCallableHook(self, response):
 		isVideoDownloadFinished = False
@@ -58,16 +56,17 @@ class YoutubeDlDownloadInfoExtractor:
 		return (self.playlistTotalDownloadSize,)
 	
 	def displayVideoMp3ConversionInfo(self):
-		while self.audioDownloader.convertingVideoToMp3:
-			now = time.time()
-			
-			if self.videoMp3ConversionStartTime is None:
-				# new video to mp3 conversion starts
-				self.videoMp3ConversionStartTime = now
-				self.lstDisplayedVideoMp3ConversionTime = now
-			
-			if now - self.lstDisplayedVideoMp3ConversionTime >= DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS:
-				self.audioController.displayVideoMp3ConversionInfo((now - self.videoMp3ConversionStartTime,))
-				self.lstDisplayedVideoMp3ConversionTime = now
+		"""
+		Method called by a new SepThreadExec instance created and started once
+		the video download is finished by
+		YoutubeDlDownloadInfoExtractor.ydlCallableHook() which is hooked in
+		YoutubeDL options.
+		"""
+		conversionSeconds = 0
 		
-		self.videoMp3ConversionStartTime = None
+		while self.audioDownloader.convertingVideoToMp3:
+			if conversionSeconds > 0:
+				self.audioController.displayVideoMp3ConversionCurrentInfo([conversionSeconds, ])
+
+			time.sleep(DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS)
+			conversionSeconds += DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS

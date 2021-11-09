@@ -1016,6 +1016,26 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 	
+	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
+		"""
+		Method called every n seconds by
+		AudioController.displayVideoMp3ConversionCurrentInfo().
+
+		:param videoCurrentMp3ConversionInfoList:   1 element list containing current
+													conversion time hh:mm:ss string..
+		"""
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		currentConversionInfoStr = 'mp3 conversion {}\n'.format(videoCurrentMp3ConversionInfoList[0])
+		
+		if self.isFirstCurrentDownloadInfo:
+			outputLabelLineLst.append(currentConversionInfoStr)
+			self.isFirstCurrentDownloadInfo = False
+		else:
+			outputLabelLineLst = outputLabelLineLst[:-2]
+			outputLabelLineLst.append(currentConversionInfoStr)
+		
+		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
+	
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by
