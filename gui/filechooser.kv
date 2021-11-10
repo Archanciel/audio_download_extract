@@ -194,16 +194,16 @@
 					size_hint_y: None
 					height: self.minimum_height
 					orientation: 'vertical'
-					multiselect: True
+					multiselect: False
 					touch_multiselect: False
 					spacing: dp(2)
 
 		BoxLayout:
 			orientation: 'vertical'
 
-			FileChooserListView:
+			FileChooserIconView: # FileChooserListView does display multi selected files !
 				id: file_chooser
-				dirselect: True
+				multiselect: True
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:

@@ -292,6 +292,11 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		"""
 	
 	def handleSelection(self, selection):
+		print(selection)
+		
+		if selection == []:
+			return
+		
 		selectionStr = selection[0]
 		selectionElemLst = selectionStr.split(sep)
 		
