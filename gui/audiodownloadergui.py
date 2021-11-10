@@ -27,7 +27,12 @@ from kivy.utils import platform
 
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup, SaveFileChooserPopup, SelectOrCreateDirFileChooserPopup, FileToClipLoadFileChooserPopup, FileToShareLoadFileChooserPopup
+from filechooserpopup import LoadFileChooserPopup
+from filechooserpopup import SaveFileChooserPopup
+from filechooserpopup import DeleteFileChooserPopup
+from filechooserpopup import SelectOrCreateDirFileChooserPopup
+from filechooserpopup import FileToClipLoadFileChooserPopup
+from filechooserpopup import FileToShareLoadFileChooserPopup
 from gui.confirmpopup import ConfirmPopup
 
 from audiogui import AudioGUI
@@ -45,6 +50,8 @@ FILE_ACTION_SAVE = 1
 FILE_ACTION_SELECT_OR_CREATE_DIR = 2
 FILE_ACTION_SELECT_FILE_TO_SPLIT = 3
 FILE_ACTION_SELECT_FILE_TO_SHARE = 4
+FILE_ACTION_DELETE = 5
+
 NO_INTERNET = False
 
 class WindowManager(ScreenManager):
@@ -703,7 +710,16 @@ class AudioDownloaderGUI(AudioGUI):
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
 		self.popup.open()
-
+	
+	def openFileDeletePopup(self):
+		self.dropDownMenu.dismiss()
+		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_DELETE)
+		self.popup = DeleteFileChooserPopup(title=popupTitle,
+		                                    rootGUI=self,
+		                                    cancel=self.dismissPopup)
+		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
+		self.popup.open()
+	
 	def openSelectOrCreateDirPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.originalSingleVideoTitle)

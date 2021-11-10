@@ -25,6 +25,12 @@
 		height: '28dp'
 		disabled: True
 		on_release: root.showSave()
+	Button:
+		id: delete_Button
+		text: 'Delete'
+		size_hint_y: None
+		height: '28dp'
+		on_release: root.showDelete()
     GridLayout: # enable to hide or display 'Clip audio' menu item
         id: gridlayout_clipButton
 		cols: 1

@@ -160,6 +160,63 @@
 					text: "Cancel"
 					on_release: root.cancel()
 
+<DeleteFileChooserPopup>:   # sub-class of FileChooserPopup, which derives from
+					        # AbstractPopup, which derives from Popup
+	popupBoxLayout: popup_boxlayout
+	diskRecycleBoxLayout: disc_mem_RB_layout
+	fileChooser: file_chooser
+	pathList: path_mem_list
+	BoxLayout:
+		orientation: 'vertical'
+		BoxLayout:
+			id: popup_boxlayout
+			orientation: 'vertical'
+			#size_hint_y: 0.17 # value for Windows 10
+			#size_hint_y: 0.11 # value for Android tablet
+			size_hint_y: 0.16 # value for Android smartphone
+			RecycleView:
+				id: path_mem_list
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				viewclass: 'SelectableLabelFileChooser'
+				scroll_type: ['bars', 'content']
+				scroll_wheel_distance: dp(114)
+				bar_width: dp(10)
+				scroll_y: 1 # 0 forces scrolling to list bottom after adding
+							# an item, 1 forces scrolling to list top
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				SelectableRecycleBoxLayoutFileChooser:
+					id: disc_mem_RB_layout
+					key_selection: 'selectable' # required so that 'selectable'
+												# key/value can be added to
+												# RecycleView data items
+					default_size: None, dp(28)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					orientation: 'vertical'
+					multiselect: True
+					touch_multiselect: False
+					spacing: dp(2)
+
+		BoxLayout:
+			orientation: 'vertical'
+
+			FileChooserListView:
+				id: file_chooser
+				dirselect: True
+				on_selection: root.handleSelection(self.selection)
+
+			GridLayout:
+				cols: 2
+				size_hint_y: None
+				height: '28dp'
+				Button:
+					text: "Delete"
+					on_release: root.delete(file_chooser.path, path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
+				Button:
+					text: "Cancel"
+					on_release: root.cancel()
+
 <SelectOrCreateDirFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
 						             # AbstractPopup, which derives from Popup
 	popupBoxLayout: popup_boxlayout

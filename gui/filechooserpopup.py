@@ -275,6 +275,49 @@ class SaveFileChooserPopup(FileChooserPopup):
 		                                      isChkBoxActive)
 
 
+class DeleteFileChooserPopup(FileChooserPopup):
+	"""
+
+	"""
+	
+	def __init__(self, rootGUI, **kwargs):
+		super(DeleteFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+		self.loadAtStartFilePathName = ''
+	
+	def _sizeFileChooser(self):
+		"""
+
+		:return:
+		"""
+	
+	def handleSelection(self, selection):
+		selectionStr = selection[0]
+		selectionElemLst = selectionStr.split(sep)
+		
+		if os.path.isfile(selectionStr):
+			pathContainedInSelection = sep.join(selectionElemLst[:-1])
+			fileNameContainedInSelection = selectionElemLst[-1]
+		else:
+			pathContainedInSelection = selectionStr
+			fileNameContainedInSelection = ''
+	
+	def delete(self, pathOnly, pathName, fileName, isLoadAtStart):
+		"""
+
+		:param pathOnly:
+		:param pathName:
+		:param isLoadAtStart:
+		:return:
+		"""
+		if fileName == '':
+			# no file selected or file name defined. Load dialog remains open ..
+			return
+		
+		self.rootGUI.deleteFile(pathOnly, pathName + sep + fileName, isLoadAtStart)
+		self.rootGUI.dismissPopup()
+
+
 class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 	"""
 
