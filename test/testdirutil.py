@@ -52,11 +52,11 @@ class TestDirUtil(unittest.TestCase):
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur'
 
-		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
-		                                                                  fullDir=fullDir,
-		                                                                  eliminatedRootLastSubDirsNumber=1))
-		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
-		                                                                    fullDir=fullDir))
+		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                           fullFilePathName=fullDir,
+		                                                                           eliminatedRootLastSubDirsNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                             fullFilePathName=fullDir))
 
 	def testGetFullDirMinusRootDir_one_sub_dir(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
@@ -64,12 +64,24 @@ class TestDirUtil(unittest.TestCase):
 		expectedShortDir = 'Audio\\Aimer sans peur'
 		expectedShorterDir = 'Aimer sans peur'
 		
-		self.assertEqual(expectedShortDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
-		                                                                  fullDir=fullDir,
-		                                                                  eliminatedRootLastSubDirsNumber=1))
-		self.assertEqual(expectedShorterDir, DirUtil.getFullDirMinusRootDir(rootDir=audioRootDir,
-		                                                                    fullDir=fullDir))
-
+		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                           fullFilePathName=fullDir,
+		                                                                           eliminatedRootLastSubDirsNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                             fullFilePathName=fullDir))
+	
+	def testGetFullDirMinusRootDir_several_sub_dirs_mp3_fileName(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		
+		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                           fullFilePathName=fullDir,
+		                                                                           eliminatedRootLastSubDirsNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                             fullFilePathName=fullDir))
+	
 	def testRemoveSubDirsContainedInDir(self):
 		createdFileName = 'temp.txt'
 		

@@ -60,9 +60,9 @@ class DirUtil:
 	@staticmethod
 	def createTargetDirIfNotExist(rootDir,
 	                              targetAudioDir):
-		targetAudioDirShort = DirUtil.getFullDirMinusRootDir(rootDir=rootDir,
-		                                                     fullDir=targetAudioDir,
-		                                                     eliminatedRootLastSubDirsNumber=1)
+		targetAudioDirShort = DirUtil.getFullFilePathNameMinusRootDir(rootDir=rootDir,
+		                                                              fullFilePathName=targetAudioDir,
+		                                                              eliminatedRootLastSubDirsNumber=1)
 		dirCreationMessage = None
 		
 		if not os.path.isdir(targetAudioDir):
@@ -79,15 +79,42 @@ class DirUtil:
 		return targetAudioDirShort
 
 	@staticmethod
-	def getFullDirMinusRootDir(rootDir,
-	                           fullDir,
-	                           eliminatedRootLastSubDirsNumber=None):
+	def getFullFilePathNameMinusRootDir(rootDir,
+	                                    fullFilePathName,
+	                                    eliminatedRootLastSubDirsNumber=None):
+		"""
+		Return the passed fullFilePathName minus the passed rootDir. Note that
+		the passed fullFilePathName may contain only a path.
+		
+		:param rootDir:
+		:param fullFilePathName:
+		:param eliminatedRootLastSubDirsNumber: if defined, the passed root dir
+												which will be removed from the
+												passed fullFilePathName will have
+												its eliminatedRootLastSubDirsNumber
+												last sub dirs removed.
+												
+					Example: rootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+							 eliminatedRootLastSubDirsNumber = 1
+							 root dir removed from fullFilePathName =
+							 'C:\\Users\\Jean-Pierre\\Downloads'
+							 
+							 So, if the passed fullFilePathName =
+							 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\chap 1.mp3',
+							 the returned filePathName will be
+							 'Audio\\UCEM\\chap 1.mp3'
+							 
+							 If eliminatedRootLastSubDirsNumber = None,
+							 the returned filePathName will be
+							 'UCEM\\chap 1.mp3'
+		:return:
+		"""
 		if eliminatedRootLastSubDirsNumber is None:
-			return fullDir.replace(rootDir + sep, '')
+			return fullFilePathName.replace(rootDir + sep, '')
 		
 		rootDirElementLst = rootDir.split(sep)
 		remainingRootDir = sep.join(rootDirElementLst[:-eliminatedRootLastSubDirsNumber])
-		targetAudioDirShort = fullDir.replace(remainingRootDir + sep, '')
+		targetAudioDirShort = fullFilePathName.replace(remainingRootDir + sep, '')
 		
 		return targetAudioDirShort
 	
