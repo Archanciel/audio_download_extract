@@ -58,3 +58,13 @@ class GuiOutputStub:
 									seconds
 		"""
 		pass # avoid printing variable info values when running unit tests
+
+	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
+		"""
+		Method called every n seconds by
+		AudioController.displayVideoMp3ConversionCurrentInfo().
+
+		:param videoCurrentMp3ConversionInfoList:   1 element list containing current
+													conversion time hh:mm:ss string..
+		"""
+		pass # avoid printing variable info values when running unit tests
