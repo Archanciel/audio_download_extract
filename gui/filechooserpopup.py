@@ -291,13 +291,18 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		:return:
 		"""
 	
-	def handleSelection(self, selection):
-		print(selection)
-		
-		if selection == []:
+	def handleSelection(self, selectionLst):
+		if selectionLst == []:
 			return
 		
-		selectionStr = selection[0]
+		fileNameLines = ''
+		
+		for filePathName in selectionLst:
+			fileNameLines += filePathName.replace(self.rootPath, '') + '\n'
+		
+		self.deletedFilesLabel.text = fileNameLines
+
+		selectionStr = selectionLst[0]
 		selectionElemLst = selectionStr.split(sep)
 		
 		if os.path.isfile(selectionStr):

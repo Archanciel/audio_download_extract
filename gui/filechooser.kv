@@ -46,7 +46,7 @@
 				id: file_chooser
 				dirselect: True
 				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
-				                    # exception when clicking on c: list item
+									# exception when clicking on c: list item
 				on_selection: text_path_load.text = self.selection and self.selection[0] or ''
 
 			GridLayout:
@@ -68,7 +68,7 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-				    id: btn_load
+					id: btn_load
 					text: "Load"
 					on_release: root.loadFile(file_chooser.path, file_chooser.selection)
 				Button:
@@ -124,7 +124,7 @@
 				id: file_chooser
 				dirselect: True
 				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
-				                    # exception when clicking on c: list item
+									# exception when clicking on c: list item
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
@@ -147,11 +147,11 @@
 						multiline: False
 						readonly: False
 						on_text: root.updateLoadAtStartCheckBox()
-                CheckBox:
-                    id: load_at_start_chk_box
-                    #size_hint_x: 0.17 # smartphone
-                    size_hint_x: 0.06 # tablet, Windows
-                    on_press: root.toggleLoadAtStart(self.active)
+				CheckBox:
+					id: load_at_start_chk_box
+					#size_hint_x: 0.17 # smartphone
+					size_hint_x: 0.06 # tablet, Windows
+					on_press: root.toggleLoadAtStart(self.active)
 
 			GridLayout:
 				cols: 2
@@ -165,11 +165,12 @@
 					on_release: root.cancel()
 
 <DeleteFileChooserPopup>:   # sub-class of FileChooserPopup, which derives from
-					        # AbstractPopup, which derives from Popup
+							# AbstractPopup, which derives from Popup
 	popupBoxLayout: popup_boxlayout
 	diskRecycleBoxLayout: disc_mem_RB_layout
 	fileChooser: file_chooser
 	pathList: path_mem_list
+	deletedFilesLabel: deleted_files_label
 	BoxLayout:
 		orientation: 'vertical'
 		BoxLayout:
@@ -208,9 +209,42 @@
 			FileChooserIconView: # FileChooserListView does display multi selected files !
 				id: file_chooser
 				multiselect: True
-				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
-				                    # exception when clicking on c: list item
+				filters: ["!*.sys", "*.mp3"] # "!*.sys" avoids pywintypes.error: (32, 'GetFileAttributesEx'
+											 # exception when clicking on C: list item
 				on_selection: root.handleSelection(self.selection)
+
+			GridLayout:
+				id: grid_layout_path_field
+				#size_hint_y: 0.023 # tablet
+				#size_hint_y: 0.035 # smartphone
+				size_hint_y: 0.22 # Windows
+				cols: 1
+				ScrollView:
+					id: scrlv_deleted_files
+					canvas.before:
+						Color:
+							rgb: [0,0,0]
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					effect_cls: "ScrollEffect" #prevents overscrolling
+					#scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
+					do_scroll_x: False # limiting to vertical scrolling
+					do_scroll_y: True
+
+					Label:
+						id: deleted_files_label
+						size_hint_y: None
+						height: self.texture_size[1]
+			#			size_hint: (1, None)
+			#			height: max(self.minimum_height, scrlv_out.height) #required to enable scrolling when output starts to grow
+						text_size: (self.width-20), None
+						# max_lines: 1000 no effect !
+						line_height: 0.9
+						background_color: 0,0,0,0
+						foreground_color: 1,1,1,1
+						valign: "top"
+						markup: True
 
 			GridLayout:
 				cols: 2
@@ -224,7 +258,7 @@
 					on_release: root.cancel()
 
 <SelectOrCreateDirFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
-						             # AbstractPopup, which derives from Popup
+									 # AbstractPopup, which derives from Popup
 	popupBoxLayout: popup_boxlayout
 	diskRecycleBoxLayout: disc_mem_RB_layout
 	fileChooser: file_chooser
@@ -270,7 +304,7 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
-    			filters: [lambda folder, filename: not filename.endswith('')]
+				filters: [lambda folder, filename: not filename.endswith('')]
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
