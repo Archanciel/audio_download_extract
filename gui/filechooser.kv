@@ -45,6 +45,8 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
+				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
+				                    # exception when clicking on c: list item
 				on_selection: text_path_load.text = self.selection and self.selection[0] or ''
 
 			GridLayout:
@@ -121,6 +123,8 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
+				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
+				                    # exception when clicking on c: list item
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
@@ -204,6 +208,8 @@
 			FileChooserIconView: # FileChooserListView does display multi selected files !
 				id: file_chooser
 				multiselect: True
+				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
+				                    # exception when clicking on c: list item
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
