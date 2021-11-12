@@ -280,9 +280,10 @@ class DeleteFileChooserPopup(FileChooserPopup):
 
 	"""
 	
-	def __init__(self, rootGUI, **kwargs):
+	def __init__(self, rootGUI, rootPath, **kwargs):
 		super(DeleteFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
+		self.rootPath = rootPath
 		self.loadAtStartFilePathName = ''
 	
 	def _sizeFileChooser(self):
@@ -298,7 +299,10 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		fileNameLines = ''
 		
 		for filePathName in selectionLst:
-			fileNameLines += filePathName.replace(self.rootPath, '') + '\n'
+			shortedFilePathName = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.rootPath,
+			                                                              fullFilePathName=filePathName,
+			                                                              eliminatedRootLastSubDirsNumber=1)
+			fileNameLines += shortedFilePathName + '\n'
 		
 		self.deletedFilesLabel.text = fileNameLines
 

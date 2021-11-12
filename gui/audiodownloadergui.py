@@ -716,6 +716,7 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_DELETE)
 		self.popup = DeleteFileChooserPopup(title=popupTitle,
 		                                    rootGUI=self,
+		                                    rootPath=self.audiobookPath,
 		                                    cancel=self.dismissPopup)
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.popup.open()
