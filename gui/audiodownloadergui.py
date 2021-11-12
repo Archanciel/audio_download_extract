@@ -718,7 +718,6 @@ class AudioDownloaderGUI(AudioGUI):
 		                                    rootGUI=self,
 		                                    rootPath=self.audiobookPath,
 		                                    cancel=self.dismissPopup)
-		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.popup.open()
 	
 	def openSelectOrCreateDirPopup(self):

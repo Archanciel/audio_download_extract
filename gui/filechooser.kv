@@ -45,8 +45,8 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
-				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
-									# exception when clicking on c: list item
+				filters: ["!*.sys", "*.txt", "*.mp3"] # "!*.sys" avoids pywintypes.error: (32, 'GetFileAttributesEx'
+								        			  # exception when clicking on C: list item
 				on_selection: text_path_load.text = self.selection and self.selection[0] or ''
 
 			GridLayout:
@@ -123,8 +123,8 @@
 			FileChooserListView:
 				id: file_chooser
 				dirselect: True
-				filters: ["!*.sys"] # this avoid pywintypes.error: (32, 'GetFileAttributesEx'
-									# exception when clicking on c: list item
+				filters: ["!*.sys", "*.txt"] # "!*.sys" avoids pywintypes.error: (32, 'GetFileAttributesEx'
+											 # exception when clicking on C: list item
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
