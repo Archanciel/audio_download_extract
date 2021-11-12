@@ -114,13 +114,13 @@ class AudioClipperGUI(AudioPositionGUI):
 		# histoLines = [{'text': val, 'selectable': True} for val in lines
 		
 		items = [{CONTACT_NAME_KEY: ' ', CONTACT_EMAIL_KEY: '',
-		          CONTACT_PHONE_NUMBER_KEY: ''},
-		         {CONTACT_NAME_KEY: '  ', CONTACT_EMAIL_KEY: '',
-		          CONTACT_PHONE_NUMBER_KEY: ''}
-		         ]
+				  CONTACT_PHONE_NUMBER_KEY: ''},
+				 {CONTACT_NAME_KEY: '  ', CONTACT_EMAIL_KEY: '',
+				  CONTACT_PHONE_NUMBER_KEY: ''}
+				 ]
 		
 		histoLines = [{NAME_LABEL_KEY: str(x[CONTACT_NAME_KEY]), EMAIL_LABEL_KEY: str(x[CONTACT_EMAIL_KEY]),
-		               PHONE_NUMBER_LABEL_KEY: str(x[CONTACT_PHONE_NUMBER_KEY]), 'selectable': True} for x in items]
+					   PHONE_NUMBER_LABEL_KEY: str(x[CONTACT_PHONE_NUMBER_KEY]), 'selectable': True} for x in items]
 		
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
@@ -214,9 +214,9 @@ class AudioClipperGUI(AudioPositionGUI):
 		self.updateCurrentSoundPosTextInput(newSoundPos)
 
 	def updateFileSoundPos(self,
-	                       soundloaderMp3Obj,
-	                       newSoundPos,
-	                       soundFilePlayButton):
+						   soundloaderMp3Obj,
+						   newSoundPos,
+						   soundFilePlayButton):
 		"""
 		Method called when changing clip file sound position.
 		
@@ -227,8 +227,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		"""
 		self.stopSourceFile()
 		super(AudioClipperGUI, self).updateFileSoundPos(soundloaderMp3Obj,
-		                                                newSoundPos,
-		                                                soundFilePlayButton)
+														newSoundPos,
+														soundFilePlayButton)
 
 	def stopSourceFile(self, unusedParm=None):
 		"""
@@ -265,6 +265,12 @@ class AudioClipperGUI(AudioPositionGUI):
 		"""
 		if self.soundloaderClipMp3Obj:
 			self.soundloaderClipMp3Obj.stop()
+			
+			self.soundloaderClipMp3Obj.__del__()    # avoids that the clip file
+													# remains open and so can not
+												    # be renamed in the Explorer
+													# for example
+			
 			self.clipFilePlayButton.disabled = False
 	
 	def cancelClipFile(self):
@@ -444,8 +450,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		Method called when clip file <| button is pressed.
 		"""
 		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderClipMp3Obj,
-		                        newSoundPos=0,
-		                        soundFilePlayButton=self.clipFilePlayButton)
+								newSoundPos=0,
+								soundFilePlayButton=self.clipFilePlayButton)
 	
 	def goToClipFileEndPos(self):
 		"""
@@ -453,8 +459,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		"""
 		endPos = self.soundloaderClipMp3Obj.length - GO_TO_END_PREVIOUS_SECONDS
 		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderClipMp3Obj,
-		                        newSoundPos=endPos,
-		                        soundFilePlayButton=self.clipFilePlayButton)
+								newSoundPos=endPos,
+								soundFilePlayButton=self.clipFilePlayButton)
 	
 	def forwardClipFileTenSeconds(self):
 		"""
@@ -463,8 +469,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		currPos = self.soundloaderClipMp3Obj.get_pos()
 		newSoundPos = currPos + 10
 		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderClipMp3Obj,
-		                        newSoundPos=newSoundPos,
-		                        soundFilePlayButton=self.clipFilePlayButton)
+								newSoundPos=newSoundPos,
+								soundFilePlayButton=self.clipFilePlayButton)
 
 	def backwardClipFileTenSeconds(self):
 		"""
@@ -473,8 +479,8 @@ class AudioClipperGUI(AudioPositionGUI):
 		currPos = self.soundloaderClipMp3Obj.get_pos()
 		newSoundPos = currPos - 10
 		self.updateFileSoundPos(soundloaderMp3Obj=self.soundloaderClipMp3Obj,
-		                        newSoundPos=newSoundPos,
-		                        soundFilePlayButton=self.clipFilePlayButton)
+								newSoundPos=newSoundPos,
+								soundFilePlayButton=self.clipFilePlayButton)
 	
 	def shareClipFile(self):
 		"""
@@ -503,7 +509,7 @@ class AudioClipperGUI(AudioPositionGUI):
 		
 		# Add the updated data to the list if not already in
 		requestListEntry = {NAME_LABEL_KEY: name, EMAIL_LABEL_KEY: email, PHONE_NUMBER_LABEL_KEY: phoneNumber,
-		                    'selectable': True}
+							'selectable': True}
 		
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
