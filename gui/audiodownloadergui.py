@@ -604,6 +604,10 @@ class AudioDownloaderGUI(AudioGUI):
 	def clearOutput(self):
 		self.outputLabel.text = ''
 		
+		# scrolling to top of output text. Doing that avoids that the next
+		# output label text addition is done at the bottom of the label
+		self.outputScrollView.scroll_y = 1
+
 		if 'History' not in self.statusBarTextInput.text:
 			self.statusBarTextInput.text = ''
 
