@@ -328,23 +328,11 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		
 		fileNameLines = ''
 		
-		for filePathName in selectionLst:
-			shortedFilePathName = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.rootPath,
-			                                                              fullFilePathName=filePathName,
-			                                                              eliminatedRootLastSubDirsNumber=0)
+		for pathFileName in selectionLst:
+			shortedFilePathName = DirUtil.extractFileNameFromPathFileName(pathFileName=pathFileName)
 			fileNameLines += shortedFilePathName + '\n'
 		
 		self.deletedFilesLabel.text = fileNameLines
-
-		selectionStr = selectionLst[0]
-		selectionElemLst = selectionStr.split(sep)
-		
-		if os.path.isfile(selectionStr):
-			pathContainedInSelection = sep.join(selectionElemLst[:-1])
-			fileNameContainedInSelection = selectionElemLst[-1]
-		else:
-			pathContainedInSelection = selectionStr
-			fileNameContainedInSelection = ''
 	
 	def delete(self, pathOnly, pathName, fileName, isLoadAtStart):
 		"""
