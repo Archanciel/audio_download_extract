@@ -286,7 +286,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		self.rootPath = rootPath
 		self.loadAtStartFilePathName = ''
 	
-	def setPopupSize(self):
+	def _setPopupSize(self):
 		popupSizeProportion_x = 0.98
 		popupSizeProportion_y = 0.98
 		popupPos_top = 0.98
@@ -318,6 +318,11 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		"""
 	
 	def handleSelection(self, selectionLst):
+		"""
+		Method called when selecting or unselecting a file.
+		
+		:param selectionLst:
+		"""
 		if selectionLst == []:
 			return
 		
@@ -326,7 +331,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		for filePathName in selectionLst:
 			shortedFilePathName = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.rootPath,
 			                                                              fullFilePathName=filePathName,
-			                                                              eliminatedRootLastSubDirsNumber=1)
+			                                                              eliminatedRootLastSubDirsNumber=0)
 			fileNameLines += shortedFilePathName + '\n'
 		
 		self.deletedFilesLabel.text = fileNameLines
@@ -343,11 +348,11 @@ class DeleteFileChooserPopup(FileChooserPopup):
 	
 	def delete(self, pathOnly, pathName, fileName, isLoadAtStart):
 		"""
-
+		Method called when clicking Delete button.
+		
 		:param pathOnly:
 		:param pathName:
 		:param isLoadAtStart:
-		:return:
 		"""
 		if fileName == '':
 			# no file selected or file name defined. Load dialog remains open ..
@@ -355,6 +360,13 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		
 		self.rootGUI.deleteFile(pathOnly, pathName + sep + fileName, isLoadAtStart)
 		self.rootGUI.dismissPopup()
+
+	def unselectAll(self):
+		"""
+		Method called when clicking Unselect all button.
+		"""
+		self.fileChooser.selection = []
+		self.deletedFilesLabel.text = ''
 
 
 class SelectOrCreateDirFileChooserPopup(FileChooserPopup):

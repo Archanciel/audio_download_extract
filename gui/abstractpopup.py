@@ -11,7 +11,7 @@ class AbstractPopup(Popup):
 	"""
 	def __init__(self, **kwargs):
 		
-		popupPos_top, popupSizeProportion_x, popupSizeProportion_y = self.setPopupSize()
+		popupPos_top, popupSizeProportion_x, popupSizeProportion_y = self._setPopupSize()
 		
 		# adding FileChooserPopup size parameters to the kwargs dic for the
 		# super class
@@ -20,7 +20,7 @@ class AbstractPopup(Popup):
 		
 		super().__init__(**kwargs)
 	
-	def setPopupSize(self):
+	def _setPopupSize(self):
 		popupSizeProportion_x = 0.98
 		popupSizeProportion_y = 0.98
 		popupPos_top = 0.98
@@ -39,8 +39,8 @@ class AbstractPopup(Popup):
 				popupPos_top = 0.92
 		elif platform == 'win':
 			popupSizeProportion_x = 0.8
-			popupSizeProportion_y = 0.98
-			popupPos_top = 0.98
+			popupSizeProportion_y = 0.8
+			popupPos_top = 0.92
 
 		return popupPos_top, popupSizeProportion_x, popupSizeProportion_y
 	

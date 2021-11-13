@@ -217,7 +217,7 @@
 				id: grid_layout_path_field
 				#size_hint_y: 0.023 # tablet
 				#size_hint_y: 0.035 # smartphone
-				size_hint_y: 0.22 # Windows
+				size_hint_y: 0.52 # Windows
 				cols: 1
 				ScrollView:
 					id: scrlv_deleted_files
@@ -247,12 +247,15 @@
 						markup: True
 
 			GridLayout:
-				cols: 2
+				cols: 3
 				size_hint_y: None
 				height: '28dp'
 				Button:
 					text: "Delete"
 					on_release: root.delete(file_chooser.path, path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
+				Button:
+					text: "Unselect all"
+					on_release: root.unselectAll()
 				Button:
 					text: "Cancel"
 					on_release: root.cancel()
