@@ -46,7 +46,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShortDir, DirUtil.getLastSubDirs(fullDir,
 		                                                          subDirsNumber=2))
 	
-	def testGetFullDirMinusRootDir_several_sub_dirs(self):
+	def testGetFullFilePathNameMinusRootDir_several_sub_dirs(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
 		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
@@ -58,7 +58,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                             fullFilePathName=fullDir))
 
-	def testGetFullDirMinusRootDir_one_sub_dir(self):
+	def testGetFullFilePathNameMinusRootDir_one_sub_dir(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
 		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\Aimer sans peur'
@@ -70,7 +70,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                             fullFilePathName=fullDir))
 	
-	def testGetFullDirMinusRootDir_several_sub_dirs_mp3_fileName(self):
+	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_1(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
@@ -79,6 +79,30 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                           fullFilePathName=fullDir,
 		                                                                           eliminatedRootLastSubDirsNumber=1))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                             fullFilePathName=fullDir))
+	
+	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_None(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		expectedShortDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		
+		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                           fullFilePathName=fullDir,
+		                                                                           eliminatedRootLastSubDirsNumber=None))
+		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                             fullFilePathName=fullDir))
+	
+	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_0(self):
+		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		expectedShortDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		
+		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+		                                                                           fullFilePathName=fullDir,
+		                                                                           eliminatedRootLastSubDirsNumber=0))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                             fullFilePathName=fullDir))
 	

@@ -109,7 +109,7 @@ class DirUtil:
 							 'UCEM\\chap 1.mp3'
 		:return:
 		"""
-		if eliminatedRootLastSubDirsNumber is None:
+		if eliminatedRootLastSubDirsNumber is None or eliminatedRootLastSubDirsNumber == 0:
 			return fullFilePathName.replace(rootDir + sep, '')
 		
 		rootDirElementLst = rootDir.split(sep)
