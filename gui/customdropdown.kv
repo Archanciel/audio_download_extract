@@ -2,6 +2,7 @@
 	gridLayoutClip: gridlayout_clipButton
 	gridLayoutShare: gridlayout_shareButton
 	gridLayoutSettings: gridlayout_settingsButton
+	gridLayoutDelete: gridlayout_deleteButton
 	saveButton: save_Button
 
     # defining canvas causes disabled drop down menu items to be
@@ -25,12 +26,17 @@
 		height: '28dp'
 		disabled: True
 		on_release: root.showSave()
-	Button:
-		id: delete_Button
-		text: 'Delete'
-		size_hint_y: None
-		height: '28dp'
-		on_release: root.showDelete()
+    GridLayout: # enable to hide or display 'Delete' menu item
+        id: gridlayout_deleteButton
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            id: delete_Button
+            text: 'Delete'
+            size_hint_y: None
+            height: '28dp'
+            on_release: root.showDelete()
     GridLayout: # enable to hide or display 'Clip audio' menu item
         id: gridlayout_clipButton
 		cols: 1

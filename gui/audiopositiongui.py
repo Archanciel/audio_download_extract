@@ -2,7 +2,8 @@ from audiogui import AudioGUI
 
 class AudioPositionGUI(AudioGUI):
 	"""
-	Abstract class hosting common methods of its sub classes.
+	Abstract class hosting common methods of its sub classes (AudioClipperGUI,
+	AudioShareGUI).
 	"""
 	def __init__(self, **kw):
 		super().__init__(**kw)
@@ -10,6 +11,7 @@ class AudioPositionGUI(AudioGUI):
 		self.isExtractFileDropDownMenuItemDisplayed = False
 		self.isShareFileDropDownMenuItemDisplayed = False
 		self.isSettingsDropDownMenuItemDisplayed = False
+		self.isDeleteDropDownMenuItemDisplayed = False
 
 	def updateFileSoundPos(self,
 	                       soundloaderMp3Obj,
