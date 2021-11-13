@@ -334,19 +334,11 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		
 		self.deletedFilesLabel.text = fileNameLines
 	
-	def delete(self, pathOnly, pathName, fileName, isLoadAtStart):
+	def delete(self):
 		"""
 		Method called when clicking Delete button.
-		
-		:param pathOnly:
-		:param pathName:
-		:param isLoadAtStart:
 		"""
-		if fileName == '':
-			# no file selected or file name defined. Load dialog remains open ..
-			return
-		
-		self.rootGUI.deleteFile(pathOnly, pathName + sep + fileName, isLoadAtStart)
+		self.rootGUI.deleteFiles(self.fileChooser.selection)
 		self.rootGUI.dismissPopup()
 
 	def unselectAll(self):

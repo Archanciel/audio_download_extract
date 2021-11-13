@@ -877,6 +877,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
 
+	def deleteFiles(self, filePathNameLst):
+		print(filePathNameLst)
+		
 	# --- end file chooser code ---
 
 	def buildDataPathContainedInFilePathNameNotExistMessage(self, path):
