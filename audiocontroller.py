@@ -377,7 +377,22 @@ class AudioController:
 
 		:param filePathNameLst:
 		"""
+		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[0])
 		DirUtil.deleteFiles(filePathNameLst)
+		dicFileName = DirUtil.getFileNamesInDirForPattern(
+			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)[0]
+		
+		downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+		                                            audioRootDir=None,
+		                                            playlistDownloadRootPath=None,
+		                                            originalPaylistTitle=None,
+		                                            originalPlaylistName=None,
+		                                            modifiedPlaylistTitle=None,
+		                                            modifiedPlaylistName=None,
+		                                            loadDicIfDicFileExist=True,
+		                                            existingDicFilePathName=dicFileName)
+		
+		# now delete the video entries corresponding to the deleted files
 
 if __name__ == "__main__":
 	downloader = AudioController()

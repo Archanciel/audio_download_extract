@@ -783,7 +783,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		shutil.copytree(testPathSaved, testPath)
 
-		dicFileNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*.txt')
+		dicFileNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
 		
 		dvi = DownloadVideoInfoDic(playlistUrl=None,
 		                           audioRootDir=None,

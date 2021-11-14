@@ -7,8 +7,6 @@ from os.path import sep
 from constants import *
 from dirutil import DirUtil
 
-DIC_FILE_NAME_ETENT = '_dic.txt'
-
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
@@ -40,6 +38,8 @@ KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
 class DownloadVideoInfoDic:
+	DIC_FILE_NAME_EXTENT = '_dic.txt'
+	
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
@@ -254,7 +254,7 @@ class DownloadVideoInfoDic:
 
 		:return: playlist DownloadVideoInfoDic file path name
 		"""
-		return downloadDir + sep + validPlaylistDirName + DIC_FILE_NAME_ETENT
+		return downloadDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
 	def getVideoIndexes(self):
 		'''

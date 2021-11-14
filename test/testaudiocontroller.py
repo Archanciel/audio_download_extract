@@ -259,8 +259,32 @@ class TestAudioController(unittest.TestCase):
 			['Funny suspicious looking dog 2013-11-05.mp3'],
 			createdFileLst)
 
+	def testDeleteAudioFiles(self):
+		testDirName = 'test delete files'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		deletedFilePathNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*.mp3')
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDownloadVideosReferencedInPlaylistOrSingleVideo()
+	tst.testDeleteAudioFiles()
