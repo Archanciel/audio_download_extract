@@ -287,6 +287,39 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual('Audio' + sep + 'France' + sep + 'politique', targetAudioDirShort)
 		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
 
+	def testGetFileNamesInDirForPattern(self):
+		deletedFileName_1 = 'file_one.mp3'
+		deletedFileName_2 = 'file_two.mp3'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		deletedFilePathName_1 = testBaseRootPath + sep + deletedFileName_1
+		deletedFilePathName_2 = testBaseRootPath + sep + deletedFileName_2
+		deletedFilePathNameLst = [deletedFilePathName_1, deletedFilePathName_2]
+
+		# creating the fileswhich will be deleted
+		
+		for deletedFilePathName in deletedFilePathNameLst:
+			with open(deletedFilePathName, 'w') as f:
+				f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(deletedFilePathName_1))
+		self.assertTrue(os.path.isfile(deletedFilePathName_2))
+
+		# now getting the files
+		
+		deletedFilePathNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
+		
+		self.assertEqual(deletedFilePathName_1, deletedFilePathNameLst[0])
+		self.assertEqual(deletedFilePathName_2, deletedFilePathNameLst[1])
+		
+		# removing test dir and its file
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+
 
 if __name__ == '__main__':
 	#unittest.main()
