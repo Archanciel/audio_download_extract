@@ -338,7 +338,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		"""
 		Method called when clicking Delete button.
 		"""
-		self.rootGUI.deleteFiles(self.fileChooser.selection)
+		self.rootGUI.deleteAudioFiles(self.fileChooser.selection)
 		self.rootGUI.dismissPopup()
 
 	def unselectAll(self):

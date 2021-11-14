@@ -877,7 +877,12 @@ class AudioDownloaderGUI(AudioGUI):
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
 
-	def deleteFiles(self, filePathNameLst):
+	def deleteAudioFiles(self, filePathNameLst):
+		"""
+		Called by DeleteFileChooserPopup.delete().
+		
+		:param filePathNameLst:
+		"""
 		print(filePathNameLst)
 		
 	# --- end file chooser code ---

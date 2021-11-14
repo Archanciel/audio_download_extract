@@ -370,7 +370,14 @@ class AudioController:
 		videoCurrentMp3ConversionInfoList[0] = hhmmssStr
 
 		self.audioGUI.displayVideoMp3ConversionCurrentInfo(videoCurrentMp3ConversionInfoList)
+	
+	def deleteAudioFiles(self, filePathNameLst):
+		"""
+		Called by AudioDownloaderGUI.deleteAudioFiles().
 
+		:param filePathNameLst:
+		"""
+		DirUtil.deleteFiles(filePathNameLst)
 
 if __name__ == "__main__":
 	downloader = AudioController()
