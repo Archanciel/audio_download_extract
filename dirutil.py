@@ -1,3 +1,4 @@
+import glob
 import os
 from os import listdir
 from os.path import isfile, join
@@ -121,6 +122,10 @@ class DirUtil:
 	@staticmethod
 	def getFileNamesInDir(targetAudioDir):
 		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]
+	
+	@staticmethod
+	def getFileNamesInDirForPattern(targetAudioDir, pattern):
+		return glob.glob(targetAudioDir + sep + pattern)
 	
 	@staticmethod
 	def replaceUnauthorizedDirOrFileNameChars(rawFileName):

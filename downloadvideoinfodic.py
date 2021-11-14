@@ -7,6 +7,8 @@ from os.path import sep
 from constants import *
 from dirutil import DirUtil
 
+DIC_FILE_NAME_ETENT = '_dic.txt'
+
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
@@ -42,20 +44,26 @@ class DownloadVideoInfoDic:
 	cachedRateAccessNumber = 0
 
 	def __init__(self,
-	             playlistUrl,
-	             audioRootDir,
-	             playlistDownloadRootPath,
-	             originalPaylistTitle,
-	             originalPlaylistName,
+	             playlistUrl=None,
+	             audioRootDir=None,
+	             playlistDownloadRootPath=None,
+	             originalPaylistTitle=None,
+	             originalPlaylistName=None,
 	             modifiedPlaylistTitle=None,
 	             modifiedPlaylistName=None,
-	             loadDicIfDicFileExist=True):
+	             loadDicIfDicFileExist=True,
+	             existingDicFilePathName=None):
 		"""
 		Constructor.
-		If a file containing the dictionary data for the corresponding playlist exist
-		in the passed playlistVideoDownloadDir + playlistDirName, it is loaded and set into the
-		self.dic instance variable. Otherwise, tthe self.dic is initialized withg
-		the passed information.
+		
+		If a file containing the dictionary data for the corresponding playlist
+		exist in the passed playlistVideoDownloadDir + playlistValidDirName, it is
+		loaded and set into the self.dic instance variable. Otherwise, the self
+		dic is initialized with the passed information.
+		
+		If the passed existingDicFilePathName is not None, the instantiated
+		DownloadVideoInfoDic is created with the data contained in the
+		DownloadVideoInfoDic file located in the existingDicFilePathName dir.
 		
 		:param playlistUrl:                 playlist url to add to the
 											download video info div
@@ -70,13 +78,22 @@ class DownloadVideoInfoDic:
 											in order to pass extraction info to the AudioExtractor.
 											Typically when executing
 											AudioClipperGUI.createClipFileOnNewThread()
+		:param existingDicFilePathName      used only if the DownloadVideoInfoDic
+											is instantiated based on this parameter
+											only
 		"""
-		playlistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
-		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistDirName
+		if existingDicFilePathName is not None:
+			self.dic = self._loadDicIfExist(existingDicFilePathName)
+			
+			return
+
+		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
+		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistValidDirName
 		self.dic = None
 		
 		if loadDicIfDicFileExist:
-			self.dic = self._loadDicIfExist(playlistVideoDownloadDir, playlistDirName)
+			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
+			self.dic = self._loadDicIfExist(infoDicFilePathName)
 		
 		if self.dic is None:
 			self.dic = {}
@@ -104,22 +121,19 @@ class DownloadVideoInfoDic:
 		except Exception as e:
 			print(e)
 	
-	def _loadDicIfExist(self, downloadDir, validPlaylistDirName):
+	def _loadDicIfExist(self, dicFilePathName):
 		"""
-		If a file containing the dictionary data for the corresponding playlist,
-		it is loaded using json.
+		If a file containing the dictionary data for the corresponding playlist
+		exists, it is loaded using json.
 		
-		:param downloadDir:             dir containing the playlist extracted audio files
-		:param validPlaylistDirName:    contains the playlistName purged from any invalid
-										Windows dir or file names chars.
-								
+		:param dicFilePathName:
+		
 		:return None or loaded dictionary
 		"""
 		dic = None
-		infoDicFilePathName = self.buildInfoDicFilePathName(downloadDir, validPlaylistDirName)
 
-		if os.path.isfile(infoDicFilePathName):
-			with open(infoDicFilePathName, 'r') as f:
+		if os.path.isfile(dicFilePathName):
+			with open(dicFilePathName, 'r') as f:
 				dic = json.load(f)
 
 		return dic
@@ -240,7 +254,7 @@ class DownloadVideoInfoDic:
 
 		:return: playlist DownloadVideoInfoDic file path name
 		"""
-		return downloadDir + sep + validPlaylistDirName + '_dic.txt'
+		return downloadDir + sep + validPlaylistDirName + DIC_FILE_NAME_ETENT
 	
 	def getVideoIndexes(self):
 		'''
