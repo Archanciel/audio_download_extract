@@ -288,8 +288,8 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
 
 	def testGetFileNamesInDirForPattern(self):
-		deletedFileName_1 = 'file_one.mp3'
-		deletedFileName_2 = 'file_two.mp3'
+		fileName_1 = 'file_one.mp3'
+		fileName_2 = 'file_two.mp3'
 		
 		testBaseRootDir = 'test dir util'
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
@@ -297,25 +297,25 @@ class TestDirUtil(unittest.TestCase):
 		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
 		                                  targetAudioDir=testBaseRootPath)
 		
-		deletedFilePathName_1 = testBaseRootPath + sep + deletedFileName_1
-		deletedFilePathName_2 = testBaseRootPath + sep + deletedFileName_2
-		deletedFilePathNameLst = [deletedFilePathName_1, deletedFilePathName_2]
+		filePathName_1 = testBaseRootPath + sep + fileName_1
+		filePathName_2 = testBaseRootPath + sep + fileName_2
+		filePathNameLst = [filePathName_1, filePathName_2]
 
-		# creating the fileswhich will be deleted
+		# creating the files which will be listed
 		
-		for deletedFilePathName in deletedFilePathNameLst:
-			with open(deletedFilePathName, 'w') as f:
+		for filePathName in filePathNameLst:
+			with open(filePathName, 'w') as f:
 				f.write('Hello World')
 		
-		self.assertTrue(os.path.isfile(deletedFilePathName_1))
-		self.assertTrue(os.path.isfile(deletedFilePathName_2))
+		self.assertTrue(os.path.isfile(filePathName_1))
+		self.assertTrue(os.path.isfile(filePathName_2))
 
 		# now getting the files
 		
-		deletedFilePathNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
+		filePathNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
 		
-		self.assertEqual(deletedFilePathName_1, deletedFilePathNameLst[0])
-		self.assertEqual(deletedFilePathName_2, deletedFilePathNameLst[1])
+		self.assertEqual(filePathName_1, filePathNameLst[0])
+		self.assertEqual(filePathName_2, filePathNameLst[1])
 		
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
@@ -334,7 +334,7 @@ class TestDirUtil(unittest.TestCase):
 		deletedFilePathName_2 = testBaseRootPath + sep + deletedFileName_2
 		deletedFilePathNameLst = [deletedFilePathName_1, deletedFilePathName_2]
 		
-		# creating the fileswhich will be deleted
+		# creating the files which will be deleted
 		
 		for deletedFilePathName in deletedFilePathNameLst:
 			with open(deletedFilePathName, 'w') as f:
