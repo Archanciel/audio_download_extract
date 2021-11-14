@@ -181,3 +181,10 @@ class DirUtil:
 			os.rename(originalFilePathName, newFilePathName)
 		except (FileNotFoundError, FileExistsError, OSError) as e:
 			return str(e)
+		
+	@staticmethod
+	def deleteFiles(filePathNameLst):
+		for filePathName in filePathNameLst:
+			if isfile(filePathName):
+				os.remove(filePathName)
+				
