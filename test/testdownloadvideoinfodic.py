@@ -618,7 +618,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(3, dvi.getNextVideoIndex())
 		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
 
-	def testRemoveFirstVideoInfoForVideoIndex(self):
+	def testRemoveVideoInfoForVideoIndex_first_added_video(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
 		playListName = 'test_download_vid_info_dic'
 		playlistTitle = playListName
@@ -665,7 +665,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(3, dvi.getNextVideoIndex())
 		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
 
-	def testRemoveSecondVideoInfoForVideoIndex(self):
+	def testRemoveVideoInfoForVideoIndex_second_added_video(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
 		playListName = 'test_download_vid_info_dic'
 		playlistTitle = playListName
@@ -771,7 +771,11 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 	def testCreateDownloadVideoInfoDic_from_existing_info_dic_file(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
-		
+
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
@@ -798,14 +802,85 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertIsNotNone(dvi)
 		
 		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
-		                 dvi.getVideoUrlForVideoTitle('Wear a mask. Help slow the spread of Covid-19.'))
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
 		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
-		                 dvi.getVideoUrlForVideoTitle('Here to help: Give him what he wants'))
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
 		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
-		                 dvi.getVideoUrlForVideoTitle('Funny suspicious looking dog'))
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
 
+	def testDeleteVideoInfoForVideoFileName(self):
+		testDirName = 'test delete files'
+		testDirNameSaved = 'test delete files save dir'
+		
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+		
+		videoFileName_1 = '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'
+		videoFileName_2 = '98-Here to help - Give him what he wants 2019-06-07.mp3'
+		videoFileName_3 = '97-Funny suspicious looking dog 2013-11-05.mp3'
+		videoFileName_not_exist = 'Wear a mask. Help slow the spread of Covid-19.'
+
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		dicFileNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFileNameLst[0])
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+
+		dvi.deleteVideoInfoForVideoFileName(videoFileName_not_exist)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+		
+		dvi.deleteVideoInfoForVideoFileName(videoFileName_2)
+
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual(None,
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+
+		dvi.deleteVideoInfoForVideoFileName(videoFileName_3)
+
+		self.assertEqual(videoFileName_1,
+		                 dvi.getVideoFileNameForVideoTitle(videoTitle_1))
+		self.assertEqual(None,
+		                 dvi.getVideoFileNameForVideoTitle(videoTitle_2))
+		self.assertEqual(None,
+		                 dvi.getVideoFileNameForVideoTitle(videoTitle_3))
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadVideoInfoDic()
-	tst.testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file()
+	tst.testDeleteVideoInfoForVideoFileName()

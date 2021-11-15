@@ -488,6 +488,13 @@ class DownloadVideoInfoDic:
 		
 		return None
 	
+	def getVideoIndexForVideoFileName(self, videoFileName):
+		for key in self.dic[KEY_VIDEOS].keys():
+			if self.getVideoFileNameForVideoIndex(key) == videoFileName:
+				return key
+		
+		return None
+	
 	def addExtractedFileInfoForVideoIndexTimeFrameIndex(self,
 														videoIndex,
 														timeFrameIndex,
@@ -677,6 +684,10 @@ class DownloadVideoInfoDic:
 		else:
 			return videoInfoDic[KEY_VIDEO_SUPPRESS_FILE][KEY_TIMEFRAMES_HHMMSS_KEPT]
 
+	def deleteVideoInfoForVideoFileName(self, videoFileName):
+		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
+		self.removeVideoInfoForVideoIndex(videoIndex)
+		
 
 if __name__ == "__main__":
 	if os.name == 'posix':
