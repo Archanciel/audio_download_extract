@@ -324,6 +324,9 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		:param selectionLst:
 		"""
 		if selectionLst == []:
+			self.deleteButton.disabled = True
+			self.deletedFilesLabel.text = ''
+			
 			return
 		
 		fileNameLines = ''
@@ -332,6 +335,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 			shortedFilePathName = DirUtil.extractFileNameFromPathFileName(pathFileName=pathFileName)
 			fileNameLines += shortedFilePathName + '\n'
 		
+		self.deleteButton.disabled = False
 		self.deletedFilesLabel.text = fileNameLines
 	
 	def delete(self):
@@ -346,6 +350,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		Method called when clicking Unselect all button.
 		"""
 		self.fileChooser.selection = []
+		self.deleteButton.disabled = True
 		self.deletedFilesLabel.text = ''
 
 

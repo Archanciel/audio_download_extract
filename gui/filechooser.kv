@@ -170,6 +170,7 @@
 	diskRecycleBoxLayout: disc_mem_RB_layout
 	fileChooser: file_chooser
 	pathList: path_mem_list
+	deleteButton: delete_button
 	deletedFilesLabel: deleted_files_label
 	BoxLayout:
 		orientation: 'vertical'
@@ -251,7 +252,9 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
+				    id: delete_button
 					text: "Delete"
+					disabled: True
 					on_release: root.delete()
 				Button:
 					text: "Unselect all"

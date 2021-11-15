@@ -883,7 +883,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		:param filePathNameLst:
 		"""
-		print(filePathNameLst)
+		self.audioController.deleteAudioFiles(filePathNameLst=filePathNameLst)
 		
 	# --- end file chooser code ---
 
