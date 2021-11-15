@@ -124,7 +124,7 @@ class DirUtil:
 		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]
 	
 	@staticmethod
-	def getFileNamesInDirForPattern(targetAudioDir, pattern):
+	def getFilePathNamesInDirForPattern(targetAudioDir, pattern):
 		return glob.glob(targetAudioDir + sep + pattern)
 	
 	@staticmethod

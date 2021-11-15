@@ -290,8 +290,8 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
 		self.assertEqual('Audio' + sep + 'France' + sep + 'politique', targetAudioDirShort)
 		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
-	
-	def testGetFileNamesInDirForPattern(self):
+
+	def testGetFilePathNamesInDirForPattern(self):
 		fileName_1 = 'file_one.mp3'
 		fileName_2 = 'file_two.mp3'
 		
@@ -316,7 +316,7 @@ class TestDirUtil(unittest.TestCase):
 		
 		# now getting the files
 		
-		filePathNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
+		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testBaseRootPath, '*.mp3')
 		
 		self.assertEqual(filePathName_1, filePathNameLst[0])
 		self.assertEqual(filePathName_2, filePathNameLst[1])
