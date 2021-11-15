@@ -12,6 +12,7 @@ from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 from configmanager import ConfigManager
 from dirutil import DirUtil
+from downloadvideoinfodic import DownloadVideoInfoDic
 			
 class TestAudioController(unittest.TestCase):
 
@@ -259,13 +260,83 @@ class TestAudioController(unittest.TestCase):
 			['Funny suspicious looking dog 2013-11-05.mp3'],
 			createdFileLst)
 
-	def testDeleteAudioFiles(self):
+	def testDeleteAudioFiles_all(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		# obtaining the download video info dic file path name
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFilePathNameLst[0]
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+		
+		deletedFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		
+		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
+		                                          audioRootDir=None,
+		                                          playlistDownloadRootPath=None,
+		                                          originalPaylistTitle=None,
+		                                          originalPlaylistName=None,
+		                                          modifiedPlaylistTitle=None,
+		                                          modifiedPlaylistName=None,
+		                                          loadDicIfDicFileExist=True,
+		                                          existingDicFilePathName=dicFilePathName)
+
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
+	
+	def testDeleteAudioFiles_some(self):
+		testDirName = 'test delete files'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
 		
 		# restoring test dir
 		
@@ -274,7 +345,32 @@ class TestAudioController(unittest.TestCase):
 		
 		shutil.copytree(testPathSaved, testPath)
 		
-		deletedFilePathNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*.mp3')
+		# obtaining the download video info dic file path name
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath,
+		                                                         '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFilePathNameLst[0]
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+		
+		deletedAllFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		deletedFilePathNameLst = deletedAllFilePathNameLst[:-1]
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
@@ -282,6 +378,24 @@ class TestAudioController(unittest.TestCase):
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		
+		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
+		                                          audioRootDir=None,
+		                                          playlistDownloadRootPath=None,
+		                                          originalPaylistTitle=None,
+		                                          originalPlaylistName=None,
+		                                          modifiedPlaylistTitle=None,
+		                                          modifiedPlaylistName=None,
+		                                          loadDicIfDicFileExist=True,
+		                                          existingDicFilePathName=dicFilePathName)
+		
+		self.assertEqual(['C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test delete files\\99-Wear a '
+ 'mask. Help slow the spread of Covid-19. 2020-07-31.mp3'], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
 
 
 if __name__ == '__main__':

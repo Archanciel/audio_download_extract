@@ -787,7 +787,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		shutil.copytree(testPathSaved, testPath)
 
-		dicFileNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFileNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
 		
 		dvi = DownloadVideoInfoDic(playlistUrl=None,
 		                           audioRootDir=None,
@@ -832,8 +832,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		shutil.copytree(testPathSaved, testPath)
 		
-		dicFileNameLst = DirUtil.getFileNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
-		
+		# obtaining the download video info dic file path name
+		dicFileNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFileNameLst[0]
+
 		dvi = DownloadVideoInfoDic(playlistUrl=None,
 		                           audioRootDir=None,
 		                           playlistDownloadRootPath=None,
@@ -842,7 +844,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		                           modifiedPlaylistTitle=None,
 		                           modifiedPlaylistName=None,
 		                           loadDicIfDicFileExist=True,
-		                           existingDicFilePathName=dicFileNameLst[0])
+		                           existingDicFilePathName=dicFilePathName)
 		
 		self.assertIsNotNone(dvi)
 		

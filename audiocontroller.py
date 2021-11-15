@@ -382,7 +382,7 @@ class AudioController:
 		
 		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[0])
 		DirUtil.deleteFiles(filePathNameLst)
-		dicFileName = DirUtil.getFileNamesInDirForPattern(
+		dicFileName = DirUtil.getFilePathNamesInDirForPattern(
 			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)[0]
 		
 		downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
@@ -401,7 +401,7 @@ class AudioController:
 			fileName = DirUtil.extractFileNameFromPathFileName(filePathName)
 			downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
 
-		downloadVideoInfoDic.saveDic(audioDirRoot=deletedFilesPath)
+		downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
 
 
 if __name__ == "__main__":
