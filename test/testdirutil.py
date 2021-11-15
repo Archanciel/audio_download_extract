@@ -349,10 +349,43 @@ class TestDirUtil(unittest.TestCase):
 		
 		# now deleting the files
 		
-		DirUtil.deleteFiles(deletedFilePathNameLst)
+		DirUtil.deleteFiles(filePathNameLst=deletedFilePathNameLst)
 		
 		self.assertFalse(os.path.isfile(deletedFilePathName_1))
 		self.assertFalse(os.path.isfile(deletedFilePathName_2))
+		
+		# removing test dir and its file
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
+	def testDeleteFiles_emptyDeleteFileLst(self):
+		deletedFileName_1 = 'file_one.mp3'
+		deletedFileName_2 = 'file_two.mp3'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		deletedFilePathName_1 = testBaseRootPath + sep + deletedFileName_1
+		deletedFilePathName_2 = testBaseRootPath + sep + deletedFileName_2
+		deletedFilePathNameLst = [deletedFilePathName_1, deletedFilePathName_2]
+		
+		# creating the files which will be deleted
+		
+		for deletedFilePathName in deletedFilePathNameLst:
+			with open(deletedFilePathName, 'w') as f:
+				f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(deletedFilePathName_1))
+		self.assertTrue(os.path.isfile(deletedFilePathName_2))
+		
+		# now deleting the files
+		
+		DirUtil.deleteFiles(filePathNameLst=[])
+		
+		self.assertTrue(os.path.isfile(deletedFilePathName_1))
+		self.assertTrue(os.path.isfile(deletedFilePathName_2))
 		
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
