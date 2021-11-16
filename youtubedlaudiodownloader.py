@@ -192,13 +192,19 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
-				
+					self.convertingVideoToMp3 = False   # avoiding that the display
+														# conversion info spread
+														# pollutes the GUI
+					
 					continue    # this avoids that the video is fully downloaded
 								# and so facilitates the video redownload.
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1
+					self.convertingVideoToMp3 = False   # avoiding that the display
+														# conversion info spread
+														# pollutes the GUI
 
 					continue
 				
@@ -214,6 +220,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					if fileNotFoundErrorInfo is not None:
 						self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 						playlistDownloadedVideoNb_failed += 1
+						self.convertingVideoToMp3 = False  # avoiding that the display
+						# conversion info spread
+						# pollutes the GUI
 						
 						continue
 				
