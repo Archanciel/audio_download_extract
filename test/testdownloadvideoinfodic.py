@@ -819,7 +819,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		videoFileName_1 = '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'
 		videoFileName_2 = '98-Here to help - Give him what he wants 2019-06-07.mp3'
 		videoFileName_3 = '97-Funny suspicious looking dog 2013-11-05.mp3'
-		videoFileName_not_exist = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoFileName_not_exist = 'Wear a mask. Help slow the spread of Covid-19 not exist.mp3'
 
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
