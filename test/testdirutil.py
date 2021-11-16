@@ -324,6 +324,39 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
+	def testGetFileNamesInDirForPattern(self):
+		fileName_1 = 'file_one.mp3'
+		fileName_2 = 'file_two.mp3'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		filePathName_1 = testBaseRootPath + sep + fileName_1
+		filePathName_2 = testBaseRootPath + sep + fileName_2
+		fileNameLst = [filePathName_1, filePathName_2]
+		
+		# creating the files which will be listed
+		
+		for filePathName in fileNameLst:
+			with open(filePathName, 'w') as f:
+				f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(filePathName_1))
+		self.assertTrue(os.path.isfile(filePathName_2))
+		
+		# now getting the files
+		
+		fileNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
+		
+		self.assertEqual(fileName_1, fileNameLst[0])
+		self.assertEqual(fileName_2, fileNameLst[1])
+		
+		# removing test dir and its file
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
 	def testDeleteFiles(self):
 		deletedFileName_1 = 'file_one.mp3'
 		deletedFileName_2 = 'file_two.mp3'

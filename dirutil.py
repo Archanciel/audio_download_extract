@@ -5,6 +5,18 @@ from os.path import isfile, join
 from pathlib import Path
 from os.path import sep
 import shutil
+import re
+
+NO_INDEX_NO_DATE_KEY = '00'
+
+NO_INDEX_DATE_KEY = '01'
+
+INDEX_NO_DATE_KEY = '10'
+
+INDEX_DATE_KEY = '11'
+
+INDEX_PATTERN = r'(^[\d-]*)(.*).mp3'
+DATE_PATTERN = r'(.*) ([\d-]*).mp3'
 
 class DirUtil:
 	@staticmethod
@@ -128,6 +140,12 @@ class DirUtil:
 		return glob.glob(targetAudioDir + sep + pattern)
 	
 	@staticmethod
+	def getFileNamesInDirForPattern(targetAudioDir, pattern):
+		filePathNameLst = glob.glob(targetAudioDir + sep + pattern)
+		
+		return [DirUtil.extractFileNameFromPathFileName(f) for f in filePathNameLst]
+	
+	@staticmethod
 	def replaceUnauthorizedDirOrFileNameChars(rawFileName):
 		"""
 		This method replaces chars in the passed raw file name which are
@@ -187,4 +205,70 @@ class DirUtil:
 		for filePathName in filePathNameLst:
 			if isfile(filePathName):
 				os.remove(filePathName)
-				
+
+	@staticmethod
+	def getIndexAndDateUsageInDir(audioDir):
+		audioFileNameLst = DirUtil.getFileNamesInDirForPattern(audioDir, '*.mp3')
+
+		return DirUtil.getIndexAndDateUsageInFileNameLst(audioFileNameLst)
+	
+	@staticmethod
+	def getIndexAndDateUsageInFileNameLst(audioFileNameLst):
+		indexAndDateUsageDic = {INDEX_DATE_KEY: False,
+		                        INDEX_NO_DATE_KEY: False,
+		                        NO_INDEX_DATE_KEY: False,
+		                        NO_INDEX_NO_DATE_KEY: False}
+
+		for fileName in audioFileNameLst:
+			print(fileName)
+			
+			match = re.search(INDEX_PATTERN, fileName)
+			
+			if match.group(1) != '':
+				match = re.search(DATE_PATTERN, fileName)
+				if match is not None:
+					indexAndDateUsageDic[INDEX_DATE_KEY] = True
+				else:
+					indexAndDateUsageDic[INDEX_NO_DATE_KEY] = True
+			else:
+				match = re.search(DATE_PATTERN, fileName)
+				if match is not None:
+					indexAndDateUsageDic[NO_INDEX_DATE_KEY] = True
+				else:
+					indexAndDateUsageDic[NO_INDEX_NO_DATE_KEY] = True
+			
+		return indexAndDateUsageDic
+
+
+if __name__ == '__main__':
+	# PUT THAT IN UNIT TESTS !
+	fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',
+	               'Funny suspicious looking dog 2013-11-05.mp3',
+	               '97-Funny suspicious looking dog.mp3',
+	               'Funny suspicious looking dog.mp3']
+	fileNameLst_index_date_2 = ['Funny suspicious looking dog 2013-11-05.mp3',
+	               '97-Funny suspicious looking dog.mp3',
+	               'Funny suspicious looking dog.mp3']
+	fileNameLst_index_no_date = ['97-Funny suspicious looking dog.mp3',
+	               'Funny suspicious looking dog.mp3']
+	fileNameLst_no_index_no_date = ['Funny new suspicious looking dog.mp3',
+	               'Funny suspicious looking dog.mp3']
+	fileNameLst_no_index_date = ['Funny suspicious looking dog 2013-11-05.mp3',
+	               'Funny new suspicious looking dog.mp3',
+	               'Funny suspicious looking dog.mp3']
+
+	print('fileNameLst_index_date_1')
+	print(DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_1))
+	print()
+	print('fileNameLst_index_date_2')
+	print(DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_2))
+	print()
+	print('fileNameLst_index_no_date')
+	print(DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_no_date))
+	print()
+	print('fileNameLst_no_index_no_date')
+	print(DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_no_date))
+	print()
+	print('fileNameLst_no_index_date')
+	print(DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date))
+	print()
