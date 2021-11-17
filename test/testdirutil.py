@@ -423,6 +423,28 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 
+	def testGetIndexAndDateUsageInFileNameLst(self):
+		fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',
+		                            'Funny suspicious looking dog 2013-11-05.mp3',
+		                            '97-Funny suspicious looking dog.mp3',
+		                            'Funny suspicious looking dog.mp3']
+		fileNameLst_index_date_2 = ['Funny suspicious looking dog 2013-11-05.mp3',
+		                            '97-Funny suspicious looking dog.mp3',
+		                            'Funny suspicious looking dog.mp3']
+		fileNameLst_index_no_date = ['97-Funny suspicious looking dog.mp3',
+		                             'Funny suspicious looking dog.mp3']
+		fileNameLst_no_index_no_date = ['Funny new suspicious looking dog.mp3',
+		                                'Funny suspicious looking dog.mp3']
+		fileNameLst_no_index_date = ['Funny suspicious looking dog 2013-11-05.mp3',
+		                             'Funny new suspicious looking dog.mp3',
+		                             'Funny suspicious looking dog.mp3']
+		
+		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_1))
+		self.assertEqual([False, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_2))
+		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_no_date))
+		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_no_date))
+		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date))
+
 
 if __name__ == '__main__':
 	# unittest.main()
