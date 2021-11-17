@@ -218,13 +218,12 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-		                                                                playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-		                                                                originalPlaylistTitle=originalPlaylistTitle,
-		                                                                modifiedPlaylistTitle=modifiedPlaylistTitle,
-		                                                                originalSingleVideoTitle=singleVideoTitle,
-		                                                                isUploadDateAddedToPlaylistVideo=False,
-		                                                                isIndexAddedToPlaylistVideo=False)
+		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
+			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalPlaylistTitle=originalPlaylistTitle, modifiedPlaylistTitle=modifiedPlaylistTitle,
+			originalSingleVideoTitle=singleVideoTitle, isIndexAddedToPlaylistVideo=False,
+			isUploadDateAddedToPlaylistVideo=False)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -233,11 +232,9 @@ class TestAudioController(unittest.TestCase):
 		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
 			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
 			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=originalPlaylistTitle,
-			modifiedPlaylistTitle=modifiedPlaylistTitle,
-			originalSingleVideoTitle=singleVideoTitle,
-			isUploadDateAddedToPlaylistVideo=False,
-			isIndexAddedToPlaylistVideo=False)
+			originalPlaylistTitle=originalPlaylistTitle, modifiedPlaylistTitle=modifiedPlaylistTitle,
+			originalSingleVideoTitle=singleVideoTitle, isIndexAddedToPlaylistVideo=False,
+			isUploadDateAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		

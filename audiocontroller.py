@@ -27,15 +27,15 @@ class AudioController:
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
 		self.stopDownloading = False
-		
+	
 	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
 	                                                    playlistOrSingleVideoUrl,
 	                                                    playlistOrSingleVideoDownloadPath,
 	                                                    originalPlaylistTitle,
 	                                                    modifiedPlaylistTitle,
 	                                                    originalSingleVideoTitle,
-	                                                    isUploadDateAddedToPlaylistVideo,
 	                                                    isIndexAddedToPlaylistVideo,
+	                                                    isUploadDateAddedToPlaylistVideo,
 	                                                    modifiedVideoTitle=None):
 		"""
 		In case we are downloading videos referenced in a playlist, this method first
@@ -402,6 +402,50 @@ class AudioController:
 			downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
 
 		downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
+
+	def defineIndexAndDateSettingWarningMsg(self,
+	                                        playlistOrSingleVideoDownloadPath,
+	                                        isIndexAddedToPlaylistVideo,
+	                                        isUploadDateAddedToPlaylistVideo):
+		"""
+		Currently,  index not used. Continue with adding index ?
+	
+		Currently, upload date not used. Continue with adding date ?
+	
+		Currently,  index is used. Continue without adding index ?
+	
+		Currently, upload date is used. Continue without adding date ?
+		
+		:param playlistOrSingleVideoDownloadPath:
+		:param isIndexAddedToPlaylistVideo:
+		:param isUploadDateAddedToPlaylistVideo:
+		:return:
+		"""
+		warningMsg = ''
+		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistOrSingleVideoDownloadPath)
+		
+		if indexAndDateUsageLst is None:
+			return None
+		
+		if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+			indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
+			if not isIndexAddedToPlaylistVideo:
+				warningMsg += 'Currently, index is used. Continue without adding index ?\n'
+
+		if indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS] or \
+			indexAndDateUsageLst[DirUtil.NO_INDEX_NO_DATE_POS]:
+			if isIndexAddedToPlaylistVideo:
+				warningMsg += 'Currently, index is not used. Continue with adding index ?\n'
+
+		if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+			indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
+			if not isUploadDateAddedToPlaylistVideo:
+				warningMsg += 'Currently, upload date is used. Continue without adding date ?'
+
+		if indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS] or \
+			indexAndDateUsageLst[DirUtil.NO_INDEX_NO_DATE_POS]:
+			if isUploadDateAddedToPlaylistVideo:
+				warningMsg += 'Currently, upload date not used. Continue with adding date ?'
 
 
 if __name__ == "__main__":

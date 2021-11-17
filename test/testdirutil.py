@@ -438,12 +438,14 @@ class TestDirUtil(unittest.TestCase):
 		fileNameLst_no_index_date = ['Funny suspicious looking dog 2013-11-05.mp3',
 		                             'Funny new suspicious looking dog.mp3',
 		                             'Funny suspicious looking dog.mp3']
-		
+		emptyFileNameLst = []
+
 		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_1))
 		self.assertEqual([False, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_2))
 		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_no_date))
 		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_no_date))
 		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date))
+		self.assertEqual([False, False, False, False], DirUtil.getIndexAndDateUsageInFileNameLst(emptyFileNameLst))
 
 	def testGetIndexAndDateUsageInDir(self):
 		testDirName = 'test warning index date files'
@@ -461,6 +463,19 @@ class TestDirUtil(unittest.TestCase):
 		shutil.copytree(testPathSaved, testPath)
 
 		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInEmptyDir(self):
+		testDirName = 'test warning index date files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		# emptying test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		self.assertIsNone(DirUtil.getIndexAndDateUsageInDir(testPath))
 
 
 if __name__ == '__main__':
