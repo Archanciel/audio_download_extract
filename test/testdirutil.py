@@ -1,5 +1,5 @@
 import unittest
-import os, sys, inspect, glob
+import os, sys, inspect, glob, shutil
 from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -444,6 +444,23 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_no_date))
 		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_no_date))
 		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date))
+
+	def testGetIndexAndDateUsageInDir(self):
+		testDirName = 'test warning index date files'
+		testDirNameSaved = 'test warning index date files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+
+		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
 
 
 if __name__ == '__main__':
