@@ -902,6 +902,16 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
+		if self.originalPlaylistTitle is not None:
+			# a	playlist is going to be downloaded
+			indexAndDateSettingWarningMsg = self.audioController.defineIndexAndDateSettingWarningMsg(
+				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			
+			if indexAndDateSettingWarningMsg != None:
+				self.displayIndexDateCompatibilityWarning(indexAndDateSettingWarningMsg)
+			
 		# downloading the playlist or single video title using a separate thread
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
@@ -913,7 +923,11 @@ class AudioDownloaderGUI(AudioGUI):
 												# button on the ConfirmPopup dialog
 
 			sepThreadExec.start()
-			
+	
+	def	displayIndexDateCompatibilityWarning(self,
+	                                         indexAndDateSettingWarningMsg):
+		print(indexAndDateSettingWarningMsg)
+	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
 		This method executed on a separated thread launch downloading audios for
@@ -930,15 +944,15 @@ class AudioDownloaderGUI(AudioGUI):
 			# disabled since interrupting a single video download is not
 			# possible
 			self.stopDownloadButton.disabled = True
-
-		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(self.playlistOrSingleVideoUrl,
-		                                                                     self.playlistOrSingleVideoDownloadPath,
-		                                                                     self.originalPlaylistTitle,
-		                                                                     self.modifiedPlaylistTitle,
-		                                                                     self.originalSingleVideoTitle,
-		                                                                     self.isUploadDateAddedToPlaylistVideo,
-		                                                                     self.isIndexAddedToPlaylistVideo,
-		                                                                     self.modifiedSingleVideoTitle)
+		
+		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
+			playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+			playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+			originalPlaylistTitle=self.originalPlaylistTitle, modifiedPlaylistTitle=self.modifiedPlaylistTitle,
+			originalSingleVideoTitle=self.originalSingleVideoTitle,
+			isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo,
+			modifiedVideoTitle=self.modifiedSingleVideoTitle)
 	
 		self.downloadThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
