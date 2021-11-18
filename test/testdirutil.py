@@ -390,7 +390,7 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
-	def testDeleteFiles_emptyDeleteFileLst(self):
+	def testDeleteFiles_file_list_empty(self):
 		deletedFileName_1 = 'file_one.mp3'
 		deletedFileName_2 = 'file_two.mp3'
 		

@@ -282,8 +282,6 @@ class DirUtil:
 		                        False]  # NO_INDEX_NO_DATE
 
 		for fileName in audioFileNameLst:
-			print(fileName)
-			
 			match = re.search(INDEX_PATTERN, fileName)
 			
 			if match.group(1) != '':

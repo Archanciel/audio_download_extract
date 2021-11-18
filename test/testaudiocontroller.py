@@ -394,8 +394,78 @@ class TestAudioController(unittest.TestCase):
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
 
+	def testDefineIndexAndDateSettingWarningMsg_index_true_date_true(self):
+		testDirName = 'test warning index true date true files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(playlistOrSingleVideoDownloadPath=testPath,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+
+		self.assertEqual('', warningMsg)
+	
+	def testDefineIndexAndDateSettingWarningMsg_index_false_date_false(self):
+		testDirName = 'test warning index false date false files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(playlistOrSingleVideoDownloadPath=testPath,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual('Currently, index is not used. Continue with adding index ?\nCurrently, upload date is not used. Continue with adding date ?', warningMsg)
+	
+	def testDefineIndexAndDateSettingWarningMsg_index_true_date_false(self):
+		testDirName = 'test warning index true date false files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(playlistOrSingleVideoDownloadPath=testPath,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual(
+			'Currently, upload date is not used. Continue with adding date ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarningMsg_index_false_date_true(self):
+		testDirName = 'test warning index false date true files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(playlistOrSingleVideoDownloadPath=testPath,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual('Currently, index is not used. Continue with adding index ?', warningMsg)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDeleteAudioFiles()
+	tst.testDefineIndexAndDateSettingWarningMsg()
