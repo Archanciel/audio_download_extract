@@ -902,15 +902,23 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
-		if self.originalPlaylistTitle is not None:
-			# a	playlist is going to be downloaded
-			indexAndDateSettingWarningMsg = self.audioController.defineIndexAndDateSettingWarningMsg(
-				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
-				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
-			
-			if indexAndDateSettingWarningMsg != None:
-				self.displayIndexDateCompatibilityWarning(indexAndDateSettingWarningMsg)
+		# if self.originalPlaylistTitle is not None:
+		# 	# a	playlist is going to be downloaded
+		#
+		# 	if self.modifiedPlaylistTitle is None:
+		# 		playlistDirName = self.originalPlaylistTitle
+		# 	else:
+		# 		playlistDirName = self.modifiedPlaylistTitle
+		#
+		# 	playlistVideoDownloadPath = self.playlistOrSingleVideoDownloadPath + sep + playlistDirName
+		#
+		# 	indexAndDateSettingWarningMsg = self.audioController.defineIndexAndDateSettingWarningMsg(
+		# 		playlistOrSingleVideoDownloadPath=playlistVideoDownloadPath,
+		# 		isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+		# 		isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+		#
+		# 	if indexAndDateSettingWarningMsg != None:
+		# 		self.displayIndexDateCompatibilityWarning(indexAndDateSettingWarningMsg)
 			
 		# downloading the playlist or single video title using a separate thread
 		if not self.downloadThreadCreated:
@@ -948,7 +956,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
 			playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
 			playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=self.originalPlaylistTitle, modifiedPlaylistTitle=self.modifiedPlaylistTitle,
+			originalPlaylistTitle=self.originalPlaylistTitle,
+			modifiedPlaylistTitle=self.modifiedPlaylistTitle,
 			originalSingleVideoTitle=self.originalSingleVideoTitle,
 			isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
 			isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo,
