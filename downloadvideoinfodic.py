@@ -61,7 +61,8 @@ class DownloadVideoInfoDic:
 		loaded and set into the self.dic instance variable. Otherwise, the self
 		dic is initialized with the passed information.
 		
-		If the passed existingDicFilePathName is not None, the instantiated
+		If the passed existingDicFilePathName is not None, which is the case in
+		the situation of deleting audio files, the instantiated
 		DownloadVideoInfoDic is created with the data contained in the
 		DownloadVideoInfoDic file located in the existingDicFilePathName dir.
 		
@@ -80,8 +81,10 @@ class DownloadVideoInfoDic:
 											AudioClipperGUI.createClipFileOnNewThread()
 		:param existingDicFilePathName      used only if the DownloadVideoInfoDic
 											is instantiated based on this parameter
-											only
+											only (in the case of processing audio files deletion9
 		"""
+		self.dic = None
+
 		if existingDicFilePathName is not None:
 			self.dic = self._loadDicIfExist(existingDicFilePathName)
 			
@@ -89,7 +92,6 @@ class DownloadVideoInfoDic:
 
 		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
 		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistValidDirName
-		self.dic = None
 		
 		if loadDicIfDicFileExist:
 			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
