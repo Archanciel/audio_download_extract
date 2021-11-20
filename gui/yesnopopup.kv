@@ -1,0 +1,24 @@
+<YesNoPopup>:
+	displayedMessage: txt_input_multiline
+	cols:1
+	rows: 2
+
+	TextInput:
+		id: txt_input_multiline
+		background_color: [0,0,0,1]
+		foreground_color: [1,1,1,1]
+		size_hint_y: None
+		height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
+		readonly: True
+
+	GridLayout:
+		cols: 2
+
+		size_hint_y: None
+		height: '28dp'
+		Button:
+			text: 'Yes'
+			on_release: root.yes()
+		Button:
+			text: 'No'
+			on_release: root.no()
