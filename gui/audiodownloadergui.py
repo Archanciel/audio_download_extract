@@ -359,19 +359,19 @@ class AudioDownloaderGUI(AudioGUI):
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
 				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_PLAYLIST + ConfirmPopup.POPUP_TITLE_UPLOAD_DATE_INDEX
-				enableAddUploadDateChkBox = True
+				isPlayListDownloaded = True
 			else:
 				# url obtained from clipboard points to a single video
 				downloadObjectTitle = self.originalSingleVideoTitle
 				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_VIDEO
-				enableAddUploadDateChkBox = False
+				isPlayListDownloaded = False
 
 			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
 			
-			self.popup = self.createConfirmPopup(confirmPopupTitle=confirmPopupTitle,
-			                                     confirmPopupMsg=downloadObjectTitle,
-			                                     confirmPopupCallbackFunction=confirmPopupCallbackFunction,
-			                                     enableAddUploadDateChkBox=enableAddUploadDateChkBox)
+			self.popup = self.createDownloadConfirmPopup(confirmPopupTitle=confirmPopupTitle,
+			                                             confirmPopupMsg=downloadObjectTitle,
+			                                             confirmPopupCallbackFunction=confirmPopupCallbackFunction,
+			                                             isPlayListDownloaded=isPlayListDownloaded)
 			self.popup.open()
 		else:
 			pass
@@ -932,9 +932,10 @@ class AudioDownloaderGUI(AudioGUI):
 
 			sepThreadExec.start()
 	
-	def	displayIndexDateCompatibilityWarning(self,
-	                                         indexAndDateSettingWarningMsg):
+	def confirmDownloadDespiteIndexDateCompatibilityWarning(self,
+	                                                        indexAndDateSettingWarningMsg):
 		print(indexAndDateSettingWarningMsg)
+		return True
 	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
@@ -973,18 +974,24 @@ class AudioDownloaderGUI(AudioGUI):
 	def setMessage(self, msgText):
 		pass
 	
-	def createConfirmPopup(self,
-						   confirmPopupTitle,
-						   confirmPopupMsg,
-						   confirmPopupCallbackFunction,
-	                       enableAddUploadDateChkBox):
+	def createDownloadConfirmPopup(self,
+	                               confirmPopupTitle,
+	                               confirmPopupMsg,
+	                               confirmPopupCallbackFunction,
+	                               isPlayListDownloaded):
 		"""
 
 		:param confirmPopupTitle:
 		:param confirmPopupMsg:
-		:param confirmPopupCallbackFunction: function called when the user click on
-											 yes or no button
-		:param isPlayListToDownload
+		:param confirmPopupCallbackFunction:    function called when the user click on
+												yes or no button
+		:param isPlayListDownloaded             if True, index and upload date
+												checkboxes will be displayed.
+												if False, for downloading a
+												single video, the index and
+												upload date inclusion in the
+												audio file name are added anyway
+												and the user can not change it
 		:return:
 		"""
 		popupSize = None
@@ -1003,12 +1010,8 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
 		
-		if enableAddUploadDateChkBox:
-			self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
-			                                 isPlaylist=True)
-		else:
-			self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
-			                                 isPlaylist=False)
+		self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
+		                                 isPlaylist=isPlayListDownloaded)
 
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		

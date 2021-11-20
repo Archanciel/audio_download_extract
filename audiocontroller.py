@@ -72,34 +72,43 @@ class AudioController:
 															 originalPlaylistTitle=originalPlaylistTitle,
 															 modifiedPlaylistTitle=modifiedPlaylistTitle)
 
-			_, accessError = \
-				self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
-																  downloadVideoInfoDic=downloadVideoInfoDic,
-																  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
-																  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
+			if downloadVideoInfoDic is None:
+				# the case if creating the DownloadVideoInfoDic caused an error
+				return
 			
-			# extracting/suppressing the audio portions for the downloaded audio tracks
+			indexAndDateSettingWarningMsg = self.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+			                                                                         isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			                                                                         isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 
-			if accessError is None:
-				if os.name == 'posix':
-					msgText = 'skipping extraction/suppression on Android.\n'
-					self.displayMessage(msgText)
-				else:
-					if not self.stopDownloading:
-						# extraction/suppression possible only on Windows !
-						audioDirRoot = self.configMgr.dataPath
-						targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-						audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-						audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+			if indexAndDateSettingWarningMsg != None:
+				if self.audioGUI.confirmDownloadDespiteIndexDateCompatibilityWarning(indexAndDateSettingWarningMsg):
+					_, accessError = \
+						self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
+																		  downloadVideoInfoDic=downloadVideoInfoDic,
+																		  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
+																		  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
 					
-						# saving the content of the downloadVideoInfoDic which has been completed
-						# by AudioExtractor in the directory containing the extracted audio files
-						try:
-							downloadVideoInfoDic.saveDic(audioDirRoot)
-						except TypeError as e:
-							print(e)
-							traceback.print_exc()
+					# extracting/suppressing the audio portions for the downloaded audio tracks
+		
+					if accessError is None:
+						if os.name == 'posix':
+							msgText = 'skipping extraction/suppression on Android.\n'
+							self.displayMessage(msgText)
+						else:
+							if not self.stopDownloading:
+								# extraction/suppression possible only on Windows !
+								audioDirRoot = self.configMgr.dataPath
+								targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+								audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+								audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 							
+								# saving the content of the downloadVideoInfoDic which has been completed
+								# by AudioExtractor in the directory containing the extracted audio files
+								try:
+									downloadVideoInfoDic.saveDic(audioDirRoot)
+								except TypeError as e:
+									print(e)
+									traceback.print_exc()
 		else:
 			# downloading a single video in the single video default dir
 			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
@@ -219,8 +228,8 @@ class AudioController:
 		if accessError:
 			self.displayError(accessError.errorMsg)
 			return None
-		
-		return downloadVideoInfoDic
+		else:
+			return downloadVideoInfoDic
 	
 	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
@@ -399,8 +408,8 @@ class AudioController:
 		downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
 
 	def defineIndexAndDateSettingWarningMsg(self,
-											playlistOrSingleVideoDownloadPath,
-											isIndexAddedToPlaylistVideo,
+	                                        downloadVideoInfoDic,
+	                                        isIndexAddedToPlaylistVideo,
 											isUploadDateAddedToPlaylistVideo):
 		"""
 		Currently,  index not used. Continue with adding index ?
@@ -411,13 +420,14 @@ class AudioController:
 	
 		Currently, upload date is used. Continue without adding date ?
 		
-		:param playlistOrSingleVideoDownloadPath:
+		:param downloadVideoInfoDic:
 		:param isIndexAddedToPlaylistVideo:
 		:param isUploadDateAddedToPlaylistVideo:
 		:return:
 		"""
 		warningMsg = ''
-		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistOrSingleVideoDownloadPath)
+		playlistDownloadDir = self.configMgr.dataPath + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
 		
 		if indexAndDateUsageLst is None:
 			# the case if the passed playlistOrSingleVideoDownloadPath is

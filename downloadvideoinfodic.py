@@ -157,7 +157,8 @@ class DownloadVideoInfoDic:
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getPlaylistNameModified())
 		playlistDownloadDir = self.getPlaylistDownloadDir()
 		
-		dicFilePathName = self.buildInfoDicFilePathName(audioDirRoot + sep + playlistDownloadDir, validPlaylistDirName)
+		dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
+		                                                validPlaylistDirName=validPlaylistDirName)
 
 		with open(dicFilePathName, 'w') as f:
 			try:
@@ -246,17 +247,19 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def buildInfoDicFilePathName(self, downloadDir, validPlaylistDirName):
+	def buildInfoDicFilePathName(self, playlistDownloadBaseDir, validPlaylistDirName):
 		"""
 		Builds the playlist DownloadVideoInfoDic file path name.
 		
-		:param downloadDir:             audio root dir + sep + validPlaylistDirName
+		:param playlistDownloadBaseDir: base playlist download dir as defined in the
+										SelectOrCreateDirFileChooserPopup dir field or
+										audio root dir by default.
 		:param validPlaylistDirName:    contains the playlistName purged from any invalid
 										Windows dir or file names chars.
 
 		:return: playlist DownloadVideoInfoDic file path name
 		"""
-		return downloadDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
+		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
 	def getVideoIndexes(self):
 		'''

@@ -45,15 +45,15 @@ class ConfirmPopup(GridLayout):
 		self.editableTextInput.text = self.textStr
 
 		if self.isPlaylist:
-			self.addUploadDateChkBox.active = True
-			self.addUploadDateChkBox.disabled = False
 			self.addIndexChkBox.active = True
 			self.addIndexChkBox.disabled = False
+			self.addUploadDateChkBox.active = True
+			self.addUploadDateChkBox.disabled = False
 		else:
-			self.addUploadDateChkBox.active = False
-			self.addUploadDateChkBox.disabled = True
 			self.addIndexChkBox.active = False
 			self.addIndexChkBox.disabled = True
+			self.addUploadDateChkBox.active = False
+			self.addUploadDateChkBox.disabled = True
 
 	def toggleAddUploadDate(self, isActive):
 		containingPopup = self.parent.parent.parent

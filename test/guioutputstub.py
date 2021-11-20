@@ -68,3 +68,8 @@ class GuiOutputStub:
 													conversion time hh:mm:ss string..
 		"""
 		pass # avoid printing variable info values when running unit tests
+	
+	def confirmDownloadDespiteIndexDateCompatibilityWarning(self,
+	                                                        indexAndDateSettingWarningMsg):
+		print(indexAndDateSettingWarningMsg)
+		return True
