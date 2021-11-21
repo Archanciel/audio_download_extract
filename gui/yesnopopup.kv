@@ -1,0 +1,68 @@
+<YesNoPopup>: # sub-class of GridLayout
+	editableTextInput: txt_input_multiline
+	addUploadDateChkBox: add_upload_date_chk_box
+	addIndexChkBox: add_index_chk_box
+	cols:1
+	rows: 2
+	GridLayout:
+	    id: grd
+		cols: 2
+		size_hint_y: None
+		height: (len(txt_input_multiline._lines)+1) * txt_input_multiline.line_height
+		GridLayout:
+			cols: 1
+			size_hint_x: 0.93
+			TextInput:
+				id: txt_input_multiline
+				background_color: [0,0,0,1]
+				foreground_color: [1,1,1,1]
+				size_hint_y: 1 # solving problem of displaying partially multiline playlist title
+				#text: root.text
+				text: 'title'
+				readonly: True
+		GridLayout:
+			cols: 1
+			rows: 2
+			size_hint_x: 0.07
+            CheckBox:
+                id: add_index_chk_box
+                canvas.before:
+                    Color:
+                        rgb: [0,0,0,1]
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                active: False
+                disabled: True
+                #size_hint_x: 0.17 # smartphone
+                size_hint_x: 0.06 # tablet, Windows
+                height: int(grd.height / 4)
+                on_press: root.toggleAddIndex(self.active)
+            CheckBox:
+                id: add_upload_date_chk_box
+                canvas.before:
+                    Color:
+                        rgb: [0,0,0,1]
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                active: False
+                disabled: True
+                #size_hint_x: 0.17 # smartphone
+                size_hint_x: 0.06 # tablet, Windows
+                height: int(grd.height / 4)
+                on_press: root.toggleAddUploadDate(self.active)
+	GridLayout:
+		cols: 4
+		size_hint_y: None
+		height: '28dp'
+		Button:
+			text: 'Yes'
+			on_release: root.dispatch('on_answer','yes')
+		Button:
+			id: set_folder_btn
+			text: 'Set folder/name'
+			on_release: root.dispatch('on_answer', 'set_folder')
+		Button:
+			text: 'No'
+			on_release: root.dispatch('on_answer', 'no')

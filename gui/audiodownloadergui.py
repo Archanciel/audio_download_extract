@@ -1169,6 +1169,7 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('okpopup.kv')
 		Builder.load_file('confirmdownloadpopup.kv')
+		Builder.load_file('yesnopopup.kv')
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audioclippergui.kv')
