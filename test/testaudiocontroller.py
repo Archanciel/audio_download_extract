@@ -259,8 +259,78 @@ class TestAudioController(unittest.TestCase):
 			['Funny suspicious looking dog 2013-11-05.mp3'],
 			createdFileLst)
 
+	def testDownloadVideosReferencedInPlaylist(self):
+		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = '1'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(playlistOrSingleVideoUrl=playlistUrl,
+		                                                                playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
+		                                                                originalPlaylistTitle=playlistName,
+		                                                                modifiedPlaylistTitle=playlistName,
+		                                                                originalSingleVideoTitle=None,
+		                                                                isIndexAddedToPlaylistVideo=True,
+		                                                                isUploadDateAddedToPlaylistVideo=True)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+			                  '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
+			                  'skipped.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading "99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3" audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'downloading "98-Here to help - Give him what he wants 2019-06-07.mp3" audio '
+ '...',
+ '',
+ 'video download complete.',
+ '',
+ '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ '',
+ '',
+ '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
+ 'terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		createdFileLst = os.listdir(downloadDir)
+		
+		self.assertEqual(
+			['98-Here to help - Give him what he wants 2019-06-07.mp3',
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
+			 'test_audio_downloader_two_files_dic.txt'],
+			createdFileLst)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDownloadVideosReferencedInPlaylistOrSingleVideo()
+	tst.testDownloadVideosReferencedInPlaylist()
