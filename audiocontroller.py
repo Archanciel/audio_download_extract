@@ -28,93 +28,95 @@ class AudioController:
 		
 		self.stopDownloading = False
 	
-	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
-														playlistOrSingleVideoUrl,
-														playlistOrSingleVideoDownloadPath,
-														originalPlaylistTitle,
-														modifiedPlaylistTitle,
-														originalSingleVideoTitle,
-														isIndexAddedToPlaylistVideo,
-														isUploadDateAddedToPlaylistVideo,
-														modifiedVideoTitle=None):
+	def downloadSingleVideo(self,
+	                        singleVideoUrl,
+	                        singleVideoDownloadPath,
+	                        originalSingleVideoTitle,
+	                        modifiedVideoTitle=None):
+		"""
+
+		:param singleVideoUrl:              single video url
+		:param singleVideoDownloadPath:     path where the playlist dir will be created
+											or where the single video will be downloaded
+		:param originalSingleVideoTitle:    if the playlistOrSingleVideoUrl points
+											to a single video
+		:param modifiedVideoTitle:          None if the video title was not modified
+		"""
+		self.stopDownloading = False
+
+		self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=singleVideoUrl,
+		                                               originalVideoTitle=originalSingleVideoTitle,
+		                                               modifiedVideoTitle=modifiedVideoTitle,
+		                                               targetAudioDir=singleVideoDownloadPath)
+	
+	def downloadVideosReferencedInPlaylist(self,
+	                                       downloadVideoInfoDic,
+	                                       isIndexAddedToPlaylistVideo,
+	                                       isUploadDateAddedToPlaylistVideo):
 		"""
 		In case we are downloading videos referenced in a playlist, this method first
 		execute the download of the audio of the videos and then execute the extraction
 		or suppression of audio parts as specified in the playlist title, this,
 		provided we are on Windows (extraction/suppression are not supported on Android).
-		
+
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end" !
 
-		If we are downloading a single video audio, no extraction/suppression will
-		be performed.
-
-		:param playlistOrSingleVideoUrl:            playlist or single video url
-		:param playlistOrSingleVideoDownloadPath:   path where the playlist dir will be created
-													or where the single video will be downloaded
-		:param originalPlaylistTitle:               if the playlistOrSingleVideoUrl points
-													to a playlist
-		:param modifiedPlaylistTitle:               None if the playlist title was not modified
-		:param originalSingleVideoTitle:            if the playlistOrSingleVideoUrl points
-													to a single video
+		:param downloadVideoInfoDic:
 		:param isUploadDateAddedToPlaylistVideo     parameter used for playlist only
 		:param isIndexAddedToPlaylistVideo          parameter used for playlist only
-		:param modifiedVideoTitle:                  None if the video title was not modified
 		"""
 		self.stopDownloading = False
+
+		_, accessError = \
+			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getPlaylistUrl(),
+			                                                  downloadVideoInfoDic=downloadVideoInfoDic,
+			                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
+			                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
 		
-		if originalPlaylistTitle is not None:
-			# downloading a playlist
-			downloadVideoInfoDic = \
-				self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
-															 playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-															 originalPlaylistTitle=originalPlaylistTitle,
-															 modifiedPlaylistTitle=modifiedPlaylistTitle)
-
-			if downloadVideoInfoDic is None:
-				# the case if creating the DownloadVideoInfoDic caused an error
-				return
-			
-			indexAndDateSettingWarningMsg = self.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-			                                                                         isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
-			                                                                         isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
-
-			if indexAndDateSettingWarningMsg != None:
-				if self.audioGUI.confirmDownloadDespiteIndexDateCompatibilityWarning(indexAndDateSettingWarningMsg):
-					_, accessError = \
-						self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
-																		  downloadVideoInfoDic=downloadVideoInfoDic,
-																		  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
-																		  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
+		# extracting/suppressing the audio portions for the downloaded audio tracks
+		
+		if accessError is None:
+			if os.name == 'posix':
+				msgText = 'skipping extraction/suppression on Android.\n'
+				self.displayMessage(msgText)
+			else:
+				if not self.stopDownloading:
+					# extraction/suppression possible only on Windows !
+					audioDirRoot = self.configMgr.dataPath
+					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 					
-					# extracting/suppressing the audio portions for the downloaded audio tracks
+					# saving the content of the downloadVideoInfoDic which has been completed
+					# by AudioExtractor in the directory containing the extracted audio files
+					try:
+						downloadVideoInfoDic.saveDic(audioDirRoot)
+					except TypeError as e:
+						print(e)
+						traceback.print_exc()
+	
+	def getIndexAndDateSettingWarningMsg(self,
+	                                     playlistOrSingleVideoUrl,
+	                                     playlistOrSingleVideoDownloadPath,
+	                                     originalPlaylistTitle,
+	                                     modifiedPlaylistTitle,
+	                                     isIndexAddedToPlaylistVideo,
+	                                     isUploadDateAddedToPlaylistVideo):
 		
-					if accessError is None:
-						if os.name == 'posix':
-							msgText = 'skipping extraction/suppression on Android.\n'
-							self.displayMessage(msgText)
-						else:
-							if not self.stopDownloading:
-								# extraction/suppression possible only on Windows !
-								audioDirRoot = self.configMgr.dataPath
-								targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-								audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-								audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
-							
-								# saving the content of the downloadVideoInfoDic which has been completed
-								# by AudioExtractor in the directory containing the extracted audio files
-								try:
-									downloadVideoInfoDic.saveDic(audioDirRoot)
-								except TypeError as e:
-									print(e)
-									traceback.print_exc()
-		else:
-			# downloading a single video in the single video default dir
-			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
-														   originalVideoTitle=originalSingleVideoTitle,
-														   modifiedVideoTitle=modifiedVideoTitle,
-														   targetAudioDir=playlistOrSingleVideoDownloadPath)
+		downloadVideoInfoDic = \
+			self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
+			                                             playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			                                             originalPlaylistTitle=originalPlaylistTitle,
+			                                             modifiedPlaylistTitle=modifiedPlaylistTitle)
+		
+		indexAndDateSettingWarningMsg = self.defineIndexAndDateSettingWarningMsg(
+			downloadVideoInfoDic=downloadVideoInfoDic,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		return downloadVideoInfoDic, indexAndDateSettingWarningMsg
 	
 	def clipAudioFile(self,
 					  audioFilePathName,

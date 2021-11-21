@@ -7,12 +7,11 @@ from kivy.clock import Clock
 
 
 class YesNoPopup(GridLayout):
+	"""
+	The advantage of using register_event_type is that the same class can be
+	instantiated with binding 'on_answer' to different methods.
+	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
-	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
-	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date) ...'
-	POPUP_TITLE_UPLOAD_DATE_INDEX = ' (adding index and upload date) ...'
-	POPUP_TITLE_NO_UPLOAD_DATE_INDEX = ' (adding index) ...'
-	POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX = ' ...'
 	text = StringProperty()
 	cols = ObjectProperty
 	
@@ -44,52 +43,5 @@ class YesNoPopup(GridLayout):
 	def _finish_init(self, dt):
 		self.editableTextInput.text = self.textStr
 
-		if self.isPlaylist:
-			self.addIndexChkBox.active = True
-			self.addIndexChkBox.disabled = False
-			self.addUploadDateChkBox.active = True
-			self.addUploadDateChkBox.disabled = False
-		else:
-			self.addIndexChkBox.active = False
-			self.addIndexChkBox.disabled = True
-			self.addUploadDateChkBox.active = False
-			self.addUploadDateChkBox.disabled = True
-
-	def toggleAddUploadDate(self, isActive):
-		containingPopup = self.parent.parent.parent
-		isIndexChkboxActive = self.addIndexChkBox.active
-
-		if isActive:
-			if isIndexChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_INDEX
-			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_NO_INDEX
-		else:
-			if isIndexChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_INDEX
-			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX
-
-	def toggleAddIndex(self, isActive):
-		containingPopup = self.parent.parent.parent
-		isUploadDateChkboxActive = self.addUploadDateChkBox.active
-
-		if isActive:
-			if isUploadDateChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_INDEX
-			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_INDEX
-		else:
-			if isUploadDateChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_NO_INDEX
-			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX
-
 	def on_answer(self, *args):
 		pass
-	
-	def isUploadDateAdded(self):
-		return self.addUploadDateChkBox.active
-	
-	def isIndexAdded(self):
-		return self.addIndexChkBox.active

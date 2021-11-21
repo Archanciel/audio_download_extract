@@ -199,10 +199,8 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(audioFilePath + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
-	def testDownloadVideosReferencedInPlaylistOrSingleVideo(self):
+	def testDownloadVideosReferencedInPlaylist(self):
 		playlistOrSingleVideoUrl = 'https://youtu.be/vU1NEZ9sTOM'
-		originalPlaylistTitle = None
-		modifiedPlaylistTitle = None
 		singleVideoTitle = 'Funny suspicious looking dog'
 		
 		testBaseRootDir = 'Various' + sep + 'single_video dir'
@@ -218,24 +216,15 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
-			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=originalPlaylistTitle, modifiedPlaylistTitle=modifiedPlaylistTitle,
-			originalSingleVideoTitle=singleVideoTitle, isIndexAddedToPlaylistVideo=False,
-			isUploadDateAddedToPlaylistVideo=False)
-		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
-			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=originalPlaylistTitle, modifiedPlaylistTitle=modifiedPlaylistTitle,
-			originalSingleVideoTitle=singleVideoTitle, isIndexAddedToPlaylistVideo=False,
-			isUploadDateAddedToPlaylistVideo=False)
-		
+		audioController.downloadSingleVideo(
+			singleVideoUrl=playlistOrSingleVideoUrl,
+			singleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalSingleVideoTitle=singleVideoTitle,
+			modifiedVideoTitle=None)
 		sys.stdout = stdout
 		
 		if os.name == 'posix':

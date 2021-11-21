@@ -7,6 +7,10 @@ from kivy.clock import Clock
 
 
 class ConfirmDownloadPopup(GridLayout):
+	"""
+	The advantage of using register_event_type is that the same class can be
+	instantiated with binding 'on_answer' to different methods.
+	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
 	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
 	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date) ...'
