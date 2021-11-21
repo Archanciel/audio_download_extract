@@ -387,4 +387,4 @@ class TestAudioController(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	#tst.testDefineIndexAndDateSettingWarningMsg()
+	tst.testDownloadVideosReferencedInPlaylist()
