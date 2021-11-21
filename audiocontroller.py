@@ -97,13 +97,13 @@ class AudioController:
 						print(e)
 						traceback.print_exc()
 	
-	def getIndexAndDateSettingWarningMsg(self,
-	                                     playlistOrSingleVideoUrl,
-	                                     playlistOrSingleVideoDownloadPath,
-	                                     originalPlaylistTitle,
-	                                     modifiedPlaylistTitle,
-	                                     isIndexAddedToPlaylistVideo,
-	                                     isUploadDateAddedToPlaylistVideo):
+	def getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(self,
+	                                                         playlistOrSingleVideoUrl,
+	                                                         playlistOrSingleVideoDownloadPath,
+	                                                         originalPlaylistTitle,
+	                                                         modifiedPlaylistTitle,
+	                                                         isIndexAddedToPlaylistVideo,
+	                                                         isUploadDateAddedToPlaylistVideo):
 		
 		downloadVideoInfoDic = \
 			self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,

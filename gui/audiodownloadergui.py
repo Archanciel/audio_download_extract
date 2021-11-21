@@ -915,19 +915,6 @@ class AudioDownloaderGUI(AudioGUI):
 
 			sepThreadExec.start()
 	
-	def confirmDownloadDespiteIndexDateCompatibilityWarning(self,
-	                                                        indexAndDateSettingWarningMsg):
-		
-		yesNoPopupCallbackFunction = self.onYesNoPopupAnswer
-		
-		self.popup = self.createYesNoPopup(yesNoPopupTitle=YesNoPopup.POPUP_TITLE_PLAYLIST,
-		                                             yesNoPopupMsg=indexAndDateSettingWarningMsg,
-		                                             yesNoPopupCallbackFunction=yesNoPopupCallbackFunction,
-		                                             isPlayListDownloaded=True)
-		self.popup.open()
-		print(indexAndDateSettingWarningMsg)
-		return True
-	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
 		"""
 		This method executed on a separated thread launch downloading audios for
@@ -939,7 +926,8 @@ class AudioDownloaderGUI(AudioGUI):
 			# if a playlist is downloading, the stop download button is
 			# activated
 			self.stopDownloadButton.disabled = False
-			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getIndexAndDateSettingWarningMsg(
+			
+			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
 				playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
 				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 				originalPlaylistTitle=self.originalPlaylistTitle,
@@ -954,7 +942,7 @@ class AudioDownloaderGUI(AudioGUI):
 				                                   True)
 				self.popup.open()
 			else:
-				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
 				                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
 				                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
 				
