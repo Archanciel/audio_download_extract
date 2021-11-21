@@ -6,7 +6,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
 
 
-class ConfirmPopup(GridLayout):
+class ConfirmDownloadPopup(GridLayout):
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
 	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
 	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date) ...'
@@ -31,7 +31,7 @@ class ConfirmPopup(GridLayout):
 		
 		kwargs['text'] = self.textStr.replace("\n", " ")
 
-		super(ConfirmPopup, self).__init__(**kwargs)
+		super(ConfirmDownloadPopup, self).__init__(**kwargs)
 
 		self.register_event_type('on_answer')
 		

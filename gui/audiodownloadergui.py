@@ -33,7 +33,7 @@ from filechooserpopup import DeleteFileChooserPopup
 from filechooserpopup import SelectOrCreateDirFileChooserPopup
 from filechooserpopup import FileToClipLoadFileChooserPopup
 from filechooserpopup import FileToShareLoadFileChooserPopup
-from gui.confirmpopup import ConfirmPopup
+from gui.confirmdownloadpopup import ConfirmDownloadPopup
 
 from audiogui import AudioGUI
 from audiogui import FILE_ACTION_LOAD
@@ -358,12 +358,12 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
-				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_PLAYLIST + ConfirmPopup.POPUP_TITLE_UPLOAD_DATE_INDEX
+				confirmPopupTitle = ConfirmDownloadPopup.POPUP_TITLE_PLAYLIST + ConfirmDownloadPopup.POPUP_TITLE_UPLOAD_DATE_INDEX
 				isPlayListDownloaded = True
 			else:
 				# url obtained from clipboard points to a single video
 				downloadObjectTitle = self.originalSingleVideoTitle
-				confirmPopupTitle = ConfirmPopup.POPUP_TITLE_VIDEO
+				confirmPopupTitle = ConfirmDownloadPopup.POPUP_TITLE_VIDEO
 				isPlayListDownloaded = False
 
 			confirmPopupCallbackFunction = self.onConfirmPopupAnswer
@@ -971,9 +971,6 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.stopDownloadButton.disabled = True
 	
-	def setMessage(self, msgText):
-		pass
-	
 	def createDownloadConfirmPopup(self,
 	                               confirmPopupTitle,
 	                               confirmPopupMsg,
@@ -1010,8 +1007,8 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
 		
-		self.confirmPopup = ConfirmPopup(text=confirmPopupFormattedMsg,
-		                                 isPlaylist=isPlayListDownloaded)
+		self.confirmPopup = ConfirmDownloadPopup(text=confirmPopupFormattedMsg,
+		                                         isPlaylist=isPlayListDownloaded)
 
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
@@ -1171,7 +1168,7 @@ class AudioDownloaderGUIMainApp(App):
 		# Loading Multiple .kv files
 		Builder.load_file('filechooser.kv')
 		Builder.load_file('okpopup.kv')
-		Builder.load_file('confirmpopup.kv')
+		Builder.load_file('confirmdownloadpopup.kv')
 		Builder.load_file('customdropdown.kv')
 		Builder.load_file('audiodownloadergui.kv')
 		Builder.load_file('audioclippergui.kv')
