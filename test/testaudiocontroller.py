@@ -199,7 +199,7 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(audioFilePath + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
-	def testDownloadVideosReferencedInPlaylist(self):
+	def testDownloadSingleVideoTwice(self):
 		playlistOrSingleVideoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		singleVideoTitle = 'Funny suspicious looking dog'
 		
@@ -216,6 +216,16 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
+		# first download
+		
+		audioController.downloadSingleVideo(
+			singleVideoUrl=playlistOrSingleVideoUrl,
+			singleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalSingleVideoTitle=singleVideoTitle,
+			modifiedVideoTitle=None)
+
+		# second download
+
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
