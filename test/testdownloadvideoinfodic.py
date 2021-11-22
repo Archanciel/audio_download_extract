@@ -121,7 +121,6 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadVideoInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 
 		# adding supplementary video info entry
@@ -220,7 +219,6 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadVideoInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		time.sleep(1)
 		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		
 		# adding supplementary video info entry
