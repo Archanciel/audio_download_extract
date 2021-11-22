@@ -139,6 +139,9 @@ class DirUtil:
 	
 	@staticmethod
 	def getFileNamesInDirForPattern(targetAudioDir, pattern):
+		if not os.path.isdir(targetAudioDir):
+			return None
+		
 		filePathNameLst = glob.glob(targetAudioDir + sep + pattern)
 		
 		return [DirUtil.extractFileNameFromPathFileName(f) for f in filePathNameLst]
@@ -234,15 +237,17 @@ class DirUtil:
 		
 		:param audioDir:
 		
-		:return:indexAndDateUsageLst    four boolean elements list or None
-										if the passed audioDir is empty.
+		:return:indexAndDateUsageLst    four boolean elements list or
+										None if the passed audioDir does not
+										exist or
+										[] if the passed audioDir is empty.
 		"""
 		audioFileNameLst = DirUtil.getFileNamesInDirForPattern(audioDir, '*.mp3')
 
-		if audioFileNameLst == []:
-			return None
-		
-		return DirUtil.getIndexAndDateUsageInFileNameLst(audioFileNameLst)
+		if audioFileNameLst is None or audioFileNameLst == []:
+			return audioFileNameLst
+		else:
+			return DirUtil.getIndexAndDateUsageInFileNameLst(audioFileNameLst)
 	
 	@staticmethod
 	def getIndexAndDateUsageInFileNameLst(audioFileNameLst):

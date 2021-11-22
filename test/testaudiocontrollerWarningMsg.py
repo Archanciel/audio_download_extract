@@ -369,6 +369,191 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		                                                                 isUploadDateAddedToPlaylistVideo=False)
 		
 		self.assertEqual('Currently, upload date is used. Continue without adding date ?', warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_TrueTrue_emptyDir(self):
+		playlistTitle = 'test warning index empty dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual(
+			'Playlist directory is empty. Continue with adding index and upload date ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_TrueFalse_emptyDir(self):
+		playlistTitle = 'test warning index empty dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		
+		self.assertEqual(
+			'Playlist directory is empty. Continue with adding index ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_FalseTrue_emptyDir(self):
+		playlistTitle = 'test warning index empty dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=False,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual(
+			'Playlist directory is empty. Continue with adding upload date ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_FalseFalse_emptyDir(self):
+		playlistTitle = 'test warning index empty dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=False,
+		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		
+		self.assertEqual(
+			'',
+			warningMsg)
+#hhhh
+	
+	def testDefineIndexAndDateSettingWarning_TrueTrue_dirNotExist(self):
+		playlistTitle = 'test warning index dir not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual(
+			'Playlist directory does not exist. Continue with adding index and upload date ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_TrueFalse_dirNotExist(self):
+		playlistTitle = 'test warning index dir not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=True,
+		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		
+		self.assertEqual(
+			'Playlist directory does not exist. Continue with adding index ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_FalseTrue_dirNotExist(self):
+		playlistTitle = 'test warning index dir not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=False,
+		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		
+		self.assertEqual(
+			'Playlist directory does not exist. Continue with adding upload date ?',
+			warningMsg)
+	
+	def testDefineIndexAndDateSettingWarning_FalseFalse_dirNotExist(self):
+		playlistTitle = 'test warning index dir not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		downloadVideoInfoDic = \
+			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
+			                                                        playlistOrSingleVideoDownloadPath=testAudioDirRoot,
+			                                                        originalPlaylistTitle=playlistTitle,
+			                                                        modifiedPlaylistTitle=playlistTitle)
+		
+		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                                 isIndexAddedToPlaylistVideo=False,
+		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		
+		self.assertEqual(
+			'',
+			warningMsg)
 
 
 if __name__ == '__main__':

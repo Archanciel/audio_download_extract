@@ -474,6 +474,17 @@ class TestDirUtil(unittest.TestCase):
 		
 		if os.path.exists(testPath):
 			shutil.rmtree(testPath)
+			
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioDirRoot,
+		                                  targetAudioDir=testPath)
+		
+		self.assertEqual([], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInDirNotExist(self):
+		testDirName = 'test warning index date files not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
 		
 		self.assertIsNone(DirUtil.getIndexAndDateUsageInDir(testPath))
 
@@ -481,4 +492,4 @@ class TestDirUtil(unittest.TestCase):
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testCreateTargetDirIfNotExist_singleVideo()
+	tst.testGetIndexAndDateUsageInDirNotExist()

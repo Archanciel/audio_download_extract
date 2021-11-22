@@ -432,10 +432,35 @@ class AudioController:
 		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
 		
 		if indexAndDateUsageLst is None:
+			# the case if the passed playlistOrSingleVideoDownloadPath does
+			# not exist
+			warningMsgStart = 'Playlist directory does not exist. Continue with '
+
+			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index and upload date ?'
+			elif isIndexAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index ?'
+			elif isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date ?'
+			
+			return warningMsg
+
+		if indexAndDateUsageLst == []:
 			# the case if the passed playlistOrSingleVideoDownloadPath is
 			# empty
-			return None
-
+			# the case if the passed playlistOrSingleVideoDownloadPath does
+			# not exist
+			warningMsgStart = 'Playlist directory is empty. Continue with '
+			
+			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index and upload date ?'
+			elif isIndexAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index ?'
+			elif isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date ?'
+			
+			return warningMsg
+		
 		if isIndexAddedToPlaylistVideo:
 			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
 				not indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
@@ -454,38 +479,8 @@ class AudioController:
 				indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
 				warningMsg += 'Currently, upload date is used. Continue without adding date ?'
 
-
-
-
-
-		# if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-		# 	indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
-		# 	if not isIndexAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, index is used. Continue without adding index ?\n'
-		# else:
-		# 	# currently, index is not used
-		# 	if isIndexAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, index is not used. Continue with adding index ?\n'
-		#
-		# if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-		# 	indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
-		# 	if not isUploadDateAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, upload date is used. Continue without adding date ?'
-		# else:
-		# 	if isUploadDateAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, upload date is not used. Continue with adding date ?'
-
 		return warningMsg.strip() # strip() removes last '\n' !
 
-		# if indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS] or \
-		# 	indexAndDateUsageLst[DirUtil.NO_INDEX_NO_DATE_POS]:
-		# 	if isIndexAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, index is not used. Continue with adding index ?\n'
-		#
-		# if indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS] or \
-		# 	indexAndDateUsageLst[DirUtil.NO_INDEX_NO_DATE_POS]:
-		# 	if isUploadDateAddedToPlaylistVideo:
-		# 		warningMsg += 'Currently, upload date is not used. Continue with adding date ?'
 	
 if __name__ == "__main__":
 	downloader = AudioController()

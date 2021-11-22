@@ -934,7 +934,8 @@ class AudioDownloaderGUI(AudioGUI):
 				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
 				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
 
-			if indexAndDateSettingWarningMsg is not None:
+			if indexAndDateSettingWarningMsg != '':
+				self.downloadThreadCreated = False
 				self.popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
 				                                   indexAndDateSettingWarningMsg,
 				                                   self.onYesNoPopupAnswer,
@@ -1194,20 +1195,34 @@ class AudioDownloaderGUI(AudioGUI):
 		:param answer:
 		:return:
 		"""
-		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
-			self.popup.dismiss()
-			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
-			                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-			                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
-			
-			self.downloadThreadCreated = False  # used to fix a problem on Android
-												# where two download threads are
-												# created after clicking on 'Yes'
-												# button on the ConfirmPopup dialog
-			
-			self.stopDownloadButton.disabled = True
+		if answer == 'yes':  # 'yes' is set in yesnopopup.kv file
+			# downloading the playlist or single video title using a separate thread
+			if not self.downloadThreadCreated:
+				sepThreadExec = SepThreadExec(callerGUI=self,
+				                              func=self.downloadPlaylistAudioOnNewThread)
+				
+				self.downloadThreadCreated = True   # used to fix a problem on Android
+													# where two download threads are
+													# created after clicking on 'Yes'
+													# button on the ConfirmPopup dialog
+				
+				sepThreadExec.start()
+				
+				self.popup.dismiss()
 		elif answer == 'no':
 			self.popup.dismiss()
+
+	def downloadPlaylistAudioOnNewThread(self):
+		self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
+		                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+		                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+		
+		self.downloadThreadCreated = False  # used to fix a problem on Android
+											# where two download threads are
+											# created after clicking on 'Yes'
+											# button on the ConfirmPopup dialog
+		
+		self.stopDownloadButton.disabled = True
 
 
 class AudioDownloaderGUIMainApp(App):
