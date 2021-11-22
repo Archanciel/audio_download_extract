@@ -8,6 +8,7 @@ class AccessError:
 	ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR = 8
 	ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM = 9
 	ERROR_TYPE_LOADING_DOWNLOAD_DIC = 10
+	ERROR_TYPE_SINGLE_VIDEO_URL_ATTRIBUTE_ERROR_PROBLEM = 11
 
 	def __init__(self, errorType, errorMsg):
 		self.errorType = errorType
@@ -20,15 +21,18 @@ class AccessError:
 		elif errorType == AccessError.ERROR_TYPE_NO_INTERNET:
 			self.errorMsg = "{}\nprogram will be closed.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\n[b]retry downloading the playlist to download the remaining videos ![/b]'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\n[b]retry downloading the playlist to download the remaining videos ![/b]'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM:
 			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed.\n{}\nnothing to download.".format(errorMsg)
+		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_ATTRIBUTE_ERROR_PROBLEM:
+			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed. [b]Adding the video to a playlist should solve the problem ![/b]\n{}\nnothing to download.".format(
+			errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_LOADING_DOWNLOAD_DIC:
 			self.errorMsg = "trying to load the existing download dictionary failed.\n{}\ndownload interrupted.".format(
 				errorMsg)

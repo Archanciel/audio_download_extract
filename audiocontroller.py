@@ -193,7 +193,7 @@ class AudioController:
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		playlistObject, playlistTitle, videoTitle, accessError = self.audioDownloader.getPlaylistObjectAndTitlesFortUrl(url)
+		playlistObject, playlistTitle, videoTitle, accessError = self.audioDownloader.getPlaylistObjectAndTitleFortUrl(url)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)

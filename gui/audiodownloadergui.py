@@ -447,7 +447,6 @@ class AudioDownloaderGUI(AudioGUI):
 		msgText = '[b]{}[/b] playlist audio(s) download stopping ....\n'.format(
 			self.originalPlaylistTitle)
 		self.updateStatusBar(msgText)
-#		self.outputResult(msgText)
 		self.audioController.stopDownloading = True
 
 	def downloadStopped(self):
