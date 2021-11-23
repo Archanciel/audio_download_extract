@@ -339,7 +339,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: ERROR: This video is unavailable on this device.\nnothing to download.', accessError.errorMsg)
+		self.assertEqual("trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: 'title'\nnothing to download.", accessError.errorMsg)
 	
 	def testDownloadPlaylistVideosForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
@@ -1749,4 +1749,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloadPlaylistVideosForUrl_renamedFile_already_exist()
+	tst.testDownloadPlaylistVideosForUrl_invalid_url()

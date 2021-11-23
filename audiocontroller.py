@@ -299,6 +299,9 @@ class AudioController:
 	def displayError(self, msg):
 		self.audioGUI.outputResult(msg)
 
+	def displayVideoDownloadEndMessage(self, msg):
+		self.audioGUI.displayVideoDownloadEndMessage(msg)
+		
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):
 		'''

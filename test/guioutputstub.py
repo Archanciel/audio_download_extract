@@ -12,6 +12,18 @@ class GuiOutputStub:
 		
 		print(msgText)
 	
+	def displayVideoDownloadEndMessage(self, msgText):
+		"""
+		This method avoids that the current downloaded video title is
+		deleted by the self.displayVideoCurrentDownloadInfo() next
+		execution.
+
+		:param msgText:
+		"""
+		self.isFirstCurrentDownloadInfo = True
+
+		print(msgText)
+
 	def outputResult(self, msgText):
 		msgText = msgText.replace('[b]', '"').replace('[/b]', '"')
 		

@@ -242,8 +242,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
-				self.audioController.displayMessage(msgText)
+				self.audioController.displayVideoDownloadEndMessage(msgText)
 				self.convertingVideoToMp3 = False
+			
+			# here, all playlist videos have been downloaded
 			
 			if not self.audioController.stopDownloading:
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime

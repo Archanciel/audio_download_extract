@@ -12,8 +12,7 @@ from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
 from downloadvideoinfodic import DownloadVideoInfoDic
 from dirutil import DirUtil
-from configmanager import ConfigManager
-			
+
 class TestAudioExtractor(unittest.TestCase):
 	def testConvertSecondsTo_HHMMSS(self):
 		audioExtractor = AudioExtractor(None, None, None)

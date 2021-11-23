@@ -259,10 +259,10 @@ class SaveFileChooserPopup(FileChooserPopup):
 			return
 		
 		if isLoadAtStartChkboxActive:
-			self.rootGUI.popup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE,
-													  currentSaveFileName) + LOAD_AT_START_MSG
+			self.rootGUI.fileChooserPopup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE,
+			                                                     currentSaveFileName) + LOAD_AT_START_MSG
 		else:
-			self.rootGUI.popup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE, currentSaveFileName)
+			self.rootGUI.fileChooserPopup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE, currentSaveFileName)
 	
 	def toggleLoadAtStart(self, isChkBoxActive):
 		"""

@@ -206,7 +206,7 @@ class SettingScrollOptions(SettingOptions):
 		scrollview = ScrollView(do_scroll_x=False)
 		scrollcontent = GridLayout(cols=1, spacing='5dp', size_hint=(None, None))
 		scrollcontent.bind(minimum_height=scrollcontent.setter('height'))
-		self.popup = popup = Popup(content=content, title=self.title, size_hint=(0.5, 0.9), auto_dismiss=False)
+		popup = Popup(content=content, title=self.title, size_hint=(0.5, 0.9), auto_dismiss=False)
 
 		# we need to open the popup first to get the metrics
 		popup.open()
@@ -277,11 +277,15 @@ class AudioDownloaderGUI(AudioGUI):
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
-		#self.applyAppPosAndSize()
+		# self.applyAppPosAndSize() # commenting it since it is currently not
+									# usefull in the AudioDownload app !
+									# Additionally, it avoids that the 'Stop'
+									# button is set to 'Half' or 'Full'
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
 		self.currentLoadedFathFileName = ''
 		self.outputLineBold = True
+		self.fileChooserPopup = None
 		self.downloadVideoInfoDic = None
 		self.originalPlaylistTitle = None
 		self.modifiedPlaylistTitle = None
@@ -369,13 +373,12 @@ class AudioDownloaderGUI(AudioGUI):
 
 			confirmDownloadPopupCallbackFunction = self.onConfirmDownloadPopupAnswer
 			
-			self.popup = self.createDownloadConfirmPopup(confirmPopupTitle=confirmPopupTitle,
-			                                             confirmPopupMsg=downloadObjectTitle,
-			                                             confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
-			                                             isPlayListDownloaded=isPlayListDownloaded)
-			self.popup.open()
-		else:
-			pass
+			popup = self.createDownloadConfirmPopup(confirmPopupTitle=confirmPopupTitle,
+			                                        confirmPopupMsg=downloadObjectTitle,
+			                                        confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
+			                                        isPlayListDownloaded=isPlayListDownloaded)
+			
+			popup.open()
 	
 	def getDownloadObjectTitleOnNewThread(self):
 		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
@@ -402,6 +405,7 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.isUploadDateAddedToPlaylistVideo = confirmPopupInstance.isUploadDateAdded()
 		self.isIndexAddedToPlaylistVideo = confirmPopupInstance.isIndexAdded()
+		popup = confirmPopupInstance.parent.parent.parent
 		
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
 			
@@ -416,13 +420,11 @@ class AudioDownloaderGUI(AudioGUI):
 			# file.
 			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
 			self.downloadPlaylistOrSingleVideoAudio()
-			self.popup.dismiss()
-		elif answer == 'no':
-			self.popup.dismiss()
-		elif answer == 'set_folder':  # 'set_folder' is set in confirmpopup.kv file
-			self.popup.dismiss()
+		elif answer == 'setFolder':  # 'setFolder' is set in confirmdownloadpopup.kv file
 			self.openSelectOrCreateDirPopup()
-	
+
+		popup.dismiss()
+		
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
@@ -694,66 +696,66 @@ class AudioDownloaderGUI(AudioGUI):
 		'''
 		Act as a call back function for the cancel button of the load and save dialog
 		'''
-		self.popup.dismiss()
+		self.fileChooserPopup.dismiss()
 
 	def openFileLoadPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
-		self.popup = LoadFileChooserPopup(title=popupTitle,
-										  rootGUI=self,
-										  load=self.load,
-										  cancel=self.dismissPopup)
-		self.popup.open()
+		self.fileChooserPopup = LoadFileChooserPopup(title=popupTitle,
+		                                             rootGUI=self,
+		                                             load=self.load,
+		                                             cancel=self.dismissPopup)
+		self.fileChooserPopup.open()
 	
 	def openFileSavePopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SAVE)
-		self.popup = SaveFileChooserPopup(title=popupTitle,
-										  rootGUI=self,
-										  cancel=self.dismissPopup)
+		self.fileChooserPopup = SaveFileChooserPopup(title=popupTitle,
+		                                             rootGUI=self,
+		                                             cancel=self.dismissPopup)
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
-		self.popup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
-		self.popup.open()
+		self.fileChooserPopup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
+		self.fileChooserPopup.open()
 	
 	def openFileDeletePopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_DELETE)
-		self.popup = DeleteFileChooserPopup(title=popupTitle,
-		                                    rootGUI=self,
-		                                    rootPath=self.audiobookPath,
-		                                    cancel=self.dismissPopup)
-		self.popup.open()
+		self.fileChooserPopup = DeleteFileChooserPopup(title=popupTitle,
+		                                               rootGUI=self,
+		                                               rootPath=self.audiobookPath,
+		                                               cancel=self.dismissPopup)
+		self.fileChooserPopup.open()
 	
 	def openSelectOrCreateDirPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.originalSingleVideoTitle)
 		
-		self.popup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-		                                               rootGUI=self,
-		                                               playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
-		                                               originalPlaylistTitle=self.originalPlaylistTitle,
-		                                               originalSingleVideoTitle=self.originalSingleVideoTitle,
-		                                               load=self.load,
-		                                               cancel=self.dismissPopup)
-		self.popup.open()
+		self.fileChooserPopup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
+		                                                          rootGUI=self,
+		                                                          playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+		                                                          originalPlaylistTitle=self.originalPlaylistTitle,
+		                                                          originalSingleVideoTitle=self.originalSingleVideoTitle,
+		                                                          load=self.load,
+		                                                          cancel=self.dismissPopup)
+		self.fileChooserPopup.open()
 
 	def openFileToClipLoadPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SPLIT)
-		self.popup = FileToClipLoadFileChooserPopup(title=popupTitle,
-													rootGUI=self,
-													load=self.load,
-													cancel=self.dismissPopup)
-		self.popup.open()
+		self.fileChooserPopup = FileToClipLoadFileChooserPopup(title=popupTitle,
+		                                                       rootGUI=self,
+		                                                       load=self.load,
+		                                                       cancel=self.dismissPopup)
+		self.fileChooserPopup.open()
 
 	def openShareAudioPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SHARE)
-		self.popup = FileToShareLoadFileChooserPopup(title=popupTitle,
-													 rootGUI=self,
-													 load=self.load,
-													 cancel=self.dismissPopup)
-		self.popup.open()
+		self.fileChooserPopup = FileToShareLoadFileChooserPopup(title=popupTitle,
+		                                                        rootGUI=self,
+		                                                        load=self.load,
+		                                                        cancel=self.dismissPopup)
+		self.fileChooserPopup.open()
 
 	def buildFileChooserPopupTitle(self, fileAction, singleVideoTitle=None):
 		"""
@@ -936,11 +938,11 @@ class AudioDownloaderGUI(AudioGUI):
 
 			if indexAndDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
-				self.popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
+				popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
 				                                   indexAndDateSettingWarningMsg,
 				                                   self.onYesNoPopupAnswer,
 				                                   True)
-				self.popup.open()
+				popup.open()
 			else:
 				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
 				                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
@@ -1046,7 +1048,8 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
-		Method called every n seconds by AudioController.displayDownloadInfo().
+		Method called every n seconds by
+		AudioController.displayDownloadInfo().
 
 		:param currentDownloadInfoTuple:    3 elements tuple containing current
 											download size in bytes, download size
@@ -1105,6 +1108,17 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
 	
+	def displayVideoDownloadEndMessage(self, msgText):
+		"""
+		This method avoids that the current downloaded video title is
+		deleted by the self.displayVideoCurrentDownloadInfo() next
+		execution.
+
+		:param msgText:
+		"""
+		self.isFirstCurrentDownloadInfo = True
+		self.outputResult(msgText)
+		
 	def displayPlaylistEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the playlist videos download is finished by
@@ -1189,11 +1203,10 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def onYesNoPopupAnswer(self, yesNoPopupInstance, answer):
 		"""
-		Method called when one of the ConfirmPopup button is pushed.
+		Method called when one of the YesNoPopup button is pushed.
 
 		:param yesNoPopupInstance:
 		:param answer:
-		:return:
 		"""
 		if answer == 'yes':  # 'yes' is set in yesnopopup.kv file
 			# downloading the playlist or single video title using a separate thread
@@ -1207,12 +1220,18 @@ class AudioDownloaderGUI(AudioGUI):
 													# button on the ConfirmPopup dialog
 				
 				sepThreadExec.start()
-				
-				self.popup.dismiss()
-		elif answer == 'no':
-			self.popup.dismiss()
-
+		
+		popup = yesNoPopupInstance.parent.parent.parent
+		popup.dismiss()
+	
 	def downloadPlaylistAudioOnNewThread(self):
+		"""
+		This method is called if the user did confirm the playlist download
+		with or without the index and/or upload date settings. Since
+		specifying those settings is possible only for playlist download,
+		the method is called downloadPlaylistAudioOnNewThread and not
+		downloadPlaylistOrSingleVideoAudioOnNewThread !
+		"""
 		self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
 		                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
 		                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
@@ -1417,8 +1436,15 @@ class AudioDownloaderGUIMainApp(App):
 		return configFilePathName
 	
 	def open_settings(self, *largs):
+		"""
+		Inherited method redefined so that the drop down menu is closed
+		before opening the settings. Otherwise, the drop down menu would
+		remain open after the settings screen was closed.
+
+		:param largs:
+		"""
 		self.audioDownloaderGUI.dropDownMenu.dismiss()
-		super().open_settings()
+		super().open_settings(*largs)
 
 
 if __name__ == '__main__':
