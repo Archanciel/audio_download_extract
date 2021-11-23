@@ -301,3 +301,26 @@ class AudioExtractor:
 		self.audioController.displayMessage(msgText)
 
 		return targetAudioFilePathName
+		
+if __name__ == '__main__':
+		from dirutil import DirUtil
+		from configmanager import ConfigManager
+		
+		configmanager = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
+		playlistName = "Gary Renard en français"
+		targetAudioDir = configmanager.dataPath + sep + 'UCEM' + sep + 'Gary Renard' + sep + playlistName
+		audioFileName_1 = "Aimer sans peur 2_9 - Gary Renard_explication_meditation.mp3"
+		audioFileName_2 = "Aimer sans peur 3_9 - Gary Renard.mp3"
+		sourceFileNameLst = [audioFileName_1, audioFileName_2]
+		targetAudioFileName = 'Aimer sans peur 2_8 - Gary Renard.mp3'
+		targetAudioFilePathName = targetAudioDir + sep + targetAudioFileName
+
+		class AudioControllertStub:
+			def displayMessage(self, msg):
+				print(msg.replace('[b]', '').replace('[/b]', ''))
+				
+		audioExtractor = AudioExtractor(AudioControllertStub(), targetAudioDir, {})
+		
+		audioExtractor.concatenateAudioFiles(audioSourcePath=targetAudioDir,
+		                                     sourceFileNameLst=sourceFileNameLst,
+		                                     targetFileName=targetAudioFileName)
