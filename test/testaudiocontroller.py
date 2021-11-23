@@ -322,6 +322,39 @@ class TestAudioController(unittest.TestCase):
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
 	
+	def testDeleteAudioFiles_all_noDownloadInfoDicFile(self):
+		testDirName = 'test delete files noDownloadInfoDic'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		downloadvideoinfodicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.txt')
+		DirUtil.deleteFiles(downloadvideoinfodicFilePathNameLst)
+		
+		deletedFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+	
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+	
 	def testDeleteAudioFiles_some(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
@@ -752,4 +785,4 @@ class TestAudioController(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testGetPlaylistObjectAndTitlesForValidVideotUrl()
+	tst.testDeleteAudioFiles_all_noDownloadInfoDicFile()

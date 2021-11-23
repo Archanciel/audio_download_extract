@@ -391,26 +391,32 @@ class AudioController:
 		
 		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[0])
 		DirUtil.deleteFiles(filePathNameLst)
-		dicFileName = DirUtil.getFilePathNamesInDirForPattern(
-			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)[0]
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
-													audioRootDir=None,
-													playlistDownloadRootPath=None,
-													originalPaylistTitle=None,
-													originalPlaylistName=None,
-													modifiedPlaylistTitle=None,
-													modifiedPlaylistName=None,
-													loadDicIfDicFileExist=True,
-													existingDicFilePathName=dicFileName)
+		# now removing video entries in download video info dic
 		
-		# deleting corresponding video entries in downloadVideoInfoDic
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
+			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
 		
-		for filePathName in filePathNameLst:
-			fileName = DirUtil.extractFileNameFromPathFileName(filePathName)
-			downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
-
-		downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
+		if len(dicFilePathNameLst) > 0:
+			# the file deletion is done in a playlist dir, not in a
+			# single videos dir
+			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+														audioRootDir=None,
+														playlistDownloadRootPath=None,
+														originalPaylistTitle=None,
+														originalPlaylistName=None,
+														modifiedPlaylistTitle=None,
+														modifiedPlaylistName=None,
+														loadDicIfDicFileExist=True,
+														existingDicFilePathName=dicFilePathNameLst[0])
+			
+			# deleting corresponding video entries in downloadVideoInfoDic
+			
+			for filePathName in filePathNameLst:
+				fileName = DirUtil.extractFileNameFromPathFileName(filePathName)
+				downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
+	
+			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
 
 	def defineIndexAndDateSettingWarningMsg(self,
 	                                        downloadVideoInfoDic,
