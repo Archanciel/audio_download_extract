@@ -1,4 +1,4 @@
-<ConfirmPopup>: # sub-class of GridLayout
+<ConfirmDownloadPopup>: # sub-class of GridLayout
 	editableTextInput: txt_input_multiline
 	addUploadDateChkBox: add_upload_date_chk_box
 	addIndexChkBox: add_index_chk_box
@@ -62,7 +62,7 @@
 		Button:
 			id: set_folder_btn
 			text: 'Set folder/name'
-			on_release: root.dispatch('on_answer', 'set_folder')
+			on_release: root.dispatch('on_answer', 'setFolder')
 		Button:
 			text: 'No'
 			on_release: root.dispatch('on_answer', 'no')

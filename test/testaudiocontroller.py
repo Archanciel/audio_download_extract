@@ -12,6 +12,7 @@ from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 from configmanager import ConfigManager
 from dirutil import DirUtil
+from downloadvideoinfodic import DownloadVideoInfoDic
 			
 class TestAudioController(unittest.TestCase):
 
@@ -198,10 +199,8 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(audioFilePath + sep + extractedMp3FileName_1)
 		self.assertAlmostEqual(expectedClipFileDuration_1, audio.info.length, delta=0.1)
 
-	def testDownloadVideosReferencedInPlaylistOrSingleVideo(self):
+	def testDownloadSingleVideoTwice(self):
 		playlistOrSingleVideoUrl = 'https://youtu.be/vU1NEZ9sTOM'
-		originalPlaylistTitle = None
-		modifiedPlaylistTitle = None
 		singleVideoTitle = 'Funny suspicious looking dog'
 		
 		testBaseRootDir = 'Various' + sep + 'single_video dir'
@@ -217,27 +216,25 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-		                                                                playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-		                                                                originalPlaylistTitle=originalPlaylistTitle,
-		                                                                modifiedPlaylistTitle=modifiedPlaylistTitle,
-		                                                                originalSingleVideoTitle=singleVideoTitle,
-		                                                                isUploadDateAddedToPlaylistVideo=False,
-		                                                                isIndexAddedToPlaylistVideo=False)
+		# first download
 		
+		audioController.downloadSingleVideo(
+			singleVideoUrl=playlistOrSingleVideoUrl,
+			singleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalSingleVideoTitle=singleVideoTitle,
+			modifiedVideoTitle=None)
+
+		# second download
+
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(
-			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=originalPlaylistTitle,
-			modifiedPlaylistTitle=modifiedPlaylistTitle,
+		audioController.downloadSingleVideo(
+			singleVideoUrl=playlistOrSingleVideoUrl,
+			singleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
 			originalSingleVideoTitle=singleVideoTitle,
-			isUploadDateAddedToPlaylistVideo=False,
-			isIndexAddedToPlaylistVideo=False)
-		
+			modifiedVideoTitle=None)
 		sys.stdout = stdout
 		
 		if os.name == 'posix':
@@ -259,13 +256,186 @@ class TestAudioController(unittest.TestCase):
 			['Funny suspicious looking dog 2013-11-05.mp3'],
 			createdFileLst)
 
-	def testDownloadVideosReferencedInPlaylist(self):
-		playlistName = 'test_audio_downloader_two_files'
-		subTestDirName = '1'
-		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+	def testDeleteAudioFiles_all(self):
+		testDirName = 'test delete files'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		# obtaining the download video info dic file path name
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFilePathNameLst[0]
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+		
+		deletedFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		
+		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
+		                                          audioRootDir=None,
+		                                          playlistDownloadRootPath=None,
+		                                          originalPaylistTitle=None,
+		                                          originalPlaylistName=None,
+		                                          modifiedPlaylistTitle=None,
+		                                          modifiedPlaylistName=None,
+		                                          loadDicIfDicFileExist=True,
+		                                          existingDicFilePathName=dicFilePathName)
+
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
+	
+	def testDeleteAudioFiles_all_noDownloadInfoDicFile(self):
+		testDirName = 'test delete files noDownloadInfoDic'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		downloadvideoinfodicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.txt')
+		DirUtil.deleteFiles(downloadvideoinfodicFilePathNameLst)
+		
+		deletedFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+	
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+	
+	def testDeleteAudioFiles_some(self):
+		testDirName = 'test delete files'
+		testDirNameSaved = 'test delete files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		videoTitle_1 = 'Wear a mask. Help slow the spread of Covid-19.'
+		videoTitle_2 = 'Here to help: Give him what he wants'
+		videoTitle_3 = 'Funny suspicious looking dog'
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		# obtaining the download video info dic file path name
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath,
+		                                                         '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFilePathNameLst[0]
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertEqual('https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertEqual('https://www.youtube.com/watch?v=vU1NEZ9sTOM',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_3))
+		
+		deletedAllFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3')
+		deletedFilePathNameLst = deletedAllFilePathNameLst[:-1]
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		
+		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
+		                                          audioRootDir=None,
+		                                          playlistDownloadRootPath=None,
+		                                          originalPaylistTitle=None,
+		                                          originalPlaylistName=None,
+		                                          modifiedPlaylistTitle=None,
+		                                          modifiedPlaylistName=None,
+		                                          loadDicIfDicFileExist=True,
+		                                          existingDicFilePathName=dicFilePathName)
+		
+		self.assertEqual(['C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test delete files\\99-Wear a '
+ 'mask. Help slow the spread of Covid-19. 2020-07-31.mp3'], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+
+		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
+		                 dvi.getVideoUrlForVideoTitle(videoTitle_1))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
+		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
+	
+	def testDownloadVideosReferencedInPlaylist_noTimeFrame(self):
+		playlistTitle = 'test_audio_downloader_two_files'
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		subTestDirName = 'ctr1'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		testAudioRootPath = DirUtil.getTestAudioRootPath()
 		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
 		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		isIndexAddedToPlaylistVideo = True
+		isUploadDateAddedToPlaylistVideo = True
 		
 		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
 		                                  targetAudioDir=downloadDir)
@@ -280,19 +450,21 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		
-		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
-		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioController.downloadVideosReferencedInPlaylistOrSingleVideo(playlistOrSingleVideoUrl=playlistUrl,
-		                                                                playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
-		                                                                originalPlaylistTitle=playlistName,
-		                                                                modifiedPlaylistTitle=playlistName,
-		                                                                originalSingleVideoTitle=None,
-		                                                                isIndexAddedToPlaylistVideo=True,
-		                                                                isUploadDateAddedToPlaylistVideo=True)
+		downloadVideoInfoDic, indexAndDateSettingWarningMsg = audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+			playlistOrSingleVideoUrl=playlistUrl,
+			playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
+			originalPlaylistTitle=playlistTitle,
+			modifiedPlaylistTitle=playlistTitle,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                   isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		sys.stdout = stdout
 		
@@ -304,6 +476,154 @@ class TestAudioController(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['downloading "99-Wear a mask. Help slow the spread of Covid-19. '
+			                  '2020-07-31.mp3" audio ...',
+			                  '',
+			                  'video download complete.',
+			                  '',
+			                  'downloading "98-Here to help - Give him what he wants 2019-06-07.mp3" audio '
+			                  '...',
+			                  '',
+			                  'video download complete.',
+			                  '',
+			                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			                  '',
+			                  '',
+			                  '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
+			                  'terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		createdFileLst = os.listdir(downloadDir)
+		
+		self.assertEqual(
+			['98-Here to help - Give him what he wants 2019-06-07.mp3',
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
+			 'test_audio_downloader_two_files_dic.txt'],
+			createdFileLst)
+	
+	def testDownloadVideosReferencedInPlaylist_noTimeFrame_renamed(self):
+		playlistTitle = 'test_audio_downloader_two_files'
+		playlistTitleRenamed = 'test_audio_downloader_two_files_noTimeFrame_renamed'
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
+		subTestDirName = 'ctr1'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitleRenamed)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		isIndexAddedToPlaylistVideo = True
+		isUploadDateAddedToPlaylistVideo = True
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, indexAndDateSettingWarningMsg = audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+			playlistOrSingleVideoUrl=playlistUrl,
+			playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
+			originalPlaylistTitle=playlistTitle,
+			modifiedPlaylistTitle=playlistTitleRenamed,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                   isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+			                  '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
+			                  'skipped.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading "99-Wear a mask. Help slow the spread of Covid-19. '
+			                  '2020-07-31.mp3" audio ...',
+			                  '',
+			                  'video download complete.',
+			                  '',
+			                  'downloading "98-Here to help - Give him what he wants 2019-06-07.mp3" audio '
+			                  '...',
+			                  '',
+			                  'video download complete.',
+			                  '',
+			                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			                  '',
+			                  '',
+			                  '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
+			                  'terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		createdFileLst = os.listdir(downloadDir)
+		
+		self.assertEqual(
+			['98-Here to help - Give him what he wants 2019-06-07.mp3',
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
+			 'test_audio_downloader_two_files_noTimeFrame_renamed_dic.txt'],
+			createdFileLst)
+	
+	def testDownloadVideosReferencedInPlaylist_withTimeFrame(self):
+		playlistTitle = 'test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)'
+		playlistName = 'test_audio_downloader_two_files_with_time_frames'
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
+		subTestDirName = 'ctr1'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		isIndexAddedToPlaylistVideo = True
+		isUploadDateAddedToPlaylistVideo = True
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, indexAndDateSettingWarningMsg = audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+			playlistOrSingleVideoUrl=playlistUrl,
+			playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
+			originalPlaylistTitle=playlistTitle,
+			modifiedPlaylistTitle=playlistTitle,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                   isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			pass
+		else:
+			self.assertEqual(['downloading "99-Wear a mask. Help slow the spread of Covid-19. '
  '2020-07-31.mp3" audio ...',
  '',
  'video download complete.',
@@ -313,11 +633,38 @@ class TestAudioController(unittest.TestCase):
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'download terminated.',
  '',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
- 'terminated.',
+ 'extracting portions of "99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3" ...',
+ '',
+ 'MoviePy - Writing audio in '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\99-Wear '
+ 'a mask. Help slow the spread of Covid-19. 2020-07-31_1.mp3',
+ 'MoviePy - Done.',
+ '\ttime frames extracted',
+ '\t\t0:0:02-0:0:08',
+ '',
+ 'suppressing portions of "98-Here to help - Give him what he wants '
+ '2019-06-07.mp3" ...',
+ '',
+ 'MoviePy - Writing audio in '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\98-Here '
+ 'to help - Give him what he wants 2019-06-07_s.mp3',
+ 'MoviePy - Done.',
+ '\ttime frames suppressed:',
+ '\t\t0:0:02-0:0:05',
+ '\t\t0:0:07-0:0:10',
+ '',
+ '\ttime frames kept:',
+ '\t\t0:0:00-0:0:02',
+ '\t\t0:0:05-0:0:07',
+ '\t\t0:0:10-0:0:15',
+ '',
+ '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'extraction/suppression terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -325,12 +672,117 @@ class TestAudioController(unittest.TestCase):
 		
 		self.assertEqual(
 			['98-Here to help - Give him what he wants 2019-06-07.mp3',
+			 '98-Here to help - Give him what he wants 2019-06-07_s.mp3',
 			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
-			 'test_audio_downloader_two_files_dic.txt'],
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31_1.mp3',
+			 'test_audio_downloader_two_files_with_time_frames_dic.txt'],
+			createdFileLst)
+	
+	def testDownloadVideosReferencedInPlaylist_withTimeFrame_renaming(self):
+		playlistTitle = 'test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)'
+		playlistName = 'test_audio_downloader_two_files_with_time_frames'
+		playlistTitleModified = 'test_audio_downloader_two_files_with_time_frames_renamed (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)'
+		playlistNameModified = 'test_audio_downloader_two_files_with_time_frames_renamed'
+		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
+		subTestDirName = 'ctr1'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameModified)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		isIndexAddedToPlaylistVideo = True
+		isUploadDateAddedToPlaylistVideo = True
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
+		                                  targetAudioDir=downloadDir)
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		downloadVideoInfoDic, indexAndDateSettingWarningMsg = audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+			playlistOrSingleVideoUrl=playlistUrl,
+			playlistOrSingleVideoDownloadPath=testAudioRootSubDirPath,
+			originalPlaylistTitle=playlistTitle,
+			modifiedPlaylistTitle=playlistTitleModified,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+		                                                   isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			pass
+		else:
+			self.assertEqual(['downloading "99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3" audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'downloading "98-Here to help - Give him what he wants 2019-06-07.mp3" audio '
+ '...',
+ '',
+ 'video download complete.',
+ '',
+ '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'download terminated.',
+ '',
+ '',
+ 'extracting portions of "99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3" ...',
+ '',
+ 'MoviePy - Writing audio in '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\99-Wear '
+ 'a mask. Help slow the spread of Covid-19. 2020-07-31_1.mp3',
+ 'MoviePy - Done.',
+ '\ttime frames extracted',
+ '\t\t0:0:02-0:0:08',
+ '',
+ 'suppressing portions of "98-Here to help - Give him what he wants '
+ '2019-06-07.mp3" ...',
+ '',
+ 'MoviePy - Writing audio in '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\98-Here '
+ 'to help - Give him what he wants 2019-06-07_s.mp3',
+ 'MoviePy - Done.',
+ '\ttime frames suppressed:',
+ '\t\t0:0:02-0:0:05',
+ '\t\t0:0:07-0:0:10',
+ '',
+ '\ttime frames kept:',
+ '\t\t0:0:00-0:0:02',
+ '\t\t0:0:05-0:0:07',
+ '\t\t0:0:10-0:0:15',
+ '',
+ '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'extraction/suppression terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		createdFileLst = os.listdir(downloadDir)
+		
+		self.assertEqual(
+			['98-Here to help - Give him what he wants 2019-06-07.mp3',
+			 '98-Here to help - Give him what he wants 2019-06-07_s.mp3',
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
+			 '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31_1.mp3',
+			 'test_audio_downloader_two_files_with_time_frames_renamed_dic.txt'],
 			createdFileLst)
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDownloadVideosReferencedInPlaylist()
+	tst.testDeleteAudioFiles_all_noDownloadInfoDicFile()

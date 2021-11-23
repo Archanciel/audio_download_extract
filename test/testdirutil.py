@@ -1,5 +1,5 @@
 import unittest
-import os, sys, inspect, glob
+import os, sys, inspect, glob, shutil
 from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -9,8 +9,9 @@ sys.path.insert(0, parentDir)
 from constants import *
 from dirutil import DirUtil
 
-class TestDirUtil(unittest.TestCase):
 
+class TestDirUtil(unittest.TestCase):
+	
 	def testReplaceUnauthorizedDirNameChars(self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
 		expectedFileName = "Audio - - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
@@ -26,7 +27,7 @@ class TestDirUtil(unittest.TestCase):
 		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		
 		self.assertEqual(expectedFileName, actualFileName)
-
+	
 	def testExtractPathFromPathFileName(self):
 		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
 		pathFileName = expectedPath + sep + 'file.mp3'
@@ -51,13 +52,13 @@ class TestDirUtil(unittest.TestCase):
 		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur'
-
+		
 		self.assertEqual(expectedShortDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                           fullFilePathName=fullDir,
 		                                                                           eliminatedRootLastSubDirsNumber=1))
 		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 		                                                                             fullFilePathName=fullDir))
-
+	
 	def testGetFullFilePathNameMinusRootDir_one_sub_dir(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
 		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
@@ -118,7 +119,7 @@ class TestDirUtil(unittest.TestCase):
 		                                  targetAudioDir=createdSubdirsPath)
 		
 		createdFilePathName = createdSubdirsPath + sep + createdFileName
-
+		
 		with open(createdFilePathName, 'w') as f:
 			f.write('Hello World')
 		
@@ -126,14 +127,14 @@ class TestDirUtil(unittest.TestCase):
 		filePathNameComponents = createdFilePathName.split(sep)
 		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-1])))
 		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-2])))
-
+		
 		# removing test dir and sub dirs and its files
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
-
+		
 		self.assertFalse(os.path.isfile(createdFilePathName))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-1])))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-2])))
-
+	
 	def testRenameFile(self):
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'
@@ -150,13 +151,13 @@ class TestDirUtil(unittest.TestCase):
 			f.write('Hello World')
 		
 		self.assertTrue(os.path.isfile(createdFilePathName))
-
+		
 		DirUtil.renameFile(createdFilePathName, renamedFileName)
-
+		
 		renamedFilePathName = testBaseRootPath + sep + renamedFileName
-
+		
 		self.assertTrue(os.path.isfile(renamedFilePathName))
-
+		
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
@@ -203,7 +204,9 @@ class TestDirUtil(unittest.TestCase):
 		
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
-		self.assertEqual("[WinError 2] Le fichier spécifié est introuvable: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'", errorInfo)
+		self.assertEqual(
+			"[WinError 2] Le fichier spécifié est introuvable: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			errorInfo)
 		
 		# removing test dir
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
@@ -246,12 +249,12 @@ class TestDirUtil(unittest.TestCase):
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
 		createdSubdirs = 'France' + sep + 'politique'
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
-
+		
 		# removing test dir and sub dirs and its files
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 		
 		subdirs = createdSubdirsPath.split(sep)
-
+		
 		self.assertFalse(os.path.isdir(sep.join(subdirs[:-1])))
 		self.assertFalse(os.path.isdir(sep.join(subdirs[:-2])))
 		
@@ -262,7 +265,8 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-1])))
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
 		self.assertEqual('Audio' + sep + 'Various' + sep + 'France' + sep + 'politique', targetAudioDirShort)
-		self.assertEqual("directory\nAudio" + sep + 'Various' + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
+		self.assertEqual("directory\nAudio" + sep + 'Various' + sep + 'France' + sep + "politique\nwas created.\n",
+		                 dirCreationMessage)
 	
 	def testCreateTargetDirIfNotExist_playlist(self):
 		testBaseRootDir = 'Audio'
@@ -300,7 +304,7 @@ class TestDirUtil(unittest.TestCase):
 		filePathName_1 = testBaseRootPath + sep + fileName_1
 		filePathName_2 = testBaseRootPath + sep + fileName_2
 		filePathNameLst = [filePathName_1, filePathName_2]
-
+		
 		# creating the files which will be listed
 		
 		for filePathName in filePathNameLst:
@@ -309,13 +313,46 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertTrue(os.path.isfile(filePathName_1))
 		self.assertTrue(os.path.isfile(filePathName_2))
-
+		
 		# now getting the files
 		
 		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testBaseRootPath, '*.mp3')
 		
 		self.assertEqual(filePathName_1, filePathNameLst[0])
 		self.assertEqual(filePathName_2, filePathNameLst[1])
+		
+		# removing test dir and its file
+		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+	
+	def testGetFileNamesInDirForPattern(self):
+		fileName_1 = 'file_one.mp3'
+		fileName_2 = 'file_two.mp3'
+		
+		testBaseRootDir = 'test dir util'
+		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		
+		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		                                  targetAudioDir=testBaseRootPath)
+		
+		filePathName_1 = testBaseRootPath + sep + fileName_1
+		filePathName_2 = testBaseRootPath + sep + fileName_2
+		fileNameLst = [filePathName_1, filePathName_2]
+		
+		# creating the files which will be listed
+		
+		for filePathName in fileNameLst:
+			with open(filePathName, 'w') as f:
+				f.write('Hello World')
+		
+		self.assertTrue(os.path.isfile(filePathName_1))
+		self.assertTrue(os.path.isfile(filePathName_2))
+		
+		# now getting the files
+		
+		fileNameLst = DirUtil.getFileNamesInDirForPattern(testBaseRootPath, '*.mp3')
+		
+		self.assertEqual(fileName_1, fileNameLst[0])
+		self.assertEqual(fileName_2, fileNameLst[1])
 		
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
@@ -353,7 +390,7 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 	
-	def testDeleteFiles_emptyDeleteFileLst(self):
+	def testDeleteFiles_file_list_empty(self):
 		deletedFileName_1 = 'file_one.mp3'
 		deletedFileName_2 = 'file_two.mp3'
 		
@@ -386,8 +423,73 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir and its file
 		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
 
+	def testGetIndexAndDateUsageInFileNameLst(self):
+		fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',
+		                            'Funny suspicious looking dog 2013-11-05.mp3',
+		                            '97-Funny suspicious looking dog.mp3',
+		                            'Funny suspicious looking dog.mp3']
+		fileNameLst_index_date_2 = ['Funny suspicious looking dog 2013-11-05.mp3',
+		                            '97-Funny suspicious looking dog.mp3',
+		                            'Funny suspicious looking dog.mp3']
+		fileNameLst_index_no_date = ['97-Funny suspicious looking dog.mp3',
+		                             'Funny suspicious looking dog.mp3']
+		fileNameLst_no_index_no_date = ['Funny new suspicious looking dog.mp3',
+		                                'Funny suspicious looking dog.mp3']
+		fileNameLst_no_index_date = ['Funny suspicious looking dog 2013-11-05.mp3',
+		                             'Funny new suspicious looking dog.mp3',
+		                             'Funny suspicious looking dog.mp3']
+		emptyFileNameLst = []
+
+		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_1))
+		self.assertEqual([False, True, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_2))
+		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_no_date))
+		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_no_date))
+		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date))
+		self.assertEqual([False, False, False, False], DirUtil.getIndexAndDateUsageInFileNameLst(emptyFileNameLst))
+
+	def testGetIndexAndDateUsageInDir(self):
+		testDirName = 'test warning index date files'
+		testDirNameSaved = 'test warning index date files save dir'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+
+		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInEmptyDir(self):
+		testDirName = 'test warning index date files'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		# emptying test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+			
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioDirRoot,
+		                                  targetAudioDir=testPath)
+		
+		self.assertEqual([], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInDirNotExist(self):
+		testDirName = 'test warning index date files not exist'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		self.assertIsNone(DirUtil.getIndexAndDateUsageInDir(testPath))
+
 
 if __name__ == '__main__':
-	#unittest.main()
+	# unittest.main()
 	tst = TestDirUtil()
-	tst.testCreateTargetDirIfNotExist_singleVideo()
+	tst.testGetIndexAndDateUsageInDirNotExist()

@@ -7,8 +7,6 @@ from os.path import sep
 from constants import *
 from dirutil import DirUtil
 
-DIC_FILE_NAME_ETENT = '_dic.txt'
-
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
@@ -40,6 +38,8 @@ KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
 class DownloadVideoInfoDic:
+	DIC_FILE_NAME_EXTENT = '_dic.txt'
+	
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
@@ -61,7 +61,8 @@ class DownloadVideoInfoDic:
 		loaded and set into the self.dic instance variable. Otherwise, the self
 		dic is initialized with the passed information.
 		
-		If the passed existingDicFilePathName is not None, the instantiated
+		If the passed existingDicFilePathName is not None, which is the case in
+		the situation of deleting audio files, the instantiated
 		DownloadVideoInfoDic is created with the data contained in the
 		DownloadVideoInfoDic file located in the existingDicFilePathName dir.
 		
@@ -80,8 +81,10 @@ class DownloadVideoInfoDic:
 											AudioClipperGUI.createClipFileOnNewThread()
 		:param existingDicFilePathName      used only if the DownloadVideoInfoDic
 											is instantiated based on this parameter
-											only
+											only (in the case of processing audio files deletion9
 		"""
+		self.dic = None
+
 		if existingDicFilePathName is not None:
 			self.dic = self._loadDicIfExist(existingDicFilePathName)
 			
@@ -89,7 +92,6 @@ class DownloadVideoInfoDic:
 
 		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
 		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistValidDirName
-		self.dic = None
 		
 		if loadDicIfDicFileExist:
 			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
@@ -155,7 +157,8 @@ class DownloadVideoInfoDic:
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getPlaylistNameModified())
 		playlistDownloadDir = self.getPlaylistDownloadDir()
 		
-		dicFilePathName = self.buildInfoDicFilePathName(audioDirRoot + sep + playlistDownloadDir, validPlaylistDirName)
+		dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
+		                                                validPlaylistDirName=validPlaylistDirName)
 
 		with open(dicFilePathName, 'w') as f:
 			try:
@@ -244,17 +247,19 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def buildInfoDicFilePathName(self, downloadDir, validPlaylistDirName):
+	def buildInfoDicFilePathName(self, playlistDownloadBaseDir, validPlaylistDirName):
 		"""
 		Builds the playlist DownloadVideoInfoDic file path name.
 		
-		:param downloadDir:             audio root dir + sep + validPlaylistDirName
+		:param playlistDownloadBaseDir: base playlist download dir as defined in the
+										SelectOrCreateDirFileChooserPopup dir field or
+										audio root dir by default.
 		:param validPlaylistDirName:    contains the playlistName purged from any invalid
 										Windows dir or file names chars.
 
 		:return: playlist DownloadVideoInfoDic file path name
 		"""
-		return downloadDir + sep + validPlaylistDirName + DIC_FILE_NAME_ETENT
+		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
 	def getVideoIndexes(self):
 		'''
@@ -488,6 +493,13 @@ class DownloadVideoInfoDic:
 		
 		return None
 	
+	def getVideoIndexForVideoFileName(self, videoFileName):
+		for key in self.dic[KEY_VIDEOS].keys():
+			if self.getVideoFileNameForVideoIndex(key) == videoFileName:
+				return key
+		
+		return None
+	
 	def addExtractedFileInfoForVideoIndexTimeFrameIndex(self,
 														videoIndex,
 														timeFrameIndex,
@@ -677,6 +689,10 @@ class DownloadVideoInfoDic:
 		else:
 			return videoInfoDic[KEY_VIDEO_SUPPRESS_FILE][KEY_TIMEFRAMES_HHMMSS_KEPT]
 
+	def deleteVideoInfoForVideoFileName(self, videoFileName):
+		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
+		self.removeVideoInfoForVideoIndex(videoIndex)
+		
 
 if __name__ == "__main__":
 	if os.name == 'posix':

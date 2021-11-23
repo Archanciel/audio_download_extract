@@ -92,7 +92,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		playlistStartDownloadTime = time.time()
 		playlistDownloadedVideoNb_succeed = 0
 		playlistDownloadedVideoNb_failed = 0
-		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitlesFortUrl(playlistUrl)
+		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitleFortUrl(playlistUrl)
 
 		if accessError:
 			return None, accessError
@@ -192,13 +192,19 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
-				
+					self.convertingVideoToMp3 = False   # avoiding that the display
+														# conversion info spread
+														# pollutes the GUI
+					
 					continue    # this avoids that the video is fully downloaded
 								# and so facilitates the video redownload.
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1
+					self.convertingVideoToMp3 = False   # avoiding that the display
+														# conversion info spread
+														# pollutes the GUI
 
 					continue
 				
@@ -214,6 +220,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					if fileNotFoundErrorInfo is not None:
 						self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 						playlistDownloadedVideoNb_failed += 1
+						self.convertingVideoToMp3 = False  # avoiding that the display
+						# conversion info spread
+						# pollutes the GUI
 						
 						continue
 				
@@ -233,8 +242,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
-				self.audioController.displayMessage(msgText)
+				self.audioController.displayVideoDownloadEndMessage(msgText)
 				self.convertingVideoToMp3 = False
+			
+			# here, all playlist videos have been downloaded
 			
 			if not self.audioController.stopDownloading:
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
@@ -285,7 +296,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return files[0].split(sep)[-1]
 
-	def getPlaylistObjectAndTitlesFortUrl(self, url):
+	def getPlaylistObjectAndTitleFortUrl(self, url):
 		"""
 		Returns a pytube.Playlist instance if the passed url points to a Youtube
 		playlist, None otherwise, as well as a playlistTitle or a videoTitle if
@@ -323,10 +334,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			# the case if the url points to a single video instead of a playlist
 			# or if the URL obtained from the clipboard is invalid.
 			try:
-				youtube = YouTube(url)
-				video = youtube.streams.first()
-				videoTitle = video.title
-			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError) as e:
+				with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
+					meta = ydl.extract_info(url, download=False)
+					videoTitle = meta['title']
+			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError, AttributeError, DownloadError) as e:
 				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
 				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
 

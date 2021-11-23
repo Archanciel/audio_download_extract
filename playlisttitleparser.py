@@ -68,7 +68,7 @@ class PlaylistTitleParser:
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':
 			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
 																					videoTimeFramesInfo,
-																					originalPlaylistTitle)
+																					downloadVideoInfoDic.getPlaylistTitleModified())
 		
 		return downloadVideoInfoDic, accessError
 	

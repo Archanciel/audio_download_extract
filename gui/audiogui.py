@@ -28,6 +28,7 @@ class AudioGUI(Screen):
 		self.isExtractFileDropDownMenuItemDisplayed = True
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
+		self.isDeleteDropDownMenuItemDisplayed = True
 		self.dropDownMenu = CustomDropDown(owner=self)
 		self.error = False
 		
@@ -187,6 +188,13 @@ class AudioGUI(Screen):
 		else:
 			# hide drop down menu items
 			self.dropDownMenu.gridLayoutSettings.height = 0
+		
+		if self.isDeleteDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutDelete.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutDelete.height = 0
 		
 		self.dropDownMenu.open(widget)
 	

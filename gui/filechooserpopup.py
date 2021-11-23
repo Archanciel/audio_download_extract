@@ -259,10 +259,10 @@ class SaveFileChooserPopup(FileChooserPopup):
 			return
 		
 		if isLoadAtStartChkboxActive:
-			self.rootGUI.popup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE,
-													  currentSaveFileName) + LOAD_AT_START_MSG
+			self.rootGUI.fileChooserPopup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE,
+			                                                     currentSaveFileName) + LOAD_AT_START_MSG
 		else:
-			self.rootGUI.popup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE, currentSaveFileName)
+			self.rootGUI.fileChooserPopup.title = '{} {}'.format(FileChooserPopup.SAVE_FILE_POPUP_TITLE, currentSaveFileName)
 	
 	def toggleLoadAtStart(self, isChkBoxActive):
 		"""
@@ -273,6 +273,85 @@ class SaveFileChooserPopup(FileChooserPopup):
 		self._updateSaveFileChooserPopupTitle(self.currentPathField.text,
 		                                      self.currentFileNameField.text,
 		                                      isChkBoxActive)
+
+
+class DeleteFileChooserPopup(FileChooserPopup):
+	"""
+
+	"""
+	
+	def __init__(self, rootGUI, rootPath, **kwargs):
+		super(DeleteFileChooserPopup, self).__init__(rootGUI, **kwargs)
+		
+		self.rootPath = rootPath
+		self.loadAtStartFilePathName = ''
+	
+	def _setPopupSize(self):
+		popupSizeProportion_x = 0.98
+		popupSizeProportion_y = 0.98
+		popupPos_top = 0.98
+		
+		# defining FileChooserPopup size parameters
+		
+		if platform == 'android':
+			popupSizeProportion_y = 0.62
+			
+			if self.onSmartPhone():
+				popupSizeProportion_x = 0.98
+				popupSizeProportion_y = 0.98
+				popupPos_top = 0.98
+			else:
+				# on tablet
+				popupSizeProportion_x = 0.8
+				popupPos_top = 0.92
+		elif platform == 'win':
+			popupSizeProportion_x = 0.98
+			popupSizeProportion_y = 0.98
+			popupPos_top = 0.98
+			
+		return popupPos_top, popupSizeProportion_x, popupSizeProportion_y
+	
+	def _sizeFileChooser(self):
+		"""
+
+		:return:
+		"""
+	
+	def handleSelection(self, selectionLst):
+		"""
+		Method called when selecting or unselecting a file.
+		
+		:param selectionLst:
+		"""
+		if selectionLst == []:
+			self.deleteButton.disabled = True
+			self.deletedFilesLabel.text = ''
+			
+			return
+		
+		fileNameLines = ''
+		
+		for pathFileName in selectionLst:
+			shortedFilePathName = DirUtil.extractFileNameFromPathFileName(pathFileName=pathFileName)
+			fileNameLines += shortedFilePathName + '\n'
+		
+		self.deleteButton.disabled = False
+		self.deletedFilesLabel.text = fileNameLines
+	
+	def delete(self):
+		"""
+		Method called when clicking Delete button.
+		"""
+		self.rootGUI.deleteAudioFiles(self.fileChooser.selection)
+		self.rootGUI.dismissPopup()
+
+	def unselectAll(self):
+		"""
+		Method called when clicking Unselect all button.
+		"""
+		self.fileChooser.selection = []
+		self.deleteButton.disabled = True
+		self.deletedFilesLabel.text = ''
 
 
 class SelectOrCreateDirFileChooserPopup(FileChooserPopup):

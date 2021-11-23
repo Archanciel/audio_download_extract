@@ -20,9 +20,9 @@ class AccessError:
 		elif errorType == AccessError.ERROR_TYPE_NO_INTERNET:
 			self.errorMsg = "{}\nprogram will be closed.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\n[b]retry downloading the playlist to download the remaining videos ![/b]'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE:
-			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\nretry downloading the playlist to download the remaining videos !'
+			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\n[b]retry downloading the playlist to download the remaining videos ![/b]'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_DIRECTORY_NOT_EXIST:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR:

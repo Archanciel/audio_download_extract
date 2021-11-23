@@ -6,7 +6,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
 
 
-class ConfirmPopup(GridLayout):
+class ConfirmDownloadPopup(GridLayout):
+	"""
+	The advantage of using register_event_type is that the same class can be
+	instantiated with binding 'on_answer' to different methods.
+	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
 	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
 	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date) ...'
@@ -31,7 +35,7 @@ class ConfirmPopup(GridLayout):
 		
 		kwargs['text'] = self.textStr.replace("\n", " ")
 
-		super(ConfirmPopup, self).__init__(**kwargs)
+		super(ConfirmDownloadPopup, self).__init__(**kwargs)
 
 		self.register_event_type('on_answer')
 		
@@ -45,15 +49,15 @@ class ConfirmPopup(GridLayout):
 		self.editableTextInput.text = self.textStr
 
 		if self.isPlaylist:
-			self.addUploadDateChkBox.active = True
-			self.addUploadDateChkBox.disabled = False
 			self.addIndexChkBox.active = True
 			self.addIndexChkBox.disabled = False
+			self.addUploadDateChkBox.active = True
+			self.addUploadDateChkBox.disabled = False
 		else:
-			self.addUploadDateChkBox.active = False
-			self.addUploadDateChkBox.disabled = True
 			self.addIndexChkBox.active = False
 			self.addIndexChkBox.disabled = True
+			self.addUploadDateChkBox.active = False
+			self.addUploadDateChkBox.disabled = True
 
 	def toggleAddUploadDate(self, isActive):
 		containingPopup = self.parent.parent.parent

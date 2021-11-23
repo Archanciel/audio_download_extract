@@ -27,91 +27,102 @@ class AudioController:
 		self.audioDownloader = YoutubeDlAudioDownloader(self, audioDirRoot=configMgr.dataPath)
 		
 		self.stopDownloading = False
-		
-	def downloadVideosReferencedInPlaylistOrSingleVideo(self,
-	                                                    playlistOrSingleVideoUrl,
-	                                                    playlistOrSingleVideoDownloadPath,
-	                                                    originalPlaylistTitle,
-	                                                    modifiedPlaylistTitle,
-	                                                    originalSingleVideoTitle,
-	                                                    isUploadDateAddedToPlaylistVideo,
-	                                                    isIndexAddedToPlaylistVideo,
-	                                                    modifiedVideoTitle=None):
+	
+	def downloadSingleVideo(self,
+	                        singleVideoUrl,
+	                        singleVideoDownloadPath,
+	                        originalSingleVideoTitle,
+	                        modifiedVideoTitle=None):
+		"""
+
+		:param singleVideoUrl:              single video url
+		:param singleVideoDownloadPath:     path where the playlist dir will be created
+											or where the single video will be downloaded
+		:param originalSingleVideoTitle:    if the playlistOrSingleVideoUrl points
+											to a single video
+		:param modifiedVideoTitle:          None if the video title was not modified
+		"""
+		self.stopDownloading = False
+
+		self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=singleVideoUrl,
+		                                               originalVideoTitle=originalSingleVideoTitle,
+		                                               modifiedVideoTitle=modifiedVideoTitle,
+		                                               targetAudioDir=singleVideoDownloadPath)
+	
+	def downloadVideosReferencedInPlaylist(self,
+	                                       downloadVideoInfoDic,
+	                                       isIndexAddedToPlaylistVideo,
+	                                       isUploadDateAddedToPlaylistVideo):
 		"""
 		In case we are downloading videos referenced in a playlist, this method first
 		execute the download of the audio of the videos and then execute the extraction
 		or suppression of audio parts as specified in the playlist title, this,
 		provided we are on Windows (extraction/suppression are not supported on Android).
-		
+
 		Example of playlist title:
 		playlist_title (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e) (s01:05:52-01:07:23 e01:15:52-e S01:25:52-e E01:35:52-01:37:23)
 		-e or -E means "to end" !
 
-		If we are downloading a single video audio, no extraction/suppression will
-		be performed.
-
-		:param playlistOrSingleVideoUrl:            playlist or single video url
-		:param playlistOrSingleVideoDownloadPath:   path where the playlist dir will be created
-													or where the single video will be downloaded
-		:param originalPlaylistTitle:               if the playlistOrSingleVideoUrl points
-													to a playlist
-		:param modifiedPlaylistTitle:               None if the playlist title was not modified
-		:param originalSingleVideoTitle:            if the playlistOrSingleVideoUrl points
-													to a single video
+		:param downloadVideoInfoDic:
 		:param isUploadDateAddedToPlaylistVideo     parameter used for playlist only
 		:param isIndexAddedToPlaylistVideo          parameter used for playlist only
-		:param modifiedVideoTitle:                  None if the video title was not modified
 		"""
 		self.stopDownloading = False
+
+		_, accessError = \
+			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getPlaylistUrl(),
+			                                                  downloadVideoInfoDic=downloadVideoInfoDic,
+			                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
+			                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
 		
-		if originalPlaylistTitle is not None:
-			# downloading a playlist
-			downloadVideoInfoDic = \
-				self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
-				                                             playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-				                                             originalPlaylistTitle=originalPlaylistTitle,
-				                                             modifiedPlaylistTitle=modifiedPlaylistTitle)
-
-			_, accessError = \
-				self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=playlistOrSingleVideoUrl,
-				                                                  downloadVideoInfoDic=downloadVideoInfoDic,
-				                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
-				                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
-			
-			# extracting/suppressing the audio portions for the downloaded audio tracks
-
-			if accessError is None:
-				if os.name == 'posix':
-					msgText = 'skipping extraction/suppression on Android.\n'
-					self.displayMessage(msgText)
-				else:
-					if not self.stopDownloading:
-						# extraction/suppression possible only on Windows !
-						audioDirRoot = self.configMgr.dataPath
-						targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-						audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
-						audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
+		# extracting/suppressing the audio portions for the downloaded audio tracks
+		
+		if accessError is None:
+			if os.name == 'posix':
+				msgText = 'skipping extraction/suppression on Android.\n'
+				self.displayMessage(msgText)
+			else:
+				if not self.stopDownloading:
+					# extraction/suppression possible only on Windows !
+					audioDirRoot = self.configMgr.dataPath
+					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
+					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 					
-						# saving the content of the downloadVideoInfoDic which has been completed
-						# by AudioExtractor in the directory containing the extracted audio files
-						try:
-							downloadVideoInfoDic.saveDic(audioDirRoot)
-						except TypeError as e:
-							print(e)
-							traceback.print_exc()
-							
-		else:
-			# downloading a single video in the single video default dir
-			self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=playlistOrSingleVideoUrl,
-			                                               originalVideoTitle=originalSingleVideoTitle,
-			                                               modifiedVideoTitle=modifiedVideoTitle,
-			                                               targetAudioDir=playlistOrSingleVideoDownloadPath)
+					# saving the content of the downloadVideoInfoDic which has been completed
+					# by AudioExtractor in the directory containing the extracted audio files
+					try:
+						downloadVideoInfoDic.saveDic(audioDirRoot)
+					except TypeError as e:
+						print(e)
+						traceback.print_exc()
+	
+	def getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(self,
+	                                                         playlistOrSingleVideoUrl,
+	                                                         playlistOrSingleVideoDownloadPath,
+	                                                         originalPlaylistTitle,
+	                                                         modifiedPlaylistTitle,
+	                                                         isIndexAddedToPlaylistVideo,
+	                                                         isUploadDateAddedToPlaylistVideo):
+		
+		downloadVideoInfoDic = \
+			self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
+			                                             playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			                                             originalPlaylistTitle=originalPlaylistTitle,
+			                                             modifiedPlaylistTitle=modifiedPlaylistTitle)
+		
+		indexAndDateSettingWarningMsg = self.defineIndexAndDateSettingWarningMsg(
+			downloadVideoInfoDic=downloadVideoInfoDic,
+			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+		
+		return downloadVideoInfoDic, indexAndDateSettingWarningMsg
 	
 	def clipAudioFile(self,
-	                  audioFilePathName,
-	                  clipStartHHMMSS,
-	                  clipEndHHMMSS,
-	                  floatSpeed=1.0):
+					  audioFilePathName,
+					  clipStartHHMMSS,
+					  clipEndHHMMSS,
+					  floatSpeed=1.0):
 		"""
 		Extracts a portion of the audio file referred by the passed audioFilePathName.
 		
@@ -134,18 +145,18 @@ class AudioController:
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
 		audioExtractorVideoInfoDic = DownloadVideoInfoDic(playlistUrl='',
-		                                                  audioRootDir=self.configMgr.dataPath,
-		                                                  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
-		                                                  originalPaylistTitle=playlistTitle,
-		                                                  originalPlaylistName=playlistTitle,
-		                                                  modifiedPlaylistTitle=playlistTitle,
-		                                                  modifiedPlaylistName=playlistTitle,
-		                                                  loadDicIfDicFileExist=False)
+														  audioRootDir=self.configMgr.dataPath,
+														  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
+														  originalPaylistTitle=playlistTitle,
+														  originalPlaylistName=playlistTitle,
+														  modifiedPlaylistTitle=playlistTitle,
+														  modifiedPlaylistName=playlistTitle,
+														  loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
-		                                                     videoTitle=videoTitle,
-		                                                     videoUrl='',
-		                                                     downloadedFileName=audioFileName)
+															 videoTitle=videoTitle,
+															 videoUrl='',
+															 downloadedFileName=audioFileName)
 		
 		# getting the extract time frames specified as command line argument
 		# and adding them to the DownloadVideoInfoDic
@@ -157,8 +168,8 @@ class AudioController:
 		
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(audioController=self,
-		                                targetAudioDir=audioFilePath,
-		                                downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
+										targetAudioDir=audioFilePath,
+										downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
 		
 		audioExtractor.extractAudioPortions(videoIndex=1,
 											videoFileName=audioFileName,
@@ -182,7 +193,7 @@ class AudioController:
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		playlistObject, playlistTitle, videoTitle, accessError = self.audioDownloader.getPlaylistObjectAndTitlesFortUrl(url)
+		playlistObject, playlistTitle, videoTitle, accessError = self.audioDownloader.getPlaylistObjectAndTitleFortUrl(url)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
@@ -190,10 +201,10 @@ class AudioController:
 		return playlistObject, playlistTitle, videoTitle, accessError
 	
 	def getDownloadVideoInfoDicForPlaylistTitle(self,
-	                                            playlistUrl,
-	                                            playlistOrSingleVideoDownloadPath,
-	                                            originalPlaylistTitle,
-	                                            modifiedPlaylistTitle):
+												playlistUrl,
+												playlistOrSingleVideoDownloadPath,
+												originalPlaylistTitle,
+												modifiedPlaylistTitle):
 		"""
 		Returns a DownloadVideoInfoDic for the passed playlistTitle. The playlistTitle
 		may contain extract / suppress info (ex: 'Test 3 short videos
@@ -209,23 +220,18 @@ class AudioController:
 
 		:return: downloadVideoInfoDic, accessError
 		"""
-		if modifiedPlaylistTitle is not None:
-			# ensuring the modified playlist title which will be used to create a
-			# directory has no illegal Windows10 file or dir name character
-			modifiedPlaylistTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistTitle)
-		
 		downloadVideoInfoDic, accessError = \
 			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(playlistUrl=playlistUrl,
-			                                                          audioRootDir=self.configMgr.dataPath,
-			                                                          playlistDownloadRootPath=playlistOrSingleVideoDownloadPath,
-			                                                          originalPlaylistTitle=originalPlaylistTitle,
-			                                                          modifiedPlaylistTitle=modifiedPlaylistTitle)
+																	  audioRootDir=self.configMgr.dataPath,
+																	  playlistDownloadRootPath=playlistOrSingleVideoDownloadPath,
+																	  originalPlaylistTitle=originalPlaylistTitle,
+																	  modifiedPlaylistTitle=modifiedPlaylistTitle)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
 			return None
-		
-		return downloadVideoInfoDic
+		else:
+			return downloadVideoInfoDic
 	
 	def displayVideoCurrentDownloadInfo(self, currentDownloadInfoTuple):
 		"""
@@ -293,6 +299,9 @@ class AudioController:
 	def displayError(self, msg):
 		self.audioGUI.outputResult(msg)
 
+	def displayVideoDownloadEndMessage(self, msg):
+		self.audioGUI.displayVideoDownloadEndMessage(msg)
+		
 	# method temporary here. Will be suppressed !
 	def getPrintableResultForInput(self, inputStr, copyResultToClipboard=True):
 		'''
@@ -370,7 +379,117 @@ class AudioController:
 		videoCurrentMp3ConversionInfoList[0] = hhmmssStr
 
 		self.audioGUI.displayVideoMp3ConversionCurrentInfo(videoCurrentMp3ConversionInfoList)
+	
+	def deleteAudioFiles(self, filePathNameLst):
+		"""
+		Called by AudioDownloaderGUI.deleteAudioFiles().
 
+		:param filePathNameLst:
+		"""
+		
+		# deleting audio files
+		
+		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[0])
+		DirUtil.deleteFiles(filePathNameLst)
+		
+		# now removing video entries in download video info dic
+		
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
+			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		
+		if len(dicFilePathNameLst) > 0:
+			# the file deletion is done in a playlist dir, not in a
+			# single videos dir
+			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+														audioRootDir=None,
+														playlistDownloadRootPath=None,
+														originalPaylistTitle=None,
+														originalPlaylistName=None,
+														modifiedPlaylistTitle=None,
+														modifiedPlaylistName=None,
+														loadDicIfDicFileExist=True,
+														existingDicFilePathName=dicFilePathNameLst[0])
+			
+			# deleting corresponding video entries in downloadVideoInfoDic
+			
+			for filePathName in filePathNameLst:
+				fileName = DirUtil.extractFileNameFromPathFileName(filePathName)
+				downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
+	
+			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
 
+	def defineIndexAndDateSettingWarningMsg(self,
+	                                        downloadVideoInfoDic,
+	                                        isIndexAddedToPlaylistVideo,
+											isUploadDateAddedToPlaylistVideo):
+		"""
+		Currently,  index not used. Continue with adding index ?
+	
+		Currently, upload date not used. Continue with adding date ?
+	
+		Currently,  index is used. Continue without adding index ?
+	
+		Currently, upload date is used. Continue without adding date ?
+		
+		:param downloadVideoInfoDic:
+		:param isIndexAddedToPlaylistVideo:
+		:param isUploadDateAddedToPlaylistVideo:
+		:return:
+		"""
+		warningMsg = ''
+		playlistDownloadDir = self.configMgr.dataPath + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
+		
+		if indexAndDateUsageLst is None:
+			# the case if the passed playlistOrSingleVideoDownloadPath does
+			# not exist
+			warningMsgStart = 'Playlist directory does not exist. Continue with '
+
+			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index and upload date ?'
+			elif isIndexAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index ?'
+			elif isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date ?'
+			
+			return warningMsg
+
+		if indexAndDateUsageLst == []:
+			# the case if the passed playlistOrSingleVideoDownloadPath is
+			# empty
+			# the case if the passed playlistOrSingleVideoDownloadPath does
+			# not exist
+			warningMsgStart = 'Playlist directory is empty. Continue with '
+			
+			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index and upload date ?'
+			elif isIndexAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding index ?'
+			elif isUploadDateAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date ?'
+			
+			return warningMsg
+		
+		if isIndexAddedToPlaylistVideo:
+			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
+				not indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
+				warningMsg += 'Currently, index is not used. Continue with adding index ?\n'
+		else:
+			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+				indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
+				warningMsg += 'Currently, index is used. Continue without adding index ?\n'
+
+		if isUploadDateAddedToPlaylistVideo:
+			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
+				not indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
+				warningMsg += 'Currently, upload date is not used. Continue with adding date ?'
+		else:
+			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+				indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
+				warningMsg += 'Currently, upload date is used. Continue without adding date ?'
+
+		return warningMsg.strip() # strip() removes last '\n' !
+
+	
 if __name__ == "__main__":
 	downloader = AudioController()
