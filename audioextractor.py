@@ -306,13 +306,19 @@ if __name__ == '__main__':
 		from dirutil import DirUtil
 		from configmanager import ConfigManager
 		
+		sourceFileNameLst = []
 		configmanager = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
 		playlistName = "Gary Renard en français"
 		targetAudioDir = configmanager.dataPath + sep + 'UCEM' + sep + 'Gary Renard' + sep + playlistName
-		audioFileName_1 = "silence 3 sec.mp3"
-		audioFileName_2 = "Aimer sans peur 2_9 - Gary Renard_explication_meditation.mp3"
-		audioFileName_3 = "Aimer sans peur 3_9 - Gary Renard.mp3"
-		sourceFileNameLst = [audioFileName_1, audioFileName_2, audioFileName_3]
+
+		sourceFileNameLst.append("silence 3 sec.mp3")
+		sourceFileNameLst.append("Aimer sans peur 2_9 - Gary Renard - extrait UCEM.mp3")
+		sourceFileNameLst.append("silence 5 sec.mp3")
+		sourceFileNameLst.append("Aimer sans peur 2_9 - Gary Renard - explication extrait UCEM.mp3")
+		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 1.mp3")
+		sourceFileNameLst.append("silence 2 sec.mp3")
+		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 2.mp3")
+
 		targetAudioFileName = 'Aimer sans peur 3_91 - Gary Renard.mp3'
 		targetAudioFilePathName = targetAudioDir + sep + targetAudioFileName
 
