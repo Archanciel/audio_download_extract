@@ -29,9 +29,7 @@ class AudioExtractor:
 					msgText = '\nextracting portions for [b]{}[/b] was already performed. Extraction skipped.'.format(videoAudioFileName)
 					self.audioController.displayMessage(msgText)
 				else:
-					self.extractAudioPortions(videoIndex=videoIndex,
-					                          audioOrVideoFileName=videoAudioFileName,
-					                          downloadVideoInfoDic=downloadVideoInfoDic)
+					self.extractAudioPortions(videoIndex=videoIndex, downloadVideoInfoDic=downloadVideoInfoDic)
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isSuppressedFileInfoAvailableForVideoIndex(videoIndex):
@@ -43,15 +41,11 @@ class AudioExtractor:
 		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 		self.audioController.displayMessage(msgText)
 
-	def extractAudioPortions(self,
-	                         videoIndex,
-	                         audioOrVideoFileName,
-	                         downloadVideoInfoDic,
-	                         floatSpeed=1.0):
+	def extractAudioPortions(self, videoIndex, downloadVideoInfoDic, floatSpeed=1.0):
 		"""
 		Extract audio portions from
+		
 		:param videoIndex:
-		:param audioOrVideoFileName:
 		:param downloadVideoInfoDic:
 		:param floatSpeed:
 		:return:

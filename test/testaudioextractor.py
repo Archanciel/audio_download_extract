@@ -109,7 +109,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 
 		sys.stdout = stdout
 
@@ -161,10 +161,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex,
-											videoFileName,
-											downloadVideoInfoDic,
-											floatSpeed=2.0)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic, floatSpeed=2.0)
 		
 		sys.stdout = stdout
 		
@@ -220,7 +217,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -276,7 +273,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -338,7 +335,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -403,7 +400,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, audioFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		
@@ -473,7 +470,7 @@ class TestAudioExtractor(unittest.TestCase):
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		audioExtractor.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+		audioExtractor.extractAudioPortions(videoIndex, downloadVideoInfoDic)
 		
 		sys.stdout = stdout
 		

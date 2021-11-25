@@ -171,9 +171,7 @@ class AudioController:
 										targetAudioDir=audioFilePath,
 										downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
 		
-		audioExtractor.extractAudioPortions(videoIndex=1,
-		                                    audioOrVideoFileName=audioFileName,
-		                                    downloadVideoInfoDic=audioExtractorVideoInfoDic,
+		audioExtractor.extractAudioPortions(videoIndex=1, downloadVideoInfoDic=audioExtractorVideoInfoDic,
 		                                    floatSpeed=floatSpeed)
 		
 		return audioExtractorVideoInfoDic
