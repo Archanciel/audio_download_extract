@@ -306,10 +306,11 @@ if __name__ == '__main__':
 		from dirutil import DirUtil
 		from configmanager import ConfigManager
 		
-		sourceFileNameLst = []
 		configmanager = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
 		playlistName = "Gary Renard en français"
 		targetAudioDir = configmanager.dataPath + sep + 'UCEM' + sep + 'Gary Renard' + sep + playlistName
+
+		sourceFileNameLst = []
 
 		sourceFileNameLst.append("silence 3 sec.mp3")
 		sourceFileNameLst.append("Aimer sans peur 2_9 - Gary Renard - extrait UCEM.mp3")
@@ -328,6 +329,19 @@ if __name__ == '__main__':
 				
 		audioExtractor = AudioExtractor(AudioControllertStub(), targetAudioDir, {})
 		
+		audioExtractor.concatenateAudioFiles(audioSourcePath=targetAudioDir,
+		                                     sourceFileNameLst=sourceFileNameLst,
+		                                     targetFileName=targetAudioFileName)
+
+
+		sourceFileNameLst = []
+
+		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 1.mp3")
+		sourceFileNameLst.append("silence 2 sec.mp3")
+		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 2.mp3")
+
+		targetAudioFileName = 'Aimer sans peur 3_9 - Gary Renard.mp3'
+
 		audioExtractor.concatenateAudioFiles(audioSourcePath=targetAudioDir,
 		                                     sourceFileNameLst=sourceFileNameLst,
 		                                     targetFileName=targetAudioFileName)
