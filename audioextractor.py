@@ -20,37 +20,48 @@ class AudioExtractor:
 
 	def extractPlaylistAudio(self, downloadVideoInfoDic):
 		for videoIndex in downloadVideoInfoDic.getVideoIndexes():
-			videoFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
-			if videoFileName is None:
-				# downloading the video failed
+			videoAudioFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+			if videoAudioFileName is None:
+				# the case if downloading the video failed
 				continue
 			if downloadVideoInfoDic.isExtractTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isExtractedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nextracting portions for [b]{}[/b] was already performed. Extraction skipped.'.format(videoFileName)
+					msgText = '\nextracting portions for [b]{}[/b] was already performed. Extraction skipped.'.format(videoAudioFileName)
 					self.audioController.displayMessage(msgText)
 				else:
-					self.extractAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+					self.extractAudioPortions(videoIndex=videoIndex,
+					                          audioOrVideoFileName=videoAudioFileName,
+					                          downloadVideoInfoDic=downloadVideoInfoDic)
 
 			if downloadVideoInfoDic.isSuppressTimeFrameDataAvailableForVideoIndex(videoIndex):
 				if downloadVideoInfoDic.isSuppressedFileInfoAvailableForVideoIndex(videoIndex):
-					msgText = '\nsuppressing portions for [b]{}[/b] was already performed. Suppression skipped.'.format(videoFileName)
+					msgText = '\nsuppressing portions for [b]{}[/b] was already performed. Suppression skipped.'.format(videoAudioFileName)
 					self.audioController.displayMessage(msgText)
 				else:
-					self.suppressAudioPortions(videoIndex, videoFileName, downloadVideoInfoDic)
+					self.suppressAudioPortions(videoIndex, videoAudioFileName, downloadVideoInfoDic)
 
 		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 		self.audioController.displayMessage(msgText)
 
 	def extractAudioPortions(self,
 	                         videoIndex,
-	                         videoFileName,
+	                         audioOrVideoFileName,
 	                         downloadVideoInfoDic,
 	                         floatSpeed=1.0):
-		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
+		"""
+		Extract audio portions from
+		:param videoIndex:
+		:param audioOrVideoFileName:
+		:param downloadVideoInfoDic:
+		:param floatSpeed:
+		:return:
+		"""
+		audioOrVideoFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+		audioFilePathName = os.path.join(self.targetAudioDir, audioOrVideoFileName)
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1
 
-		msgText = '\nextracting portions of [b]{}[/b] ...\n'.format(videoFileName)
+		msgText = '\nextracting portions of [b]{}[/b] ...\n'.format(audioOrVideoFileName)
 		self.audioController.displayMessage(msgText)
 		
 		for extractStartEndSecondsList in extractStartEndSecondsLists:
@@ -59,14 +70,14 @@ class AudioExtractor:
 			
 			if timeEndSec == 'end':
 				# the extract time frame is from timeStartSec to end of video !
-				videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
+				videoAudioFrame = mp.AudioFileClip(audioFilePathName)
 				timeEndSec = videoAudioFrame.duration
 				extractStartEndSecondsList[1] = timeEndSec
 				videoAudioFrame.close()
-				
-			clip = mp.AudioFileClip(mp4FilePathName).subclip(timeStartSec,
-			                                                 timeEndSec)
-			mp3FileName = os.path.splitext(videoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3'
+			
+			clip = mp.AudioFileClip(audioFilePathName).subclip(timeStartSec,
+			                                                   timeEndSec)
+			mp3FileName = os.path.splitext(audioOrVideoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3'
 			mp3FilePathName = os.path.join(self.targetAudioDir,
 			                               mp3FileName)
 			clip.write_audiofile(mp3FilePathName)

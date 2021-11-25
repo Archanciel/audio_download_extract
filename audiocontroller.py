@@ -172,9 +172,9 @@ class AudioController:
 										downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
 		
 		audioExtractor.extractAudioPortions(videoIndex=1,
-											videoFileName=audioFileName,
-											downloadVideoInfoDic=audioExtractorVideoInfoDic,
-											floatSpeed=floatSpeed)
+		                                    audioOrVideoFileName=audioFileName,
+		                                    downloadVideoInfoDic=audioExtractorVideoInfoDic,
+		                                    floatSpeed=floatSpeed)
 		
 		return audioExtractorVideoInfoDic
 	
