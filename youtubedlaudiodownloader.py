@@ -5,7 +5,6 @@ import glob, re, logging
 from urllib.error import URLError
 from urllib.error import HTTPError
 from pytube import Playlist
-from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 from pytube.exceptions import VideoUnavailable
 import http.client
@@ -267,6 +266,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
 		msgText = 'retry downloading the playlist later to download the failed audio only ...\n'.format(
 			downloadVideoInfoDic.getPlaylistNameOriginal())
+
 		self.audioController.displayMessage(msgText)
 	
 	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
@@ -298,18 +298,22 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 	def getPlaylistObjectAndTitleFortUrl(self, url):
 		"""
-		Returns a pytube.Playlist instance if the passed url points to a Youtube
-		playlist, None otherwise, as well as a playlistTitle or a videoTitle if
-		the passed url points to a Youtube single video and an AccessError instance
-		if the passed url does not contain a valid Youtube url.
-		
-		:param url: points either to a Youtube playlist or to a Youtube single video
-					or is invalid sinc obtained from the clipboard.
-		:return:    playlistObject  if url points to a playlist or None otherwise,
-					playlistTitle   if url points to a playlist or None otherwise,
-					videoTitle      if url points to a single video or None otherwise,
-					accessError     if the url is invalid (clipboard contained anything but
-									a Youtube valid url
+		The passed url can either point to a Youtube playlist or to a Youtube
+		single video.
+
+		In case of playlist url, the method returns the pytube.Playlist object
+		corresponding to the passed url, the playlist title, None for the video
+		title and None for the access error if no problem happened.
+
+		In case of video url, the method returns an invalid playlist object,
+		None for the playlist title, the video title and None for the access error
+		if no problem happened.
+
+		:param url: playlist or single video url
+		:return: playlistObject - Playlist object or None
+				 playlistTitle - playlist title or None
+				 videoTitle - video title or None
+				 accessError in case of problem, None otherwise
 		"""
 		playlistObject = None
 		playlistTitle = None
@@ -349,63 +353,36 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		return playlistObject, playlistTitle, videoTitle, accessError
 	
-	def getPlaylistObjectOrVideoTitleFortUrl(self, url):
+	def getVideoTitlesInPlaylistForUrl(self, playlistUrl):
 		"""
-		The passed url can either point to a Youtube playlist or to a Youtube
-		single video.
+		This method returns a list containing the titles of the videos
+		referenced in the playlist pointed by the passed playlistUrl.
+
+		:param playlistUrl:
 		
-		In case of playlist url, the method returns the pytube.Playlist object
-		corresponding to the passed url, the playlist title, None for the video
-		title and None for the access error if no problem happened.
-		
-		In case of video url, the method returns an invalid playlist object,
-		None for the playlist title, the video title and None for the access error
-		if no problem happened.
-		
-		:param url: playlist or single video url
-		:return: playlistObject - Playlist object or None
-				 playlistTitle - playlist title or None
-				 videoTitle - video title or None
+		:return: video titles list
 				 accessError in case of problem, None otherwise
 		"""
-		playlistObject = None
-		playlistTitle = None
-		videoTitle = None
-		accessError = None
+		videoTitleLst = []
+		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitleFortUrl(playlistUrl)
 		
-		try:
-			playlistObject = Playlist(url)
-			playlistObject._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-			playlistTitle = playlistObject.title
-		except http.client.InvalidURL as e:
-			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
-		except AttributeError as e:
-			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_URL_INVALID, str(e))
-		except URLError:
-			accessError = AccessError(AccessError.ERROR_TYPE_NO_INTERNET, 'No internet access. Fix the problem and retry !')
-		except KeyError:
-			# this happens if the url in the clipboard points to a single video !
-			pass
-
-		if url != '' and accessError is None and playlistTitle is None:
-			# the case if the url points to a single video instead of a playlist
-			# or if the URL obtained from the clipboard is invalid.
+		if accessError:
+			return None, accessError
+		
+		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			try:
-				youtube = YouTube(url)
-				video = youtube.streams.first()
-				videoTitle = video.title
-			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError) as e:
-				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
-				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
-		
-		if accessError is None and playlistTitle is None and videoTitle is None:
-			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
+				for videoUrl in playlistObject.video_urls:
+					meta = ydl.extract_info(videoUrl, download=False)
+					videoTitleLst.append(meta['title'])
+			except AttributeError as e:
+				msgText = 'obtaining video title failed with error {}.\n'.format(e)
+				self.audioController.displayError(msgText)
+			except KeyError as e:
+				msgText = 'trying to obtain playlist video titles on an invalid url or a url pointing to a single video.\n'
+				self.audioController.displayError(msgText)
 
-		if accessError is None and playlistTitle is not None and ('Oops' in playlistTitle or 'Hoppla' in playlistTitle):
-			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
-
-		return playlistObject, playlistTitle, videoTitle, accessError
-
+		return videoTitleLst, None
+	
 	def downloadSingleVideoForUrl(self,
 								  singleVideoUrl,
 								  originalVideoTitle,

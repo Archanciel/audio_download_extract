@@ -1,5 +1,6 @@
 import unittest
 import os, sys, inspect, shutil, glob
+from io import StringIO
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -26,21 +27,6 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		self.assertIsNone(videoTitle)
-		
-	def testGetPlaylistObjectAndTitleFortUrlInvalidURL(self):
-		"""
-		pytube.exceptions.RegexMatchError was raised here ...
-		"""
-		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
-		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
-		
-		youtubePlaylist, playlistTitle, videoTitle, accessError = youtubeAccess.getPlaylistObjectAndTitleFortUrl(playlistUrl)
-		
-		self.assertIsNotNone(accessError)
-		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
-		self.assertEqual('trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.youtube.com/playlist?list=invalid\nerror info: regex_search: could not find match for (?:v=|\/)([0-9A-Za-z_-]{11}).*\nnothing to download.', accessError.errorMsg)
-		self.assertIsNone(videoTitle)
 	
 	def testGetPlaylistObjectAndTitleFortUrlInvalidURL_GeeksForGeeks(self):
 		"""
@@ -58,7 +44,7 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertIsNotNone(accessError)
 		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
 		self.assertEqual(
-			"trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: {}\nerror info: python-how- is unavailable\nnothing to download.".format(playlistUrl),
+			"trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nerror info: ERROR: Unsupported URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nnothing to download.".format(playlistUrl),
 			accessError.errorMsg)
 		self.assertIsNone(videoTitle)
 	
@@ -122,8 +108,59 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		self.assertIsNone(videoTitle)
 
+	def testGetPlaylistVideoTitlesForPlaylistUrl(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLc0WZrTnM_WCpWKANamscrjFV01m4lXW1"
+
+		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
+
+		self.assertIsNone(accessError)
+		self.assertEqual(8, len(videoTitleLst))
+
+	def testGetPlaylistVideoTitlesForVideoUrl(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtu.be/mere5xyUe6A"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['trying to obtain playlist video titles on an invalid url or a url pointing '
+ 'to a single video.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertIsNone(accessError)
+		self.assertEqual([], videoTitleLst)
+	
+	def testGetPlaylistVideoTitlesForInvalidUrl(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtu.be/mere5xyUe6Ajjjj"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['trying to obtain playlist video titles on an invalid url or a url pointing to a single video.',
+		                  '',
+		                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertIsNone(accessError)
+		self.assertEqual([], videoTitleLst)
+
 
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestYoutubeDlAudioDownloaderOtherMethods()
-	tst.testGetPlaylistObjectAndTitleFortUrlInvalidURL_GeeksForGeeks()
+	tst.testGetPlaylistVideoTitlesForVideoUrl()
