@@ -166,7 +166,7 @@ class DirUtil:
 						 '"': "'", # since YoutubeDL replaces " by '
 						 '<': '',
 						 '>': '',
-						 '|': ''
+						 '|': '_'  # since YoutubeDL replaces '|' by '_'
 						 #"'": '_' apostrophe is not illegal in file name
 						 }
 		

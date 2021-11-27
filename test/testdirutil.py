@@ -12,17 +12,17 @@ from dirutil import DirUtil
 
 class TestDirUtil(unittest.TestCase):
 	
-	def testReplaceUnauthorizedDirNameChars(self):
+	def testReplaceUnauthorizedDirOrFileNameChars(self):
 		playlistTitle = "Audio: - ET L'UNIVERS DISPARAÎTRA/La \\nature * illusoire de notre réalité et le pouvoir transcendant du |véritable \"pardon\" + commentaires de <Gary> Renard ?"
-		expectedFileName = "Audio - - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du véritable 'pardon' + commentaires de Gary Renard "
+		expectedFileName = "Audio - - ET L'UNIVERS DISPARAÎTRA_La nature   illusoire de notre réalité et le pouvoir transcendant du _véritable 'pardon' + commentaires de Gary Renard "
 		
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedFileName
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		
-		# deleting dic file in downloadDir
-		files = glob.glob(downloadDir + sep + '*.txt')
-		
-		for f in files:
-			os.remove(f)
+		self.assertEqual(expectedFileName, actualFileName)
+	
+	def testReplaceUnauthorizedDirOrFileNameChars_or_char(self):
+		playlistTitle = "💥 EFFONDREMENT Imminent de l'Euro ?! | 👉 Maintenant, La Fin de l'Euro Approche ?!"
+		expectedFileName = "💥 EFFONDREMENT Imminent de l'Euro ! _ 👉 Maintenant, La Fin de l'Euro Approche !"
 		
 		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
 		
