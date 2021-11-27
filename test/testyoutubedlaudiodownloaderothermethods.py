@@ -108,7 +108,7 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertEqual(expectedPlaylistTitle, playlistTitle,)
 		self.assertIsNone(videoTitle)
 
-	def testGetPlaylistVideoTitlesForPlaylistUrl(self):
+	def testGetPlaylistVideoTitlesForPlaylistUrl_default_titles_nb(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLc0WZrTnM_WCpWKANamscrjFV01m4lXW1"
@@ -116,7 +116,18 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
 
 		self.assertIsNone(accessError)
-		self.assertEqual(8, len(videoTitleLst))
+		self.assertEqual(YoutubeDlAudioDownloader.MAX_VIDEO_TITLES_DEFAULT_NUMBER, len(videoTitleLst))
+
+	def testGetPlaylistVideoTitlesForPlaylistUrl_specified_titles_nb(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLc0WZrTnM_WCpWKANamscrjFV01m4lXW1"
+
+		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl,
+		                                                                          maxTitlesNumber=2)
+
+		self.assertIsNone(accessError)
+		self.assertEqual(2, len(videoTitleLst))
 
 	def testGetPlaylistVideoTitlesForVideoUrl(self):
 		guiOutput = GuiOutputStub()
@@ -163,4 +174,4 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestYoutubeDlAudioDownloaderOtherMethods()
-	tst.testGetPlaylistVideoTitlesForVideoUrl()
+	tst.testGetPlaylistVideoTitlesForPlaylistUrl()

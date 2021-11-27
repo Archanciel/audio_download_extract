@@ -2,6 +2,8 @@ from abc import ABCMeta, abstractmethod
 
 
 class AudioDownloader(metaclass=ABCMeta):
+	MAX_VIDEO_TITLES_DEFAULT_NUMBER = 4
+	
 	def __init__(self, audioController, audioDirRoot):
 		"""
 		Ctor.

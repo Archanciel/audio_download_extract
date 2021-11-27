@@ -1,7 +1,7 @@
 import time, os
 import datetime
 from os.path import sep
-import glob, re, logging
+import glob, re
 from urllib.error import URLError
 from urllib.error import HTTPError
 from pytube import Playlist
@@ -11,16 +11,17 @@ import http.client
 import youtube_dl
 from youtube_dl import DownloadError
 
-from constants import *
 from audiodownloader import AudioDownloader
 from dirutil import DirUtil
 from accesserror import AccessError
 from youtubedldownloadinfoextractor import YoutubeDlDownloadInfoExtractor
 
+
 YOUTUBE_DL_QUIET = True
 MAX_VIDEO_INDEX = 100
 
 class YoutubeDlAudioDownloader(AudioDownloader):
+	
 	def __init__(self, audioController, audioDirRoot):
 		"""
 		Ctor.
@@ -353,12 +354,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		return playlistObject, playlistTitle, videoTitle, accessError
 	
-	def getVideoTitlesInPlaylistForUrl(self, playlistUrl):
+	def getVideoTitlesInPlaylistForUrl(self,
+	                                   playlistUrl,
+	                                   maxTitlesNumber=AudioDownloader.MAX_VIDEO_TITLES_DEFAULT_NUMBER):
 		"""
 		This method returns a list containing the titles of the videos
 		referenced in the playlist pointed by the passed playlistUrl.
+		Since obtaining the video titles referenced in a playlist is
+		very time consuming, the maxTitlesNumber passed parm limits
+		the number of returned titles.
+		
+		Currently, this method is not used, except in unit testing.
 
 		:param playlistUrl:
+		:param maxTitlesNumber:
 		
 		:return: video titles list
 				 accessError in case of problem, None otherwise
@@ -374,6 +383,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				for videoUrl in playlistObject.video_urls:
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitleLst.append(meta['title'])
+					maxTitlesNumber -= 1
+					
+					if maxTitlesNumber <= 0:
+						break
 			except AttributeError as e:
 				msgText = 'obtaining video title failed with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
