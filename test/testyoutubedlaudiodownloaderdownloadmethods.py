@@ -316,8 +316,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			sorted(['Here to help - Give him what he wants.mp3',
 					'Wear a mask. Help slow the spread of Covid-19..mp3',
 					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
-	
-	@unittest.skip
+
+	@unittest.skip # this test takes too much time
 	def testDownloadPlaylistVideosForUrl_invalid_url(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
