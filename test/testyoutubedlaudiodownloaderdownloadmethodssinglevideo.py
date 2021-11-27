@@ -305,6 +305,85 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 2020-09-26.mp3']), sorted(fileNameLst))
+	
+	def testDownloadPlaylistWithNameOneVideo_title_or_char(self):
+		singleVideoDirName = "bug_or_char_single_video"
+		singleVideoSaveDirName = "bug_or_char_single_video_save"
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + singleVideoDirName
+		savedDownloadDir = DirUtil.getTestAudioRootPath() + sep + singleVideoSaveDirName
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+		
+		# restoring download dir with almost fully downloaded video
+		shutil.copytree(savedDownloadDir, downloadDir)
+		
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQnJYXjC9vDnWwG2pT9YNVV"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			youtubeAccess.getPlaylistObjectAndTitleFortUrl(playlistUrl)
+		
+		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)
+		
+		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
+		                                           downloadVideoInfoDic=downloadVideoInfoDic,
+		                                           isUploadDateAddedToPlaylistVideo=False,
+		                                           isIndexAddedToPlaylistVideo=False)
+		
+		sys.stdout = stdout
+		
+		if os.name == 'posix':
+			self.assertEqual(['directory',
+			                  'test/test_audio_downloader_one_file',
+			                  'was created.',
+			                  '',
+			                  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			                  '',
+			                  '"Wear a mask. Help slow the spread of Covid-19." audio downloaded.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		else:
+			self.assertEqual(['downloading "💥 EFFONDREMENT Imminent de l\'Euro ?! | 👉 Maintenant, La Fin de '
+			                  'l\'Euro Approche ?!" audio ...',
+			                  '',
+			                  'video download complete.',
+			                  '',
+			                  '"bugeco" playlist audio(s) download terminated.',
+			                  '',
+			                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*')]
+		self.assertEqual(sorted(['bugeco_dic.txt',
+		                         "💥 EFFONDREMENT Imminent de l'Euro ! _ 👉 Maintenant, La Fin de l'Euro "
+		                         'Approche !.mp3']), sorted(fileNameLst))
+		
+		dicFileName = singleVideoDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
+		dicFilePathName = downloadDir + sep + dicFileName
+		
+		dvi = DownloadVideoInfoDic(playlistUrl=None,
+		                           audioRootDir=None,
+		                           playlistDownloadRootPath=None,
+		                           originalPaylistTitle=None,
+		                           originalPlaylistName=None,
+		                           modifiedPlaylistTitle=None,
+		                           modifiedPlaylistName=None,
+		                           loadDicIfDicFileExist=True,
+		                           existingDicFilePathName=dicFilePathName)
+		
+		self.assertEqual(
+			"\ud83d\udca5 EFFONDREMEN Imminent de l'Euro ! _ \ud83d\udc49 Maintenant, La Fin de l'Euro Approche !.mp3",
+			dvi.getVideoFileNameForVideoIndex(1))
 
 
 if __name__ == '__main__':
