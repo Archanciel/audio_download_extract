@@ -4,7 +4,7 @@ import soundfile as sf
 import pyrubberband as pyrb
 from os.path import sep
 
-from constants import *
+from extracterror import ExtractError
 
 if os.name == 'posix':
 	pass
@@ -125,7 +125,14 @@ class AudioExtractor:
 				
 				extractStartEndSecondsList = [0, timeFrameEndValue]
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
+				
+				extractedAudioFileClip, extractError = self.extractClip(videoAudioFrame, extractStartEndSecondsList)
+				
+				if extractedAudioFileClip is not None:
+					clips.append(extractedAudioFileClip)
+				else:
+					self.displayFramesMsg('\t' + extractError.errorMsg)
+			
 			elif extractIdx == suppressFrameNb:
 				extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1], duration]
 				
@@ -134,12 +141,24 @@ class AudioExtractor:
 					continue
 					
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
+				
+				extractedAudioFileClip, extractError = self.extractClip(videoAudioFrame, extractStartEndSecondsList)
+				
+				if extractedAudioFileClip is not None:
+					clips.append(extractedAudioFileClip)
+				else:
+					self.displayFramesMsg('\t' + extractError.errorMsg)
 			else:
 				extractStartEndSecondsList = [suppressStartEndSecondsLists[extractIdx - 1][1],
 				                              suppressStartEndSecondsLists[extractIdx][0]]
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
-				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
+				
+				extractedAudioFileClip, extractError = self.extractClip(videoAudioFrame, extractStartEndSecondsList)
+				
+				if extractedAudioFileClip is not None:
+					clips.append(extractedAudioFileClip)
+				else:
+					self.displayFramesMsg('\t' + extractError.errorMsg)
 
 		clip = mp.concatenate_audioclips(clips)
 		mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
@@ -234,13 +253,31 @@ class AudioExtractor:
 		shutil.copy(mp4FilePathName, mp3FilePathName)
 	
 	def extractClip(self, videoAudioFrame, extractStartEndSecondsList):
+		"""
+		Returns a moviepy AudioFileClip starting and ending with the start and
+		end time in second contained in the passed extractStartEndSecondsList.
+		
+		In case of exception, None and an ExtractError instance is returned.
+		
+		:param videoAudioFrame:             moviepy AudioFileClip
+		:param extractStartEndSecondsList:  2 elements start and end time in
+											seconds list
+		
+		:return:    AudioFileClip and None if extraction success
+					None and ExtractError if one of the passed extract times
+					was outside the passed videoAudioFrame duration
+		"""
 		timeStartSec = extractStartEndSecondsList[0]
 		timeEndSec = extractStartEndSecondsList[1]
-		
-		clip = videoAudioFrame.subclip(timeStartSec,
-		                               timeEndSec)
+
+		try:
+			clip = videoAudioFrame.subclip(timeStartSec,
+			                               timeEndSec)
+		except ValueError as e:
+			return None, ExtractError(ExtractError.ERROR_TYPE_EXTRACT_TIME_GREATER_THAN_DURATION,
+			                          str(e))
 	
-		return clip
+		return clip, None
 
 	def convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(self, suppressStartEndSecondsLists):
 		HHMMSS_SuppressedTimeFramesList = []
