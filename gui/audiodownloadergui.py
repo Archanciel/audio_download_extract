@@ -382,7 +382,7 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def getDownloadObjectTitleOnNewThread(self):
 		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
-			self.audioController.getPlaylistObjectAndTitlesForUrl(self.playlistOrSingleVideoUrl)
+			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self.playlistOrSingleVideoUrl)
 	
 		self.downloadObjectTitleThreadCreated = False
 		

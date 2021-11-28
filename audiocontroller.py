@@ -176,7 +176,7 @@ class AudioController:
 		
 		return audioExtractorVideoInfoDic
 	
-	def getPlaylistObjectAndTitlesForUrl(self, url):
+	def getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self, url):
 		"""
 		Returns a pytube.Playlist instance if the passed url points to a Youtube
 		playlist, None otherwise, as well as a playlistTitle or a videoTitle if
@@ -191,7 +191,8 @@ class AudioController:
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		playlistObject, playlistTitle, videoTitle, accessError = self.audioDownloader.getPlaylistObjectAndTitleFortUrl(url)
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			self.audioDownloader.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(url)
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)

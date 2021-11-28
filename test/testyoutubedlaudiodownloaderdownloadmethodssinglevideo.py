@@ -37,7 +37,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -90,7 +90,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -152,7 +152,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -188,7 +188,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		videoUrl = 'https://youtu.be/tT032M6mSGQ'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -219,7 +219,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		videoUrl = 'https://youtu.be/EHsi_KPKFqU'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -267,7 +267,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(videoUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(expectedVideoTitle, videoTitle)
@@ -331,7 +331,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess.getPlaylistObjectAndTitleFortUrl(playlistUrl)
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
 			playlistUrl, youtubeAccess.audioDirRoot, youtubeAccess.audioDirRoot, playlistTitle)

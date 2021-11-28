@@ -55,7 +55,7 @@ class TestAudioController(unittest.TestCase):
 		audio = MP3(targetAudioDir + sep + extractedMp3FileName)
 		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
 
-	def testGetPlaylistObjectAndTitlesForUrl_empty_url(self):
+	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		playlistUrl = ""
@@ -65,13 +65,13 @@ class TestAudioController(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			audioController.getPlaylistObjectAndTitlesForUrl(playlistUrl)
+			audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
 		sys.stdout = stdout
 		
 		self.assertEqual('the URL obtained from clipboard is empty.\nnothing to download.', accessError.errorMsg)
 	
-	def testGetPlaylistObjectAndTitlesForValidPlaylistUrl(self):
+	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_playlistUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
@@ -82,7 +82,7 @@ class TestAudioController(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			audioController.getPlaylistObjectAndTitlesForUrl(playlistUrl)
+			audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
 		sys.stdout = stdout
 
@@ -91,7 +91,7 @@ class TestAudioController(unittest.TestCase):
 		self.assertEqual('Test_title_one_time_frame_extract (e0:0:5-0:0:10)', playlistTitle)
 		self.assertIsNotNone(playlistObject)
 	
-	def testGetPlaylistObjectAndTitlesForValidVideotUrl(self):
+	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_validVideotUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
@@ -102,7 +102,7 @@ class TestAudioController(unittest.TestCase):
 		sys.stdout = outputCapturingString
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
-			audioController.getPlaylistObjectAndTitlesForUrl(videoUrl)
+			audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(videoUrl)
 		
 		sys.stdout = stdout
 		

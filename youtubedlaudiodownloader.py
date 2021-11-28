@@ -92,7 +92,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		playlistStartDownloadTime = time.time()
 		playlistDownloadedVideoNb_succeed = 0
 		playlistDownloadedVideoNb_failed = 0
-		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitleFortUrl(playlistUrl)
+		playlistObject, _, _, accessError = self.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 
 		if accessError:
 			return None, accessError
@@ -297,7 +297,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		return files[0].split(sep)[-1]
 
-	def getPlaylistObjectAndTitleFortUrl(self, url):
+	def getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self, url):
 		"""
 		The passed url can either point to a Youtube playlist or to a Youtube
 		single video.
@@ -373,7 +373,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				 accessError in case of problem, None otherwise
 		"""
 		videoTitleLst = []
-		playlistObject, _, _, accessError = self.getPlaylistObjectAndTitleFortUrl(playlistUrl)
+		playlistObject, _, _, accessError = self.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
 		if accessError:
 			return None, accessError
