@@ -196,6 +196,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 														# conversion info spread
 														# pollutes the GUI
 					
+					videoIndex, playlistDownloadedVideoNb_failed, msgText  = \
+						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
+						                            videoIndex,
+						                            videoTitle,
+						                            videoUrl,
+						                            downloadedFileName=finalPurgedVideoTitleMp3,
+						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed,
+						                            isDownloadSuccess=False)
+
 					continue    # this avoids that the video is fully downloaded
 								# and so facilitates the video redownload.
 				except DownloadError as e:
@@ -227,18 +236,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						continue
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitleMp3):
-					# updating and saving the downloadVideoInfoDic only if the audio file
-					# was downloaded successfully enables to retry downloading the playlist.
-					# The failed video download will be retried.
-					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex,
-					                                               videoTitle,
-					                                               videoUrl,
-					                                               finalPurgedVideoTitleMp3)
-					downloadVideoInfoDic.saveDic(self.audioDirRoot)
-					videoIndex += 1
-					playlistDownloadedVideoNb_succeed += 1
-					
-					msgText = 'video download complete.\n'
+					videoIndex, playlistDownloadedVideoNb_succeed, msgText  = \
+						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
+						                            videoIndex,
+						                            videoTitle,
+						                            videoUrl,
+						                            downloadedFileName=finalPurgedVideoTitleMp3,
+						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_succeed)
 				else:
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
@@ -263,6 +267,41 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displayMessage(msgText)
 
 		return downloadVideoInfoDic, None
+	
+	def addVideoInfoAndSaveDic(self,
+	                           downloadVideoInfoDic,
+	                           videoIndex,
+	                           videoTitle,
+	                           videoUrl,
+	                           downloadedFileName,
+	                           playlistDownloadedVideoNb,
+	                           isDownloadSuccess=True):
+		"""
+		This method add the current downloading video info to the passed
+		downloadVideoInfoDic and save the downloadVideoInfoDic.
+		
+		:param downloadVideoInfoDic:
+		:param videoIndex:
+		:param videoTitle:
+		:param videoUrl:
+		:param downloadedFileName:
+		:param playlistDownloadedVideoNb:
+		:return:
+		"""
+		# updating and saving the downloadVideoInfoDic if the audio file
+		# was downloaded successfully enables to retry downloading the playlist.
+		# The failed video download will be retried.
+		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                                               videoTitle=videoTitle,
+		                                               videoUrl=videoUrl,
+		                                               downloadedFileName=downloadedFileName,
+		                                               isDownloadSuccess=False)
+		downloadVideoInfoDic.saveDic(self.audioDirRoot)
+		videoIndex += 1
+		playlistDownloadedVideoNb += 1
+		msgText = 'video download complete.\n'
+		
+		return videoIndex, playlistDownloadedVideoNb, msgText
 	
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
 		msgText = 'retry downloading the playlist later to download the failed audio only ...\n'.format(

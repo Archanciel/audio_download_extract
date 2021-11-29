@@ -26,6 +26,7 @@ KEY_VIDEO_URL = 'vd_url'
 KEY_VIDEO_DOWNLOAD_FILENAME = 'vd_downloadedFileName'
 KEY_VIDEO_DOWNLOAD_TIME = 'vd_downloadTime'
 KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'vd_startEndTimeFramesInSeconds'
+KEY_VIDEO_DOWNLOAD_EXCEPTION = 'vd_downloadException'
 
 KEY_TIMEFRAME_EXTRACT = 'vd_extract'
 KEY_VIDEO_EXTRACTED_FILES = 'vd_extractedFiles'
@@ -314,6 +315,38 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
+	def getVideoDownloadExceptionForVideoTitle(self, videoTitle):
+		"""
+		Returns True if the video download caused an exception, False
+		otherwise
+		
+		:param videoTitle:
+		
+		:return:    True if the video download caused an exception,
+					False otherwise
+		"""
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION]
+		else:
+			return None
+	
+	def setVideoDownloadExceptionForVideoTitle(self,
+	                                           videoTitle,
+	                                           isDownloadSuccess):
+		"""
+		Sets the video download exception value for the passed video
+		title to True if the passed isDownloadSuccess is False, and to
+		False otherwise.
+
+		:param videoTitle:
+		"""
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
+	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
@@ -414,7 +447,8 @@ class DownloadVideoInfoDic:
 								  videoIndex,
 								  videoTitle,
 								  videoUrl,
-								  downloadedFileName):
+								  downloadedFileName,
+	                              isDownloadSuccess=True):
 		"""
 		Creates the video info sub-dic for the video index if necessary.
 		
@@ -425,6 +459,7 @@ class DownloadVideoInfoDic:
 		:param videoTitle:
 		:param videoUrl:
 		:param downloadedFileName:
+		:param isDownloadSuccess
 		"""
 #		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
 #		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
@@ -446,6 +481,7 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_FILENAME] = downloadedFileName
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
+		videoIndexDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
 	

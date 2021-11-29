@@ -103,7 +103,11 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		videoIndex = dvi.getNextVideoIndex()
 		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		videoIndex += 1
-		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle='title 2',
+		                              videoUrl='https://youtube.com/watch?v=9iPvL8880999',
+		                              downloadedFileName='title 2.mp4',
+		                              isDownloadSuccess=False)
 		
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoTitle('title 2'))
@@ -117,6 +121,9 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
 		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
 
+		self.assertFalse(dvi.getVideoDownloadExceptionForVideoTitle('title 1'))
+		self.assertTrue(dvi.getVideoDownloadExceptionForVideoTitle('title 2'))
+
 		dvi.saveDic(audioDirRoot)
 		
 		# creating new video info dic, reloading newly created video info dic file
@@ -126,6 +133,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		# adding supplementary video info entry
 		videoIndex = reloadedDvi.getNextVideoIndex()
 		reloadedDvi.addVideoInfoForVideoIndex(videoIndex, 'title 3', 'https://youtube.com/watch?v=9iPvL1111', 'title 3.mp4')
+		reloadedDvi.setVideoDownloadExceptionForVideoTitle(videoTitle='title 2',
+		                                                   isDownloadSuccess=True)
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', reloadedDvi.getVideoUrlForVideoTitle('title 2'))
@@ -139,6 +148,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
 		self.assertEqual(4, reloadedDvi.getNextVideoIndex())
 		self.assertEqual(playlistUrl, reloadedDvi.getPlaylistUrl())
+
+		self.assertFalse(reloadedDvi.getVideoDownloadExceptionForVideoTitle('title 1'))
+		self.assertFalse(reloadedDvi.getVideoDownloadExceptionForVideoTitle('title 2'))
+		self.assertFalse(reloadedDvi.getVideoDownloadExceptionForVideoTitle('title 3'))
 
 		reloadedDvi.saveDic(audioDirRoot)
 
@@ -166,6 +179,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual(4, newReloadedDvi.getNextVideoIndex())
 		self.assertEqual(playlistUrl, newReloadedDvi.getPlaylistUrl())
+
+		self.assertFalse(newReloadedDvi.getVideoDownloadExceptionForVideoTitle('title 1'))
+		self.assertFalse(newReloadedDvi.getVideoDownloadExceptionForVideoTitle('title 2'))
+		self.assertFalse(newReloadedDvi.getVideoDownloadExceptionForVideoTitle('title 3'))
 
 	def testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
