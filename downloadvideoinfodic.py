@@ -328,7 +328,13 @@ class DownloadVideoInfoDic:
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
 		if videoIndex:
-			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION]
+			videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+			if KEY_VIDEO_DOWNLOAD_EXCEPTION in videoInfoDic.keys():
+				return videoInfoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION]
+			else:
+				# the case if the DownloadVideoInfoDic is old and does not
+				# contain this information
+				return False
 		else:
 			return None
 	
