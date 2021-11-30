@@ -63,32 +63,6 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
-		
-		# suppress or reduce the risk that selecting the last list item
-		# causes a IndexError: list index out of range exception
-		self.get_nodes()
-	
-	def get_nodes(self):
-		nodes = self.get_selectable_nodes()
-		
-		if self.nodes_order_reversed:
-			nodes = nodes[::-1]
-		
-		if not nodes:
-			return None, None
-		
-		selected = self.selected_nodes
-		
-		if not selected:  # nothing selected
-			return None, None
-		
-		if len(nodes) == 1:  # the only selectable node is selected already
-			return None, None
-		
-		currentSelIdx = nodes.index(selected[-1])
-		self.clear_selection()
-		
-		return currentSelIdx, nodes
 	
 	def moveItemUp(self):
 		currentSelIdx, nodes = self.get_nodes()
