@@ -160,6 +160,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
+					# the video was already downloaded and so will be skipped
 					if not downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
 						# the video was downloaded with no exception. Otherwise,
 						# trying to re-download it will be done
@@ -167,26 +168,34 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						if audioFileNameInDic in targetAudioDirFileNameList:
 							# the video was already downloaded and converted to audio file
 							if audioFileNameInDic == finalPurgedVideoTitleMp3:
-								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort)
 							else:
 								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
 									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 						else:
 							# the video audio file was already downloaded and was deleted
 							if audioFileNameInDic == finalPurgedVideoTitleMp3:
-								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort)
 							else:
 								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
 									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
-	
+						
 						self.audioController.displayMessage(msgText)
-	
+						
 						continue
 				
-				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
-					msgText = 'downloading [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
+				if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
+					# the video was previously downloaded with an exception ...
+					msgStartStr = 're-downloading'
 				else:
-					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
+					msgStartStr = 'downloading'
+					
+				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
+					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
+				else:
+					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
 
 				self.audioController.displayMessage(msgText)
 
@@ -199,7 +208,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 														# conversion info spread
 														# pollutes the GUI
 					
-					videoIndex, playlistDownloadedVideoNb_failed, msgText  = \
+					videoIndex, playlistDownloadedVideoNb_failed, msgText = \
 						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
 						                            videoIndex,
 						                            videoTitle,
@@ -239,7 +248,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						continue
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitleMp3):
-					videoIndex, playlistDownloadedVideoNb_succeed, msgText  = \
+					videoIndex, playlistDownloadedVideoNb_succeed, msgText = \
 						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
 						                            videoIndex,
 						                            videoTitle,

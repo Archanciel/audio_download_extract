@@ -1,4 +1,3 @@
-import time
 import unittest
 import os, sys, inspect, shutil, glob
 from os.path import sep
@@ -224,7 +223,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	
 	def testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
-		time.sleep(1)   # required to avoid uncomprehensible test failure when executing all unit tsts
 		playlistName = 'test_audio_downloader_two_files_with_time_frames'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + validPlaylistDirName

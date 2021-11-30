@@ -478,6 +478,7 @@ class DownloadVideoInfoDic:
 		if not videoIndexKey in self.dic[KEY_VIDEOS].keys():
 			videoIndexDic = {}
 			self.dic[KEY_VIDEOS][videoIndexKey] = videoIndexDic
+			self.removeVideoDicForVideoTitleIfExist(videoTitle)
 		else:
 			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
 			
@@ -490,7 +491,13 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
-	
+
+	def removeVideoDicForVideoTitleIfExist(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			del self.dic[KEY_VIDEOS][videoIndex]
+		
 	def removeVideoInfoForVideoTitle(self,
 									 videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
