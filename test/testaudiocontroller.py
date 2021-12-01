@@ -157,7 +157,7 @@ class TestAudioController(unittest.TestCase):
 	def testClipAudioFile_file_in_sub_dirs(self):
 		playlistName = 'Test 3 short videos time frame deleted now should be ok'
 		audioFileName = 'Here to help - Give him what he wants.mp3'
-		playlistDownloadRootPath = 'Various\\test_to_del\\time frame supprimé\\{}'.format(playlistName)
+		playlistDownloadRootPath = 'Various\\test_clipAudioFile\\time frame supprimé\\{}'.format(playlistName)
 		audioFilePath = DirUtil.getTestAudioRootPath() + sep + playlistDownloadRootPath
 		audioFilePathName = audioFilePath + sep + audioFileName
 		guiOutput = GuiOutputStub()
