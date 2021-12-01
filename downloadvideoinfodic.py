@@ -536,12 +536,16 @@ class DownloadVideoInfoDic:
 		return videoInfoDic
 
 	def getFailedVideoIndexes(self):
+		"""
+		Returns a list of video failed integer indexes.
+		:return:
+		"""
 		failedVideoIndexLst = []
 
-		for index, videoDic in self.dic[KEY_VIDEOS].items():
+		for indexKey, videoDic in self.dic[KEY_VIDEOS].items():
 			
 			if videoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] is True:
-				failedVideoIndexLst.append(int(index))
+				failedVideoIndexLst.append(int(indexKey))
 				
 		return failedVideoIndexLst
 	
