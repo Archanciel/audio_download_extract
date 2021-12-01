@@ -168,8 +168,8 @@ class AudioController:
 		
 		# now trimming the audio file
 		audioExtractor = AudioExtractor(audioController=self,
-										targetAudioDir=audioFilePath,
-										downloadVideoInfoDictionary=audioExtractorVideoInfoDic)
+		                                targetAudioDir=audioFilePath,
+		                                downloadVideoInfoDic=audioExtractorVideoInfoDic)
 		
 		audioExtractor.extractAudioPortions(videoIndex=1, downloadVideoInfoDic=audioExtractorVideoInfoDic,
 		                                    floatSpeed=floatSpeed)
@@ -345,7 +345,9 @@ class AudioController:
 		
 		:return: the extracted audio mp3 file path name
 		"""
-		audioExtractor = AudioExtractor(self, videoFilePathName, {})
+		audioExtractor = AudioExtractor(audioController=self,
+		                                targetAudioDir=videoFilePathName,
+		                                downloadVideoInfoDic={})
 		
 		return audioExtractor.extractAudioFromVideoFile(videoFilePathName)
 
