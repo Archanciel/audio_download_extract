@@ -541,7 +541,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		else:
 			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 
-	def redownloadFailedVideosInDownloadVideoInfoDic(self, downloadVideoInfoDic):
+	def redownloadFailedVideosInDownloadVideoInfoDic(self,
+	                                                 downloadVideoInfoDic):
 		"""
 		This method is used on Windows only. This is due to the fact that the
 		failed videos could no be re-downloaded on Android by trying to

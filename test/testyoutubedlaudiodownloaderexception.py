@@ -437,28 +437,42 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
+		youtubeAccess = YoutubeDlAudioDownloader(audioController,
+		                                         testAudioRootSubDirPath)
 		
+		# loading the download video info dic in which the failed videos
+		# are contained
+		
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
+			downloadDir, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		
+		downloadVideoInfoDic = None
+		
+		if len(dicFilePathNameLst) > 0:
+			# the file deletion is done in a playlist dir, not in a
+			# single videos dir
+			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+			                                            audioRootDir=None,
+			                                            playlistDownloadRootPath=None,
+			                                            originalPaylistTitle=None,
+			                                            originalPlaylistName=None,
+			                                            modifiedPlaylistTitle=None,
+			                                            modifiedPlaylistName=None,
+			                                            loadDicIfDicFileExist=True,
+			                                            existingDicFilePathName=dicFilePathNameLst[0])
+		
+
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
 		
-		playlistObject, playlistTitle, videoTitle, accessError = \
-			youtubeAccess_redownload.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
+		youtubeAccess.redownloadFailedVideosInDownloadVideoInfoDic(downloadVideoInfoDic=downloadVideoInfoDic)
 		
-		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
-		
-		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
-		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
-		
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
 		sys.stdout = stdout
 		
-		self.assertIsNone(accessError)
+#		self.assertIsNone(accessError)
 		self.assertEqual(['re-downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
 		                  '',
 		                  'video download complete.',
@@ -472,12 +486,12 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		self.assertEqual(validPlaylistDirName, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
+		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(3))
 		
 		self.assertEqual('Here to help: Give him what he wants',
-		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
+		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['2', '3'], redownloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['2', '3'], downloadVideoInfoDic.getVideoIndexes())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
