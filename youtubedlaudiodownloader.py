@@ -323,7 +323,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	
 	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
 		"""
-		Return True if no ytdl file version for the passed downloadedAudioFileName
+		Return True if no ydl file version for the passed downloadedAudioFileName
 		exist. Otherwise, this means that the mp3 extraction from the downloaded
 		video failed.
 		
@@ -541,3 +541,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		else:
 			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 
+	def redownloadFailedVideosInDownloadVideoInfoDic(self, downloadVideoInfoDic):
+		"""
+		This method is used on Windows only. This is due to the fact that the
+		failed videos could no be re-downloaded on Android by trying to
+		re-download several time the playlist containing them.
+		
+		:param downloadVideoInfoDic:
+		:return:
+		"""
+		pass

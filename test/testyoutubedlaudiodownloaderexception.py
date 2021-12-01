@@ -413,10 +413,80 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+	
+	def testRedownloadFailedVideosInDownloadVideoInfoDic(self):
+		playlistName = 'test_audio_downloader_two_files'
+		subTestDirName = 'two_files_6'
+		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		testAudioRootPath = DirUtil.getTestDataPath()
+		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
+		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
+		downloadDirSaved = downloadDir + '_saved'
+		
+		# restoring downloadDir
+		
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+
+		shutil.copytree(downloadDirSaved, downloadDir)
+
+		guiOutput = GuiOutputStub()
+		
+		# re-downloading the failed videos
+		
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		playlistObject, playlistTitle, videoTitle, accessError = \
+			youtubeAccess_redownload.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
+		
+		redownloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+			playlistUrl, youtubeAccess_redownload.audioDirRoot, youtubeAccess_redownload.audioDirRoot, playlistTitle)
+		
+		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
+		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
+		                                                      isUploadDateAddedToPlaylistVideo=False,
+		                                                      isIndexAddedToPlaylistVideo=False)
+		
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		
+		sys.stdout = stdout
+		
+		self.assertIsNone(accessError)
+		self.assertEqual(['re-downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		                  '',
+		                  'video download complete.',
+		                  '',
+		                  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
+		                  '"5\\test_audio_downloader_two_files" dir. Video skipped.',
+		                  '',
+		                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+		                  '',
+		                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertEqual(validPlaylistDirName, targetAudioDir)
+		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
+		
+		self.assertEqual('Here to help: Give him what he wants',
+		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
+		
+		self.assertEqual(['2', '3'], redownloadVideoInfoDic.getVideoIndexes())
+		
+		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
+		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
+		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
+		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderException()
 
-	tst.testRedownloadingTwoVideosPlaylist_after_2_videos_download_exception()
+	tst.testRedownloadFailedVideosInDownloadVideoInfoDic()

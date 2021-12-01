@@ -43,6 +43,18 @@ class DirUtil:
 		return audioRootPath + sep + 'test'
 	
 	@staticmethod
+	def getTestDataPath():
+		"""
+		Returns the test data path containing the unit test test data. Those
+		data are commited to the GitHub project space.
+		
+		:return example: 'D:\\Development\\Python\\audiodownload\\test\\testData'
+		"""
+		currentDirPath = os.path.dirname(os.path.realpath(__file__))
+		
+		return currentDirPath + sep + 'test' + sep + 'testData'
+	
+	@staticmethod
 	def extractPathFromPathFileName(pathFileName):
 		pathElemLst = pathFileName.split(sep)
 
