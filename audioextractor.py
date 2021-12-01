@@ -13,10 +13,13 @@ else:
 	from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 
 class AudioExtractor:
-	def __init__(self, audioController, targetAudioDir, downloadVideoInfoDictionary):
+	def __init__(self,
+	             audioController,
+	             targetAudioDir,
+	             downloadVideoInfoDic):
 		self.audioController = audioController
 		self.targetAudioDir = targetAudioDir
-		self.downloadVideoInfoDictionary = downloadVideoInfoDictionary
+		self.downloadVideoInfoDic = downloadVideoInfoDic
 
 	def extractPlaylistAudio(self, downloadVideoInfoDic):
 		for videoIndex in downloadVideoInfoDic.getVideoIndexes():
