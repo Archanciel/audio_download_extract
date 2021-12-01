@@ -181,7 +181,7 @@ class TestAudioController(unittest.TestCase):
 		createdClipFilePathName = audioExtractorVideoInfoDic. \
 			getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 
-		self.assertEqual('test\\Various\\test_to_del\\time frame supprimé\\Test 3 short videos time frame deleted now should be ok\\Here to help - Give him what he wants_1.mp3',
+		self.assertEqual('test\\Various\\test_clipAudioFile\\time frame supprimé\\Test 3 short videos time frame deleted now should be ok\\Here to help - Give him what he wants_1.mp3',
 		                 createdClipFilePathName)
 		
 		audioFileList = os.listdir(audioFilePath)

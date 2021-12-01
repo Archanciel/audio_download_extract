@@ -534,6 +534,16 @@ class DownloadVideoInfoDic:
 			videoInfoDic = {}
 			
 		return videoInfoDic
+
+	def getFailedVideoIndexes(self):
+		failedVideoIndexLst = []
+
+		for index, videoDic in self.dic[KEY_VIDEOS].items():
+			
+			if videoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] is True:
+				failedVideoIndexLst.append(int(index))
+				
+		return failedVideoIndexLst
 	
 	def getVideoIndexForVideoTitle(self, videoTitle):
 		for key in self.dic[KEY_VIDEOS].keys():

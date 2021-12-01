@@ -897,7 +897,91 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(None,
 		                 dvi.getVideoFileNameForVideoTitle(videoTitle_3))
 
+	def testGetFailedVideoIndexes_1_index(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		dvi = DownloadVideoInfoDic(audioRootDir=audioDirRoot,
+		                           playlistDownloadRootPath=audioDirRoot,
+		                           modifiedPlaylistName=playListName,
+		                           loadDicIfDicFileExist=False)
+
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2,
+		                              isDownloadSuccess=False)
+
+		self.assertEqual([2], dvi.getFailedVideoIndexes())
+
+	def testGetFailedVideoIndexes_0_index(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		dvi = DownloadVideoInfoDic(audioRootDir=audioDirRoot,
+		                           playlistDownloadRootPath=audioDirRoot,
+		                           modifiedPlaylistName=playListName,
+		                           loadDicIfDicFileExist=False)
+
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2)
+
+		self.assertEqual([], dvi.getFailedVideoIndexes())
+
+	def testGetFailedVideoIndexes_2_indexes(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		dvi = DownloadVideoInfoDic(audioRootDir=audioDirRoot,
+		                           playlistDownloadRootPath=audioDirRoot,
+		                           modifiedPlaylistName=playListName,
+		                           loadDicIfDicFileExist=False)
+
+		videoIndex = dvi.getNextVideoIndex()
+		title_1 = 'title 1'
+		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
+		videoFileName_1 = 'title 1.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_1,
+		                              videoUrl=url_1,
+		                              downloadedFileName=videoFileName_1,
+		                              isDownloadSuccess=False)
+		videoIndex += 1
+		title_2 = 'title 2'
+		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
+		videoFileName_2 = 'title 2.mp3'
+		dvi.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                              videoTitle=title_2,
+		                              videoUrl=url_2,
+		                              downloadedFileName=videoFileName_2,
+		                              isDownloadSuccess=False)
+
+		self.assertEqual([1, 2], dvi.getFailedVideoIndexes())
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadVideoInfoDic()
-	tst.testDeleteVideoInfoForVideoFileName()
+	tst.testGetFailedVideoIndexes()
