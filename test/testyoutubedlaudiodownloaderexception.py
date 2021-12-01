@@ -18,7 +18,7 @@ from downloadvideoinfodic import DownloadVideoInfoDic
 
 class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 	
-	def testRedownloadingPlaylist_after_first_video_download_exception(self):
+	def testRedownloadingTwoVideosPlaylist_after_first_video_download_exception(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '5'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -147,7 +147,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
-	def testRedownloadingPlaylist_after_2_video_download_exception(self):
+	def testRedownloadingTwoVideosPlaylist_after_2_videos_download_exception(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '5'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -284,7 +284,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
-	def testRedownloadingPlaylist_after_second_video_download_exception(self):
+	def testRedownloadingTwoVideosPlaylist_after_second_video_download_exception(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '5'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -419,4 +419,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderException()
 
-	tst.testRedownloadingPlaylist_after_video_download_exception()
+	tst.testRedownloadingTwoVideosPlaylist_after_2_videos_download_exception()
