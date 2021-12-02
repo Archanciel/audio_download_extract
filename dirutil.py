@@ -216,9 +216,13 @@ class DirUtil:
 	@staticmethod
 	def deleteFiles(filePathNameLst):
 		for filePathName in filePathNameLst:
-			if isfile(filePathName):
-				os.remove(filePathName)
-
+			DirUtil.deleteFileIfExist(filePathName)
+	
+	@staticmethod
+	def deleteFileIfExist(filePathName):
+		if isfile(filePathName):
+			os.remove(filePathName)
+	
 	@staticmethod
 	def getIndexAndDateUsageInDir(audioDir):
 		"""

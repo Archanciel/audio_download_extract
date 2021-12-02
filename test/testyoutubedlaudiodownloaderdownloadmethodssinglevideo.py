@@ -383,7 +383,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		self.assertEqual(
 			"\ud83d\udca5 EFFONDREMEN Imminent de l'Euro ! _ \ud83d\udc49 Maintenant, La Fin de l'Euro Approche !.mp3",
-			dvi.getVideoFileNameForVideoIndex(1))
+			dvi.getVideoAudioFileNameForVideoIndex(1))
 
 
 if __name__ == '__main__':

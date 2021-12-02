@@ -60,10 +60,10 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual(title_1, dvi.getVideoTitleForVideoIndex(1))
 
-		self.assertEqual(videoFileName_1, dvi.getVideoFileNameForVideoIndex(1))
-		self.assertEqual(videoFileName_1, dvi.getVideoFileNameForVideoTitle(title_1))
-		self.assertEqual(videoFileName_2, dvi.getVideoFileNameForVideoIndex(2))
-		self.assertEqual(videoFileName_2, dvi.getVideoFileNameForVideoTitle(title_2))
+		self.assertEqual(videoFileName_1, dvi.getVideoAudioFileNameForVideoIndex(1))
+		self.assertEqual(videoFileName_1, dvi.getVideoAudioFileNameForVideoTitle(title_1))
+		self.assertEqual(videoFileName_2, dvi.getVideoAudioFileNameForVideoIndex(2))
+		self.assertEqual(videoFileName_2, dvi.getVideoAudioFileNameForVideoTitle(title_2))
 
 		self.assertIsNone(dvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=1))
 		self.assertIsNone(dvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=1))
@@ -117,8 +117,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual('title 1', dvi.getVideoTitleForVideoIndex(1))
 
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
+		self.assertEqual('title 2.mp4', dvi.getVideoAudioFileNameForVideoIndex(2))
 		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
 
 		self.assertFalse(dvi.getVideoDownloadExceptionForVideoTitle('title 1'))
@@ -145,7 +145,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		self.assertEqual(newAdditionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 3'))
 
 		self.assertEqual('title 3', reloadedDvi.getVideoTitleForVideoIndex(3))
-		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
+		self.assertEqual('title 3.mp4', reloadedDvi.getVideoAudioFileNameForVideoIndex(3))
 		self.assertEqual(4, reloadedDvi.getNextVideoIndex())
 		self.assertEqual(playlistUrl, reloadedDvi.getPlaylistUrl())
 
@@ -168,7 +168,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 		self.assertEqual('title 3', newReloadedDvi.getVideoTitleForVideoIndex(3))
 
-		self.assertEqual('title 3.mp4', reloadedDvi.getVideoFileNameForVideoIndex(3))
+		self.assertEqual('title 3.mp4', reloadedDvi.getVideoAudioFileNameForVideoIndex(3))
 
 		self.assertIsNone(newReloadedDvi.getExtractStartEndSecondsListsForVideoIndex(videoIndex=1))
 		self.assertIsNone(newReloadedDvi.getSuppressStartEndSecondsListsForVideoIndex(videoIndex=1))
@@ -208,8 +208,8 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
 
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
-		self.assertEqual('title 2.mp4', dvi.getVideoFileNameForVideoIndex(2))
+		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
+		self.assertEqual('title 2.mp4', dvi.getVideoAudioFileNameForVideoIndex(2))
 
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual('https://youtube.com/watch?v=9iPvL8880999', dvi.getVideoUrlForVideoTitle('title 2'))
@@ -306,7 +306,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 1'))
 		
@@ -345,7 +345,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadVideoInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
-		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('title 1.mp4', reloadedDvi.getVideoAudioFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual(additionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 1'))
 		
@@ -381,7 +381,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
-		self.assertEqual('title 1.mp4', dvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', dvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle('title 1'))
 		
@@ -431,7 +431,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadVideoInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
 		
-		self.assertEqual('title 1.mp4', reloadedDvi.getVideoFileNameForVideoIndex(1))
+		self.assertEqual('title 1.mp4', reloadedDvi.getVideoAudioFileNameForVideoIndex(1))
 		self.assertEqual('https://youtube.com/watch?v=9iPvLx7gotk', reloadedDvi.getVideoUrlForVideoTitle('title 1'))
 		self.assertEqual(additionTimeStr, reloadedDvi.getVideoDownloadTimeForVideoTitle('title 1'))
 		
@@ -891,11 +891,11 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dvi.deleteVideoInfoForVideoFileName(videoFileName_3)
 
 		self.assertEqual(videoFileName_1,
-		                 dvi.getVideoFileNameForVideoTitle(videoTitle_1))
+		                 dvi.getVideoAudioFileNameForVideoTitle(videoTitle_1))
 		self.assertEqual(None,
-		                 dvi.getVideoFileNameForVideoTitle(videoTitle_2))
+		                 dvi.getVideoAudioFileNameForVideoTitle(videoTitle_2))
 		self.assertEqual(None,
-		                 dvi.getVideoFileNameForVideoTitle(videoTitle_3))
+		                 dvi.getVideoAudioFileNameForVideoTitle(videoTitle_3))
 
 	def testGetFailedVideoIndexes_1_index(self):
 		playListName = 'test_download_vid_info_dic'
@@ -984,4 +984,4 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadVideoInfoDic()
-	tst.testGetFailedVideoIndexes()
+	tst.testGetFailedVideoIndexes_1_index()

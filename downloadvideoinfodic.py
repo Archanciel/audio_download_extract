@@ -262,7 +262,7 @@ class DownloadVideoInfoDic:
 		"""
 		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
-	def getVideoIndexes(self):
+	def getVideoIndexStrings(self):
 		'''
 		Returns a list of video indexes as string.
 		
@@ -299,7 +299,7 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getVideoFileNameForVideoIndex(self, videoIndex):
+	def getVideoAudioFileNameForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
 		if KEY_VIDEO_DOWNLOAD_FILENAME in videoInfoDic.keys():
@@ -307,7 +307,7 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getVideoFileNameForVideoTitle(self, videoTitle):
+	def getVideoAudioFileNameForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 
 		if videoIndex:
@@ -351,7 +351,20 @@ class DownloadVideoInfoDic:
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
 		if videoIndex:
-			self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
+			self.setVideoDownloadExceptionForVideoIndex(videoIndex,
+			                                            isDownloadSuccess)
+	
+	def setVideoDownloadExceptionForVideoIndex(self,
+	                                           videoIndex,
+	                                           isDownloadSuccess):
+		"""
+		Sets the video download exception value for the passed video
+		index to True if the passed isDownloadSuccess is False, and to
+		False otherwise.
+
+		:param videoIndex:
+		"""
+		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
@@ -537,8 +550,9 @@ class DownloadVideoInfoDic:
 
 	def getFailedVideoIndexes(self):
 		"""
-		Returns a list of video failed integer indexes.
-		:return:
+		Returns a list of download failed video integer indexes.
+		
+		:return: list of download failed video integer indexes
 		"""
 		failedVideoIndexLst = []
 
@@ -558,7 +572,7 @@ class DownloadVideoInfoDic:
 	
 	def getVideoIndexForVideoFileName(self, videoFileName):
 		for key in self.dic[KEY_VIDEOS].keys():
-			if self.getVideoFileNameForVideoIndex(key) == videoFileName:
+			if self.getVideoAudioFileNameForVideoIndex(key) == videoFileName:
 				return key
 		
 		return None

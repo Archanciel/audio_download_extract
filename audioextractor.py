@@ -22,8 +22,8 @@ class AudioExtractor:
 		self.downloadVideoInfoDic = downloadVideoInfoDic
 
 	def extractPlaylistAudio(self, downloadVideoInfoDic):
-		for videoIndex in downloadVideoInfoDic.getVideoIndexes():
-			videoAudioFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+		for videoIndex in downloadVideoInfoDic.getVideoIndexStrings():
+			videoAudioFileName = downloadVideoInfoDic.getVideoAudioFileNameForVideoIndex(videoIndex)
 			if videoAudioFileName is None:
 				# the case if downloading the video failed
 				continue
@@ -53,7 +53,7 @@ class AudioExtractor:
 		:param floatSpeed:
 		:return:
 		"""
-		audioOrVideoFileName = downloadVideoInfoDic.getVideoFileNameForVideoIndex(videoIndex)
+		audioOrVideoFileName = downloadVideoInfoDic.getVideoAudioFileNameForVideoIndex(videoIndex)
 		audioFilePathName = os.path.join(self.targetAudioDir, audioOrVideoFileName)
 		extractStartEndSecondsLists = downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(videoIndex)
 		timeFrameIndex = 1

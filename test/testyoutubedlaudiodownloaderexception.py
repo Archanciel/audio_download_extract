@@ -81,7 +81,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -140,7 +140,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['2', '3'], redownloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['2', '3'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -210,7 +210,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -277,7 +277,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(4))
 		
-		self.assertEqual(['3', '4'], redownloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['3', '4'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -347,7 +347,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -407,7 +407,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
 		
-		self.assertEqual(['1', '3'], redownloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['1', '3'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -429,11 +429,10 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 
 		shutil.copytree(downloadDirSaved, downloadDir)
-
-		guiOutput = GuiOutputStub()
 		
 		# re-downloading the failed videos
-		
+
+		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
@@ -446,22 +445,21 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
 			downloadDir, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
 		
-		downloadVideoInfoDic = None
+		# the file deletion is done in a playlist dir, not in a
+		# single videos dir
+		existingDicFilePathName = dicFilePathNameLst[0]
+		downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+		                                            audioRootDir=None,
+		                                            playlistDownloadRootPath=None,
+		                                            originalPaylistTitle=None,
+		                                            originalPlaylistName=None,
+		                                            modifiedPlaylistTitle=None,
+		                                            modifiedPlaylistName=None,
+		                                            loadDicIfDicFileExist=True,
+		                                            existingDicFilePathName=existingDicFilePathName)
 		
-		if len(dicFilePathNameLst) > 0:
-			# the file deletion is done in a playlist dir, not in a
-			# single videos dir
-			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
-			                                            audioRootDir=None,
-			                                            playlistDownloadRootPath=None,
-			                                            originalPaylistTitle=None,
-			                                            originalPlaylistName=None,
-			                                            modifiedPlaylistTitle=None,
-			                                            modifiedPlaylistName=None,
-			                                            loadDicIfDicFileExist=True,
-			                                            existingDicFilePathName=dicFilePathNameLst[0])
+		# redownloading the failed videos
 		
-
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
 		sys.stdout = outputCapturingString
@@ -472,32 +470,41 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-#		self.assertIsNone(accessError)
-		self.assertEqual(['re-downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
-		                  '',
-		                  'video download complete.',
-		                  '',
-		                  '"Here to help - Give him what he wants.mp3" audio already downloaded in '
-		                  '"5\\test_audio_downloader_two_files" dir. Video skipped.',
-		                  '',
-		                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
-		                  '',
-		                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['re-downloading "99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3" audio ...',
+ '',
+ '"99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3" audio '
+ 're-downloaded in "two_files_6\\test_audio_downloader_two_files" directory.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(validPlaylistDirName, targetAudioDir)
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
-		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(3))
+		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['2', '3'], downloadVideoInfoDic.getVideoIndexes())
+		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
-		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
-		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		self.assertEqual(sorted(['98-Here to help - Give him what he wants 2019-06-07.mp3',
+ '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
+ 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+		# reloading the downloadVideoInfoDic
+		
+		redownloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
+		                                              audioRootDir=None,
+		                                              playlistDownloadRootPath=None,
+		                                              originalPaylistTitle=None,
+		                                              originalPlaylistName=None,
+		                                              modifiedPlaylistTitle=None,
+		                                              modifiedPlaylistName=None,
+		                                              loadDicIfDicFileExist=True,
+		                                              existingDicFilePathName=existingDicFilePathName)
 
+		self.assertFalse(redownloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle("Wear a mask. Help slow the spread of Covid-19."))
 
 if __name__ == '__main__':
 #	unittest.main()
