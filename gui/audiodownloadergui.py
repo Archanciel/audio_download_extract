@@ -262,17 +262,20 @@ class AudioDownloaderGUI(AudioGUI):
 				self.boxLayoutContainingStatusBar.height = "73dp"
 				self.stopDownloadButton.width = 150
 				self.downloadButton.width = 300
+				self.addDownloadButton.width = 150
 			else:
 				self.boxLayoutContainingStatusBar.height = "43dp"
 				self.stopDownloadButton.width = 80
 				self.downloadButton.width = 190
+				self.addDownloadButton.width = 80
 
 		else:
 			#self.stopDownloadButton.text = 'Half'  # correct on Windows !
 			self.boxLayoutContainingStatusBar.height = "63dp"
 			self.stopDownloadButton.width = 40
 			self.downloadButton.width = 80
-
+			self.addDownloadButton.width = 40
+		
 		self.audioController = AudioController(self, self.configMgr)
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
@@ -300,6 +303,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.accessError = None
 		self.isUploadDateAddedToPlaylistVideo = False
 		self.isIndexAddedToPlaylistVideo = False
+		self.playlistOrSingleVideoUrlDownloadLst = []
 		
 		self._doOnStart()
 	
@@ -331,28 +335,45 @@ class AudioDownloaderGUI(AudioGUI):
 			return
 		
 		self.downloadFromClipboard()
+
+	def addDownloadUrl(self):
+		"""
+		Method called when pressing the add download button defined in
+		the audiodownloadergui.kv file.
+		"""
+		playlistOrSingleVideoUrl = Clipboard.paste()
+		
+		if playlistOrSingleVideoUrl != '' and \
+				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
+				playlistOrSingleVideoUrl.startswith('https://'):
+			self.playlistOrSingleVideoUrlDownloadLst.append(playlistOrSingleVideoUrl)
 		
 	def downloadFromClipboard(self):
 		"""
 		Method called either at application start or when pressing the
 		download button defined in the audiodownloadergui.kv file.
 		"""
-		self.playlistOrSingleVideoUrl = Clipboard.paste()
-		
-		self.disableButtons()
-		
-		# obtaining the playlist or single video title using a separate thread
-		# for the playlist or single video referenced by the url obtained from
-		# the clipboard, url which is stored in self.playlistOrSingleVideoUrl.
-		if not self.downloadObjectTitleThreadCreated:
-			sepThreadExec = SepThreadExec(callerGUI=self,
-			                              func=self.getDownloadObjectTitleOnNewThread,
-			                              endFunc=self.executeDownload)
+		if self.playlistOrSingleVideoUrlDownloadLst != []:
+			self.downloadFromUrlDownloadLst()
+		else:
+			self.playlistOrSingleVideoUrl = Clipboard.paste()
+			self.disableButtons()
 			
-			self.downloadObjectTitleThreadCreated = True
+			# obtaining the playlist or single video title using a separate thread
+			# for the playlist or single video referenced by the url obtained from
+			# the clipboard, url which is stored in self.playlistOrSingleVideoUrl.
+			if not self.downloadObjectTitleThreadCreated:
+				sepThreadExec = SepThreadExec(callerGUI=self,
+				                              func=self.getDownloadObjectTitleOnNewThread,
+				                              endFunc=self.executeDownload)
+				
+				self.downloadObjectTitleThreadCreated = True
+	
+				sepThreadExec.start()
 
-			sepThreadExec.start()
-			
+	def downloadFromUrlDownloadLst(self):
+		print(self.playlistOrSingleVideoUrlDownloadLst)
+	
 	def executeDownload(self):
 		self.enableButtons()
 		
@@ -388,10 +409,12 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def enableButtons(self):
 		self.downloadButton.disabled = False
+		self.addDownloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
 
 	def disableButtons(self):
 		self.downloadButton.disabled = True
+		self.addDownloadButton.disabled = True
 		self.stopDownloadButton.disabled = True
 		self.clearResultOutputButton.disabled = True
 
