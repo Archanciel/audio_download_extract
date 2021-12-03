@@ -1,4 +1,5 @@
 import os,sys,inspect
+import time
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -304,6 +305,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isUploadDateAddedToPlaylistVideo = False
 		self.isIndexAddedToPlaylistVideo = False
 		self.playlistOrSingleVideoUrlDownloadLst = []
+		self.confirmPopupOpen = False
 		
 		self._doOnStart()
 	
@@ -348,6 +350,10 @@ class AudioDownloaderGUI(AudioGUI):
 				playlistOrSingleVideoUrl.startswith('https://'):
 			self.playlistOrSingleVideoUrlDownloadLst.append(playlistOrSingleVideoUrl)
 		
+		print('\naddDownloadUrl:')
+		for url in self.playlistOrSingleVideoUrlDownloadLst:
+			print(url)
+			
 	def downloadFromClipboard(self):
 		"""
 		Method called either at application start or when pressing the
@@ -357,24 +363,35 @@ class AudioDownloaderGUI(AudioGUI):
 			self.downloadFromUrlDownloadLst()
 		else:
 			playlistOrSingleVideoUrl = Clipboard.paste()
-			self.disableButtons()
-			
-			# obtaining the playlist or single video title using a separate thread
-			# for the playlist or single video referenced by the url obtained from
-			# the clipboard, url which is stored in playlistOrSingleVideoUrl.
-			if not self.downloadObjectTitleThreadCreated:
-				sepThreadExec = SepThreadExec(callerGUI=self,
-				                              func=self.getDownloadObjectTitleOnNewThread,
-				                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
-				                              endFunc=self.executeDownload,
-				                              endFuncArgs=(playlistOrSingleVideoUrl, ))
-				
-				self.downloadObjectTitleThreadCreated = True
+			self.executeUrlDownload(playlistOrSingleVideoUrl)
 	
-				sepThreadExec.start()
-
+	def executeUrlDownload(self, playlistOrSingleVideoUrl):
+		self.disableButtons()
+		# obtaining the playlist or single video title using a separate thread
+		# for the playlist or single video referenced by the url obtained from
+		# the clipboard, url which is stored in playlistOrSingleVideoUrl.
+		if not self.downloadObjectTitleThreadCreated:
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.getDownloadObjectTitleOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
+			                              endFunc=self.executeDownload,
+			                              endFuncArgs=(playlistOrSingleVideoUrl,))
+			
+			self.downloadObjectTitleThreadCreated = True
+			
+			sepThreadExec.start()
+	
 	def downloadFromUrlDownloadLst(self):
-		print(self.playlistOrSingleVideoUrlDownloadLst)
+		SLEEP_SEC = 3
+		for playlistOrSingleVideoUrl in self.playlistOrSingleVideoUrlDownloadLst:
+			while self.downloadObjectTitleThreadCreated or \
+					self.confirmPopupOpen or \
+					self.downloadThreadCreated:
+				# this ensure only one playlist is downloaded at a time
+				time.sleep(SLEEP_SEC)
+
+			print('downloadFromUrlDownloadLst: ', playlistOrSingleVideoUrl)
+			self.executeUrlDownload(playlistOrSingleVideoUrl)
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
@@ -401,9 +418,10 @@ class AudioDownloaderGUI(AudioGUI):
 			                                        confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
 			                                        isPlayListDownloaded=isPlayListDownloaded,
 			                                        playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
-			
+
 			popup.open()
-	
+			self.confirmPopupOpen = True
+
 	def getDownloadObjectTitleOnNewThread(self, playlistOrSingleVideoUrl):
 		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
@@ -451,7 +469,9 @@ class AudioDownloaderGUI(AudioGUI):
 			self.openSelectOrCreateDirPopup(playlistOrSingleVideoUrl)
 
 		popup.dismiss()
-		
+		self.confirmPopupOpen = False
+	
+	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
