@@ -502,7 +502,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 					self.rootGUI.outputResult(dirCreationMessage)
 
 		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
-		self.rootGUI.downloadPlaylistOrSingleVideoAudio()
+		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl)
 		self.rootGUI.dismissPopup()
 
 

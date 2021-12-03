@@ -28,10 +28,12 @@ class ConfirmDownloadPopup(GridLayout):
 					# object at 0x000001DE3BFBF3C0> have no cols or rows set,
 					# layout is not triggered.
 		self.isPlaylist = kwargs['isPlaylist']
+		self.playlistOrSingleVideoUrl = kwargs['playlistOrSingleVideoUrl']
 		
-		# removing the isPlaylist arg is necessary otherwise the superclass
+		# removing the additional args is necessary otherwise the superclass
 		# constructor will fail !
 		del kwargs['isPlaylist']
+		del kwargs['playlistOrSingleVideoUrl']
 		
 		kwargs['text'] = self.textStr.replace("\n", " ")
 

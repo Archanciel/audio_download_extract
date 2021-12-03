@@ -356,16 +356,18 @@ class AudioDownloaderGUI(AudioGUI):
 		if self.playlistOrSingleVideoUrlDownloadLst != []:
 			self.downloadFromUrlDownloadLst()
 		else:
-			self.playlistOrSingleVideoUrl = Clipboard.paste()
+			playlistOrSingleVideoUrl = Clipboard.paste()
 			self.disableButtons()
 			
 			# obtaining the playlist or single video title using a separate thread
 			# for the playlist or single video referenced by the url obtained from
-			# the clipboard, url which is stored in self.playlistOrSingleVideoUrl.
+			# the clipboard, url which is stored in playlistOrSingleVideoUrl.
 			if not self.downloadObjectTitleThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
 				                              func=self.getDownloadObjectTitleOnNewThread,
-				                              endFunc=self.executeDownload)
+				                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
+				                              endFunc=self.executeDownload,
+				                              endFuncArgs=('playlistOrSingleVideoUrl', playlistOrSingleVideoUrl))
 				
 				self.downloadObjectTitleThreadCreated = True
 	
@@ -374,7 +376,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadFromUrlDownloadLst(self):
 		print(self.playlistOrSingleVideoUrlDownloadLst)
 	
-	def executeDownload(self):
+	def executeDownload(self, _, playlistOrSingleVideoUrl):
 		self.enableButtons()
 		
 		if self.accessError is None:
@@ -397,13 +399,14 @@ class AudioDownloaderGUI(AudioGUI):
 			popup = self.createDownloadConfirmPopup(confirmPopupTitle=confirmPopupTitle,
 			                                        confirmPopupMsg=downloadObjectTitle,
 			                                        confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
-			                                        isPlayListDownloaded=isPlayListDownloaded)
+			                                        isPlayListDownloaded=isPlayListDownloaded,
+			                                        playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
 			
 			popup.open()
 	
-	def getDownloadObjectTitleOnNewThread(self):
+	def getDownloadObjectTitleOnNewThread(self, playlistOrSingleVideoUrl):
 		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
-			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self.playlistOrSingleVideoUrl)
+			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 	
 		self.downloadObjectTitleThreadCreated = False
 		
@@ -428,6 +431,7 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.isUploadDateAddedToPlaylistVideo = confirmPopupInstance.isUploadDateAdded()
 		self.isIndexAddedToPlaylistVideo = confirmPopupInstance.isIndexAdded()
+		playlistOrSingleVideoUrl = confirmPopupInstance.playlistOrSingleVideoUrl
 		popup = confirmPopupInstance.parent.parent.parent
 		
 		if answer == 'yes':  # 'yes' is set in confirmpopup.kv file
@@ -442,9 +446,9 @@ class AudioDownloaderGUI(AudioGUI):
 			# default single video dir as defined in the audiodownloader.ini
 			# file.
 			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
-			self.downloadPlaylistOrSingleVideoAudio()
+			self.downloadPlaylistOrSingleVideoAudio(playlistOrSingleVideoUrl)
 		elif answer == 'setFolder':  # 'setFolder' is set in confirmdownloadpopup.kv file
-			self.openSelectOrCreateDirPopup()
+			self.openSelectOrCreateDirPopup(playlistOrSingleVideoUrl)
 
 		popup.dismiss()
 		
@@ -749,13 +753,13 @@ class AudioDownloaderGUI(AudioGUI):
 		                                               cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
 	
-	def openSelectOrCreateDirPopup(self):
+	def openSelectOrCreateDirPopup(self, playlistOrSingleVideoUrl):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.originalSingleVideoTitle)
 		
 		self.fileChooserPopup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
 		                                                          rootGUI=self,
-		                                                          playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+		                                                          playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
 		                                                          originalPlaylistTitle=self.originalPlaylistTitle,
 		                                                          originalSingleVideoTitle=self.originalSingleVideoTitle,
 		                                                          load=self.load,
@@ -921,7 +925,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def isLoadAtStart(self, filePathName):
 		return self.configMgr.loadAtStartPathFilename == filePathName
 	
-	def downloadPlaylistOrSingleVideoAudio(self):
+	def downloadPlaylistOrSingleVideoAudio(self, playlistOrSingleVideoUrl):
 		"""
 		This method launch downloading audios for the videos referenced in the playlist
 		URL or the audio of the single video if the URL points to a video, this in a
@@ -930,7 +934,8 @@ class AudioDownloaderGUI(AudioGUI):
 		# downloading the playlist or single video title using a separate thread
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
-			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread)
+			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl})
 
 			self.downloadThreadCreated = True   # used to fix a problem on Android
 												# where two download threads are
@@ -939,7 +944,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 			sepThreadExec.start()
 	
-	def downloadPlaylistOrSingleVideoAudioOnNewThread(self):
+	def downloadPlaylistOrSingleVideoAudioOnNewThread(self, playlistOrSingleVideoUrl):
 		"""
 		This method executed on a separated thread launch downloading audios for
 		the videos referenced in a playlist or the audio of a single video.
@@ -952,7 +957,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.stopDownloadButton.disabled = False
 			
 			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
-				playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl,
+				playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
 				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 				originalPlaylistTitle=self.originalPlaylistTitle,
 				modifiedPlaylistTitle=self.modifiedPlaylistTitle,
@@ -984,7 +989,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.stopDownloadButton.disabled = True
 		
 			self.audioController.downloadSingleVideo(
-				singleVideoUrl=self.playlistOrSingleVideoUrl,
+				singleVideoUrl=playlistOrSingleVideoUrl,
 				singleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 				originalSingleVideoTitle=self.originalSingleVideoTitle,
 				modifiedVideoTitle=self.modifiedSingleVideoTitle)
@@ -1000,7 +1005,8 @@ class AudioDownloaderGUI(AudioGUI):
 	                               confirmPopupTitle,
 	                               confirmPopupMsg,
 	                               confirmPopupCallbackFunction,
-	                               isPlayListDownloaded):
+	                               isPlayListDownloaded,
+	                               playlistOrSingleVideoUrl):
 		"""
 
 		:param confirmPopupTitle:
@@ -1033,7 +1039,8 @@ class AudioDownloaderGUI(AudioGUI):
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
 		
 		self.confirmPopup = ConfirmDownloadPopup(text=confirmPopupFormattedMsg,
-		                                         isPlaylist=isPlayListDownloaded)
+		                                         isPlaylist=isPlayListDownloaded,
+		                                         playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
 
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
