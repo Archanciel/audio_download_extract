@@ -140,8 +140,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					continue
 				
 				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-				purgedVideoTitleMp3 = purgedVideoTitle + '.mp3'
-				
 				if isUploadDateAddedToPlaylistVideo:
 					if isIndexAddedToPlaylistVideo:
 						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
@@ -160,30 +158,42 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
-					audioFileNameInDic = downloadVideoInfoDic.getVideoFileNameForVideoTitle(videoTitle)
-					if audioFileNameInDic in targetAudioDirFileNameList:
-						# the video was already downloaded and converted to audio file
-						if audioFileNameInDic == finalPurgedVideoTitleMp3:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
+					# the video was already downloaded and so will be skipped
+					if not downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
+						# the video was downloaded with no exception. Otherwise,
+						# trying to re-download it will be done
+						audioFileNameInDic = downloadVideoInfoDic.getVideoAudioFileNameForVideoTitle(videoTitle)
+						if audioFileNameInDic in targetAudioDirFileNameList:
+							# the video was already downloaded and converted to audio file
+							if audioFileNameInDic == finalPurgedVideoTitleMp3:
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort)
+							else:
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 						else:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
-								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
-					else:
-						# the video audio file was already downloaded and was deleted
-						if audioFileNameInDic == finalPurgedVideoTitleMp3:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(finalPurgedVideoTitleMp3, targetAudioDirShort)
-						else:
-							msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
-								finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
-
-					self.audioController.displayMessage(msgText)
-
-					continue
+							# the video audio file was already downloaded and was deleted
+							if audioFileNameInDic == finalPurgedVideoTitleMp3:
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort)
+							else:
+								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
+									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
+						
+						self.audioController.displayMessage(msgText)
+						
+						continue
 				
-				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
-					msgText = 'downloading [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
+				if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
+					# the video was previously downloaded with an exception ...
+					msgStartStr = 're-downloading'
 				else:
-					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
+					msgStartStr = 'downloading'
+					
+				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
+					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
+				else:
+					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
 
 				self.audioController.displayMessage(msgText)
 
@@ -196,6 +206,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 														# conversion info spread
 														# pollutes the GUI
 					
+					videoIndex, playlistDownloadedVideoNb_failed, msgText = \
+						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
+						                            videoIndex,
+						                            videoTitle,
+						                            videoUrl,
+						                            downloadedFileName=finalPurgedVideoTitleMp3,
+						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed,
+						                            isDownloadSuccess=False)
+
 					continue    # this avoids that the video is fully downloaded
 								# and so facilitates the video redownload.
 				except DownloadError as e:
@@ -226,19 +245,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						
 						continue
 				
-				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitleMp3):
-					# updating and saving the downloadVideoInfoDic only if the audio file
-					# was downloaded successfully enables to retry downloading the playlist.
-					# The failed video download will be retried.
-					downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex,
-					                                               videoTitle,
-					                                               videoUrl,
-					                                               finalPurgedVideoTitleMp3)
-					downloadVideoInfoDic.saveDic(self.audioDirRoot)
-					videoIndex += 1
-					playlistDownloadedVideoNb_succeed += 1
-					
-					msgText = 'video download complete.\n'
+				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitle + '.mp3'):
+					videoIndex, playlistDownloadedVideoNb_succeed, msgText = \
+						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
+						                            videoIndex,
+						                            videoTitle,
+						                            videoUrl,
+						                            downloadedFileName=finalPurgedVideoTitleMp3,
+						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_succeed)
 				else:
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
@@ -264,6 +278,41 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		return downloadVideoInfoDic, None
 	
+	def addVideoInfoAndSaveDic(self,
+	                           downloadVideoInfoDic,
+	                           videoIndex,
+	                           videoTitle,
+	                           videoUrl,
+	                           downloadedFileName,
+	                           playlistDownloadedVideoNb,
+	                           isDownloadSuccess=True):
+		"""
+		This method add the current downloading video info to the passed
+		downloadVideoInfoDic and save the downloadVideoInfoDic.
+		
+		:param downloadVideoInfoDic:
+		:param videoIndex:
+		:param videoTitle:
+		:param videoUrl:
+		:param downloadedFileName:
+		:param playlistDownloadedVideoNb:
+		:return:
+		"""
+		# updating and saving the downloadVideoInfoDic if the audio file
+		# was downloaded successfully enables to retry downloading the playlist.
+		# The failed video download will be retried.
+		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=videoIndex,
+		                                               videoTitle=videoTitle,
+		                                               videoUrl=videoUrl,
+		                                               downloadedFileName=downloadedFileName,
+		                                               isDownloadSuccess=isDownloadSuccess)
+		downloadVideoInfoDic.saveDic(self.audioDirRoot)
+		videoIndex += 1
+		playlistDownloadedVideoNb += 1
+		msgText = 'video download complete.\n'
+		
+		return videoIndex, playlistDownloadedVideoNb, msgText
+	
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
 		msgText = 'retry downloading the playlist later to download the failed audio only ...\n'.format(
 			downloadVideoInfoDic.getPlaylistNameOriginal())
@@ -272,7 +321,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	
 	def isAudioFileDownloadOk(self, targetAudioDir, downloadedAudioFileName):
 		"""
-		Return True if no ytdl file version for the passed downloadedAudioFileName
+		Return True if no ydl file version for the passed downloadedAudioFileName
 		exist. Otherwise, this means that the mp3 extraction from the downloaded
 		video failed.
 		
@@ -469,8 +518,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displayError(
 					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
 						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
-
-				#return
 		
 		self.convertingVideoToMp3 = False
 		
@@ -489,4 +536,97 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displayMessage(msgText)
 		else:
 			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
+	
+	def redownloadPlaylistVideoForVideoUrl(self,
+	                                       videoUrl,
+	                                       videoAudioFileName,
+	                                       targetPlaylistAudioDir,
+	                                       targetPlaylistAudioDirShort):
+		"""
+		Re-downloads in the passed targetPlaylistAudioDir the single video pointed to
+		by the passed videoUrl.
+		
+		:param videoUrl:
+		:param videoAudioFileName:
+		:param targetPlaylistAudioDir:
+		:param targetPlaylistAudioDirShort:
+		
+		:return True if re.download succeeded, False otherwise
+		"""
+		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
+			
+			try:
+				meta = ydl.extract_info(videoUrl, download=False)
+				videoTitle = meta['title']
+			except AttributeError as e:
+				msgText = 'obtaining video title and upload date failed with error {}.\n'.format(e)
+				self.audioController.displayError(msgText)
 
+				return False
+			
+			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+			# now downloading the single video ...
+			
+			msgText = 're-downloading [b]{}[/b] audio ...\n'.format(videoAudioFileName)
+			self.audioController.displayMessage(msgText)
+			
+			try:
+				ydl.download([videoUrl])
+			except AttributeError as e:
+				self.audioController.displayError(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
+						videoAudioFileName, e))
+				
+				return False
+		
+		self.convertingVideoToMp3 = False
+		
+		# finally, renaming the downloaded video to a name which is either
+		# the original video title or the modified video title, in both cases
+		# with including the upload date
+		
+		ydlDownloadedAudioFilePathName = targetPlaylistAudioDir + sep + purgedVideoTitle + '.mp3'
+		DirUtil.deleteFileIfExist(targetPlaylistAudioDir + sep + videoAudioFileName)
+		fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
+		                                           newFileName=videoAudioFileName)
+		
+		if fileNotFoundErrorInfo is None:
+			msgText = '[b]{}[/b] audio re-downloaded in [b]{}[/b] directory.\n'.format(
+				videoAudioFileName, targetPlaylistAudioDirShort)
+			self.audioController.displayMessage(msgText)
+			
+			return True
+		else:
+			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
+			
+			return False
+	
+	def redownloadFailedVideosInDownloadVideoInfoDic(self,
+	                                                 downloadVideoInfoDic):
+		"""
+		This method is used on Windows only. This is due to the fact that the
+		failed videos could no be re-downloaded on Android by trying to
+		re-download several time the playlist containing them.
+		
+		:param downloadVideoInfoDic:
+		:return:
+		"""
+		videoToRedownloadIndexLst = downloadVideoInfoDic.getFailedVideoIndexes()
+		playlistDownloadDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+		playlistDownloadDirShort = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.audioDirRoot,
+		                                                              fullFilePathName=playlistDownloadDir,
+		                                                              eliminatedRootLastSubDirsNumber=1)
+		self.ydl_opts['outtmpl'] = playlistDownloadDir + self.ydlOutTmplFormat
+		
+		for index in videoToRedownloadIndexLst:
+			isRedownloadOk = self.redownloadPlaylistVideoForVideoUrl(
+				videoUrl=downloadVideoInfoDic.getVideoUrlForVideoIndex(index),
+				videoAudioFileName=downloadVideoInfoDic.getVideoAudioFileNameForVideoIndex(
+					index),
+				targetPlaylistAudioDir=playlistDownloadDir,
+				targetPlaylistAudioDirShort=playlistDownloadDirShort)
+			
+			if isRedownloadOk:
+				downloadVideoInfoDic.setVideoDownloadExceptionForVideoIndex(videoIndex=index,
+				                                                            isDownloadSuccess=True)
+				downloadVideoInfoDic.saveDic(self.audioDirRoot)

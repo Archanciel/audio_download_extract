@@ -26,6 +26,7 @@ KEY_VIDEO_URL = 'vd_url'
 KEY_VIDEO_DOWNLOAD_FILENAME = 'vd_downloadedFileName'
 KEY_VIDEO_DOWNLOAD_TIME = 'vd_downloadTime'
 KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'vd_startEndTimeFramesInSeconds'
+KEY_VIDEO_DOWNLOAD_EXCEPTION = 'vd_downloadException'
 
 KEY_TIMEFRAME_EXTRACT = 'vd_extract'
 KEY_VIDEO_EXTRACTED_FILES = 'vd_extractedFiles'
@@ -261,7 +262,7 @@ class DownloadVideoInfoDic:
 		"""
 		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
-	def getVideoIndexes(self):
+	def getVideoIndexStrings(self):
 		'''
 		Returns a list of video indexes as string.
 		
@@ -298,7 +299,7 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getVideoFileNameForVideoIndex(self, videoIndex):
+	def getVideoAudioFileNameForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
 		if KEY_VIDEO_DOWNLOAD_FILENAME in videoInfoDic.keys():
@@ -306,13 +307,64 @@ class DownloadVideoInfoDic:
 		else:
 			return None
 	
-	def getVideoFileNameForVideoTitle(self, videoTitle):
+	def getVideoAudioFileNameForVideoTitle(self, videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 
 		if videoIndex:
 			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
 		else:
 			return None
+	
+	def getVideoDownloadExceptionForVideoTitle(self, videoTitle):
+		"""
+		Returns True if the video download caused an exception, False
+		otherwise
+		
+		:param videoTitle:
+		
+		:return:    True if the video download caused an exception,
+					False otherwise
+		"""
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+			if KEY_VIDEO_DOWNLOAD_EXCEPTION in videoInfoDic.keys():
+				return videoInfoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION]
+			else:
+				# the case if the DownloadVideoInfoDic is old and does not
+				# contain this information
+				return False
+		else:
+			return None
+	
+	def setVideoDownloadExceptionForVideoTitle(self,
+	                                           videoTitle,
+	                                           isDownloadSuccess):
+		"""
+		Sets the video download exception value for the passed video
+		title to True if the passed isDownloadSuccess is False, and to
+		False otherwise.
+
+		:param videoTitle:
+		"""
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			self.setVideoDownloadExceptionForVideoIndex(videoIndex,
+			                                            isDownloadSuccess)
+	
+	def setVideoDownloadExceptionForVideoIndex(self,
+	                                           videoIndex,
+	                                           isDownloadSuccess):
+		"""
+		Sets the video download exception value for the passed video
+		index to True if the passed isDownloadSuccess is False, and to
+		False otherwise.
+
+		:param videoIndex:
+		"""
+		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
@@ -414,7 +466,8 @@ class DownloadVideoInfoDic:
 								  videoIndex,
 								  videoTitle,
 								  videoUrl,
-								  downloadedFileName):
+								  downloadedFileName,
+	                              isDownloadSuccess=True):
 		"""
 		Creates the video info sub-dic for the video index if necessary.
 		
@@ -425,6 +478,7 @@ class DownloadVideoInfoDic:
 		:param videoTitle:
 		:param videoUrl:
 		:param downloadedFileName:
+		:param isDownloadSuccess
 		"""
 #		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
 #		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
@@ -437,6 +491,7 @@ class DownloadVideoInfoDic:
 		if not videoIndexKey in self.dic[KEY_VIDEOS].keys():
 			videoIndexDic = {}
 			self.dic[KEY_VIDEOS][videoIndexKey] = videoIndexDic
+			self.removeVideoDicForVideoTitleIfExist(videoTitle)
 		else:
 			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
 			
@@ -446,9 +501,16 @@ class DownloadVideoInfoDic:
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_FILENAME] = downloadedFileName
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_TIME] = additionTimeStr
+		videoIndexDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
-	
+
+	def removeVideoDicForVideoTitleIfExist(self, videoTitle):
+		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
+		
+		if videoIndex:
+			del self.dic[KEY_VIDEOS][videoIndex]
+		
 	def removeVideoInfoForVideoTitle(self,
 									 videoTitle):
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
@@ -485,6 +547,21 @@ class DownloadVideoInfoDic:
 			videoInfoDic = {}
 			
 		return videoInfoDic
+
+	def getFailedVideoIndexes(self):
+		"""
+		Returns a list of download failed video integer indexes.
+		
+		:return: list of download failed video integer indexes
+		"""
+		failedVideoIndexLst = []
+
+		for indexKey, videoDic in self.dic[KEY_VIDEOS].items():
+			
+			if videoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] is True:
+				failedVideoIndexLst.append(int(indexKey))
+				
+		return failedVideoIndexLst
 	
 	def getVideoIndexForVideoTitle(self, videoTitle):
 		for key in self.dic[KEY_VIDEOS].keys():
@@ -495,7 +572,7 @@ class DownloadVideoInfoDic:
 	
 	def getVideoIndexForVideoFileName(self, videoFileName):
 		for key in self.dic[KEY_VIDEOS].keys():
-			if self.getVideoFileNameForVideoIndex(key) == videoFileName:
+			if self.getVideoAudioFileNameForVideoIndex(key) == videoFileName:
 				return key
 		
 		return None

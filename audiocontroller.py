@@ -124,7 +124,8 @@ class AudioController:
 					  clipEndHHMMSS,
 					  floatSpeed=1.0):
 		"""
-		Extracts a portion of the audio file referred by the passed audioFilePathName.
+		Extracts a portion of the audio file referred by the passed
+		audioFilePathName.
 		
 		:param audioFilePathName:   the file which will be trimmed
 		:param clipStartHHMMSS:     format = HH:MM:SS, 00:05:23
