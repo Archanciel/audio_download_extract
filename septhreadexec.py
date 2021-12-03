@@ -1,5 +1,6 @@
 import threading, time
 
+
 class SepThreadExec:
 	"""
 	This class executes on a separate thread the passed func. If the passed
@@ -21,7 +22,7 @@ class SepThreadExec:
 		:param endFunc:     optional function executed on the separated thread
 							once the func is executed
 		:param funcArgs:    parm name: value dic. Ex: {'age': 25, 'name': 'Joe'}
-		:param endFuncArgs: parm name: value dic. Ex: {'age': 25, 'name': 'Joe'}
+		:param endFuncArgs: parm values tuple. Ex: (25, 'Joe') or (25, )
 		"""
 		self.callerGUI = callerGUI
 		
@@ -41,24 +42,28 @@ class SepThreadExec:
 		self.t = threading.Thread(target=_callback, args=args, kwargs=funcArgs)
 		self.t.setName('Exec thread ' + self.t.getName())
 		self.t.daemon = True
-		
+	
 	def start(self):
 		self.t.start()
 
+
 if __name__ == "__main__":
-	def myFunc(name='', age=0):
-		for i in range(5):
-			time.sleep(1)
-			print('My name is {}. I am {} years old'.format(name, age))
-	
-	def myEndFunc(name='', age=0):
-		print('MY SURNAME WAS {}. I was {} years old'.format(name.upper(), age))
+	class GuiStub:
+		def myFunc(self, name='', age=0):
+			for i in range(5):
+				time.sleep(1)
+				print('My name is {}. I am {} years old'.format(name, age))
 		
-	ste = SepThreadExec(callerGUI=None,
-	              func=myFunc,
-	              endFunc=myEndFunc,
-	              funcArgs={'name': 'Jean-Pierre', 'age': 60},
-	              endFuncArgs=('paulo le scientifique', 14))
+		def myEndFunc(self, name='', age=0):
+			print('MY SURNAME WAS {}. I was {} years old'.format(name.upper(), age))
+	
+	
+	guiStub = GuiStub()
+	ste = SepThreadExec(callerGUI=guiStub,
+	                    func=guiStub.myFunc,
+	                    endFunc=guiStub.myEndFunc,
+	                    funcArgs={'name': 'Jean-Pierre', 'age': 61},
+	                    endFuncArgs=('paulo le scientifique', 14))
 	
 	ste.start()
 	time.sleep(6)
