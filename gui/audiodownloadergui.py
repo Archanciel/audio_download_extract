@@ -367,7 +367,7 @@ class AudioDownloaderGUI(AudioGUI):
 				                              func=self.getDownloadObjectTitleOnNewThread,
 				                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
 				                              endFunc=self.executeDownload,
-				                              endFuncArgs=('playlistOrSingleVideoUrl', playlistOrSingleVideoUrl))
+				                              endFuncArgs=(playlistOrSingleVideoUrl, ))
 				
 				self.downloadObjectTitleThreadCreated = True
 	
@@ -376,7 +376,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadFromUrlDownloadLst(self):
 		print(self.playlistOrSingleVideoUrlDownloadLst)
 	
-	def executeDownload(self, _, playlistOrSingleVideoUrl):
+	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
 		
 		if self.accessError is None:
