@@ -408,8 +408,12 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			while self.downloadThreadCreated:
 				time.sleep(3)
-				
-			print('downloading now ', playlistOrSingleVideoUrl)
+
+			if self.originalPlaylistTitle:
+				print('downloading playlist now ', self.originalPlaylistTitle)
+			if self.originalSingleVideoTitle:
+				print('downloading video now ', self.originalSingleVideoTitle)
+
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
