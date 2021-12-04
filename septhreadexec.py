@@ -34,6 +34,15 @@ class SepThreadExec:
 		args = (func, endFunc) + endFuncArgs
 		
 		def _callback(func, endFunc, *a, **kw):
+			"""
+			WARNING:    def _callback(func, endFunc, **a, **kw): causes error
+						'multiple **parameters are not allowed
+
+			:param func:
+			:param endFunc:
+			:param a:       tuple containing parms values for the passed endFunc
+			:param kw:      dic containing parms name values for the passed func
+			"""
 			func(**kw)
 			
 			if endFunc is not None:
