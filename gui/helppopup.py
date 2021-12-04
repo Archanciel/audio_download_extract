@@ -1,5 +1,5 @@
-from helputil import HelpUtil
-from scrollablelabelpopup import ScrollableLabelPopup
+from gui.helputil import HelpUtil
+from gui.scrollablelabelpopup import ScrollableLabelPopup
 
 from kivy import platform
 

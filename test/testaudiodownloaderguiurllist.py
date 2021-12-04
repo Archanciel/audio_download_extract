@@ -6,6 +6,7 @@ from os.path import sep
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
+#sys.path.insert(1, parentDir + sep + 'gui')
 
 from constants import *
 from guioutputstub import GuiOutputStub
@@ -13,8 +14,68 @@ from audiocontroller import AudioController
 from configmanager import ConfigManager
 from dirutil import DirUtil
 from downloadvideoinfodic import DownloadVideoInfoDic
-			
+
+# from kivy.app import App
+# from kivy.config import Config
+# from kivy.metrics import dp
+# from kivy.properties import BooleanProperty
+# from kivy.properties import ObjectProperty
+# from kivy.uix.screenmanager import ScreenManager
+# from kivy.uix.button import Button
+# from kivy.uix.gridlayout import GridLayout
+# from kivy.uix.label import Label
+# from kivy.uix.popup import Popup
+# from kivy.uix.recycleview.views import RecycleDataViewBehavior
+# from kivy.uix.scrollview import ScrollView
+# from kivy.uix.settings import SettingOptions
+# from kivy.uix.settings import SettingSpacer
+# from kivy.uix.settings import SettingsWithTabbedPanel
+# from kivy.uix.togglebutton import ToggleButton
+# from kivy.uix.widget import Widget
+# from kivy.utils import platform
+#
+from kivy.core.clipboard import Clipboard
+
+from gui.filechooserpopup import LoadFileChooserPopup
+from gui.filechooserpopup import SaveFileChooserPopup
+from gui.filechooserpopup import DeleteFileChooserPopup
+from gui.filechooserpopup import SelectOrCreateDirFileChooserPopup
+from gui.filechooserpopup import FileToClipLoadFileChooserPopup
+from gui.filechooserpopup import FileToShareLoadFileChooserPopup
+from gui.confirmdownloadpopup import ConfirmDownloadPopup
+from gui.yesnopopup import YesNoPopup
+from gui.helputil import HelpUtil
+from gui.helppopup import HelpPopup
+from gui.focustextinput import FocusTextInput
+from gui.audioclippergui import AudioClipperGUI
+from gui.audiosharegui import AudioShareGUI
+from gui.audiopositiongui import AudioPositionGUI
+
+from gui.audiogui import AudioGUI
+from gui.audiogui import FILE_ACTION_LOAD
+from constants import *
+from configmanager import ConfigManager
+from audiocontroller import AudioController
+from gui.guiutil import GuiUtil
+from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
+from dirutil import DirUtil
+from septhreadexec import SepThreadExec
+
+
+from gui.audiodownloadergui import AudioDownloaderGUIMainApp
+from gui.audiodownloadergui import AudioDownloaderGUI
+
 class TestAudioDownloaderGUIUrlList(unittest.TestCase):
+
+	def testAudioDownloaderGUI(self):
+		dbApp = AudioDownloaderGUIMainApp()
+		dbApp.run()
+		audioDownloaderGUI = dbApp.audioDownloaderGUI
+		
+		Clipboard.copy('https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo')
+		audioDownloaderGUI.addDownloadUrl()
+		
+		self.assertTrue(True)
 
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
@@ -785,4 +846,4 @@ class TestAudioDownloaderGUIUrlList(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioDownloaderGUIUrlList()
-	tst.testDownloadVideosReferencedInPlaylist_noTimeFrame()
+	tst.testAudioDownloaderGUI()

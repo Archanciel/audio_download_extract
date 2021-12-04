@@ -4,11 +4,11 @@ from kivy.properties import BooleanProperty
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-from audiopositiongui import AudioPositionGUI
+from gui.audiopositiongui import AudioPositionGUI
 from constants import *
-from selectablerecycleboxlayout import SelectableRecycleBoxLayout
+from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from sharecontactdic import *
-from audiogui import *
+from gui.audiogui import *
 
 NAME_LABEL_KEY = 'nameLabel'
 EMAIL_LABEL_KEY = 'emailLabel'

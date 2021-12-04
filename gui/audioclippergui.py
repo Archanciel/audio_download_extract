@@ -4,8 +4,8 @@ from kivy.clock import Clock
 
 import threading, time
 
-from audiopositiongui import AudioPositionGUI
-from asynchsliderupdater import AsynchSliderUpdater
+from gui.audiopositiongui import AudioPositionGUI
+from gui.asynchsliderupdater import AsynchSliderUpdater
 from audiocontroller import AudioController
 
 # constants below were copied from AudioShareGUI and will be deleted

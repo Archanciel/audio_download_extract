@@ -28,22 +28,22 @@ from kivy.utils import platform
 
 from kivy.core.clipboard import Clipboard
 
-from filechooserpopup import LoadFileChooserPopup
-from filechooserpopup import SaveFileChooserPopup
-from filechooserpopup import DeleteFileChooserPopup
-from filechooserpopup import SelectOrCreateDirFileChooserPopup
-from filechooserpopup import FileToClipLoadFileChooserPopup
-from filechooserpopup import FileToShareLoadFileChooserPopup
+from gui.filechooserpopup import LoadFileChooserPopup
+from gui.filechooserpopup import SaveFileChooserPopup
+from gui.filechooserpopup import DeleteFileChooserPopup
+from gui.filechooserpopup import SelectOrCreateDirFileChooserPopup
+from gui.filechooserpopup import FileToClipLoadFileChooserPopup
+from gui.filechooserpopup import FileToShareLoadFileChooserPopup
 from gui.confirmdownloadpopup import ConfirmDownloadPopup
 from gui.yesnopopup import YesNoPopup
 
-from audiogui import AudioGUI
-from audiogui import FILE_ACTION_LOAD
+from gui.audiogui import AudioGUI
+from gui.audiogui import FILE_ACTION_LOAD
 from constants import *
 from configmanager import ConfigManager
 from audiocontroller import AudioController
 from gui.guiutil import GuiUtil
-from selectablerecycleboxlayout import SelectableRecycleBoxLayout
+from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 from septhreadexec import SepThreadExec
 

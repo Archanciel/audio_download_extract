@@ -1,4 +1,4 @@
-from audiogui import AudioGUI
+from gui.audiogui import AudioGUI
 
 class AudioPositionGUI(AudioGUI):
 	"""
