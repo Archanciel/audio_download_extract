@@ -1,4 +1,5 @@
 import os,sys,inspect
+import time
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -344,9 +345,14 @@ class AudioDownloaderGUI(AudioGUI):
 		playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		if playlistOrSingleVideoUrl != '' and \
+				playlistOrSingleVideoUrl != ' ' and \
 				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
 				playlistOrSingleVideoUrl.startswith('https://'):
 			self.playlistOrSingleVideoUrlDownloadLst.append(playlistOrSingleVideoUrl)
+			Clipboard.copy(' ') # empty clipboard. Copying '' does not work !
+		
+		print('\naddDownloadUrl')
+		print(self.playlistOrSingleVideoUrlDownloadLst)
 		
 	def downloadFromClipboard(self):
 		"""
@@ -361,7 +367,7 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			# obtaining the playlist or single video title using a separate thread
 			# for the playlist or single video referenced by the url obtained from
-			# the clipboard, url which is stored in playlistOrSingleVideoUrl.
+			# the clipboard..
 			if not self.downloadObjectTitleThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
 				                              func=self.getDownloadObjectTitleOnNewThread,
@@ -374,7 +380,37 @@ class AudioDownloaderGUI(AudioGUI):
 				sepThreadExec.start()
 
 	def downloadFromUrlDownloadLst(self):
-		print(self.playlistOrSingleVideoUrlDownloadLst)
+		print('\ndownloadFromUrlDownloadLst')
+		
+		for playlistOrSingleVideoUrl in self.playlistOrSingleVideoUrlDownloadLst:
+			_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
+				self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
+
+			if self.originalSingleVideoTitle is None:
+				# url obtained from clipboard points to a playlist
+				downloadObjectTitle = self.originalPlaylistTitle
+				isPlayListDownloaded = True
+			else:
+				# url obtained from clipboard points to a single video
+				downloadObjectTitle = self.originalSingleVideoTitle
+				isPlayListDownloaded = False
+			
+			# correcting a bug if you first downloaded a playlist after
+			# modifying the playlist name and then download a playlist
+			# without setting the dir ar modifying the playlist name
+			self.modifiedPlaylistTitle = None
+			
+			# if answer is yes, the playlist dir will be created as sub dir
+			# off the audio dir or the single video will be downloaded in the
+			# default single video dir as defined in the audiodownloader.ini
+			# file.
+			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
+			
+			while self.downloadThreadCreated:
+				time.sleep(3)
+				
+			print('downloading now ', playlistOrSingleVideoUrl)
+			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
@@ -944,6 +980,25 @@ class AudioDownloaderGUI(AudioGUI):
 
 			sepThreadExec.start()
 	
+	def downloadPlaylistOrSingleVideoAudioFromUrlLst(self, playlistOrSingleVideoUrl):
+		"""
+		This method launch downloading audios for the videos referenced in the playlist
+		URL or the audio of the single video if the URL points to a video, this in a
+		new thread.
+		"""
+		# downloading the playlist or single video title using a separate thread
+		if not self.downloadThreadCreated:
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl})
+			
+			self.downloadThreadCreated = True  # used to fix a problem on Android
+			# where two download threads are
+			# created after clicking on 'Yes'
+			# button on the ConfirmPopup dialog
+			
+			sepThreadExec.start()
+	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self, playlistOrSingleVideoUrl):
 		"""
 		This method executed on a separated thread launch downloading audios for
@@ -999,6 +1054,55 @@ class AudioDownloaderGUI(AudioGUI):
 												# created after clicking on 'Yes'
 												# button on the ConfirmPopup dialog
 	
+			self.stopDownloadButton.disabled = True
+	
+	def downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread(self, playlistOrSingleVideoUrl):
+		"""
+		This method executed on a separated thread launch downloading audios for
+		the videos referenced in a playlist or the audio of a single video.
+		"""
+		self.isFirstCurrentDownloadInfo = True
+		
+		if self.originalPlaylistTitle is not None:
+			# if a playlist is downloading, the stop download button is
+			# activated
+			self.stopDownloadButton.disabled = False
+			
+			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+				playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+				originalPlaylistTitle=self.originalPlaylistTitle,
+				modifiedPlaylistTitle=self.modifiedPlaylistTitle,
+				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			
+			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
+			                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+			                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			
+			self.downloadThreadCreated = False  # used to fix a problem on Android
+			# where two download threads are
+			# created after clicking on 'Yes'
+			# button on the ConfirmPopup dialog
+			
+			self.stopDownloadButton.disabled = True
+		else:
+			# if a single video is downloading, the stop download button is
+			# disabled since interrupting a single video download is not
+			# possible
+			self.stopDownloadButton.disabled = True
+			
+			self.audioController.downloadSingleVideo(
+				singleVideoUrl=playlistOrSingleVideoUrl,
+				singleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+				originalSingleVideoTitle=self.originalSingleVideoTitle,
+				modifiedVideoTitle=self.modifiedSingleVideoTitle)
+			
+			self.downloadThreadCreated = False  # used to fix a problem on Android
+			# where two download threads are
+			# created after clicking on 'Yes'
+			# button on the ConfirmPopup dialog
+			
 			self.stopDownloadButton.disabled = True
 	
 	def createDownloadConfirmPopup(self,
