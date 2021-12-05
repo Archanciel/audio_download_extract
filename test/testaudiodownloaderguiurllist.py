@@ -68,15 +68,50 @@ from gui.audiodownloadergui import AudioDownloaderGUI
 class TestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 	def testAudioDownloaderGUI(self):
+		configMgr = ConfigManager(
+			DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
+
+		playlistDirNameLst = []
+		playlistSaveDirNameLst = []
+
+		playlistDirName_0 = "test_small_videos"
+		playlistSaveDirName_0 = "test_small_videos" + sep + '80%'
+		playlistDirNameLst.append(playlistDirName_0)
+		playlistSaveDirNameLst.append(playlistSaveDirName_0)
+
+		playlistDirName_3 = "test_small_videos_3"
+		playlistSaveDirName_3 = "test_small_videos_3" + sep + '80%'
+		playlistDirNameLst.append(playlistDirName_3)
+		playlistSaveDirNameLst.append(playlistSaveDirName_3)
+
+		self.restorePlaylistDownloadDirs(configMgr, playlistDirNameLst, playlistSaveDirNameLst)
+		
+		Clipboard.copy('https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo')
 		dbApp = AudioDownloaderGUIMainApp()
 		dbApp.run()
 		audioDownloaderGUI = dbApp.audioDownloaderGUI
 		
-		Clipboard.copy('https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo')
 		audioDownloaderGUI.addDownloadUrl()
 		
 		self.assertTrue(True)
-
+	
+	def restorePlaylistDownloadDirs(self,
+	                                configMgr,
+	                                playlistDirNameLst,
+	                                playlistSaveDirNameLst):
+		downloadDirLst = []
+		
+		for playlistDirName, playlistSaveDirName in zip(playlistDirNameLst, playlistSaveDirNameLst):
+			downloadDir = configMgr.dataPath + sep + playlistDirName
+			savedDownloadDir = configMgr.dataPath + sep + playlistSaveDirName
+			DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
+			DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+			                                      targetDir=downloadDir,
+			                                      fileNamePattern='*')
+			downloadDirLst.append(downloadDir)
+			
+		return downloadDirLst
+	
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
 		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + testDirName + sep

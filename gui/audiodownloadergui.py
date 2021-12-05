@@ -305,6 +305,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isUploadDateAddedToPlaylistVideo = False
 		self.isIndexAddedToPlaylistVideo = False
 		self.playlistOrSingleVideoUrlDownloadLst = []
+		self.downloadFromUrlDownloadLstThreadCreated = False
 		
 		self._doOnStart()
 	
@@ -360,7 +361,18 @@ class AudioDownloaderGUI(AudioGUI):
 		download button defined in the audiodownloadergui.kv file.
 		"""
 		if self.playlistOrSingleVideoUrlDownloadLst != []:
-			self.downloadFromUrlDownloadLst()
+			
+			# downloading the playlist or single video title using a separate thread
+			if not self.downloadFromUrlDownloadLstThreadCreated:
+				sepThreadExec = SepThreadExec(callerGUI=self,
+				                              func=self.downloadFromUrlDownloadLst)
+				
+				self.downloadFromUrlDownloadLstThreadCreated = True   # used to fix a problem on Android
+													# where two download threads are
+													# created after clicking on 'Yes'
+													# button on the ConfirmPopup dialog
+				
+				sepThreadExec.start()
 		else:
 			playlistOrSingleVideoUrl = Clipboard.paste()
 			self.disableButtons()
@@ -415,6 +427,11 @@ class AudioDownloaderGUI(AudioGUI):
 				print('downloading video now ', self.originalSingleVideoTitle)
 
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
+			
+		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
+											# where two download threads are
+											# created after clicking on 'Yes'
+											# button on the ConfirmPopup dialog
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()

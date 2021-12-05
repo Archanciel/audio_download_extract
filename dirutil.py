@@ -142,19 +142,22 @@ class DirUtil:
 		return targetAudioDirShort
 	
 	@staticmethod
-	def getFileNamesInDir(targetAudioDir):
-		return [f for f in listdir(targetAudioDir) if isfile(join(targetAudioDir, f))]
+	def getFileNamesInDir(targetDir):
+		return [f for f in listdir(targetDir) if isfile(join(targetDir, f))]
 	
 	@staticmethod
-	def getFilePathNamesInDirForPattern(targetAudioDir, pattern):
-		return glob.glob(targetAudioDir + sep + pattern)
+	def getFilePathNamesInDirForPattern(targetDir, fileNamePattern):
+		if not os.path.isdir(targetDir):
+			return None
+
+		return glob.glob(targetDir + sep + fileNamePattern)
 	
 	@staticmethod
-	def getFileNamesInDirForPattern(targetAudioDir, pattern):
-		if not os.path.isdir(targetAudioDir):
+	def getFileNamesInDirForPattern(targetDir, fileNamePattern):
+		if not os.path.isdir(targetDir):
 			return None
 		
-		filePathNameLst = glob.glob(targetAudioDir + sep + pattern)
+		filePathNameLst = glob.glob(targetDir + sep + fileNamePattern)
 		
 		return [DirUtil.extractFileNameFromPathFileName(f) for f in filePathNameLst]
 	
@@ -217,6 +220,22 @@ class DirUtil:
 	def deleteFiles(filePathNameLst):
 		for filePathName in filePathNameLst:
 			DirUtil.deleteFileIfExist(filePathName)
+	
+	@staticmethod
+	def deleteFilesInDirForPattern(targetDir, fileNamePattern):
+		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(targetDir, fileNamePattern)
+
+		if filePathNameLst:
+			for filePathName in filePathNameLst:
+				DirUtil.deleteFileIfExist(filePathName)
+	
+	@staticmethod
+	def copyFilesInDirToDirForPattern(sourceDir, targetDir, fileNamePattern):
+		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(sourceDir, fileNamePattern)
+		
+		if filePathNameLst:
+			for filePathName in filePathNameLst:
+				shutil.copy(filePathName, targetDir)
 	
 	@staticmethod
 	def deleteFileIfExist(filePathName):
