@@ -304,7 +304,6 @@ class AudioDownloaderGUI(AudioGUI):
 		self.accessError = None
 		self.isUploadDateAddedToPlaylistVideo = False
 		self.isIndexAddedToPlaylistVideo = False
-		self.playlistOrSingleVideoUrlDownloadLst = []
 		self.downloadFromUrlDownloadLstThreadCreated = False
 		
 		self._doOnStart()
@@ -349,52 +348,44 @@ class AudioDownloaderGUI(AudioGUI):
 				playlistOrSingleVideoUrl != ' ' and \
 				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
 				playlistOrSingleVideoUrl.startswith('https://'):
-			self.playlistOrSingleVideoUrlDownloadLst.append(playlistOrSingleVideoUrl)
+			urlListEntry = {'text': playlistOrSingleVideoUrl,
+			                'selectable': True}
+			self.requestListRV.data.append(urlListEntry)
+			self.resetListViewScrollToEnd()
+			
+			if self.showRequestList:
+				self.adjustRequestListSize()
+			
+			self.clearHistoryListSelection()
+			self.manageStateOfGlobalRequestListButtons()
+			self.emptyRequestFields()
 			Clipboard.copy(' ') # empty clipboard. Copying '' does not work !
-		
-		print('\naddDownloadUrl')
-		print(self.playlistOrSingleVideoUrlDownloadLst)
 		
 	def downloadFromClipboard(self):
 		"""
 		Method called either at application start or when pressing the
 		download button defined in the audiodownloadergui.kv file.
 		"""
-		if self.playlistOrSingleVideoUrlDownloadLst != []:
-			
-			# downloading the playlist or single video title using a separate thread
-			if not self.downloadFromUrlDownloadLstThreadCreated:
-				sepThreadExec = SepThreadExec(callerGUI=self,
-				                              func=self.downloadFromUrlDownloadLst)
-				
-				self.downloadFromUrlDownloadLstThreadCreated = True   # used to fix a problem on Android
-													# where two download threads are
-													# created after clicking on 'Yes'
-													# button on the ConfirmPopup dialog
-				
-				sepThreadExec.start()
-		else:
-			playlistOrSingleVideoUrl = Clipboard.paste()
-			self.disableButtons()
-			
-			# obtaining the playlist or single video title using a separate thread
-			# for the playlist or single video referenced by the url obtained from
-			# the clipboard..
-			if not self.downloadObjectTitleThreadCreated:
-				sepThreadExec = SepThreadExec(callerGUI=self,
-				                              func=self.getDownloadObjectTitleOnNewThread,
-				                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
-				                              endFunc=self.executeDownload,
-				                              endFuncArgs=(playlistOrSingleVideoUrl, ))
-				
-				self.downloadObjectTitleThreadCreated = True
-	
-				sepThreadExec.start()
-
-	def downloadFromUrlDownloadLst(self):
-		print('\ndownloadFromUrlDownloadLst')
+		playlistOrSingleVideoUrl = Clipboard.paste()
+		self.disableButtons()
 		
-		for playlistOrSingleVideoUrl in self.playlistOrSingleVideoUrlDownloadLst:
+		# obtaining the playlist or single video title using a separate thread
+		# for the playlist or single video referenced by the url obtained from
+		# the clipboard..
+		if not self.downloadObjectTitleThreadCreated:
+			sepThreadExec = SepThreadExec(callerGUI=self,
+			                              func=self.getDownloadObjectTitleOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
+			                              endFunc=self.executeDownload,
+			                              endFuncArgs=(playlistOrSingleVideoUrl, ))
+			
+			self.downloadObjectTitleThreadCreated = True
+
+			sepThreadExec.start()
+
+	def downloadFromUrlDownloadLstOnNewThread(self):
+		for listEntry in self.requestListRV.data:
+			playlistOrSingleVideoUrl = listEntry['text']
 			_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
@@ -420,11 +411,6 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			while self.downloadThreadCreated:
 				time.sleep(3)
-
-			if self.originalPlaylistTitle:
-				print('downloading playlist now ', self.originalPlaylistTitle)
-			if self.originalSingleVideoTitle:
-				print('downloading video now ', self.originalSingleVideoTitle)
 
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 			
@@ -725,13 +711,31 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		Method linked to the Replay All button in kv file.
 		"""
-		self.executeOnlineRequestOnNewThread(asyncOnlineRequestFunction=self.replayAllRequestsOnNewThread, kwargs={})
-
+#		self.executeOnlineRequestOnNewThread(asyncOnlineRequestFunction=self.replayAllRequestsOnNewThread, kwargs={})
+		if len(self.requestListRV.data) > 0:
+			# the case if the Add button was pressed in order to add the
+			# playlist or single video url contained in the clipboard
+			# to the self.playlistOrSingleVideoUrlDownloadLst
+			
+			# downloading the playlists or single videos contained in
+			# the self.downloadFromUrlDownloadLst using a separate thread.
+			# So, the download information is displayed on the outputLabel.
+			if not self.downloadFromUrlDownloadLstThreadCreated:
+				sepThreadExec = SepThreadExec(callerGUI=self,
+				                              func=self.downloadFromUrlDownloadLstOnNewThread)
+				
+				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
+				# 1 playlist or video is
+				# downloaded at the same
+				# time.
+				
+				sepThreadExec.start()
+	
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
 		"""
 		This generic method first disable the buttons whose usage could disturb
 		the passed asyncFunction. It then executes the asyncFunction on a new thread.
-		When the asyncFunction is finished, it reenables the disabled buttons.
+		When the asyncFunction is finished, it re-enables the disabled buttons.
 		
 		:param asyncOnlineRequestFunction:
 		:param kwargs: keyword args dic for the asyncOnlineRequestFunction
@@ -988,7 +992,8 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
-		# downloading the playlist or single video title using a separate thread
+		# downloading the playlist or single video using a separate thread
+		# So, the download information is displayed on the outputLabel.
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
@@ -1007,7 +1012,9 @@ class AudioDownloaderGUI(AudioGUI):
 		URL or the audio of the single video if the URL points to a video, this in a
 		new thread.
 		"""
-		# downloading the playlist or single video title using a separate thread
+		# downloading the playlists or single videos contained in
+		# the self.downloadFromUrlDownloadLst using a separate thread.
+		# So, the download informations are displayed on the outputLabel.
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread,
@@ -1364,7 +1371,8 @@ class AudioDownloaderGUI(AudioGUI):
 		:param answer:
 		"""
 		if answer == 'yes':  # 'yes' is set in yesnopopup.kv file
-			# downloading the playlist or single video title using a separate thread
+			# downloading the playlist or single video using a separate thread.
+			# So, the download information is displayed in real time on the outputLabel.
 			if not self.downloadThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
 				                              func=self.downloadPlaylistAudioOnNewThread)
