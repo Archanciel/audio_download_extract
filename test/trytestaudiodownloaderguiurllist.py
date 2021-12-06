@@ -53,42 +53,67 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 		playlistDirNameLst = []
 		playlistSaveDirNameLst = []
+		urlDownloadLst = []
+		singleVideoAudioFileNameLst = []
 
 		playlistDirName_0 = "test_small_videos"
 		playlistSaveDirName_0 = "test_small_videos" + sep + '80%'
 		playlistDirNameLst.append(playlistDirName_0)
 		playlistSaveDirNameLst.append(playlistSaveDirName_0)
+		playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
+		urlDownloadLst.append(playlistUrl_0)
 
-		playlistDirName_1 = "test_small_videos_1"
-		playlistSaveDirName_1 = "test_small_videos_1" + sep + '80%'
-		playlistDirNameLst.append(playlistDirName_1)
-		playlistSaveDirNameLst.append(playlistSaveDirName_1)
+		# playlistDirName_1 = "Test 3 short videos extr_sup"
+		# playlistSaveDirName_1 = "Test 3 short videos extr_sup" + sep + '80%'
+		# playlistDirNameLst.append(playlistDirName_1)
+		# playlistSaveDirNameLst.append(playlistSaveDirName_1)
+		# playlistUrl_1 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMShenMgwyjHC8o5bU8QUPbn'
+		# urlDownloadLst.append(playlistUrl_1)
+
+		singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE' # Short King Struggles
+		urlDownloadLst.append(singleVideoUrl_1)
+		singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
+		singleVideoAudioFileNameLst.append(singleVideoFileName_1)
 
 		playlistDirName_2 = "test_small_videos_2"
 		playlistSaveDirName_2 = "test_small_videos_2" + sep + '80%'
 		playlistDirNameLst.append(playlistDirName_2)
 		playlistSaveDirNameLst.append(playlistSaveDirName_2)
+		playlistUrl_2 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTiWvWX6IO1t9RkCpKraYfb'
+		urlDownloadLst.append(playlistUrl_2)
 
 		playlistDirName_3 = "test_small_videos_3"
 		playlistSaveDirName_3 = "test_small_videos_3" + sep + '80%'
 		playlistDirNameLst.append(playlistDirName_3)
 		playlistSaveDirNameLst.append(playlistSaveDirName_3)
+		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
+		urlDownloadLst.append(playlistUrl_3)
 
-		self.restorePlaylistDownloadDirs(configMgr, playlistDirNameLst, playlistSaveDirNameLst)
+		singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc' # Try Not To Laugh | The most interesting funny short video tik tok
+		urlDownloadLst.append(singleVideoUrl_2)
+		singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
+		singleVideoAudioFileNameLst.append(singleVideoFileName_2)
+
+		singleVideoSaveDirName = 'single80%'
 		
-		Clipboard.copy('https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo')
+		self.restorePlaylistDownloadDirs(configMgr,
+		                                 playlistDirNameLst,
+		                                 playlistSaveDirNameLst,
+		                                 singleVideoSaveDirName,
+		                                 singleVideoAudioFileNameLst)
+		self.restoreUrlDownloadFile(urlDownloadLst,
+		                            configMgr.loadAtStartPathFilename)
+		
+
 		dbApp = AudioDownloaderGUIMainApp()
 		dbApp.run()
-		audioDownloaderGUI = dbApp.audioDownloaderGUI
-		
-		audioDownloaderGUI.addDownloadUrl()
-		
-		self.assertTrue(True)
 	
 	def restorePlaylistDownloadDirs(self,
 	                                configMgr,
 	                                playlistDirNameLst,
-	                                playlistSaveDirNameLst):
+	                                playlistSaveDirNameLst,
+	                                singleVideoSaveDirName,
+	                                singleVideoAudioFileNameLst):
 		downloadDirLst = []
 		
 		for playlistDirName, playlistSaveDirName in zip(playlistDirNameLst, playlistSaveDirNameLst):
@@ -99,8 +124,21 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 			                                      targetDir=downloadDir,
 			                                      fileNamePattern='*')
 			downloadDirLst.append(downloadDir)
+
+		for singleVideoAudioFileName in singleVideoAudioFileNameLst:
+			DirUtil.deleteFileIfExist(configMgr.singleVideoDataPath + sep + singleVideoAudioFileName)
 			
+		DirUtil.copyFilesInDirToDirForPattern(sourceDir=configMgr.singleVideoDataPath + sep + singleVideoSaveDirName,
+		                                      targetDir=configMgr.singleVideoDataPath,
+		                                      fileNamePattern='*')
+
 		return downloadDirLst
+	
+	def restoreUrlDownloadFile(self,
+	                           urlDownloadLst,
+	                           urlDownloadLstFilePathName):
+		with open(urlDownloadLstFilePathName, 'w') as f:
+			f.writelines('\n'.join(urlDownloadLst))
 
 
 if __name__ == '__main__':
