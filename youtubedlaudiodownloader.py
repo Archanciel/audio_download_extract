@@ -1,7 +1,7 @@
 import time, os
 import datetime
 from os.path import sep
-import glob, re
+import re
 from urllib.error import URLError
 from urllib.error import HTTPError
 from pytube import Playlist
@@ -9,7 +9,7 @@ from pytube.exceptions import RegexMatchError
 from pytube.exceptions import VideoUnavailable
 import http.client
 import youtube_dl
-from youtube_dl import DownloadError
+from youtube_dl.utils import DownloadError
 
 from audiodownloader import AudioDownloader
 from dirutil import DirUtil
@@ -139,7 +139,18 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 					continue
 				
-				purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+				if videoTitle:
+					purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+				else:
+					# did happen on Android and caused an uncaught exception
+					# which made the app no longer usable.
+					msgText = 'obtaining video title failed for unknown reason.\n'
+					self.audioController.displayError(msgText)
+					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+					playlistDownloadedVideoNb_failed += 1
+
+					continue
+
 				if isUploadDateAddedToPlaylistVideo:
 					if isIndexAddedToPlaylistVideo:
 						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
@@ -147,7 +158,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					else:
 						if isIndexAddedToPlaylistVideo:
 							addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
-							finalPurgedVideoTitleMp3 =addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
+							finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
 						else:
 							finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
 				else:
@@ -287,8 +298,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	                           playlistDownloadedVideoNb,
 	                           isDownloadSuccess=True):
 		"""
-		This method add the current downloading video info to the passed
-		downloadVideoInfoDic and save the downloadVideoInfoDic.
+		This method adds the current downloading video info to the passed
+		downloadVideoInfoDic and saves the downloadVideoInfoDic.
 		
 		:param downloadVideoInfoDic:
 		:param videoIndex:
@@ -296,7 +307,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param videoUrl:
 		:param downloadedFileName:
 		:param playlistDownloadedVideoNb:
-		:return:
+		:param isDownloadSuccess:           False means that downloading the video
+											caused a problem. This video will be
+											re-downloadable
+		
+		:return: videoIndex, playlistDownloadedVideoNb, msgText
 		"""
 		# updating and saving the downloadVideoInfoDic if the audio file
 		# was downloaded successfully enables to retry downloading the playlist.
@@ -333,18 +348,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		ytdlFilePathName = targetAudioDir + sep + ytdlFileName
 		
 		return not os.path.isfile(ytdlFilePathName)
-		
-	def getLastCreatedMp3FileName(self, dir):
-		files = glob.glob(dir + sep + '*.mp3')
-		
-		if files == []:
-			# the case if a problem (an AttributeError) occurred which prevented
-			# youtube-dl to convert the downloaded video to a mp3 file.
-			return ''
-		
-		files.sort(key=os.path.getctime, reverse=True)
-		
-		return files[0].split(sep)[-1]
 
 	def getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self, url):
 		"""
@@ -439,7 +442,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			except AttributeError as e:
 				msgText = 'obtaining video title failed with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
-			except KeyError as e:
+			except KeyError:
 				msgText = 'trying to obtain playlist video titles on an invalid url or a url pointing to a single video.\n'
 				self.audioController.displayError(msgText)
 
