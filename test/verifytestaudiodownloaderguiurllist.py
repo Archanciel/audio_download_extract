@@ -24,8 +24,8 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		# from the save dir. Since all the files in the playlist dir are named
 		# without index and without date, the downloaded file name must also be
 		# without index and without date
-		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_5
-		playlistDir_5_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
+		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_6
+		playlistDir_6_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
 		
 		playlistDir_5_expectedFileNameLst = ['Funny suspicious looking dog.mp3',
 		                                     'Here to help - Give him what he wants.mp3',
@@ -34,6 +34,13 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_5] = playlistDir_5_expectedFileNameLst
 		
+		playlistDir_6_expectedFileNameLst = ['92-Shmeksss Short Video.mp3',
+		                                     '98-Here to help - Give him what he wants.mp3',
+		                                     'Funny suspicious looking dog.mp3',
+		                                     'test warning index date files_indexNoDate_dic.txt',
+		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
+		playlistDirExpectedFileNameLstDic[self.playlistDirName_6] = playlistDir_6_expectedFileNameLst
+
 		self.verifyPlaylistDownloadDirs(self.playlistDirNameLst,
 		                                playlistDirExpectedFileNameLstDic,
 		                                singleVideoExpectedFileNameLst)
@@ -46,6 +53,7 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 			playlistDirExpectedFileNameLst = playlistDirExpectedFileNameLstDic[playlistDirName]
 			downloadDir = self.configMgr.dataPath + sep + playlistDirName
 			playlistDirActualFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
+			print('verifying ' + playlistDirName)
 			self.assertEqual(playlistDirExpectedFileNameLst, playlistDirActualFileNameLst)
 
 		singleVideoActualFileNameLst = DirUtil.getFileNamesInDir(self.configMgr.singleVideoDataPath)

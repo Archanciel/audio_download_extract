@@ -6,6 +6,8 @@ currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
+from kivy.core.clipboard import Clipboard
+
 from configmanager import ConfigManager
 from dirutil import DirUtil
 from gui.audiodownloadergui import AudioDownloaderGUIMainApp
@@ -32,6 +34,8 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# self.playlistDirNameLst.append(self.playlistDirName_4)
 		self.playlistDirName_5 = "test warning index date files_noIndexNoDate"
 		self.playlistDirNameLst.append(self.playlistDirName_5)
+		self.playlistDirName_6 = "test warning index date files_indexNoDate"
+		self.playlistDirNameLst.append(self.playlistDirName_6)
 
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
@@ -69,11 +73,21 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. Since all the files in the playlist dir are named
 		# without index and without date, the downloaded file name must also be
-		# without index and without date
+		# without index and without date.
 		playlistSaveDirName_5 = self.playlistDirName_5 + sep + "100%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_5)
 		playlistUrl_5 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
 		self.urlDownloadLst.append(playlistUrl_5)
+
+		# playlist where only one file is to be downloaded since it was deleted
+		# from the save dir. No file in the playlist dir is named with upload
+		# date suffix. Since one file in the playlist dir is named
+		# with index prefix, the downloaded file name must also be
+		# named with index prefix and without date suffix.
+		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "100%"
+		self.playlistSaveDirNameLst.append(playlistSaveDirName_6)
+		playlistUrl_6 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd'
+		self.urlDownloadLst.append(playlistUrl_6)
 
 		singleVideoSaveDirName = 'single80%'
 		
@@ -84,6 +98,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.restoreUrlDownloadFile(self.urlDownloadLst,
 		                            self.configMgr.loadAtStartPathFilename)
 		
+		
+		Clipboard.copy('  ')
+#		Clipboard.copy(playlistUrl_6)   # causes the downloaded video to be prefixed
+										# with index and suffixed with upload date !!
 
 		dbApp = AudioDownloaderGUIMainApp()
 		dbApp.run()
