@@ -1,115 +1,94 @@
 import unittest
-import os, sys, inspect, shutil, glob, time
-from io import StringIO
+import os, sys, inspect
 from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
-#sys.path.insert(1, parentDir + sep + 'gui')
 
-from constants import *
-from guioutputstub import GuiOutputStub
-from audiocontroller import AudioController
 from configmanager import ConfigManager
 from dirutil import DirUtil
-from downloadvideoinfodic import DownloadVideoInfoDic
-from kivy.core.clipboard import Clipboard
-
-from gui.filechooserpopup import LoadFileChooserPopup
-from gui.filechooserpopup import SaveFileChooserPopup
-from gui.filechooserpopup import DeleteFileChooserPopup
-from gui.filechooserpopup import SelectOrCreateDirFileChooserPopup
-from gui.filechooserpopup import FileToClipLoadFileChooserPopup
-from gui.filechooserpopup import FileToShareLoadFileChooserPopup
-from gui.confirmdownloadpopup import ConfirmDownloadPopup
-from gui.yesnopopup import YesNoPopup
-from gui.helputil import HelpUtil
-from gui.helppopup import HelpPopup
-from gui.focustextinput import FocusTextInput
-from gui.audioclippergui import AudioClipperGUI
-from gui.audiosharegui import AudioShareGUI
-from gui.audiopositiongui import AudioPositionGUI
-
-from gui.audiogui import AudioGUI
-from gui.audiogui import FILE_ACTION_LOAD
-from constants import *
-from configmanager import ConfigManager
-from audiocontroller import AudioController
-from gui.guiutil import GuiUtil
-from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
-from dirutil import DirUtil
-from septhreadexec import SepThreadExec
-
-
 from gui.audiodownloadergui import AudioDownloaderGUIMainApp
-from gui.audiodownloadergui import AudioDownloaderGUI
 
 class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
+	def __init__(self):
+		super().__init__()
+
+		self.configMgr = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
+
+		self.singleVideoAudioFileNameLst = []
+		self.urlDownloadLst = []
+		self.playlistSaveDirNameLst = []
+		self.playlistDirNameLst = []
+
+		# self.playlistDirName_0 = "test_small_videos"
+		# self.playlistDirNameLst.append(self.playlistDirName_0)
+		# self.playlistDirName_2 = "test_small_videos_2"
+		# self.playlistDirNameLst.append(self.playlistDirName_2)
+		# self.playlistDirName_3 = "test_small_videos_3"
+		# self.playlistDirNameLst.append(self.playlistDirName_3)
+		# self.playlistDirName_4 = "test_audio_downloader_two_files_with_time_frames"
+		# self.playlistDirNameLst.append(self.playlistDirName_4)
+		self.playlistDirName_5 = "test warning index date files_noIndexNoDate"
+		self.playlistDirNameLst.append(self.playlistDirName_5)
+
+		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
+		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
+
 	def tryTestAudioDownloaderGUI(self):
-		configMgr = ConfigManager(
-			DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
+		
+		# playlistSaveDirName_0 = self.playlistDirName_0 + sep + '80%'
+		# self.playlistSaveDirNameLst.append(playlistSaveDirName_0)
+		# playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
+		# self.urlDownloadLst.append(playlistUrl_0)
+		#
+		# self.urlDownloadLst.append(self.singleVideoUrl_1)
+		# singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
+		# self.singleVideoAudioFileNameLst.append(singleVideoFileName_1)
+		#
+		# playlistSaveDirName_2 = self.playlistDirName_2 + sep + '80%'
+		# self.playlistSaveDirNameLst.append(playlistSaveDirName_2)
+		# playlistUrl_2 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTiWvWX6IO1t9RkCpKraYfb'
+		# self.urlDownloadLst.append(playlistUrl_2)
+		#
+		# playlistSaveDirName_3 = self.playlistDirName_3 + sep + '80%'
+		# self.playlistSaveDirNameLst.append(playlistSaveDirName_3)
+		# playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
+		# self.urlDownloadLst.append(playlistUrl_3)
+		#
+		# self.urlDownloadLst.append(self.singleVideoUrl_2)
+		# singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
+		# self.singleVideoAudioFileNameLst.append(singleVideoFileName_2)
+		#
+		# playlistSaveDirName_4 = None # avoids playlist dir restore after it was empied
+		# self.playlistSaveDirNameLst.append(playlistSaveDirName_4)
+		# playlistUrl_4 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn'
+		# self.urlDownloadLst.append(playlistUrl_4)
 
-		playlistDirNameLst = []
-		playlistSaveDirNameLst = []
-		urlDownloadLst = []
-		singleVideoAudioFileNameLst = []
-
-		playlistDirName_0 = "test_small_videos"
-		playlistSaveDirName_0 = "test_small_videos" + sep + '80%'
-		playlistDirNameLst.append(playlistDirName_0)
-		playlistSaveDirNameLst.append(playlistSaveDirName_0)
-		playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
-		urlDownloadLst.append(playlistUrl_0)
-
-		# playlistDirName_1 = "Test 3 short videos extr_sup"
-		# playlistSaveDirName_1 = "Test 3 short videos extr_sup" + sep + '80%'
-		# playlistDirNameLst.append(playlistDirName_1)
-		# playlistSaveDirNameLst.append(playlistSaveDirName_1)
-		# playlistUrl_1 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMShenMgwyjHC8o5bU8QUPbn'
-		# urlDownloadLst.append(playlistUrl_1)
-
-		singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE' # Short King Struggles
-		urlDownloadLst.append(singleVideoUrl_1)
-		singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
-		singleVideoAudioFileNameLst.append(singleVideoFileName_1)
-
-		playlistDirName_2 = "test_small_videos_2"
-		playlistSaveDirName_2 = "test_small_videos_2" + sep + '80%'
-		playlistDirNameLst.append(playlistDirName_2)
-		playlistSaveDirNameLst.append(playlistSaveDirName_2)
-		playlistUrl_2 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTiWvWX6IO1t9RkCpKraYfb'
-		urlDownloadLst.append(playlistUrl_2)
-
-		playlistDirName_3 = "test_small_videos_3"
-		playlistSaveDirName_3 = "test_small_videos_3" + sep + '80%'
-		playlistDirNameLst.append(playlistDirName_3)
-		playlistSaveDirNameLst.append(playlistSaveDirName_3)
-		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
-		urlDownloadLst.append(playlistUrl_3)
-
-		singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc' # Try Not To Laugh | The most interesting funny short video tik tok
-		urlDownloadLst.append(singleVideoUrl_2)
-		singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
-		singleVideoAudioFileNameLst.append(singleVideoFileName_2)
+		# playlist where only one file is to be downloaded since it was deleted
+		# from the save dir. Since all the files in the playlist dir are named
+		# without index and without date, the downloaded file name must also be
+		# without index and without date
+		playlistSaveDirName_5 = self.playlistDirName_5 + sep + "100%"
+		self.playlistSaveDirNameLst.append(playlistSaveDirName_5)
+		playlistUrl_5 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
+		self.urlDownloadLst.append(playlistUrl_5)
 
 		singleVideoSaveDirName = 'single80%'
 		
-		self.restorePlaylistDownloadDirs(configMgr,
-		                                 playlistDirNameLst,
-		                                 playlistSaveDirNameLst,
+		self.restorePlaylistDownloadDirs(self.playlistDirNameLst,
+		                                 self.playlistSaveDirNameLst,
 		                                 singleVideoSaveDirName,
-		                                 singleVideoAudioFileNameLst)
-		self.restoreUrlDownloadFile(urlDownloadLst,
-		                            configMgr.loadAtStartPathFilename)
+		                                 self.singleVideoAudioFileNameLst)
+		self.restoreUrlDownloadFile(self.urlDownloadLst,
+		                            self.configMgr.loadAtStartPathFilename)
 		
 
 		dbApp = AudioDownloaderGUIMainApp()
 		dbApp.run()
 	
 	def restorePlaylistDownloadDirs(self,
-	                                configMgr,
 	                                playlistDirNameLst,
 	                                playlistSaveDirNameLst,
 	                                singleVideoSaveDirName,
@@ -117,19 +96,21 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		downloadDirLst = []
 		
 		for playlistDirName, playlistSaveDirName in zip(playlistDirNameLst, playlistSaveDirNameLst):
-			downloadDir = configMgr.dataPath + sep + playlistDirName
-			savedDownloadDir = configMgr.dataPath + sep + playlistSaveDirName
+			downloadDir = self.configMgr.dataPath + sep + playlistDirName
 			DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
-			DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
-			                                      targetDir=downloadDir,
-			                                      fileNamePattern='*')
+			
+			if playlistSaveDirName:
+				savedDownloadDir = self.configMgr.dataPath + sep + playlistSaveDirName
+				DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+				                                      targetDir=downloadDir,
+				                                      fileNamePattern='*')
 			downloadDirLst.append(downloadDir)
 
 		for singleVideoAudioFileName in singleVideoAudioFileNameLst:
-			DirUtil.deleteFileIfExist(configMgr.singleVideoDataPath + sep + singleVideoAudioFileName)
+			DirUtil.deleteFileIfExist(self.configMgr.singleVideoDataPath + sep + singleVideoAudioFileName)
 			
-		DirUtil.copyFilesInDirToDirForPattern(sourceDir=configMgr.singleVideoDataPath + sep + singleVideoSaveDirName,
-		                                      targetDir=configMgr.singleVideoDataPath,
+		DirUtil.copyFilesInDirToDirForPattern(sourceDir=self.configMgr.singleVideoDataPath + sep + singleVideoSaveDirName,
+		                                      targetDir=self.configMgr.singleVideoDataPath,
 		                                      fileNamePattern='*')
 
 		return downloadDirLst

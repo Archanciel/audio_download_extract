@@ -1,12 +1,11 @@
 import unittest
-import os, sys, inspect, glob, shutil
+import os, sys, inspect, shutil
 from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 
-from constants import *
 from dirutil import DirUtil
 
 
