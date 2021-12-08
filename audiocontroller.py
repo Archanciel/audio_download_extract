@@ -425,12 +425,24 @@ class AudioController:
 	                                        isIndexAddedToPlaylistVideo,
 											isUploadDateAddedToPlaylistVideo):
 		"""
-		Currently,  index not used. Continue with adding index ?
-	
-		Currently, upload date not used. Continue with adding date ?
-	
-		Currently,  index is used. Continue without adding index ?
-	
+		According to the value of the passed boolean params isIndexAddedToPlaylistVideo,
+		isUploadDateAddedToPlaylistVideo which represent how the user set the index
+		and upload date checkbox on the ConfirmDownloadPopup, this method returns
+		the messages listed below which will be displayed by the YesNoPopup.
+		 
+		Returnable messages:
+		
+		Playlist directory does not exist. Continue with adding index and upload date ?
+		Playlist directory does not exist. Continue with adding index ?
+		Playlist directory does not exist. Continue with adding upload date ?
+		
+		Playlist directory is empty. Continue with with adding index and upload date ?
+		Playlist directory is empty. Continue with with adding index ?
+		Playlist directory is empty. Continue with with adding upload date ?
+		
+		Currently, index is not used. Continue with adding index ?
+		Currently, index is used. Continue without adding index ?
+		Currently, upload date is not used. Continue with adding date ?
 		Currently, upload date is used. Continue without adding date ?
 		
 		:param downloadVideoInfoDic:
@@ -444,7 +456,7 @@ class AudioController:
 		
 		if indexAndDateUsageLst is None:
 			# the case if the passed playlistOrSingleVideoDownloadPath does
-			# not exist
+			# not exist.
 			warningMsgStart = 'Playlist directory does not exist. Continue with '
 
 			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
@@ -458,9 +470,7 @@ class AudioController:
 
 		if indexAndDateUsageLst == []:
 			# the case if the passed playlistOrSingleVideoDownloadPath is
-			# empty
-			# the case if the passed playlistOrSingleVideoDownloadPath does
-			# not exist
+			# empty.
 			warningMsgStart = 'Playlist directory is empty. Continue with '
 			
 			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
