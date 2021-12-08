@@ -135,7 +135,7 @@ class AudioController:
 		:return:    the created (but not saved) DownloadVideoInfoDic which contains
 					the clip information
 		"""
-		audioFileName = DirUtil.extractFileNameFromPathFileName(audioFilePathName)
+		audioFileName = DirUtil.extractFileNameFromFilePathName(audioFilePathName)
 		audioFilePath = DirUtil.extractPathFromPathFileName(audioFilePathName)
 		videoTitle = audioFileName.split('.')[0]
 		playlistDownloadRootPath = audioFilePath.replace(self.configMgr.dataPath + sep, '')
@@ -415,7 +415,7 @@ class AudioController:
 			# deleting corresponding video entries in downloadVideoInfoDic
 			
 			for filePathName in filePathNameLst:
-				fileName = DirUtil.extractFileNameFromPathFileName(filePathName)
+				fileName = DirUtil.extractFileNameFromFilePathName(filePathName)
 				downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
 	
 			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
