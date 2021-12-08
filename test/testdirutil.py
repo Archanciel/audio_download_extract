@@ -27,6 +27,14 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedFileName, actualFileName)
 	
+	def testReplaceUnauthorizedDirOrFileNameChars_or_char_at_end_fileName(self):
+		playlistTitle = 'Indian 🇮🇳|American🇺🇸| Japanese🇯🇵|Students #youtubeshorts #shorts |Samayra Narula| Subscribe |'
+		expectedFileName = 'Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe '
+		
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
+		
+		self.assertEqual(expectedFileName, actualFileName)
+	
 	def testExtractPathFromPathFileName(self):
 		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
 		pathFileName = expectedPath + sep + 'file.mp3'
@@ -37,7 +45,7 @@ class TestDirUtil(unittest.TestCase):
 		expectedFileName = 'file.mp3'
 		pathFileName = 'c:' + sep + 'users' + sep + 'jean-pierre' + sep + expectedFileName
 		
-		self.assertEqual(expectedFileName, DirUtil.extractFileNameFromPathFileName(pathFileName))
+		self.assertEqual(expectedFileName, DirUtil.extractFileNameFromFilePathName(pathFileName))
 	
 	def testGetLastSubDirs(self):
 		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'

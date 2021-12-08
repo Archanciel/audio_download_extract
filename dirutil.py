@@ -61,7 +61,7 @@ class DirUtil:
 		return sep.join(pathElemLst[:-1])
 	
 	@staticmethod
-	def extractFileNameFromPathFileName(pathFileName):
+	def extractFileNameFromFilePathName(pathFileName):
 		pathElemLst = pathFileName.split(sep)
 		
 		return pathElemLst[-1]
@@ -159,7 +159,7 @@ class DirUtil:
 		
 		filePathNameLst = glob.glob(targetDir + sep + fileNamePattern)
 		
-		return [DirUtil.extractFileNameFromPathFileName(f) for f in filePathNameLst]
+		return [DirUtil.extractFileNameFromFilePathName(f) for f in filePathNameLst]
 	
 	@staticmethod
 	def replaceUnauthorizedDirOrFileNameChars(rawFileName):
@@ -171,6 +171,10 @@ class DirUtil:
 		:param rawFileName:
 		:return:
 		"""
+		if rawFileName[-1] == '|':
+			rawFileName = rawFileName[:-1]  # since YoutubeDL replaces '|' by '
+											# if '|' is located at end of file name !
+			
 		charToReplace = {
 						 '\\': '',
 						 '/': '_', # since YoutubeDL replaces '/' by '_'
@@ -210,7 +214,7 @@ class DirUtil:
 	@staticmethod
 	def renameFile(originalFilePathName, newFileName):
 		newFilePathName = DirUtil.extractPathFromPathFileName(originalFilePathName) + sep + newFileName
-		
+
 		try:
 			os.rename(originalFilePathName, newFilePathName)
 		except (FileNotFoundError, FileExistsError, OSError) as e:
