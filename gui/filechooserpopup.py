@@ -332,7 +332,7 @@ class DeleteFileChooserPopup(FileChooserPopup):
 		fileNameLines = ''
 		
 		for pathFileName in selectionLst:
-			shortedFilePathName = DirUtil.extractFileNameFromPathFileName(pathFileName=pathFileName)
+			shortedFilePathName = DirUtil.extractFileNameFromFilePathName(pathFileName=pathFileName)
 			fileNameLines += shortedFilePathName + '\n'
 		
 		self.deleteButton.disabled = False

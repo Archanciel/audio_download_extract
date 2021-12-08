@@ -1096,17 +1096,39 @@ class AudioDownloaderGUI(AudioGUI):
 			# activated
 			self.stopDownloadButton.disabled = False
 			
-			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
-				playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
-				originalPlaylistTitle=self.originalPlaylistTitle,
-				modifiedPlaylistTitle=self.modifiedPlaylistTitle,
-				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			downloadVideoInfoDic = \
+				self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
+				                                                             playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+				                                                             originalPlaylistTitle=self.originalPlaylistTitle,
+				                                                             modifiedPlaylistTitle=self.modifiedPlaylistTitle)
 			
-			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
-			                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-			                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			indexAndDateUsageLst = self.audioController.getIndexAndDateUsageLstForPlaylist(downloadVideoInfoDic)
+			
+			if indexAndDateUsageLst is None or \
+				indexAndDateUsageLst == []:
+				# the case if the playlist download dir does not exist or is empty.
+				# In this situation, we choose to add the index prefix and the
+				# video upload date suffix to the downloaded audio files.
+				#
+				# This means that in case of downloading an audiobook playlist,
+				# you MUST first download at least one chapter without adding
+				# any prefix or suffix before adding the playlist url to the url
+				# list !
+				#
+				# A better solution would be in this situation to try to determine
+				# if the new playlist is an audiobook playlist with video titles
+				# starting by the same string portion. But this takes time ...
+				isIndexAddedToAlreadyDownloadedPlaylistVideo = True
+				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = True
+			else:
+				isIndexAddedToAlreadyDownloadedPlaylistVideo = indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+				                                               indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]
+				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
+				                                                    indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]
+
+			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
+			                                                        isIndexAddedToPlaylistVideo=isIndexAddedToAlreadyDownloadedPlaylistVideo,
+			                                                        isUploadDateAddedToPlaylistVideo=isUploadDateAddedAlreadyDownloadedToPlaylistVideo)
 			
 			self.downloadThreadCreated = False  # used to fix a problem on Android
 			# where two download threads are
