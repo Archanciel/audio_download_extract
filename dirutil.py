@@ -268,7 +268,8 @@ class DirUtil:
 		Here to help - Give him what he wants.mp3, then the
 		fourth element of the returned audioFileNameLst is True.
 
-		If the passed audioDir is empty, then None is returned
+		If the passed audioDir is empty, then [] is returned.
+		If the passed audioDir does not exist, then None is returned.
 		
 		:param audioDir:
 		
@@ -276,6 +277,20 @@ class DirUtil:
 										None if the passed audioDir does not
 										exist or
 										[] if the passed audioDir is empty.
+
+										four elements list:  [INDEX_DATE boolean,
+															 INDEX_NO_DATE boolean,
+															 NO_INDEX_DATE boolean,
+															 NO_INDEX_NO_DATE boolean]
+	
+										the list index are defined by those DirUtil
+										constants:
+										
+										DirUtil.INDEX_DATE_POS = 0
+										DirUtil.INDEX_NO_DATE_POS = 1
+										DirUtil.NO_INDEX_DATE_POS = 2
+										DirUtil.NO_INDEX_NO_DATE_POS = 3
+
 		"""
 		audioFileNameLst = DirUtil.getFileNamesInDirForPattern(audioDir, '*.mp3')
 
@@ -309,12 +324,26 @@ class DirUtil:
 		Here to help - Give him what he wants.mp3, then the
 		fourth element of the returned audioFileNameLst is True.
 
-		If the passed audioFileNameLst is empty, then the returned
-		indexAndDateUsageLst contains four False elements.
+		If the passed audioFileNameLst was empty, then the returned
+		indexAndDateUsageLst would contain four False elements. But this case
+		does not happen since this method is called only if the audioFileNameLst
+		is not empty.
 		
 		:param audioFileNameLst:
 		
-		:return:indexAndDateUsageLst four boolean elements list
+		:return:indexAndDateUsageLst  four elements list:    [INDEX_DATE boolean,
+															 INDEX_NO_DATE boolean,
+															 NO_INDEX_DATE boolean,
+															 NO_INDEX_NO_DATE boolean]
+
+									  the list index are defined by those DirUtil
+									  constants:
+									  
+									  DirUtil.INDEX_DATE_POS = 0
+									  DirUtil.INDEX_NO_DATE_POS = 1
+									  DirUtil.NO_INDEX_DATE_POS = 2
+									  DirUtil.NO_INDEX_NO_DATE_POS = 3
+
 		"""
 		indexAndDateUsageLst = [False,  # INDEX_DATE
 		                        False,  # INDEX_NO_DATE

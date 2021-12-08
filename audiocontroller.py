@@ -429,7 +429,7 @@ class AudioController:
 		isUploadDateAddedToPlaylistVideo which represent how the user set the index
 		and upload date checkbox on the ConfirmDownloadPopup, this method returns
 		the messages listed below which will be displayed by the YesNoPopup.
-		 
+		
 		Returnable messages:
 		
 		Playlist directory does not exist. Continue with adding index and upload date ?
@@ -451,8 +451,8 @@ class AudioController:
 		:return:
 		"""
 		warningMsg = ''
-		playlistDownloadDir = self.configMgr.dataPath + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
-		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
+		indexAndDateUsageLst = \
+			self.getIndexAndDateUsageLstForPlaylist(playlistDownloadVideoInfoDic=downloadVideoInfoDic)
 		
 		if indexAndDateUsageLst is None:
 			# the case if the passed playlistOrSingleVideoDownloadPath does
@@ -501,7 +501,38 @@ class AudioController:
 				warningMsg += 'Currently, upload date is used. Continue without adding date ?'
 
 		return warningMsg.strip() # strip() removes last '\n' !
-
 	
+	def getIndexAndDateUsageLstForPlaylist(self, playlistDownloadVideoInfoDic):
+		"""
+		If the playlist audioDir is empty, then [] is returned.
+		If the playlist audioDir does not exist, then None is returned.
+		Else, see below.
+
+		:param playlistDownloadVideoInfoDic:
+		
+		:return:indexAndDateUsageLst    four boolean elements list or
+										None if the passed audioDir does not
+										exist or
+										[] if the passed audioDir is empty.
+
+										four elements list:  [INDEX_DATE boolean,
+															 INDEX_NO_DATE boolean,
+															 NO_INDEX_DATE boolean,
+															 NO_INDEX_NO_DATE boolean]
+	
+										the list index are defined by those DirUtil
+										constants:
+										
+										DirUtil.INDEX_DATE_POS = 0
+										DirUtil.INDEX_NO_DATE_POS = 1
+										DirUtil.NO_INDEX_DATE_POS = 2
+										DirUtil.NO_INDEX_NO_DATE_POS = 3
+		"""
+		playlistDownloadDir = self.configMgr.dataPath + sep + playlistDownloadVideoInfoDic.getPlaylistDownloadDir()
+		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
+		
+		return indexAndDateUsageLst
+
+
 if __name__ == "__main__":
 	downloader = AudioController()
