@@ -1050,9 +1050,9 @@ class AudioDownloaderGUI(AudioGUI):
 			if indexAndDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
 				popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
-				                                   indexAndDateSettingWarningMsg,
-				                                   self.onYesNoPopupAnswer,
-				                                   True)
+				                              indexAndDateSettingWarningMsg,
+				                              self.onYesNoPopupAnswer,
+				                              True)
 				popup.open()
 			else:
 				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
