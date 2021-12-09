@@ -19,7 +19,7 @@ class AudioGUI(Screen):
 	configMgrErrorDisplayed = False
 	
 	"""
-	Abstract base class for the audio downloader GUI classes.
+	Base class for the audio downloader GUI classes.
 	"""
 	def __init__(self, **kw):
 		super().__init__(**kw)
