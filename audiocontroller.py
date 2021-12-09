@@ -148,8 +148,6 @@ class AudioController:
 		audioExtractorVideoInfoDic = DownloadVideoInfoDic(playlistUrl='',
 														  audioRootDir=self.configMgr.dataPath,
 														  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
-														  originalPaylistTitle=playlistTitle,
-														  originalPlaylistName=playlistTitle,
 														  modifiedPlaylistTitle=playlistTitle,
 														  modifiedPlaylistName=playlistTitle,
 														  loadDicIfDicFileExist=False)
@@ -402,15 +400,7 @@ class AudioController:
 		if len(dicFilePathNameLst) > 0:
 			# the file deletion is done in a playlist dir, not in a
 			# single videos dir
-			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
-														audioRootDir=None,
-														playlistDownloadRootPath=None,
-														originalPaylistTitle=None,
-														originalPlaylistName=None,
-														modifiedPlaylistTitle=None,
-														modifiedPlaylistName=None,
-														loadDicIfDicFileExist=True,
-														existingDicFilePathName=dicFilePathNameLst[0])
+			downloadVideoInfoDic = DownloadVideoInfoDic(existingDicFilePathName=dicFilePathNameLst[0])
 			
 			# deleting corresponding video entries in downloadVideoInfoDic
 			
