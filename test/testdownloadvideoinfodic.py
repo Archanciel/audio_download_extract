@@ -851,15 +851,7 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 		dicFileNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
 		dicFilePathName = dicFileNameLst[0]
 
-		dvi = DownloadVideoInfoDic(playlistUrl=None,
-		                           audioRootDir=None,
-		                           playlistDownloadRootPath=None,
-		                           originalPaylistTitle=None,
-		                           originalPlaylistName=None,
-		                           modifiedPlaylistTitle=None,
-		                           modifiedPlaylistName=None,
-		                           loadDicIfDicFileExist=True,
-		                           existingDicFilePathName=dicFilePathName)
+		dvi = DownloadVideoInfoDic(existingDicFilePathName=dicFilePathName)
 		
 		self.assertIsNotNone(dvi)
 		

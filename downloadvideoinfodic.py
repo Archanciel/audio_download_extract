@@ -82,19 +82,25 @@ class DownloadVideoInfoDic:
 											AudioClipperGUI.createClipFileOnNewThread()
 		:param existingDicFilePathName      used only if the DownloadVideoInfoDic
 											is instantiated based on this parameter
-											only (in the case of processing audio files deletion9
+											only (in the case of processing audio files deletion)
 		"""
 		self.dic = None
 
 		if existingDicFilePathName is not None:
+			# we are in the situation of deleting audio files and so removing
+			# their corresponding video entry from the loaded download video
+			# info dic
 			self.dic = self._loadDicIfExist(existingDicFilePathName)
 			
-			return
+			return  # skipping the rest of the __init__ method in this case
 
 		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
 		playlistVideoDownloadDir = playlistDownloadRootPath + sep + playlistValidDirName
 		
 		if loadDicIfDicFileExist:
+			# is always True, except when AudioController creates a download info
+			# dic in order to set in it clip audio start and end times. In this
+			# case, the dic must not be loaded from a file
 			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
 			self.dic = self._loadDicIfExist(infoDicFilePathName)
 		
