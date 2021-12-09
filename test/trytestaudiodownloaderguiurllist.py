@@ -27,8 +27,6 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 		self.playlistDirName_0 = "test_small_videos"
 		self.playlistDirNameLst.append(self.playlistDirName_0)
-		self.playlistDirName_2 = "test_small_videos_2"
-		self.playlistDirNameLst.append(self.playlistDirName_2)
 		self.playlistDirName_3 = "test_small_videos_3"
 		self.playlistDirNameLst.append(self.playlistDirName_3)
 		self.playlistDirName_4 = "test_audio_downloader_two_files_with_time_frames"
@@ -50,34 +48,28 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
 
 	def tryTestAudioDownloaderGUI(self):
-		
+
+		# the two videos in the playlist have been partially downloaded
 		playlistSaveDirName_0 = self.playlistDirName_0 + sep + '80%'
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_0)
 		playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
 		self.urlDownloadLst.append(playlistUrl_0)
 
-		self.urlDownloadLst.append(self.singleVideoUrl_1)
-		singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
-		self.singleVideoAudioFileNameLst.append(singleVideoFileName_1)
-
-		playlistSaveDirName_2 = self.playlistDirName_2 + sep + '80%'
-		self.playlistSaveDirNameLst.append(playlistSaveDirName_2)
-		playlistUrl_2 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTiWvWX6IO1t9RkCpKraYfb'
-		self.urlDownloadLst.append(playlistUrl_2)
-
+		# the three videos in the playlist have been partially downloaded
 		playlistSaveDirName_3 = self.playlistDirName_3 + sep + '80%'
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_3)
 		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
 		self.urlDownloadLst.append(playlistUrl_3)
 
-		self.urlDownloadLst.append(self.singleVideoUrl_2)
-		singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
-		self.singleVideoAudioFileNameLst.append(singleVideoFileName_2)
-
+		# downloading a playlist with extract and suppress portion settings
+		# in playlist title
 		playlistSaveDirName_4 = None # avoids playlist dir restore after it was emptied
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_4)
 		playlistUrl_4 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn'
 		self.urlDownloadLst.append(playlistUrl_4)
+
+		# now testing the index prefix and upload date suffix automatic
+		# setting for playlist url list downloading
 
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. Since all the files in the playlist dir are named
