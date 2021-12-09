@@ -1,11 +1,11 @@
 import json
-import logging
 import os
 from datetime import datetime
 from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
+from baseinfodic import BaseInfoDic
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
@@ -38,7 +38,7 @@ KEY_VIDEO_SUPPRESS_FILE = 'sp_fileName'
 KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
-class DownloadVideoInfoDic:
+class DownloadVideoInfoDic(BaseInfoDic):
 	DIC_FILE_NAME_EXTENT = '_dic.txt'
 	
 	wasDicUpdated = False
@@ -84,6 +84,7 @@ class DownloadVideoInfoDic:
 											is instantiated based on this parameter
 											only (in the case of processing audio files deletion)
 		"""
+		super().__init__()
 		self.dic = None
 
 		if existingDicFilePathName is not None:
@@ -124,32 +125,8 @@ class DownloadVideoInfoDic:
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
-	def __str__(self):
-		try:
-			return json.dumps(self.dic, sort_keys=False, indent=4)
-		except Exception as e:
-			print(e)
-	
-	def _loadDicIfExist(self, dicFilePathName):
-		"""
-		If a file containing the dictionary data for the corresponding playlist
-		exists, it is loaded using json.
-		
-		:param dicFilePathName:
-		
-		:return None or loaded dictionary
-		"""
-		dic = None
-
-		if os.path.isfile(dicFilePathName):
-			with open(dicFilePathName, 'r') as f:
-				dic = json.load(f)
-
-		return dic
-	
 	def updatePlaylistTitle(self, playlistTitle):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
-		#self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = self.buildDownloadDirValue(playlistTitle)
 
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
@@ -783,7 +760,21 @@ if __name__ == "__main__":
 	else:
 		audioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\various'
 		
-	dvi = DownloadVideoInfoDic(audioDir, 'essai_vid_info (s01:05:52-01:07:23 e01:15:52-E E01:35:52-01:37:23 S01:25:52-e)', 'essai_vid_info')
+	playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
+	playListName = 'test_download_vid_info_dic'
+	playlistTitle = playListName
+	
+	audioDirRoot = DirUtil.getTestAudioRootPath()
+	downloadDir = audioDirRoot + sep + playListName
+	
+	dvi = DownloadVideoInfoDic(playlistUrl,
+	                           audioDirRoot,
+	                           audioDirRoot,
+	                           playlistTitle,
+	                           playListName,
+	                           playlistTitle,
+	                           playListName)
+	
 	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
 	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999', 'Title_vid_2.mp4')
 	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 56])
@@ -800,3 +791,4 @@ if __name__ == "__main__":
 	print(dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
 	print(dvi.getSuppressedFileNameForVideoIndex(1))
 	print(dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
+	print(dvi)

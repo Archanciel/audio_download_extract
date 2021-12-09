@@ -1,11 +1,11 @@
 import json
-import logging
 import os
 from datetime import datetime
 from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
+from baseinfodic import BaseInfoDic
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
@@ -38,9 +38,7 @@ KEY_VIDEO_SUPPRESS_FILE = 'sp_fileName'
 KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
-class DownloadUrlInfoDic:
-	DIC_FILE_NAME_EXTENT = '_dic.txt'
-	
+class DownloadUrlInfoDic(BaseInfoDic):
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 
@@ -48,6 +46,7 @@ class DownloadUrlInfoDic:
 	             playlistOrSingleVideoUrl=None,
 	             audioRootDir=None,
 	             playlistOrSingleVideoTitle=None,
+	             playlistOrSingleVideoName=None,
 	             playlistOrSingleVideoDownloadRootPath=None,
 	             playlistOrSingleVideoLastDownloadDate=None,
 	             playlistOrSingleVideoDownloadResultTuple=None,
@@ -82,7 +81,7 @@ class DownloadUrlInfoDic:
 											is instantiated based on this parameter
 											only (in the case of processing audio files deletion9
 		"""
-		self.dic = None
+		super().__init__()
 
 		if existingDicFilePathName is not None:
 			# we are in the situation of deleting audio files and so removing
@@ -92,55 +91,21 @@ class DownloadUrlInfoDic:
 			
 			return  # skipping the rest of the __init__ method in this case
 
-		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(modifiedPlaylistName)
+		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistOrSingleVideoName)
 		playlistVideoDownloadDir = playlistOrSingleVideoDownloadRootPath + sep + playlistValidDirName
 		
 		if self.dic is None:
-			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
 			
-			if modifiedPlaylistTitle is None:
-				modifiedPlaylistTitle = playlistOrSingleVideoTitle
-				
-			if modifiedPlaylistName is None:
-				modifiedPlaylistName = originalPlaylistName
-				
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL] = playlistOrSingleVideoUrl
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistOrSingleVideoTitle
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED] = modifiedPlaylistTitle
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED] = modifiedPlaylistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 			                                                                                            fullFilePathName=playlistVideoDownloadDir)
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
-	def __str__(self):
-		try:
-			return json.dumps(self.dic, sort_keys=False, indent=4)
-		except Exception as e:
-			print(e)
-	
-	def _loadDicIfExist(self, dicFilePathName):
-		"""
-		If a file containing the dictionary data for the corresponding playlist
-		exists, it is loaded using json.
-		
-		:param dicFilePathName:
-		
-		:return None or loaded dictionary
-		"""
-		dic = None
-
-		if os.path.isfile(dicFilePathName):
-			with open(dicFilePathName, 'r') as f:
-				dic = json.load(f)
-
-		return dic
-	
 	def updatePlaylistTitle(self, playlistTitle):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
-		#self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = self.buildDownloadDirValue(playlistTitle)
 
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
