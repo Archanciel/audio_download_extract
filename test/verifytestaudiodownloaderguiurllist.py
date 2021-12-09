@@ -19,8 +19,8 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		playlistDirExpectedFileNameLstDic = {}
 		singleVideoExpectedFileNameLst = []
 		
-		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_3
-		playlistDir_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
+		# downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_3
+		# playlistDir_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
 		
 		# the two videos in the playlist have been partially downloaded
 		playlistDir_0_expectedFileNameLst = ['97-Product - 30 seconds animated short film 2020-08-14.mp3',
@@ -84,20 +84,29 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_10] = playlistDir_10_expectedFileNameLst
 
 		self.verifyPlaylistDownloadDirs(self.playlistDirNameLst,
-		                                playlistDirExpectedFileNameLstDic,
-		                                singleVideoExpectedFileNameLst)
+		                                playlistDirExpectedFileNameLstDic)
+		
+		self.verifySingleVideoDir(self.singleVideoAudioFileNameLst)
 	
 	def verifyPlaylistDownloadDirs(self,
 	                               playlistDirNameLst,
-	                               playlistDirExpectedFileNameLstDic,
-	                               singleVideoExpectedFileNameLst):
+	                               playlistDirExpectedFileNameLstDic):
+		
 		for playlistDirName in playlistDirNameLst:
 			print('verifying ' + playlistDirName)
 			playlistDirExpectedFileNameLst = playlistDirExpectedFileNameLstDic[playlistDirName]
 			downloadDir = self.configMgr.dataPath + sep + playlistDirName
 			playlistDirActualFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
 			self.assertEqual(playlistDirExpectedFileNameLst, playlistDirActualFileNameLst)
-
+	
+	def verifySingleVideoDir(self, singleVideoExpectedFileNameLst):
+		"""
+		Verifying that the audio files of single videos which were added to the
+		download url list are in the single video various dir.
+		
+		:param singleVideoExpectedFileNameLst:
+		:return:
+		"""
 		singleVideoActualFileNameLst = DirUtil.getFileNamesInDir(self.configMgr.singleVideoDataPath)
 
 		for singleVideoAudioFileName in singleVideoExpectedFileNameLst:

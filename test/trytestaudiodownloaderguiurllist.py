@@ -17,7 +17,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 	def __init__(self):
 		super().__init__()
-
+		
 		self.configMgr = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
 
 		self.singleVideoAudioFileNameLst = []
@@ -44,8 +44,13 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistDirName_10 = "test warning index date files_downloadDirEmpty"
 		self.playlistDirNameLst.append(self.playlistDirName_10)
 
+		self.singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
+		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_1)
+
+		self.singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
+		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
 
 	def tryTestAudioDownloaderGUI(self):
 
@@ -54,6 +59,9 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_0)
 		playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
 		self.urlDownloadLst.append(playlistUrl_0)
+
+		# adding first single video url
+		self.urlDownloadLst.append(self.singleVideoUrl_1)
 
 		# the three videos in the playlist have been partially downloaded
 		playlistSaveDirName_3 = self.playlistDirName_3 + sep + '80%'
@@ -67,6 +75,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_4)
 		playlistUrl_4 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn'
 		self.urlDownloadLst.append(playlistUrl_4)
+
+		# adding second single video url
+		self.urlDownloadLst.append(self.singleVideoUrl_2)
+		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
 
 		# now testing the index prefix and upload date suffix automatic
 		# setting for playlist url list downloading
@@ -175,6 +187,14 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 	def restoreUrlDownloadFile(self,
 	                           urlDownloadLst,
 	                           urlDownloadLstFilePathName):
+		"""
+		Re-filling the url list file which is uploaded when the AudioDownloaderGUI
+		starts.
+		
+		:param urlDownloadLst:
+		:param urlDownloadLstFilePathName:
+		:return:
+		"""
 		with open(urlDownloadLstFilePathName, 'w') as f:
 			f.writelines('\n'.join(urlDownloadLst))
 
