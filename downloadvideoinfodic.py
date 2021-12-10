@@ -1,22 +1,15 @@
-import json
 import os
 from datetime import datetime
 from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
-from baseinfodic import BaseInfoDic
+from baseinfodic import BaseInfoDic, KEY_PLAYLIST, KEY_PLAYLIST_NAME_MODIFIED, KEY_PLAYLIST_DOWNLOAD_DIR
 
-KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
 KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
-KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
-
-# playlist download dir name. This name DOES NOT contain the
-# audio dir root dir (defined in uthe GUI settings)
-KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -132,28 +125,6 @@ class DownloadVideoInfoDic(BaseInfoDic):
 		# must be changed !!!
 		return playlistTitle
 	
-	def saveDic(self, audioDirRoot):
-		"""
-		
-		:param audioDirRoot: audio dir as defined in the GUI settings.
-		:return:
-		"""
-		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getPlaylistNameModified())
-		playlistDownloadDir = self.getPlaylistDownloadDir()
-		
-		dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
-		                                                validPlaylistDirName=validPlaylistDirName)
-
-		with open(dicFilePathName, 'w') as f:
-			try:
-				json.dump(self.dic,
-						  f,
-						  indent=4,
-						  sort_keys=True)
-			except Exception as e:
-				print(self)
-				print(e)
-
 	def getNextVideoIndex(self):
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX]
@@ -196,30 +167,6 @@ class DownloadVideoInfoDic(BaseInfoDic):
 		else:
 			return None
 	
-	def getPlaylistNameModified(self):
-		"""
-		Return the modified play list name, which is the modified playlist title
-		without the optional extract or suppress time frames definitions.
-
-		:return:
-		"""
-		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
-		else:
-			return None
-	
-	def getPlaylistDownloadDir(self):
-		"""
-		Returns the playlist download dir name. This name does not contain the
-		audio dir root dir (defined in the GUI settings).
-		
-		:return: playlist download dir name
-		"""
-		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR]
-		else:
-			return None
-	
 	def getPlaylistUrl(self):
 		"""
 		Returns the playlist url.
@@ -230,20 +177,6 @@ class DownloadVideoInfoDic(BaseInfoDic):
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL]
 		else:
 			return None
-	
-	def buildInfoDicFilePathName(self, playlistDownloadBaseDir, validPlaylistDirName):
-		"""
-		Builds the playlist DownloadVideoInfoDic file path name.
-		
-		:param playlistDownloadBaseDir: base playlist download dir as defined in the
-										SelectOrCreateDirFileChooserPopup dir field or
-										audio root dir by default.
-		:param validPlaylistDirName:    contains the playlistName purged from any invalid
-										Windows dir or file names chars.
-
-		:return: playlist DownloadVideoInfoDic file path name
-		"""
-		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
 	
 	def getVideoIndexStrings(self):
 		'''
@@ -753,6 +686,8 @@ class DownloadVideoInfoDic(BaseInfoDic):
 		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
 		self.removeVideoInfoForVideoIndex(videoIndex)
 		
+	def getDicDirName(self):
+		return self.getPlaylistNameModified()
 
 if __name__ == "__main__":
 	if os.name == 'posix':

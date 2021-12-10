@@ -5,18 +5,12 @@ from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
-from baseinfodic import BaseInfoDic
+from baseinfodic import BaseInfoDic, KEY_PLAYLIST, KEY_PLAYLIST_NAME_MODIFIED, KEY_PLAYLIST_DOWNLOAD_DIR
 
-KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
 KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
-KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
-
-# playlist download dir name. This name DOES NOT contain the
-# audio dir root dir (defined in uthe GUI settings)
-KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -45,11 +39,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	def __init__(self,
 	             playlistOrSingleVideoUrl=None,
 	             audioRootDir=None,
+	             playlistOrSingleVideoDownloadRootPath=None,
 	             playlistOrSingleVideoTitle=None,
 	             playlistOrSingleVideoName=None,
-	             playlistOrSingleVideoDownloadRootPath=None,
 	             playlistOrSingleVideoLastDownloadDate=None,
 	             playlistOrSingleVideoDownloadResultTuple=None,
+	             loadDicIfDicFileExist=True,
 	             existingDicFilePathName=None):
 		"""
 		Constructor.
@@ -93,12 +88,21 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistOrSingleVideoName)
 		playlistVideoDownloadDir = playlistOrSingleVideoDownloadRootPath + sep + playlistValidDirName
-		
+
+		if loadDicIfDicFileExist:
+			# is always True, except when AudioController creates a download info
+			# dic in order to set in it clip audio start and end times. In this
+			# case, the dic must not be loaded from a file
+			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
+			self.dic = self._loadDicIfExist(infoDicFilePathName)
+
 		if self.dic is None:
+			self.dic = {}
 			self.dic[KEY_PLAYLIST] = {}
 			
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL] = playlistOrSingleVideoUrl
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistOrSingleVideoTitle
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = playlistOrSingleVideoName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 			                                                                                            fullFilePathName=playlistVideoDownloadDir)
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
@@ -110,28 +114,6 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
 		return playlistTitle
-	
-	def saveDic(self, audioDirRoot):
-		"""
-		
-		:param audioDirRoot: audio dir as defined in the GUI settings.
-		:return:
-		"""
-		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getPlaylistNameModified())
-		playlistDownloadDir = self.getPlaylistDownloadDir()
-		
-		dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
-		                                                validPlaylistDirName=validPlaylistDirName)
-
-		with open(dicFilePathName, 'w') as f:
-			try:
-				json.dump(self.dic,
-						  f,
-						  indent=4,
-						  sort_keys=True)
-			except Exception as e:
-				print(self)
-				print(e)
 
 	def getNextVideoIndex(self):
 		if KEY_PLAYLIST in self.dic.keys():
@@ -731,7 +713,10 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	def deleteVideoInfoForVideoFileName(self, videoFileName):
 		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
 		self.removeVideoInfoForVideoIndex(videoIndex)
-		
+	
+	def getDicDirName(self):
+		return self.getPlaylistTitleOriginal()
+
 
 if __name__ == "__main__":
 	if os.name == 'posix':
