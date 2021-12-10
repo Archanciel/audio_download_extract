@@ -14,7 +14,7 @@ from dirutil import DirUtil
 from playlisttitleparser import PlaylistTitleParser
 from audiocontroller import AudioController
 from configmanager import ConfigManager
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 
 class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	"""
@@ -1807,18 +1807,18 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  "💥 EFFONDREMENT Imminent de l'Euro ! _ 👉 Maintenant, La Fin de l'Euro "
  'Approche !.mp3']), sorted(fileNameLst))
 
-		dicFileName = playlistDirName + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT
+		dicFileName = playlistDirName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
 		dicFilePathName = downloadDir + sep + dicFileName
 
-		dvi = DownloadVideoInfoDic(playlistUrl=None,
-		                           audioRootDir=None,
-		                           playlistDownloadRootPath=None,
-		                           originalPaylistTitle=None,
-		                           originalPlaylistName=None,
-		                           modifiedPlaylistTitle=None,
-		                           modifiedPlaylistName=None,
-		                           loadDicIfDicFileExist=True,
-		                           existingDicFilePathName=dicFilePathName)
+		dvi = DownloadPlaylistInfoDic(playlistUrl=None,
+		                              audioRootDir=None,
+		                              playlistDownloadRootPath=None,
+		                              originalPaylistTitle=None,
+		                              originalPlaylistName=None,
+		                              modifiedPlaylistTitle=None,
+		                              modifiedPlaylistName=None,
+		                              loadDicIfDicFileExist=True,
+		                              existingDicFilePathName=dicFilePathName)
 
 		self.assertEqual("\ud83d\udca5 EFFONDREMEN Imminent de l'Euro ! _ \ud83d\udc49 Maintenant, La Fin de l'Euro Approche !.mp3",
 		                 dvi.getVideoAudioFileNameForVideoIndex(1))

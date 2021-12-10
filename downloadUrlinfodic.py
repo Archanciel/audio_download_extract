@@ -37,6 +37,10 @@ KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
 class DownloadUrlInfoDic(BaseInfoDic):
+	"""
+	Stores the playlists or videos information which were added to the URL's
+	AudioDownloaderGUI URL's to download list.
+	"""
 	wasDicUpdated = False
 	cachedRateAccessNumber = 0
 

@@ -37,7 +37,11 @@ KEY_VIDEO_SUPPRESS_FILE = 'sp_fileName'
 KEY_TIMEFRAMES_HHMMSS_SUPPRESSED = 'sp_startEndTimeFramesHHMMSS_suppressed'
 KEY_TIMEFRAMES_HHMMSS_KEPT = 'sp_startEndTimeFramesHHMMSS_kept'
 
-class DownloadVideoInfoDic(BaseInfoDic):
+class DownloadPlaylistInfoDic(BaseInfoDic):
+	"""
+	Stores the downloaded playlist information as well as the playlist videos
+	information.
+	"""
 	DIC_FILE_NAME_EXTENT = '_dic.txt'
 	
 	wasDicUpdated = False
@@ -740,13 +744,13 @@ if __name__ == "__main__":
 	audioDirRoot = DirUtil.getTestAudioRootPath()
 	downloadDir = audioDirRoot + sep + playListName
 	
-	dvi = DownloadVideoInfoDic(playlistUrl,
-	                           audioDirRoot,
-	                           audioDirRoot,
-	                           playlistTitle,
-	                           playListName,
-	                           playlistTitle,
-	                           playListName)
+	dvi = DownloadPlaylistInfoDic(playlistUrl,
+	                              audioDirRoot,
+	                              audioDirRoot,
+	                              playlistTitle,
+	                              playListName,
+	                              playlistTitle,
+	                              playListName)
 	
 	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
 	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999', 'Title_vid_2.mp4')

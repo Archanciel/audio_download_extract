@@ -12,7 +12,7 @@ from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 from configmanager import ConfigManager
 from dirutil import DirUtil
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 			
 class TestAudioController(unittest.TestCase):
 
@@ -276,18 +276,18 @@ class TestAudioController(unittest.TestCase):
 		shutil.copytree(testPathSaved, testPath)
 		
 		# obtaining the download video info dic file path name
-		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath, '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
 		dicFilePathName = dicFilePathNameLst[0]
 		
-		dvi = DownloadVideoInfoDic(playlistUrl=None,
-		                           audioRootDir=None,
-		                           playlistDownloadRootPath=None,
-		                           originalPaylistTitle=None,
-		                           originalPlaylistName=None,
-		                           modifiedPlaylistTitle=None,
-		                           modifiedPlaylistName=None,
-		                           loadDicIfDicFileExist=True,
-		                           existingDicFilePathName=dicFilePathName)
+		dvi = DownloadPlaylistInfoDic(playlistUrl=None,
+		                              audioRootDir=None,
+		                              playlistDownloadRootPath=None,
+		                              originalPaylistTitle=None,
+		                              originalPlaylistName=None,
+		                              modifiedPlaylistTitle=None,
+		                              modifiedPlaylistName=None,
+		                              loadDicIfDicFileExist=True,
+		                              existingDicFilePathName=dicFilePathName)
 		
 		self.assertIsNotNone(dvi)
 		
@@ -307,15 +307,15 @@ class TestAudioController(unittest.TestCase):
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
 		
-		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
-		                                          audioRootDir=None,
-		                                          playlistDownloadRootPath=None,
-		                                          originalPaylistTitle=None,
-		                                          originalPlaylistName=None,
-		                                          modifiedPlaylistTitle=None,
-		                                          modifiedPlaylistName=None,
-		                                          loadDicIfDicFileExist=True,
-		                                          existingDicFilePathName=dicFilePathName)
+		dvi_after_deletion = DownloadPlaylistInfoDic(playlistUrl=None,
+		                                             audioRootDir=None,
+		                                             playlistDownloadRootPath=None,
+		                                             originalPaylistTitle=None,
+		                                             originalPlaylistName=None,
+		                                             modifiedPlaylistTitle=None,
+		                                             modifiedPlaylistName=None,
+		                                             loadDicIfDicFileExist=True,
+		                                             existingDicFilePathName=dicFilePathName)
 
 		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_1))
@@ -376,18 +376,18 @@ class TestAudioController(unittest.TestCase):
 		
 		# obtaining the download video info dic file path name
 		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath,
-		                                                         '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+		                                                         '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
 		dicFilePathName = dicFilePathNameLst[0]
 		
-		dvi = DownloadVideoInfoDic(playlistUrl=None,
-		                           audioRootDir=None,
-		                           playlistDownloadRootPath=None,
-		                           originalPaylistTitle=None,
-		                           originalPlaylistName=None,
-		                           modifiedPlaylistTitle=None,
-		                           modifiedPlaylistName=None,
-		                           loadDicIfDicFileExist=True,
-		                           existingDicFilePathName=dicFilePathName)
+		dvi = DownloadPlaylistInfoDic(playlistUrl=None,
+		                              audioRootDir=None,
+		                              playlistDownloadRootPath=None,
+		                              originalPaylistTitle=None,
+		                              originalPlaylistName=None,
+		                              modifiedPlaylistTitle=None,
+		                              modifiedPlaylistName=None,
+		                              loadDicIfDicFileExist=True,
+		                              existingDicFilePathName=dicFilePathName)
 		
 		self.assertIsNotNone(dvi)
 		
@@ -408,15 +408,15 @@ class TestAudioController(unittest.TestCase):
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
 		
-		dvi_after_deletion = DownloadVideoInfoDic(playlistUrl=None,
-		                                          audioRootDir=None,
-		                                          playlistDownloadRootPath=None,
-		                                          originalPaylistTitle=None,
-		                                          originalPlaylistName=None,
-		                                          modifiedPlaylistTitle=None,
-		                                          modifiedPlaylistName=None,
-		                                          loadDicIfDicFileExist=True,
-		                                          existingDicFilePathName=dicFilePathName)
+		dvi_after_deletion = DownloadPlaylistInfoDic(playlistUrl=None,
+		                                             audioRootDir=None,
+		                                             playlistDownloadRootPath=None,
+		                                             originalPaylistTitle=None,
+		                                             originalPlaylistName=None,
+		                                             modifiedPlaylistTitle=None,
+		                                             modifiedPlaylistName=None,
+		                                             loadDicIfDicFileExist=True,
+		                                             existingDicFilePathName=dicFilePathName)
 		
 		self.assertEqual(['C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test delete files\\99-Wear a '
  'mask. Help slow the spread of Covid-19. 2020-07-31.mp3'], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))

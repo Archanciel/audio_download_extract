@@ -10,7 +10,7 @@ sys.path.insert(0, parentDir)
 from constants import *
 from guioutputstub import GuiOutputStub
 from audioextractor import AudioExtractor
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from dirutil import DirUtil
 
 class TestAudioExtractor(unittest.TestCase):
@@ -37,7 +37,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.mkdir(targetAudioDir)
 		
 		videoIndex = 1
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -86,7 +86,7 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 											'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -137,8 +137,8 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [5, 20]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
-		                                            playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
+		                                               playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 		                                               'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -193,8 +193,8 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [12, 10]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
-		                                            playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
+		                                               playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 		                                               'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -250,7 +250,7 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [5, 10]
 		expectedExtractedFileDuration = 2.56 # speed is doubled
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 													   'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -306,7 +306,7 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [0, 5]
 		expectedExtractedFileDuration = startEndSecondsList[1] - startEndSecondsList[0]
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -362,7 +362,7 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		startEndSecondsList = [10, 'end']
 		expectedExtractedFileDuration = 4.7
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -422,7 +422,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_extract_2 = [11, 13]
 		expectedExtractedFileDuration_2 = startEndSecondsList_extract_2[1] - startEndSecondsList_extract_2[0]
 
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -487,7 +487,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_extract_2 = [3, 'end']
 		expectedExtractedFileDuration_2 = 62
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		audioFileName = 'LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, "L'Expérience de Mort Imminente de Madame Mirjana Uzoh",
 														 'https://youtube.com/watch?v=9iPvLx7gotk', audioFileName)
@@ -557,7 +557,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_2 = [11, 'end']
 		expectedExtractedFileDuration_2 = 3.7
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -628,7 +628,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_1_2 = [11, 13]
 		expectedExtractedFileDuration_1_2 = startEndSecondsList_1_2[1] - startEndSecondsList_1_2[0]
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName_1 = 'Wear a mask Help slow the spread of Covid-19.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndexOne, 'Wear a mask. Help slow the spread of Covid-19.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName_1)
@@ -730,7 +730,7 @@ class TestAudioExtractor(unittest.TestCase):
 		suppressStartEndSecondsList_2 = [11, 13]
 		suppressStartEndSecondsList_3 = [15, 17]
 		expectedExtractedFileDuration = 12.5
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -789,7 +789,7 @@ class TestAudioExtractor(unittest.TestCase):
 		suppressStartEndSecondsList_2 = [11, 13]
 		suppressStartEndSecondsList_3 = [15, 'end']
 		expectedExtractedFileDuration = 9.03
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -849,8 +849,8 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		suppressStartEndSecondsList_1 = [0, 60]
 		expectedSuppressedFileDuration = 0.4
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
-		                                            playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
+		                                               playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file.',
 		                                               'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -908,8 +908,8 @@ class TestAudioExtractor(unittest.TestCase):
 		videoIndex = 1
 		suppressStartEndSecondsList_1 = [65, 2]
 		expectedSuppressedFileDuration = 18.4
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
-		                                            playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
+		                                               playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file.',
 		                                               'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -969,7 +969,7 @@ class TestAudioExtractor(unittest.TestCase):
 		suppressStartEndSecondsList_3 = [11, 13]
 		suppressStartEndSecondsList_4 = [15, 17]
 		expectedSuppressedFileDuration = 10.4
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -1030,7 +1030,7 @@ class TestAudioExtractor(unittest.TestCase):
 		suppressStartEndSecondsList_1_3 = [11, 13]
 		suppressStartEndSecondsList_1_4 = [15, 17]
 		expectedSuppressedFileDuration_1 = 10.4
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName_1 = 'test_suppress_audio_file.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndexOne, 'test_suppress_audio_file.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName_1)
@@ -1119,7 +1119,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_extract_2 = [11, 13]
 		expectedExtractedFileDuration_2 = startEndSecondsList_extract_2[1] - startEndSecondsList_extract_2[0]
 
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileName = 'test_extract_suppress_audio_file_one.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex, 'test_suppress_audio_file_one.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileName)
@@ -1212,7 +1212,7 @@ class TestAudioExtractor(unittest.TestCase):
 		startEndSecondsList_extract_1_2 = [11, 13]
 		expectedExtractedFileDuration_1_2 = startEndSecondsList_extract_1_2[1] - startEndSecondsList_extract_1_2[0]
 		
-		downloadVideoInfoDic = DownloadVideoInfoDic('', targetAudioDir, targetAudioDir,playlistTitle, playlistName, playlistTitle, playlistName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName, playlistTitle, playlistName)
 		videoFileNameOne = 'test_extract_suppress_audio_file_one.mp4'
 		downloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndexOne, 'test_suppress_audio_file_one.',
 														 'https://youtube.com/watch?v=9iPvLx7gotk', videoFileNameOne)

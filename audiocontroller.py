@@ -4,7 +4,7 @@ import datetime
 import os
 
 from constants import *
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from dirutil import DirUtil
 
@@ -145,12 +145,12 @@ class AudioController:
 		
 		# initializing a partially filled DownloadVideoInfoDic with only the
 		# information required by the AudioExtractor to split the audio file
-		audioExtractorVideoInfoDic = DownloadVideoInfoDic(playlistUrl='',
-														  audioRootDir=self.configMgr.dataPath,
-														  playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
-														  modifiedPlaylistTitle=playlistTitle,
-														  modifiedPlaylistName=playlistTitle,
-														  loadDicIfDicFileExist=False)
+		audioExtractorVideoInfoDic = DownloadPlaylistInfoDic(playlistUrl='',
+		                                                     audioRootDir=self.configMgr.dataPath,
+		                                                     playlistDownloadRootPath=playlistDownloadRootPathWithoutPlaylistTitle,
+		                                                     modifiedPlaylistTitle=playlistTitle,
+		                                                     modifiedPlaylistName=playlistTitle,
+		                                                     loadDicIfDicFileExist=False)
 
 		audioExtractorVideoInfoDic.addVideoInfoForVideoIndex(videoIndex=1,
 															 videoTitle=videoTitle,
@@ -395,12 +395,12 @@ class AudioController:
 		# now removing video entries in download video info dic
 		
 		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
-			deletedFilesPath, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+			deletedFilesPath, '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
 		
 		if len(dicFilePathNameLst) > 0:
 			# the file deletion is done in a playlist dir, not in a
 			# single videos dir
-			downloadVideoInfoDic = DownloadVideoInfoDic(existingDicFilePathName=dicFilePathNameLst[0])
+			downloadVideoInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathNameLst[0])
 			
 			# deleting corresponding video entries in downloadVideoInfoDic
 			

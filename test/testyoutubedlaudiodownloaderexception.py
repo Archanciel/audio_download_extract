@@ -14,7 +14,7 @@ from dirutil import DirUtil
 from playlisttitleparser import PlaylistTitleParser
 from audiocontroller import AudioController
 from configmanager import ConfigManager
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 
 class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 	
@@ -443,20 +443,20 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		# are contained
 		
 		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(
-			downloadDir, '*' + DownloadVideoInfoDic.DIC_FILE_NAME_EXTENT)
+			downloadDir, '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
 		
 		# the file deletion is done in a playlist dir, not in a
 		# single videos dir
 		existingDicFilePathName = dicFilePathNameLst[0]
-		downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
-		                                            audioRootDir=None,
-		                                            playlistDownloadRootPath=None,
-		                                            originalPaylistTitle=None,
-		                                            originalPlaylistName=None,
-		                                            modifiedPlaylistTitle=None,
-		                                            modifiedPlaylistName=None,
-		                                            loadDicIfDicFileExist=True,
-		                                            existingDicFilePathName=existingDicFilePathName)
+		downloadVideoInfoDic = DownloadPlaylistInfoDic(playlistUrl=None,
+		                                               audioRootDir=None,
+		                                               playlistDownloadRootPath=None,
+		                                               originalPaylistTitle=None,
+		                                               originalPlaylistName=None,
+		                                               modifiedPlaylistTitle=None,
+		                                               modifiedPlaylistName=None,
+		                                               loadDicIfDicFileExist=True,
+		                                               existingDicFilePathName=existingDicFilePathName)
 		
 		# redownloading the failed videos
 		
@@ -494,15 +494,15 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		# reloading the downloadVideoInfoDic
 		
-		redownloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=None,
-		                                              audioRootDir=None,
-		                                              playlistDownloadRootPath=None,
-		                                              originalPaylistTitle=None,
-		                                              originalPlaylistName=None,
-		                                              modifiedPlaylistTitle=None,
-		                                              modifiedPlaylistName=None,
-		                                              loadDicIfDicFileExist=True,
-		                                              existingDicFilePathName=existingDicFilePathName)
+		redownloadVideoInfoDic = DownloadPlaylistInfoDic(playlistUrl=None,
+		                                                 audioRootDir=None,
+		                                                 playlistDownloadRootPath=None,
+		                                                 originalPaylistTitle=None,
+		                                                 originalPlaylistName=None,
+		                                                 modifiedPlaylistTitle=None,
+		                                                 modifiedPlaylistName=None,
+		                                                 loadDicIfDicFileExist=True,
+		                                                 existingDicFilePathName=existingDicFilePathName)
 
 		self.assertFalse(redownloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle("Wear a mask. Help slow the spread of Covid-19."))
 

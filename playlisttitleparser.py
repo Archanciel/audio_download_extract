@@ -1,7 +1,7 @@
 import re
 from os.path import sep
 
-from downloadvideoinfodic import DownloadVideoInfoDic
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from accesserror import AccessError
 
 class PlaylistTitleParser:
@@ -53,13 +53,13 @@ class PlaylistTitleParser:
 		downloadVideoInfoDic = None
 		
 		try:
-			downloadVideoInfoDic = DownloadVideoInfoDic(playlistUrl=playlistUrl,
-														audioRootDir=audioRootDir,
-														playlistDownloadRootPath=playlistDownloadRootPath,
-														originalPaylistTitle=originalPlaylistTitle,
-														originalPlaylistName=originalPlaylistName,
-														modifiedPlaylistTitle=modifiedPlaylistTitle,
-														modifiedPlaylistName=modifiedPlaylistName)
+			downloadVideoInfoDic = DownloadPlaylistInfoDic(playlistUrl=playlistUrl,
+			                                               audioRootDir=audioRootDir,
+			                                               playlistDownloadRootPath=playlistDownloadRootPath,
+			                                               originalPaylistTitle=originalPlaylistTitle,
+			                                               originalPlaylistName=originalPlaylistName,
+			                                               modifiedPlaylistTitle=modifiedPlaylistTitle,
+			                                               modifiedPlaylistName=modifiedPlaylistName)
 		except Exception as e:
 			errorInfoStr = 'loading download video info dic located in {} failed\nerror info: {}'.format(playlistDownloadRootPath + sep + modifiedPlaylistTitle, str(e))
 			accessError = AccessError(AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR, errorInfoStr)
