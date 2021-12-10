@@ -665,14 +665,6 @@ class AudioDownloaderGUI(AudioGUI):
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
 		self.refocusOnFirstRequestInput()
 
-	def ensureLowercase(self):
-		'''
-		Ensure the input text control only contains lower cases.
-		'''
-		# Get the request from the TextInput
-		requestStr = self.requestInput.text
-		self.requestInput.text = requestStr.lower()
-
 	def clearOutput(self):
 		self.outputLabel.text = ''
 		
