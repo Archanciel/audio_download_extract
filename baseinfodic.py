@@ -6,13 +6,6 @@ from os.path import sep
 
 from dirutil import DirUtil
 
-#KEY_PLAYLIST = 'playlist'
-#KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
-
-# playlist download dir name. This name DOES NOT contain the
-# audio dir root dir (defined in uthe GUI settings)
-#KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
-
 
 class BaseInfoDic(metaclass=ABCMeta):
 	"""

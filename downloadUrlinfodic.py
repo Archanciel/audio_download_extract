@@ -1,4 +1,3 @@
-import json
 import os
 from datetime import datetime
 from os.path import sep
@@ -159,18 +158,6 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL]
-		else:
-			return None
-	
-	def getPlaylistNameModified(self):
-		"""
-		Return the modified play list name, which is the modified playlist title
-		without the optional extract or suppress time frames definitions.
-
-		:return:
-		"""
-		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
 		else:
 			return None
 	

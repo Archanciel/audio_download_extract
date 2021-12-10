@@ -693,6 +693,10 @@ class DownloadVideoInfoDic(BaseInfoDic):
 		self.removeVideoInfoForVideoIndex(videoIndex)
 		
 	def getDicDirName(self):
+		"""
+		For
+		:return:
+		"""
 		return self.getPlaylistNameModified()
 
 	def getDicDirSubDir(self):
