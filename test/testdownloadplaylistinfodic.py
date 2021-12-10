@@ -12,7 +12,7 @@ from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from constants import *
 from dirutil import DirUtil
 			
-class TestDownloadVideoInfoDic(unittest.TestCase):
+class TestDownloadPlaylistInfoDic(unittest.TestCase):
 	def testAddVideoInfoForVideoIndex_new_info_dic_file(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
 		playListName = 'test_download_vid_info_dic'
@@ -975,5 +975,5 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 
 if __name__ == '__main__':
 #	unittest.main()
-	tst = TestDownloadVideoInfoDic()
+	tst = TestDownloadPlaylistInfoDic()
 	tst.testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file()
