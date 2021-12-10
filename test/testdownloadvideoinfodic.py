@@ -976,4 +976,4 @@ class TestDownloadVideoInfoDic(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadVideoInfoDic()
-	tst.testGetFailedVideoIndexes_1_index()
+	tst.testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file()

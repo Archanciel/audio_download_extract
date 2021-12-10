@@ -5,12 +5,17 @@ from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
-from baseinfodic import BaseInfoDic, KEY_PLAYLIST, KEY_PLAYLIST_NAME_MODIFIED, KEY_PLAYLIST_DOWNLOAD_DIR
+from baseinfodic import BaseInfoDic
 
+KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
 KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
+
+# playlist download dir name. This name DOES NOT contain the
+# audio dir root dir (defined in uthe GUI settings)
+KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -717,6 +722,8 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	def getDicDirName(self):
 		return self.getPlaylistTitleOriginal()
 
+	def getDicDirSubDir(self):
+		return self.getPlaylistDownloadDir()
 
 if __name__ == "__main__":
 	if os.name == 'posix':

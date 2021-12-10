@@ -4,12 +4,18 @@ from os.path import sep
 
 from constants import *
 from dirutil import DirUtil
-from baseinfodic import BaseInfoDic, KEY_PLAYLIST, KEY_PLAYLIST_NAME_MODIFIED, KEY_PLAYLIST_DOWNLOAD_DIR
+from baseinfodic import BaseInfoDic
 
+KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
 KEY_PLAYLIST_TITLE_ORIGINAL = 'pl_title_original'
 KEY_PLAYLIST_TITLE_MODIFIED = 'pl_title_modified'
 KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
+KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
+
+# playlist download dir name. This name DOES NOT contain the
+# audio dir root dir (defined in uthe GUI settings)
+KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -688,6 +694,34 @@ class DownloadVideoInfoDic(BaseInfoDic):
 		
 	def getDicDirName(self):
 		return self.getPlaylistNameModified()
+
+	def getDicDirSubDir(self):
+		return self.getPlaylistDownloadDir()
+
+	def getPlaylistNameModified(self):
+		"""
+		Return the modified play list name, which is the modified playlist title
+		without the optional extract or suppress time frames definitions.
+
+		:return:
+		"""
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
+		else:
+			return None
+	
+	def getPlaylistDownloadDir(self):
+		"""
+		Returns the playlist download dir name. This name does not contain the
+		audio dir root dir (defined in the GUI settings).
+
+		:return: playlist download dir name
+		"""
+		if KEY_PLAYLIST in self.dic.keys():
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR]
+		else:
+			return None
+
 
 if __name__ == "__main__":
 	if os.name == 'posix':
