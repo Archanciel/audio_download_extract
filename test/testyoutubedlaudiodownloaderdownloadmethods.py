@@ -1057,7 +1057,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory. Playlist target dir '
  '"C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
@@ -1082,7 +1082,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory.',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
@@ -1095,7 +1095,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
- 'Keller.m4a']), sorted(fileNameLst))
+ 'Keller.mp3']), sorted(fileNameLst))
 	
 	def testDownloadMaxNamePlaylist_with_point(self):
 		"""
@@ -1159,7 +1159,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory. Playlist target dir '
  '"C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
@@ -1184,7 +1184,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
  'fatigué de ce problème impossible à analyser. Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.m4a: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory.',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
@@ -1197,7 +1197,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
-		                         'Keller.m4a']), sorted(fileNameLst))
+		                         'Keller.mp3']), sorted(fileNameLst))
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
 		
@@ -1408,7 +1408,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name/Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory. '
+ 'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory. '
  'Playlist target dir "C:/Users/Jean-Pierre/Downloads/Audio/test/127 '
  'char_____playlist name is very long and will cause a problem if the target '
  'dir name exceeds a maximum possible too big name" length = 169 chars (max '
@@ -1432,7 +1432,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.temp.m4a: No such file or directory.',
+ 'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory.',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
@@ -1827,4 +1827,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist()
+	tst.testDownloadPlaylistWithNameOneVideo_title_or_char()

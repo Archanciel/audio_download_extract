@@ -34,36 +34,60 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		self.downloadInfoExtractor = YoutubeDlDownloadInfoExtractor(audioDownloader=self,
 		                                                            audioController=audioController)
 		
-		if os.name == 'posix':
-			# on AndroidAndroid, FFmpegExtractAudio not available !
-			self.ydlOutTmplFormat = '/%(title)s.mp3'
-
-			self.ydl_opts = {
-				#'format': 'bestaudio/best', # for unknown reason, not working on
-											 # Android when used by AudioDownloaderGUI !
-				'format': 'worstaudio/worst',# this fixes the error AttributeError:
-											 # 'str' object has no attribute 'write'
-				'quiet': YOUTUBE_DL_QUIET,
-				"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
-			}
-			
-			self.tempYdlFileExtension = 'mp3.ytdl'
-		else:
-			self.ydlOutTmplFormat = '\\%(title)s.%(ext)s'
-			
-			self.ydl_opts = {
-				'format': 'worstaudio/worst',
-				'postprocessors': [{
-					'key': 'FFmpegExtractAudio',
-					'preferredcodec': 'mp3',
-					'preferredquality': '64',
-				}],
-				'quiet': YOUTUBE_DL_QUIET,
-				"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
-			}
-
-			self.tempYdlFileExtension = 'm4a.ytdl'
-			self.convertingVideoToMp3 = False
+		# on AndroidAndroid, FFmpegExtractAudio not available !
+		#
+		# Now, setting ydl options differently on Windows is no longer
+		# necessary.
+		#
+		# As a result, YoutubeDlDownloadInfoExtractor.displayVideoMp3ConversionInfo()
+		# which  displays the downloaded file  conversion to mp3 status mesg every
+		# second is no longer executed.
+		
+		self.ydlOutTmplFormat = '/%(title)s.mp3'
+		
+		self.ydl_opts = {
+			# 'format': 'bestaudio/best',   # for unknown reason, not working on
+			#                               # Android when used by AudioDownloaderGUI !
+			'format': 'worstaudio/worst',   # this fixes the error AttributeError:
+											# 'str' object has no attribute 'write'
+			'quiet': YOUTUBE_DL_QUIET,
+			"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
+		}
+		
+		self.tempYdlFileExtension = 'mp3.ytdl'
+	
+		# setting ydl options differently on Windows is no longer necessary
+	
+		# if os.name == 'posix':
+		# 	# on AndroidAndroid, FFmpegExtractAudio not available !
+		# 	self.ydlOutTmplFormat = '/%(title)s.mp3'
+		#
+		# 	self.ydl_opts = {
+		# 		#'format': 'bestaudio/best', # for unknown reason, not working on
+		# 									 # Android when used by AudioDownloaderGUI !
+		# 		'format': 'worstaudio/worst',# this fixes the error AttributeError:
+		# 									 # 'str' object has no attribute 'write'
+		# 		'quiet': YOUTUBE_DL_QUIET,
+		# 		"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
+		# 	}
+		#
+		# 	self.tempYdlFileExtension = 'mp3.ytdl'
+		# else:
+		# 	self.ydlOutTmplFormat = '\\%(title)s.%(ext)s'
+		#
+		# 	self.ydl_opts = {
+		# 		'format': 'worstaudio/worst',
+		# 		'postprocessors': [{
+		# 			'key': 'FFmpegExtractAudio',
+		# 			'preferredcodec': 'mp3',
+		# 			'preferredquality': '64',
+		# 		}],
+		# 		'quiet': YOUTUBE_DL_QUIET,
+		# 		"progress_hooks": [self.downloadInfoExtractor.ydlCallableHook]
+		# 	}
+		#
+		# 	self.tempYdlFileExtension = 'm4a.ytdl'
+		# 	self.convertingVideoToMp3 = False
 	
 	def downloadPlaylistVideosForUrl(self,
 	                                 playlistUrl,
@@ -250,9 +274,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					if fileNotFoundErrorInfo is not None:
 						self.audioController.displayError(fileNotFoundErrorInfo + '.\n' + 'Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method')
 						playlistDownloadedVideoNb_failed += 1
-						self.convertingVideoToMp3 = False  # avoiding that the display
-						# conversion info spread
-						# pollutes the GUI
+						self.convertingVideoToMp3 = False   # avoiding that the display
+															# conversion info spread
+															# pollutes the GUI
 						
 						continue
 				
@@ -268,7 +292,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayVideoDownloadEndMessage(msgText)
-				self.convertingVideoToMp3 = False
+				self.convertingVideoToMp3 = False   # causes the YoutubeDlDownloadInfoExtractor
+													# to stop displaying the downloaded file
+													# conversion to mp3 status mesg every second
 			
 			# here, all playlist videos have been downloaded
 			

@@ -6,6 +6,14 @@ DISPLAY_VIDEO_MP3_CONVERSION_TIME_EVERY_N_SECONDS = 1
 
 
 class YoutubeDlDownloadInfoExtractor:
+	"""
+	This class does display every n seconds the current status of downloading
+	the video and of its conversion to mp3 file.
+	
+	Since the youtube_dl options on Windows are now the same as on Android, the
+	mp3 conversion which took time on Windows does no longer happens and so
+	displaying the conversion to mp3 file status no longer executed on Windows.
+	"""
 	def __init__(self, audioDownloader, audioController):
 		self.audioDownloader = audioDownloader
 		self.audioController = audioController
