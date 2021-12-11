@@ -64,8 +64,8 @@ class SelectableRecycleBoxLayoutFileChooser(FocusBehavior, LayoutSelectionBehavi
 
 
 class FileChooserPopup(AbstractPopup):
-	LOAD_FILE_POPUP_TITLE = 'Select history file to load'
-	SAVE_FILE_POPUP_TITLE = 'Save history to file'
+	LOAD_FILE_POPUP_TITLE = "Select URL's file to load"
+	SAVE_FILE_POPUP_TITLE = "Save URL's to file"
 	SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE = 'Select or create directory where the playlist video audios will be downloaded'
 	SELECT_OR_CREATE_DIR_SINGLE_VIDEO_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
 	SELECT_FILE_TO_CLIP = 'Select audio file to clip'

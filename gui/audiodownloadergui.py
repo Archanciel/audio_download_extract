@@ -890,12 +890,12 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def displayFileActionOnStatusBar(self, pathFileName, actionType, isLoadAtStart=None):
 		if actionType == FILE_ACTION_LOAD:
-			self.updateStatusBar('History file loaded:\n{}'.format(pathFileName))
+			self.updateStatusBar("URL's file loaded:\n{}".format(pathFileName))
 		else:
 			if isLoadAtStart:
-				self.updateStatusBar('History saved to file: {}.\nLoad at start activated.'.format(pathFileName))
+				self.updateStatusBar("URL's saved to file: {}.\nLoad at start activated.".format(pathFileName))
 			else:
-				self.updateStatusBar('History saved to file: {}'.format(pathFileName))
+				self.updateStatusBar("URL's saved to file: {}".format(pathFileName))
 
 	def loadHistoryFromPathFilename(self, pathFileName):
 		self.currentLoadedFathFileName = pathFileName
