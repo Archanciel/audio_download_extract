@@ -17,16 +17,9 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 
 	def verifyTestAudioDownloaderGUI(self):
 		playlistDirExpectedFileNameLstDic = {}
-		singleVideoExpectedFileNameLst = []
 		
 		# downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_3
 		# playlistDir_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
-		
-		# the two videos in the playlist have been partially downloaded
-		playlistDir_0_expectedFileNameLst = ['97-Product - 30 seconds animated short film 2020-08-14.mp3',
-		                                     '98-Creative short film - Wonderful little world 2017-01-24.mp3',
-		                                     'test_small_videos_dic.txt']
-		playlistDirExpectedFileNameLstDic[self.playlistDirName_0] = playlistDir_0_expectedFileNameLst
 		
 		# the three videos in the playlist have been partially downloaded
 		playlistDir_3_expectedFileNameLst = ['96-SLS DRIFT TAXI. Arina. #shorts 2021-08-12.mp3',
@@ -47,9 +40,7 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		# now verifying the index prefix and upload date suffix automatic
 		# setting for playlist url list downloading
 
-		playlistDir_5_expectedFileNameLst = ['Funny suspicious looking dog.mp3',
-		                                     'Here to help - Give him what he wants.mp3',
-		                                     'Shmeksss Short Video.mp3',
+		playlistDir_5_expectedFileNameLst = ['Shmeksss Short Video.mp3',
 		                                     'test warning index date files_noIndexNoDate_dic.txt',
 		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_5] = playlistDir_5_expectedFileNameLst

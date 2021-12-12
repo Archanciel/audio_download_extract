@@ -106,16 +106,16 @@ class AudioExtractor:
 			
 			timeFrameIndex += 1
 	
-	def suppressAudioPortions(self, videoIndex, videoFileName, downloadVideoInfoDic):
-		mp4FilePathName = os.path.join(self.targetAudioDir, videoFileName)
+	def suppressAudioPortions(self, videoIndex, videoAudioFileName, downloadVideoInfoDic):
+		mp3FilePathName = os.path.join(self.targetAudioDir, videoAudioFileName)
 		suppressStartEndSecondsLists = downloadVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(videoIndex)
 		suppressFrameNb = len(suppressStartEndSecondsLists)
-		videoAudioFrame = mp.AudioFileClip(mp4FilePathName)
+		videoAudioFrame = mp.AudioFileClip(mp3FilePathName)
 		duration = videoAudioFrame.duration
 		clips = []
 		keptStartEndSecondsLists = []
 		
-		msgText = '\nsuppressing portions of [b]{}[/b] ...\n'.format(videoFileName)
+		msgText = '\nsuppressing portions of [b]{}[/b] ...\n'.format(videoAudioFileName)
 		self.audioController.displayMessage(msgText)
 		
 		for extractIdx in range(suppressFrameNb + 1):
@@ -145,7 +145,7 @@ class AudioExtractor:
 				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 
 		clip = mp.concatenate_audioclips(clips)
-		mp3FileName = os.path.splitext(videoFileName)[0] + '_s.mp3'
+		mp3FileName = os.path.splitext(videoAudioFileName)[0] + '_s.mp3'
 		mp3FilePathName = os.path.join(self.targetAudioDir,
 		                               mp3FileName)
 		clip.write_audiofile(mp3FilePathName)

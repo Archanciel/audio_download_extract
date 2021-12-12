@@ -25,8 +25,6 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistSaveDirNameLst = []
 		self.playlistDirNameLst = []
 
-		self.playlistDirName_0 = "test_small_videos"
-		self.playlistDirNameLst.append(self.playlistDirName_0)
 		self.playlistDirName_3 = "test_small_videos_3"
 		self.playlistDirNameLst.append(self.playlistDirName_3)
 		self.playlistDirName_4 = "test_audio_downloader_two_files_with_time_frames"
@@ -54,21 +52,15 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 	def tryTestAudioDownloaderGUI(self):
 
-		# the two videos in the playlist have been partially downloaded
-		playlistSaveDirName_0 = self.playlistDirName_0 + sep + '80%'
-		self.playlistSaveDirNameLst.append(playlistSaveDirName_0)
-		playlistUrl_0 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMTBd1_CeKf-HnPinxiqo2zy'
-		self.urlDownloadLst.append(playlistUrl_0)
-
-		# adding first single video url
-		self.urlDownloadLst.append(self.singleVideoUrl_1)
-
 		# the three videos in the playlist have been partially downloaded
 		playlistSaveDirName_3 = self.playlistDirName_3 + sep + '80%'
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_3)
 		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
 		self.urlDownloadLst.append(playlistUrl_3)
-
+		
+		# adding first single video url
+		self.urlDownloadLst.append(self.singleVideoUrl_1)
+		
 		# downloading a playlist with extract and suppress portion settings
 		# in playlist title
 		playlistSaveDirName_4 = None # avoids playlist dir restore after it was emptied
