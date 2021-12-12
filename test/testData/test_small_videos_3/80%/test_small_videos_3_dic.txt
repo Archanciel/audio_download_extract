@@ -1,0 +1,13 @@
+{
+    "playlist": {
+        "pl_downloadDir": "test_small_videos_3",
+        "pl_name_modified": "test_small_videos_3",
+        "pl_name_original": "test_small_videos_3",
+        "pl_nextVideoIndex": 2,
+        "pl_title_modified": "test_small_videos_3",
+        "pl_title_original": "test_small_videos_3",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo"
+    },
+    "videos": {
+    }
+}
