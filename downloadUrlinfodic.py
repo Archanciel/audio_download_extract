@@ -11,10 +11,7 @@ KEY_GENERAL_TOTAL_DOWNLOAD_RESULT = 'totalDownlResult'
 KEY_GENERAL_URL_IDX_DOWNL_SUCCESS = 'urlIdxDownlSuccess'
 KEY_GENERAL_URL_IDX_DOWNL_FAIL = 'urlIdxDownlFail'
 KEY_GENERAL_URL_IDX_DOWNL_SKIP = 'urlIdxDownlSkip'
-
-# playlist download dir name. This name DOES NOT contain the
-# audio dir root dir (defined in uthe GUI settings)
-KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
+KEY_GENERAL_URL_LIST_FILE_PATH_NAME = 'urlListFilePathName'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -35,13 +32,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	cachedRateAccessNumber = 0
 
 	def __init__(self,
-	             playlistOrSingleVideoUrl=None,
 	             audioRootDir=None,
-	             playlistOrSingleVideoDownloadRootPath=None,
-	             playlistOrSingleVideoTitle=None,
-	             playlistOrSingleVideoName=None,
-	             playlistOrSingleVideoLastDownloadDate=None,
-	             playlistOrSingleVideoDownloadResultTuple=None,
+	             urlListDicFileName=None,
+	             generalTotalDownlResultTuple=None,
+	             generalTotalDownlSuccessTuple=None,
+	             generalTotalDownlFailTuple=None,
+	             generalTotalDownlSkipTuple=None,
 	             loadDicIfDicFileExist=True,
 	             existingDicFilePathName=None):
 		"""
@@ -57,11 +53,11 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		DownloadVideoInfoDic is created with the data contained in the
 		DownloadVideoInfoDic file located in the existingDicFilePathName dir.
 		
-		:param playlistOrSingleVideoUrl:                 playlist url to add to the
+		:param generalTotalDownlResultTuple:                 playlist url to add to the
 											download video info div
-		:param playlistOrSingleVideoDownloadRootPath:    base dir set in the GUI settings containing
+		:param urlListDicFileName:    base dir set in the GUI settings containing
 											the extracted audio files
-		:param playlistOrSingleVideoTitle:        may contain extract and/or suppress information.
+		:param generalTotalDownlSuccessTuple:        may contain extract and/or suppress information.
 											Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
 		:param originalPlaylistName:        contains only the playlist title part without extract
 											and/or suppress information. May contain chars which
@@ -84,26 +80,24 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			
 			return  # skipping the rest of the __init__ method in this case
 
-		playlistValidDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistOrSingleVideoName)
-		playlistVideoDownloadDir = playlistOrSingleVideoDownloadRootPath + sep + playlistValidDirName
+		playlistVideoDownloadDir = audioRootDir + sep + urlListDicFileName
 
 		if loadDicIfDicFileExist:
 			# is always True, except when AudioController creates a download info
 			# dic in order to set in it clip audio start and end times. In this
 			# case, the dic must not be loaded from a file
-			infoDicFilePathName = self.buildInfoDicFilePathName(playlistVideoDownloadDir, playlistValidDirName)
-			self.dic = self._loadDicIfExist(infoDicFilePathName)
+			self.dic = self._loadDicIfExist(playlistVideoDownloadDir)
 
 		if self.dic is None:
 			self.dic = {}
 			self.dic[KEY_GENERAL] = {}
 			
-			self.dic[KEY_GENERAL][KEY_GENERAL_TOTAL_DOWNLOAD_RESULT] = playlistOrSingleVideoUrl
-			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SUCCESS] = playlistOrSingleVideoTitle
-			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SKIP] = playlistOrSingleVideoName
-			self.dic[KEY_GENERAL][KEY_PLAYLIST_DOWNLOAD_DIR] = DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
-			                                                                                           fullFilePathName=playlistVideoDownloadDir)
+			self.dic[KEY_GENERAL][KEY_GENERAL_TOTAL_DOWNLOAD_RESULT] = generalTotalDownlResultTuple
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SUCCESS] = generalTotalDownlSuccessTuple
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SKIP] = generalTotalDownlSkipTuple
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL] = generalTotalDownlFailTuple
 			self.dic[KEY_GENERAL][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_PATH_NAME] = playlistVideoDownloadDir
 			self.dic[KEY_URL] = {}
 	
 	def updatePlaylistTitle(self, playlistTitle):
@@ -127,7 +121,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		:return:
 		"""
 		if KEY_GENERAL in self.dic.keys():
-			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SUCCESS]
+			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_PATH_NAME]
 		else:
 			return None
 	
@@ -163,7 +157,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		:return: playlist download dir name
 		"""
 		if KEY_GENERAL in self.dic.keys():
-			return self.dic[KEY_GENERAL][KEY_PLAYLIST_DOWNLOAD_DIR]
+			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL]
 		else:
 			return None
 	
@@ -441,18 +435,19 @@ if __name__ == "__main__":
 	if os.name == 'posix':
 		videoAudioDir = '/storage/emulated/0/Download/Audiobooks/various'
 	else:
-		playlistAudioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks'
-		videoAudioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\various'
+		playlistAudioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		videoAudioDir = playlistAudioDir + sep + 'various'
 		
-	dvi = DownloadUrlInfoDic(playlistOrSingleVideoUrl='https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo',
-	                         audioRootDir=playlistAudioDir,
-	                         playlistOrSingleVideoDownloadRootPath=playlistAudioDir,
-	                         playlistOrSingleVideoTitle="test_small_videos_3",
-	                         playlistOrSingleVideoName="test_small_videos_3",
-	                         playlistOrSingleVideoLastDownloadDate="12/12/2021 18:36:48",
-	                         playlistOrSingleVideoDownloadResultTuple=(3, 0, 0),
-	                         loadDicIfDicFileExist=True,
-	                         existingDicFilePathName=None)
+	dvi = DownloadUrlInfoDic(
+		audioRootDir=playlistAudioDir,
+		urlListDicFileName='urlListDic',
+		generalTotalDownlResultTuple=(13, 4, 7),
+		generalTotalDownlSuccessTuple=(3, 5, 1, 1, 2),
+		generalTotalDownlFailTuple=(0, 2, 0, 0, 2),
+		generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
+		loadDicIfDicFileExist=True,
+		existingDicFilePathName=None)
 	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
 	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999', 'Title_vid_2.mp4')
+	dvi.saveDic(playlistAudioDir)
 	a = 2
