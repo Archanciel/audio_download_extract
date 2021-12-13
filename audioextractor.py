@@ -13,6 +13,7 @@ else:
 	from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 
 class AudioExtractor:
+	
 	def __init__(self,
 	             audioController,
 	             targetAudioDir,
@@ -41,7 +42,7 @@ class AudioExtractor:
 				else:
 					self.suppressAudioPortions(videoIndex, videoAudioFileName, downloadVideoInfoDic)
 
-		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getSkippedUrlIndexTuple())
+		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 		self.audioController.displayMessage(msgText)
 
 	def extractAudioPortions(self, videoIndex, downloadVideoInfoDic, floatSpeed=1.0):

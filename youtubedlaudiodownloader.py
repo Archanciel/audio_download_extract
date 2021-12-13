@@ -21,7 +21,8 @@ YOUTUBE_DL_QUIET = True
 MAX_VIDEO_INDEX = 100
 
 class YoutubeDlAudioDownloader(AudioDownloader):
-	
+	"""
+	"""
 	def __init__(self, audioController, audioDirRoot):
 		"""
 		Ctor.
@@ -140,7 +141,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			for videoUrl in playlistObject.video_urls:
 				if self.audioController.stopDownloading:
 					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
-						downloadVideoInfoDic.getSkippedUrlIndexTuple())
+						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
 					self.audioController.downloadStopped()
 					
@@ -302,7 +303,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
 				playlistTotalDownloadSize = self.downloadInfoExtractor.getPlaylistDownloadInfo()[0]
 				msgText = '[b]{}[/b] playlist audio(s) download terminated.\n'.format(
-					downloadVideoInfoDic.getSkippedUrlIndexTuple())
+					downloadVideoInfoDic.getPlaylistNameOriginal())
 				self.audioController.displayMessage(msgText)
 				self.audioController.displayPlaylistEndDownloadInfo([playlistDownloadedVideoNb_succeed,
 				                                                     playlistDownloadedVideoNb_failed,
@@ -310,7 +311,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				                                                     playlistTotalDownloadTime
 				                                                     ])
 			else:
-				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getSkippedUrlIndexTuple())
+				msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
 				self.audioController.displayMessage(msgText)
 
 		return downloadVideoInfoDic, None
@@ -356,7 +357,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	
 	def displayRetryPlaylistDownloadMsg(self, downloadVideoInfoDic):
 		msgText = 'retry downloading the playlist later to download the failed audio only ...\n'.format(
-			downloadVideoInfoDic.getSkippedUrlIndexTuple())
+			downloadVideoInfoDic.getPlaylistNameOriginal())
 
 		self.audioController.displayMessage(msgText)
 	

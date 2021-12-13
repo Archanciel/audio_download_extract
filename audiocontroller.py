@@ -17,6 +17,7 @@ else:
 from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:
+	
 	def __init__(self, audioGUI, configMgr):
 		"""
 		
@@ -70,7 +71,7 @@ class AudioController:
 		self.stopDownloading = False
 
 		_, accessError = \
-			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getTotalDownloadResultTuple(),
+			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getPlaylistUrl(),
 			                                                  downloadVideoInfoDic=downloadVideoInfoDic,
 			                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
 			                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
