@@ -3,15 +3,14 @@ from datetime import datetime
 from os.path import sep
 
 from constants import *
-from dirutil import DirUtil
 from baseinfodic import BaseInfoDic
 
 KEY_GENERAL = 'general'
 KEY_GENERAL_TOTAL_DOWNLOAD_RESULT = 'totalDownlResult'
-KEY_GENERAL_URL_IDX_DOWNL_SUCCESS = 'urlIdxDownlSuccess'
+KEY_GENERAL_URL_IDX_DOWNL_OK = 'urlIdxDownlOk'
 KEY_GENERAL_URL_IDX_DOWNL_FAIL = 'urlIdxDownlFail'
 KEY_GENERAL_URL_IDX_DOWNL_SKIP = 'urlIdxDownlSkip'
-KEY_GENERAL_URL_LIST_FILE_PATH_NAME = 'urlListFilePathName'
+KEY_GENERAL_URL_LIST_FILE_NAME = 'urlListFileName'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
@@ -93,15 +92,15 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			self.dic[KEY_GENERAL] = {}
 			
 			self.dic[KEY_GENERAL][KEY_GENERAL_TOTAL_DOWNLOAD_RESULT] = generalTotalDownlResultTuple
-			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SUCCESS] = generalTotalDownlSuccessTuple
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_OK] = generalTotalDownlSuccessTuple
 			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SKIP] = generalTotalDownlSkipTuple
 			self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL] = generalTotalDownlFailTuple
 			self.dic[KEY_GENERAL][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
-			self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_PATH_NAME] = playlistVideoDownloadDir
+			self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME] = urlListDicFileName
 			self.dic[KEY_URL] = {}
 	
 	def updatePlaylistTitle(self, playlistTitle):
-		self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SUCCESS] = playlistTitle
+		self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_OK] = playlistTitle
 
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
@@ -121,7 +120,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		:return:
 		"""
 		if KEY_GENERAL in self.dic.keys():
-			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_PATH_NAME]
+			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME]
 		else:
 			return None
 	
@@ -157,7 +156,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		:return: playlist download dir name
 		"""
 		if KEY_GENERAL in self.dic.keys():
-			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL]
+			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME]
 		else:
 			return None
 	
@@ -429,10 +428,11 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		return self.getPlaylistTitleOriginal()
 
 	def getDicDirSubDir(self):
-		return self.getPlaylistDownloadDir()
+		return ''
 
 if __name__ == "__main__":
 	if os.name == 'posix':
+		playlistAudioDir = '/storage/emulated/0/Download/Audiobooks'
 		videoAudioDir = '/storage/emulated/0/Download/Audiobooks/various'
 	else:
 		playlistAudioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
