@@ -66,7 +66,6 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(videoFileName_2, dvi.getVideoAudioFileNameForVideoTitle(title_2))
 		
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
 
 	def testRemoveFirstVideoInfoForVideoTitle(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -116,7 +115,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveSecondVideoInfoForVideoTitle(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -166,7 +165,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(2))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveVideoInfoForVideoTitle_in_empty_dic(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -196,7 +195,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
 		self.assertEqual(1, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveVideoInfoForBadVideoTitle(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -249,7 +248,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
 		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveVideoInfoForVideoIndex_first_added_video(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -296,7 +295,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(1))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveVideoInfoForVideoIndex_second_added_video(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -346,7 +345,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual({}, dvi._getVideoInfoForVideoIndex(2))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 
 	def testRemoveVideoInfoForBadVideoIndex(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
@@ -399,7 +398,7 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
 		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
 		self.assertEqual(3, dvi.getNextVideoIndex())
-		self.assertEqual(playlistUrl, dvi.getPlaylistUrl())
+		self.assertEqual(playlistUrl, dvi.getTotalDownloadResultTuple())
 	
 	def testCreateDownloadUrlInfoDic_speifying_only_info_dic_filePathName(self):
 		testDirName = 'test delete files'

@@ -32,8 +32,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
@@ -58,8 +58,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -86,8 +86,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -114,8 +114,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -142,8 +142,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
@@ -168,8 +168,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -196,8 +196,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -220,8 +220,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		
 	def testCreateDownloadVideoInfoDic_two_time_frames_suppress(self):
@@ -244,8 +244,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
@@ -270,8 +270,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -298,8 +298,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideoExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideoSuppressTimeFramesList)
@@ -324,8 +324,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideoExtractTimeFramesList)
@@ -356,8 +356,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1), expectedVideo1ExtractTimeFramesList)
 		self.assertEqual(downloadedVideoInfoDic.getSuppressStartEndSecondsListsForVideoIndex(1), expectedVideo1SuppressTimeFramesList)
@@ -388,8 +388,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
@@ -416,8 +416,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
 	def testCreateDownloadVideoInfoDic_no_time_frame_playlistTitle_with_spaces(self):
@@ -436,8 +436,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
 	def testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_two_videos_timeFrames_to_end_playlistTitle_with_spaces(self):
@@ -464,8 +464,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
@@ -495,8 +495,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual('time frame syntax error "e-0:0:4-0:0:6" detected in playlist title: "Test 3 short videos (e-0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (e0:0:2-0:0:3 e0:0:5-e)".\ndownloading playlist interrupted.', accessError.errorMsg)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertIsNone(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
 		self.assertIsNone(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(2))
@@ -530,8 +530,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
@@ -559,8 +559,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_unauthorized_chars(
@@ -580,7 +580,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedPlaylistDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
 		
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma(
@@ -600,8 +600,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma_with_time_info(
@@ -628,8 +628,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
@@ -663,8 +663,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
 	
@@ -697,8 +697,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
 		
@@ -734,8 +734,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
 	
@@ -768,8 +768,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
 		
@@ -813,8 +813,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 				modifiedPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedModifiedPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
@@ -850,8 +850,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 				modifiedPlaylistTitle)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
-		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
-		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getSkippedUrlIndexTuple())
+		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getFailedUrlIndexTuple())
 		self.assertEqual(expectedModifiedPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
 	def testCreateDownloadVideoInfoDic_existing_dic_format_error(self):

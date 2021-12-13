@@ -1199,7 +1199,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
 		                         'Keller.mp3']), sorted(fileNameLst))
 
-		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(playlistName, downloadVideoInfoDic.getSkippedUrlIndexTuple())
 		
 	def testDownloadMaxNamePlaylist_minus_one_char(self):
 		"""
@@ -1361,7 +1361,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
 
-		self.assertEqual(longPlaylistNameMinusOneChar, downloadVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(longPlaylistNameMinusOneChar, downloadVideoInfoDic.getSkippedUrlIndexTuple())
 
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
 		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
@@ -1508,7 +1508,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Keller.mp3',
  "test short_n'ame pl, aylist - avec deux points_dic.txt"]), sorted(fileNameLst))
 
-		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(playlistName, downloadVideoInfoDic.getSkippedUrlIndexTuple())
 
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'

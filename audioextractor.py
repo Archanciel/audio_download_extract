@@ -41,7 +41,7 @@ class AudioExtractor:
 				else:
 					self.suppressAudioPortions(videoIndex, videoAudioFileName, downloadVideoInfoDic)
 
-		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getPlaylistNameOriginal())
+		msgText = '\n[b]{}[/b] playlist audio(s) extraction/suppression terminated.\n'.format(downloadVideoInfoDic.getSkippedUrlIndexTuple())
 		self.audioController.displayMessage(msgText)
 
 	def extractAudioPortions(self, videoIndex, downloadVideoInfoDic, floatSpeed=1.0):

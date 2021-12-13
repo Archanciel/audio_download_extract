@@ -70,7 +70,7 @@ class AudioController:
 		self.stopDownloading = False
 
 		_, accessError = \
-			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getPlaylistUrl(),
+			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getTotalDownloadResultTuple(),
 			                                                  downloadVideoInfoDic=downloadVideoInfoDic,
 			                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
 			                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)

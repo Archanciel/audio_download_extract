@@ -6,10 +6,35 @@ from constants import *
 from baseinfodic import BaseInfoDic
 
 KEY_GENERAL = 'general'
+# key for a 4 element tuple value.
+#
+# element 0: total number of downloaded playlists
+# element 1: total number of successfully downloaded videos (in playlist or single)
+# element 2: total number of failed downloaded videos (in playlist or single)
+# element 3: total number of skipped videos (in playlist or single)
 KEY_GENERAL_TOTAL_DOWNLOAD_RESULT = 'totalDownlResult'
+
+# key for tuple value containing the indexes of the downloaded playlists which
+# had no downloaded video failure, only video successfully downloaded or skipped.
+#
+# The tuple value also contains the indexes of the successfully downloaded
+# single videos.
 KEY_GENERAL_URL_IDX_DOWNL_OK = 'urlIdxDownlOk'
+
+# key for tuple value containing the indexes of the downloaded playlists which
+# had at least 1 downloaded video failure.
+#
+# The tuple value also contains the indexes of the failed downloaded
+# single videos.
 KEY_GENERAL_URL_IDX_DOWNL_FAIL = 'urlIdxDownlFail'
+
+# key for tuple value containing the indexes of the downloaded playlists which
+# had at least 1 download skipped video.
+#
+# The tuple value also contains the indexes of the skipped downloaded
+# single videos.
 KEY_GENERAL_URL_IDX_DOWNL_SKIP = 'urlIdxDownlSkip'
+
 KEY_GENERAL_URL_LIST_FILE_NAME = 'urlListFileName'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
@@ -99,8 +124,18 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME] = urlListDicFileName
 			self.dic[KEY_URL] = {}
 	
-	def updatePlaylistTitle(self, playlistTitle):
-		self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_OK] = playlistTitle
+	def updateUrlIdxDownloadOk(self, urlIdxDownlOkTuple):
+		"""
+		The passed tuple contains the indexes of the downloaded playlists which
+		had no downloaded video failure, only video successfully downloaded or
+		skipped.
+		
+		The passed tuple also contains the indexes of the successfully downloaded
+		single videos.
+		
+		:param urlIdxDownlOkTuple:
+		"""
+		self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_OK] = urlIdxDownlOkTuple
 
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
@@ -124,24 +159,30 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		else:
 			return None
 	
-	def getPlaylistTitleModified(self):
+	def getFailedUrlIndexTuple(self):
 		"""
-		Return the modified play list title, which is the modified playlist name +
-		the optional extract or suppress time frames definitions.
+		Returns a tuple containing the indexes of the downloaded playlists which
+		had at least 1 failed downloaded video.
 
-		:return:
+		The returned tuple also contains the indexes of the failed downloaded
+		single videos.
+
+		:return: failed url index tuple
 		"""
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL]
 		else:
 			return None
 	
-	def getPlaylistNameOriginal(self):
+	def getSkippedUrlIndexTuple(self):
 		"""
-		Return the original play list name, which is the original playlist title
-		without the optional extract or suppress time frames definitions.
-	
-		:return:
+		Returns a tuple containing the indexes of the downloaded playlists which
+		had at least 1 download skipped video.
+
+		The returned tuple also contains the indexes of the skipped downloaded
+		single videos.
+		
+		:return: skipped url index tuple
 		"""
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SKIP]
@@ -160,11 +201,16 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		else:
 			return None
 	
-	def getPlaylistUrl(self):
+	def getTotalDownloadResultTuple(self):
 		"""
-		Returns the playlist url.
+		Returns a 4 elements tuple containing:
 
-		:return: playlist url
+		at pos 0: total number of downloaded playlists
+		at pos 1: total number of successfully downloaded videos (in playlist or single)
+		at pos 2: total number of failed downloaded videos (in playlist or single)
+		at pos 3: total number of skipped videos (in playlist or single)
+
+		:return: total download result tuple
 		"""
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_TOTAL_DOWNLOAD_RESULT]
