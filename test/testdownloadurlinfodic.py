@@ -14,41 +14,48 @@ from dirutil import DirUtil
 			
 class TestDownloadUrlInfoDic(unittest.TestCase):
 	def testAddVideoInfoForVideoIndex_new_info_dic_file(self):
-		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
-		playListName = 'test_download_vid_info_dic'
-		playlistTitle = playListName
-		
 		audioDirRoot = DirUtil.getTestAudioRootPath()
-		downloadDir = audioDirRoot + sep + playListName
+		downloadDir = audioDirRoot + sep + 'tst_url_info_dic_1'
 		
 		if not os.path.exists(downloadDir):
 			os.mkdir(downloadDir)
 		
-		# deleting video info dic files
+		# deleting url info dic file
 		files = glob.glob(downloadDir + sep + '*')
 		
 		for f in files:
 			os.remove(f)
 		
-		dvi = DownloadUrlInfoDic(playlistUrl, audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
+		dvi = DownloadUrlInfoDic(
+			audioRootDir=audioDirRoot,
+			urlListDicFileName='urlListDic',
+			generalTotalDownlResultTuple=(13, 4, 7),
+			generalTotalDownlSuccessTuple=(3, 5, 1, 1, 2),
+			generalTotalDownlFailTuple=(0, 2, 0, 0, 2),
+			generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
+			loadDicIfDicFileExist=True,
+			existingDicFilePathName=None)
+		urlTitle_1 = 'test warning index date files_noIndexNoDate'
+		url_1 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
+		dvi.addUrlInfoForUrlIndex(dvi.getNextVideoIndex(),
+		                          urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
+		                          urlTitle=urlTitle_1,
+		                          url=url_1,
+		                          downloadDir='')
+		urlTitle_2 = 'Here to help: Give him what he wants'
+		url_2 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dvi.addUrlInfoForUrlIndex(dvi.getNextVideoIndex(),
+		                          urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		                          urlTitle=urlTitle_2,
+		                          url=url_2,
+		                          downloadDir='')
+		dvi.saveDic(downloadDir)
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 
-		videoIndex = dvi.getNextVideoIndex()
-		title_1 = 'title 1'
-		url_1 = 'https://youtube.com/watch?v=9iPvLx7gotk'
-		videoFileName_1 = 'title 1.mp4'
-		dvi.addUrlInfoForUrlIndex(urlIndex=videoIndex, urlType='', urlTitle=title_1, url=url_1,
-		                          downloadDir=videoFileName_1)
-		videoIndex += 1
-		title_2 = 'title 2'
-		url_2 = 'https://youtube.com/watch?v=9iPvL8880999'
-		videoFileName_2 = 'title 2.mp4'
-		dvi.addUrlInfoForUrlIndex(urlIndex=videoIndex, urlType='', urlTitle=title_2, url=url_2,
-		                          downloadDir=videoFileName_2)
 		
-		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(title_1))
+		self.assertEqual(url_1, dvi.getVideoUrlForVideoTitle(urlTitle_1))
 		self.assertEqual(url_1, dvi.getVideoUrlForVideoIndex(1))
-		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(title_2))
+		self.assertEqual(url_2, dvi.getVideoUrlForVideoTitle(urlTitle_2))
 		self.assertEqual(url_2, dvi.getVideoUrlForVideoIndex(2))
 
 		self.assertEqual(additionTimeStr, dvi.getVideoDownloadTimeForVideoTitle(title_1))

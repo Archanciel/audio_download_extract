@@ -42,10 +42,6 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	Stores the downloaded playlist information as well as the playlist videos
 	information.
 	"""
-	DIC_FILE_NAME_EXTENT = '_dic.txt'
-	
-	wasDicUpdated = False
-	cachedRateAccessNumber = 0
 
 	def __init__(self,
 	             playlistUrl=None,
