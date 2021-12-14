@@ -425,7 +425,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
 			
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 
 		videoIndexDic[KEY_VIDEO_TITLE] = videoTitle
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl

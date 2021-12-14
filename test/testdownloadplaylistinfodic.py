@@ -31,7 +31,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 			os.remove(f)
 		
 		dvi = DownloadPlaylistInfoDic(playlistUrl, audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 
 		videoIndex = dvi.getNextVideoIndex()
 		title_1 = 'title 1'
@@ -99,7 +99,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		                              originalPlaylistName=playListName,
 		                              modifiedPlaylistTitle=playlistTitle,
 		                              modifiedPlaylistName=playListName)
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 		videoIndex = dvi.getNextVideoIndex()
 		dvi.addVideoInfoForVideoIndex(videoIndex, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		videoIndex += 1
@@ -128,7 +128,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadPlaylistInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 
 		# adding supplementary video info entry
 		videoIndex = reloadedDvi.getNextVideoIndex()
@@ -204,7 +204,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# creating new video info dic file and saving it
 		
 		dvi = DownloadPlaylistInfoDic(playlistUrl, audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		dvi.addVideoInfoForVideoIndex(2, 'title 2', 'https://youtube.com/watch?v=9iPvL8880999', 'title 2.mp4')
 
@@ -236,7 +236,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		
 		# creating new video info dic, reloading newly created video info dic file
 		reloadedDvi = DownloadPlaylistInfoDic('', audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		newAdditionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 		
 		# adding supplementary video info entry
 		reloadedDvi.addVideoInfoForVideoIndex(3, 'title 3', 'https://youtube.com/watch?v=9iPvL1111', 'title 3.mp4')
@@ -303,7 +303,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# creating new video info dic file and saving it
 		
 		dvi = DownloadPlaylistInfoDic(playlistUrl, audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
 		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
@@ -378,7 +378,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# creating new video info dic file and saving it
 		
 		dvi = DownloadPlaylistInfoDic(playlistUrl, audioDirRoot, audioDirRoot, playlistTitle, playListName, playlistTitle, playListName)
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_VIDEO_INFO_FILE)
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 		dvi.addVideoInfoForVideoIndex(1, 'title 1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'title 1.mp4')
 		
 		self.assertEqual('title 1.mp4', dvi.getVideoAudioFileNameForVideoIndex(1))
