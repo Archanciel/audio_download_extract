@@ -56,8 +56,10 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual(url_1, dui.getUrlForUrlTitle(urlTitle_1))
 		self.assertEqual(url_1, dui.getUrlForUrlIndex(1))
+		self.assertEqual(url_1, dui.getUrlForUrlKey('1'))
 		self.assertEqual(url_2, dui.getUrlForUrlTitle(urlTitle_2))
 		self.assertEqual(url_2, dui.getUrlForUrlIndex(2))
+		self.assertEqual(url_2, dui.getUrlForUrlKey('2'))
 
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_1))
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_2))
@@ -406,9 +408,11 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual(url_1, dui.getUrlForUrlTitle(urlTitle_1))
 		self.assertEqual(url_1, dui.getUrlForUrlIndex(1))
+		self.assertEqual(url_1, dui.getUrlForUrlKey('1'))
 		self.assertEqual(url_2, dui.getUrlForUrlTitle(urlTitle_2))
 		self.assertEqual(url_2, dui.getUrlForUrlIndex(2))
-		
+		self.assertEqual(url_2, dui.getUrlForUrlKey('2'))
+
 		additionTimeStr = '14/12/2021 18:30:55'
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_1))
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_2))

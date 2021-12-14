@@ -46,6 +46,7 @@ from gui.guiutil import GuiUtil
 from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 from septhreadexec import SepThreadExec
+from downloadUrlinfodic import DownloadUrlInfoDic
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
@@ -305,7 +306,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isUploadDateAddedToPlaylistVideo = False
 		self.isIndexAddedToPlaylistVideo = False
 		self.downloadFromUrlDownloadLstThreadCreated = False
-		
+		self.downloadUrlInfoDic = None
+
 		self._doOnStart()
 	
 	def _doOnStart(self):
@@ -904,11 +906,15 @@ class AudioDownloaderGUI(AudioGUI):
 		if not self.ensureDataPathFileNameExist(pathFileName, dataFileNotFoundMessage):
 			return
 
-		with open(pathFileName) as stream:
-			lines = stream.readlines()
+		self.downloadUrlInfoDic = DownloadUrlInfoDic(existingDicFilePathName=pathFileName)
 
-		lines = list(map(lambda line: line.strip('\n'), lines))
-		histoLines = [{'text' : val, 'selectable': True} for val in lines]
+		urlKeyLst = self.downloadUrlInfoDic.getUrlKeys()
+		urlLst = []
+		
+		for urlKey in urlKeyLst:
+			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlKey(urlKey))
+
+		histoLines = [{'text' : val, 'selectable': True} for val in urlLst]
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
 
@@ -941,11 +947,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# data path defined specified in saved file path name does not exist. Error popup is displayed.
 			return
 
-		with open(savingPathFileName, 'w') as stream:
-			for listEntry in self.requestListRV.data:
-				line = listEntry['text']
-				line = line + '\n'
-				stream.write(line)
+		self.downloadUrlInfoDic.saveDic(pathContainedInFilePathName)
 
 		# saving in config file if the saved file
 		# is to be loaded at application start

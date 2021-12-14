@@ -439,30 +439,30 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		if videoIndexStr in self.dic[KEY_URL].keys():
 			del self.dic[KEY_URL][videoIndexStr]
 	
-	def _getUrlInfoForUrlIndex(self, urlIndex):
+	def _getUrlInfoForUrlIndex(self, urlKey):
 		'''
 		Returns the url info dic associated to the passed url index.
 		Protected method used internally only.
 
-		:param urlIndex:
+		:param urlKey:
 		
 		:return: dictionary containing url information or empty dictionary
 				 if no url info for the passed url index exist.
 		'''
-		urlIndex = str(urlIndex)
+		urlKey = str(urlKey)
 		
+		return self._getUrlInfoForUrlKey(urlKey)
+	
+	def _getUrlInfoForUrlKey(self, urlIndex):
 		urlInfoDic = None
-		
 		try:
 			urlInfoDic = self.dic[KEY_URL][urlIndex]
 		except KeyError:
 			pass
-		
 		if urlInfoDic == None:
 			urlInfoDic = {}
-			
 		return urlInfoDic
-
+	
 	def getFailedVideoIndexes(self):
 		"""
 		Returns a list of download failed video integer indexes.
@@ -502,6 +502,18 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 	def getDicDirSubDir(self):
 		return ''
+	
+	def getUrlKeys(self):
+		return self.dic[KEY_URL].keys()
+	
+	def getUrlForUrlKey(self, urlKey):
+		urlInfoDic = self._getUrlInfoForUrlKey(urlKey)
+		
+		if KEY_URL_URL in urlInfoDic.keys():
+			return urlInfoDic[KEY_URL_URL]
+		else:
+			return None
+
 
 if __name__ == "__main__":
 	if os.name == 'posix':
