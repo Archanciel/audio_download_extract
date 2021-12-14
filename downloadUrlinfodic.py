@@ -46,9 +46,6 @@ KEY_URL_TITLE = 'title'
 KEY_URL_URL = 'url'
 KEY_URL_DOWNLOAD_TIME = 'downlTime'
 
-URL_TYPE_PLAYLIST = 'playlist'
-URL_TYPE_SINGLE_VIDEO = 'video'
-
 # key for a 3 elements tuple value.
 #
 # element 0: total number of successfully downloaded videos for playlist type
@@ -66,9 +63,9 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	Stores the playlists or videos information which were added to the URL's
 	AudioDownloaderGUI URL's to download list.
 	"""
-	wasDicUpdated = False
-	cachedRateAccessNumber = 0
-
+	URL_TYPE_PLAYLIST = 'playlist'
+	URL_TYPE_SINGLE_VIDEO = 'video'
+	
 	def __init__(self,
 	             audioRootDir=None,
 	             urlListDicFileName=None,
@@ -508,14 +505,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 if __name__ == "__main__":
 	if os.name == 'posix':
-		playlistAudioDir = '/storage/emulated/0/Download/Audiobooks'
-		videoAudioDir = '/storage/emulated/0/Download/Audiobooks/various'
+		audioDir = '/storage/emulated/0/Download/Audiobooks'
 	else:
-		playlistAudioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
-		videoAudioDir = playlistAudioDir + sep + 'various'
+		audioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		
 	dvi = DownloadUrlInfoDic(
-		audioRootDir=playlistAudioDir,
+		audioRootDir=audioDir,
 		urlListDicFileName='urlListDic',
 		generalTotalDownlResultTuple=(13, 4, 7),
 		generalTotalDownlSuccessTuple=(3, 5, 1, 1, 2),
@@ -524,14 +519,13 @@ if __name__ == "__main__":
 		loadDicIfDicFileExist=True,
 		existingDicFilePathName=None)
 	dvi.addUrlInfoForUrlIndex(1,
-	                          urlType=URL_TYPE_PLAYLIST,
+	                          urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
 	                          urlTitle='test warning index date files_noIndexNoDate',
 	                          url='https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
 	                          downloadDir='')
 	dvi.addUrlInfoForUrlIndex(2,
-	                          urlType=URL_TYPE_SINGLE_VIDEO,
+	                          urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
 	                          urlTitle='Here to help: Give him what he wants',
 	                          url='https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 	                          downloadDir='')
-	dvi.saveDic(playlistAudioDir)
-	a = 2
+	dvi.saveDic(audioDir)
