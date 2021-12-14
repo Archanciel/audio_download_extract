@@ -417,6 +417,10 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		if not videoIndexKey in self.dic[KEY_VIDEOS].keys():
 			videoIndexDic = {}
 			self.dic[KEY_VIDEOS][videoIndexKey] = videoIndexDic
+			
+			# if we are re-downloading a video whose previous download
+			# was unsuccessful, it is necessary to remove its video info
+			# dic since it will be replaced by the newly created dic.
 			self.removeVideoDicForVideoTitleIfExist(videoTitle)
 		else:
 			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
@@ -432,6 +436,13 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
 
 	def removeVideoDicForVideoTitleIfExist(self, videoTitle):
+		"""
+		If we are re-downloading a video whose previous download
+		was unsuccessful, it is necessary to remove its video info
+		dic since it will be replaced by the newly created dic.
+		
+		:param videoTitle:
+		"""
 		videoIndex = self.getVideoIndexForVideoTitle(videoTitle)
 		
 		if videoIndex:
