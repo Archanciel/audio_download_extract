@@ -152,7 +152,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		# must be changed !!!
 		return playlistTitle
 
-	def getNextVideoIndex(self):
+	def getNextUrlIndex(self):
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX]
 		else:
@@ -263,32 +263,32 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		else:
 			return None
 
-	def getVideoUrlForVideoIndex(self, videoIndex):
-		videoInfoDic = self._getUrlInfoForUrlIndex(videoIndex)
+	def getUrlForUrlIndex(self, urlIndex):
+		urlInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
 		
-		if KEY_URL_URL in videoInfoDic.keys():
-			return videoInfoDic[KEY_URL_URL]
+		if KEY_URL_URL in urlInfoDic.keys():
+			return urlInfoDic[KEY_URL_URL]
 		else:
 			return None
 	
-	def getVideoUrlForVideoTitle(self, videoTitle):
-		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
+	def getUrlForUrlTitle(self, urlTitle):
+		urlIndex = self.getUrlIndexForUrlTitle(urlTitle)
 		
-		if videoIndex:
-			return self._getUrlInfoForUrlIndex(videoIndex)[KEY_URL_URL]
+		if urlIndex:
+			return self._getUrlInfoForUrlIndex(urlIndex)[KEY_URL_URL]
 		else:
 			return None
 	
-	def getVideoAudioFileNameForVideoIndex(self, videoIndex):
-		videoInfoDic = self._getUrlInfoForUrlIndex(videoIndex)
+	def getUrlDownloadDirForUrlIndex(self, urlIndex):
+		videoInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
 		
 		if KEY_URL_DOWNLOAD_DIR in videoInfoDic.keys():
 			return videoInfoDic[KEY_URL_DOWNLOAD_DIR]
 		else:
 			return None
 	
-	def getVideoAudioFileNameForVideoTitle(self, videoTitle):
-		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
+	def getUrlDownloadDirForUrlTitle(self, urlTitle):
+		videoIndex = self.getUrlIndexForUrlTitle(urlTitle)
 
 		if videoIndex:
 			return self._getUrlInfoForUrlIndex(videoIndex)[KEY_URL_DOWNLOAD_DIR]
@@ -488,7 +488,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	
 	def getVideoIndexForVideoFileName(self, videoFileName):
 		for key in self.dic[KEY_URL].keys():
-			if self.getVideoAudioFileNameForVideoIndex(key) == videoFileName:
+			if self.getUrlDownloadDirForUrlIndex(key) == videoFileName:
 				return key
 		
 		return None
