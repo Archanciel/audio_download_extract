@@ -190,6 +190,8 @@ class AudioShareGUI(AudioPositionGUI):
 		
 		self.soundloaderSharedMp3Obj = None
 		self.sharedAudioFilePathNameInitValue = ''
+		
+		self.loadHistoryDataIfSet()
 	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
