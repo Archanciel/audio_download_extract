@@ -12,6 +12,7 @@ from kivy.core.clipboard import Clipboard
 from configmanager import ConfigManager
 from dirutil import DirUtil
 from gui.audiodownloadergui import AudioDownloaderGUIMainApp
+from downloadUrlinfodic import DownloadUrlInfoDic
 
 class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
@@ -21,7 +22,6 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.configMgr = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
 
 		self.singleVideoAudioFileNameLst = []
-		self.urlDownloadLst = []
 		self.playlistSaveDirNameLst = []
 		self.playlistDirNameLst = []
 
@@ -51,26 +51,42 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
 
 	def tryTestAudioDownloaderGUI(self):
+		urlListDicFileName = DirUtil.extractFileNameFromFilePathName(self.configMgr.loadAtStartPathFilename)
+
+		downloadUrlInfoDic = DownloadUrlInfoDic(
+			audioRootDir=self.configMgr.dataPath,
+			urlListDicFileName=urlListDicFileName,
+			generalTotalDownlResultTuple=(13, 4, 7),
+			generalTotalDownlSuccessTuple=(3, 5, 1, 1, 2),
+			generalTotalDownlFailTuple=(0, 2, 0, 0, 2),
+			generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
+			loadDicIfDicFileExist=False,
+			existingDicFilePathName=None)
 
 		# the three videos in the playlist have been partially downloaded
 		playlistSaveDirName_3 = self.playlistDirName_3 + sep + '80%'
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_3)
 		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
-		self.urlDownloadLst.append(playlistUrl_3)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_3,
+		                              url=playlistUrl_3, downloadDir='')
 		
 		# adding first single video url
-		self.urlDownloadLst.append(self.singleVideoUrl_1)
-		
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, urlTitle='Short King Struggles',
+		                              url=self.singleVideoUrl_1, downloadDir='')
+
 		# downloading a playlist with extract and suppress portion settings
 		# in playlist title
 		playlistSaveDirName_4 = None # avoids playlist dir restore after it was emptied
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_4)
 		playlistUrl_4 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn'
-		self.urlDownloadLst.append(playlistUrl_4)
-
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST,
+		                              urlTitle='test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)',
+		                              url=playlistUrl_4, downloadDir='')
+		
 		# adding second single video url
-		self.urlDownloadLst.append(self.singleVideoUrl_2)
-		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		                              urlTitle='Try Not To Laugh | The most interesting funny short video tik tok',
+		                              url=self.singleVideoUrl_2, downloadDir='')
 
 		# now testing the index prefix and upload date suffix automatic
 		# setting for playlist url list downloading
@@ -82,8 +98,9 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		playlistSaveDirName_5 = self.playlistDirName_5 + sep + "100%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_5)
 		playlistUrl_5 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
-		self.urlDownloadLst.append(playlistUrl_5)
-
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_5,
+		                              url=playlistUrl_5, downloadDir='')
+		
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. No file in the playlist dir is named with upload
 		# date suffix. Since one file in the playlist dir is named
@@ -92,7 +109,8 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "100%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_6)
 		playlistUrl_6 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd'
-		self.urlDownloadLst.append(playlistUrl_6)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_6,
+		                              url=playlistUrl_6, downloadDir='')
 
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. No file in the playlist dir is named with index
@@ -102,7 +120,8 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		playlistSaveDirName_7 = self.playlistDirName_7 + sep + "100%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_7)
 		playlistUrl_7 = 'https://www.youtube.com/playlist?list=PLzwWSJNcZTMT_P0bftfIjKbKdaVaxem4D'
-		self.urlDownloadLst.append(playlistUrl_7)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_7,
+		                              url=playlistUrl_7, downloadDir='')
 
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. One file in the playlist dir is named with index
@@ -111,12 +130,14 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		playlistSaveDirName_8 = self.playlistDirName_8 + sep + "100%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_8)
 		playlistUrl_8 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRMhkp5nzUm_h02fKsiy1se'
-		self.urlDownloadLst.append(playlistUrl_8)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_8,
+		                              url=playlistUrl_8, downloadDir='')
 
 		# playlist whose download dir does not exist. The downloaded file
 		# will be named with index prefix and with upload date suffix.
 		playlistUrl_9 = 'hhttps://youtube.com/playlist?list=PLzwWSJNcZTMRXamI-VlOly97Prt4_Jj2W'
-		self.urlDownloadLst.append(playlistUrl_9)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_9,
+		                              url=playlistUrl_9, downloadDir='')
 
 		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_9
 		
@@ -126,7 +147,8 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# playlist whose download dir is empty. The downloaded file
 		# will be named with index prefix and with upload date suffix.
 		playlistUrl_10 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRUSEsR1zccRxrBeCl3Nmc_'
-		self.urlDownloadLst.append(playlistUrl_10)
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_10,
+		                              url=playlistUrl_10, downloadDir='')
 
 		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_10
 		
@@ -138,10 +160,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		                                 self.playlistSaveDirNameLst,
 		                                 singleVideoSaveDirName,
 		                                 self.singleVideoAudioFileNameLst)
-		self.restoreUrlDownloadFile(self.urlDownloadLst,
-		                            self.configMgr.loadAtStartPathFilename)
 		
-		
+		downloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
+		                           dicFilePathName=self.configMgr.loadAtStartPathFilename)
+
 		Clipboard.copy('  ')
 #		Clipboard.copy(playlistUrl_6)   # causes the downloaded video to be prefixed
 										# with index and suffixed with upload date !!
@@ -175,20 +197,6 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		                                      fileNamePattern='*')
 
 		return downloadDirLst
-	
-	def restoreUrlDownloadFile(self,
-	                           urlDownloadLst,
-	                           urlDownloadLstFilePathName):
-		"""
-		Re-filling the url list file which is uploaded when the AudioDownloaderGUI
-		starts.
-		
-		:param urlDownloadLst:
-		:param urlDownloadLstFilePathName:
-		:return:
-		"""
-		with open(urlDownloadLstFilePathName, 'w') as f:
-			f.writelines('\n'.join(urlDownloadLst))
 
 
 if __name__ == '__main__':

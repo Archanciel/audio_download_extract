@@ -39,17 +39,18 @@ class BaseInfoDic(metaclass=ABCMeta):
 		except Exception as e:
 			print(e)
 	
-	def saveDic(self, audioDirRoot):
+	def saveDic(self, audioDirRoot, dicFilePathName=None):
 		"""
 		
 		:param audioDirRoot: audio dir as defined in the GUI settings.
-		:return:
+		:param dicFilePathName: not None in case of DownloadUrlInfoDic.
 		"""
-		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getDicDirName())
-		playlistDownloadDir = self.getDicDirSubDir()
-		
-		dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
-		                                                validPlaylistDirName=validPlaylistDirName)
+		if dicFilePathName is None:
+			validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getDicDirName())
+			playlistDownloadDir = self.getDicDirSubDir()
+			
+			dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
+			                                                validPlaylistDirName=validPlaylistDirName)
 
 		with open(dicFilePathName, 'w') as f:
 			try:

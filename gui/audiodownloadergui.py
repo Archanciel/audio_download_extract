@@ -288,7 +288,7 @@ class AudioDownloaderGUI(AudioGUI):
 									# button is set to 'Half' or 'Full'
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
-		self.currentLoadedFathFileName = ''
+		self.currentLoadedPathFileName = ''
 		self.outputLineBold = True
 		self.fileChooserPopup = None
 		self.downloadVideoInfoDic = None
@@ -868,14 +868,14 @@ class AudioDownloaderGUI(AudioGUI):
 
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		
-		if loadAtStartFilePathName == self.currentLoadedFathFileName:
+		if loadAtStartFilePathName == self.currentLoadedPathFileName:
 			loadAtStartFileName = loadAtStartFilePathName.split(sep)[-1]
 			if loadAtStartFileName != '':
 				popupTitle = "{} ({} loaded at start)".format(popupTitleAction, loadAtStartFileName)
 			else:
 				popupTitle = "{} (no file loaded)".format(popupTitleAction)
 		else:
-			loadFileName = self.currentLoadedFathFileName.split(sep)[-1]
+			loadFileName = self.currentLoadedPathFileName.split(sep)[-1]
 			popupTitle = "{} ({} loaded)".format(popupTitleAction, loadFileName)
 		
 		return popupTitle
@@ -900,7 +900,7 @@ class AudioDownloaderGUI(AudioGUI):
 				self.updateStatusBar("URL's saved to file: {}".format(pathFileName))
 
 	def loadHistoryFromPathFilename(self, pathFileName):
-		self.currentLoadedFathFileName = pathFileName
+		self.currentLoadedPathFileName = pathFileName
 		dataFileNotFoundMessage = self.buildFileNotFoundMessage(pathFileName)
 		
 		if not self.ensureDataPathFileNameExist(pathFileName, dataFileNotFoundMessage):
@@ -939,7 +939,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.displayPopupWarning(message)
 			return
 		
-		self.currentLoadedFathFileName = savingPathFileName
+		self.currentLoadedPathFileName = savingPathFileName
 		pathContainedInFilePathName = DirUtil.extractPathFromPathFileName(savingPathFileName)
 		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(pathContainedInFilePathName)
 		

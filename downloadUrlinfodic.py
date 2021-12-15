@@ -157,7 +157,11 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			return self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX]
 		else:
 			return None
-		
+
+	def setNextUrlIndex(self, urlIndex):
+		if KEY_GENERAL in self.dic.keys():
+			self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex
+
 	def getPlaylistTitleOriginal(self):
 		"""
 		Return the original play list title, which is the original playlist name +
@@ -363,19 +367,17 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		else:
 			return None
 
-	def addUrlInfoForUrlIndex(self,
-	                          urlIndex,
-	                          urlType,
-	                          urlTitle,
-	                          url,
-	                          downloadDir):
+	def addUrlInfo(self,
+	               urlType,
+	               urlTitle,
+	               url,
+	               downloadDir):
 		"""
 		Creates the url info sub-dic for the url index if necessary.
 		
 		Then, adds to the sub-dic the url title, the url url and the url downloaded
 		file name.
 
-		:param urlIndex:
 		:param urlType:
 		:param urlTitle:
 		:param url:
@@ -387,7 +389,10 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		if not KEY_URL in self.dic.keys():
 			self.dic[KEY_URL] = {}
 			
+		urlIndex = self.getNextUrlIndex()
 		urlIndexKey = str(urlIndex)
+		self.setNextUrlIndex(urlIndex=urlIndex + 1)
+
 		
 		if not urlIndexKey in self.dic[KEY_URL].keys():
 			urlIndexDic = {}
@@ -530,14 +535,8 @@ if __name__ == "__main__":
 		generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
 		loadDicIfDicFileExist=True,
 		existingDicFilePathName=None)
-	dvi.addUrlInfoForUrlIndex(1,
-	                          urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
-	                          urlTitle='test warning index date files_noIndexNoDate',
-	                          url='https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
-	                          downloadDir='')
-	dvi.addUrlInfoForUrlIndex(2,
-	                          urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
-	                          urlTitle='Here to help: Give him what he wants',
-	                          url='https://www.youtube.com/watch?v=Eqy6M6qLWGw',
-	                          downloadDir='')
+	dvi.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle='test warning index date files_noIndexNoDate',
+	               url='https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc', downloadDir='')
+	dvi.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, urlTitle='Here to help: Give him what he wants',
+	               url='https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadDir='')
 	dvi.saveDic(audioDir)
