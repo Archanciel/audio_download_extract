@@ -353,7 +353,25 @@ class AudioDownloaderGUI(AudioGUI):
 				playlistOrSingleVideoUrl != ' ' and \
 				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
 				playlistOrSingleVideoUrl.startswith('https://'):
-			urlListEntry = {'text': playlistOrSingleVideoUrl,
+			
+			title = self.originalPlaylistTitle
+			
+			if title is None:
+				title = self.originalSingleVideoTitle
+			
+			while title is None:
+				self.downloadFromClipboard(onlyGetDownloadObjectTitle=True)
+				time.sleep(3)
+
+				title = self.originalPlaylistTitle
+			
+				if title is None:
+					title = self.originalSingleVideoTitle
+			
+			self.enableButtons()
+			
+			urlListEntry = {'text': title,
+			                'url': playlistOrSingleVideoUrl,
 			                'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
@@ -366,7 +384,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.emptyRequestFields()
 			Clipboard.copy(' ') # empty clipboard. Copying '' does not work !
 		
-	def downloadFromClipboard(self):
+	def downloadFromClipboard(self, onlyGetDownloadObjectTitle=False):
 		"""
 		Method called either at application start or when pressing the
 		download button defined in the audiodownloadergui.kv file.
@@ -374,6 +392,12 @@ class AudioDownloaderGUI(AudioGUI):
 		playlistOrSingleVideoUrl = Clipboard.paste()
 		self.disableButtons()
 		
+		if onlyGetDownloadObjectTitle:
+			# the case if method called after clicking on Add button
+			endFunc = None
+		else:
+			endFunc = self.executeDownload
+			
 		# obtaining the playlist or single video title using a separate thread
 		# for the playlist or single video referenced by the url obtained from
 		# the clipboard..
@@ -381,7 +405,7 @@ class AudioDownloaderGUI(AudioGUI):
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.getDownloadObjectTitleOnNewThread,
 			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
-			                              endFunc=self.executeDownload,
+			                              endFunc=endFunc,
 			                              endFuncArgs=(playlistOrSingleVideoUrl, ))
 			
 			self.downloadObjectTitleThreadCreated = True
