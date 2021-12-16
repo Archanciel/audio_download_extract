@@ -181,12 +181,15 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		self.selected = is_selected
 		
 		if is_selected:
-			selItemValue = rv.data[index]['text']
+			selItemUrlTitle = rv.data[index]['text']
+			selItemUrl = rv.data[index]['url']
+			
+			Clipboard.copy(selItemUrl)
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
-			self.audioDownloaderGUI.requestInput.text = selItemValue
+			self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
 		
 		self.audioDownloaderGUI.refocusOnFirstRequestInput()
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
@@ -387,7 +390,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
 		for listEntry in self.requestListRV.data:
-			playlistOrSingleVideoUrl = listEntry['text']
+			playlistOrSingleVideoUrl = listEntry['url']
 			_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
@@ -910,11 +913,13 @@ class AudioDownloaderGUI(AudioGUI):
 
 		urlSortedIndexLst = self.downloadUrlInfoDic.getSortedUrlIndexLst()
 		urlLst = []
+		titleLst = []
 		
 		for urlIndex in urlSortedIndexLst:
 			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlIndex(urlIndex))
+			titleLst.append((self.downloadUrlInfoDic.getUrlTitleForUrlIndex(urlIndex)))
 
-		histoLines = [{'text' : val, 'selectable': True} for val in urlLst]
+		histoLines = [{'text' : val, 'url': url, 'selectable': True} for val, url in zip(titleLst, urlLst)]
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
 
