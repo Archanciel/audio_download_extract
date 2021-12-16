@@ -13,6 +13,7 @@ from constants import *
 from dirutil import DirUtil
 			
 class TestDownloadUrlInfoDic(unittest.TestCase):
+	
 	def testAddVideoInfoForVideoIndex_new_info_dic_file(self):
 		audioDirRoot = DirUtil.getTestAudioRootPath()
 		downloadDir = audioDirRoot + sep + 'tst_url_info_dic_1'
@@ -36,13 +37,88 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 			generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
 			loadDicIfDicFileExist=True,
 			existingDicFilePathName=None)
+		
+		# adding 11 url info in order to test
+		# DownloadUrlInfoDic.getSortedUrlIndexLst()
+		
 		urlTitle_1 = 'test warning index date files_noIndexNoDate'
 		url_1 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
-		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=urlTitle_1, url=url_1, downloadDir='')
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
+		               urlTitle=urlTitle_1,
+		               url=url_1,
+		               downloadDir='')
 		urlTitle_2 = 'Here to help: Give him what he wants'
 		url_2 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
-		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, urlTitle=urlTitle_2, url=url_2, downloadDir='')
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_2,
+		               url=url_2,
+		               downloadDir='')
+
+		urlTitle_3 = 'Here to help: Give him what he wants_3'
+		url_3 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_3,
+		               url=url_3,
+		               downloadDir='')
+
+		urlTitle_4 = 'Here to help: Give him what he wants_4'
+		url_4 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_4,
+		               url=url_4,
+		               downloadDir='')
+
+		urlTitle_5 = 'Here to help: Give him what he wants_5'
+		url_5 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_5,
+		               url=url_5,
+		               downloadDir='')
+
+		urlTitle_6 = 'Here to help: Give him what he wants_6'
+		url_6 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_6,
+		               url=url_6,
+		               downloadDir='')
+
+		urlTitle_7 = 'Here to help: Give him what he wants_7'
+		url_7 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_7,
+		               url=url_7,
+		               downloadDir='')
+
+		urlTitle_8 = 'Here to help: Give him what he wants_8'
+		url_8 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_8,
+		               url=url_8,
+		               downloadDir='')
+
+		urlTitle_9 = 'Here to help: Give him what he wants_9'
+		url_9 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_9,
+		               url=url_9,
+		               downloadDir='')
+
+		urlTitle_10 = 'Here to help: Give him what he wants_10'
+		url_10 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_10,
+		               url=url_10,
+		               downloadDir='')
+
+		urlTitle_11 = 'Here to help: Give him what he wants_11'
+		url_11 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
+		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		               urlTitle=urlTitle_11,
+		               url=url_11,
+		               downloadDir='')
+
 		dui.saveDic(downloadDir)
+		
 		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
 
 		
@@ -52,7 +128,12 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_2, dui.getUrlForUrlTitle(urlTitle_2))
 		self.assertEqual(url_2, dui.getUrlForUrlIndex(2))
 		self.assertEqual(url_2, dui.getUrlForUrlKey('2'))
+		self.assertEqual(url_10, dui.getUrlForUrlIndex(10))
+		self.assertEqual(url_10, dui.getUrlForUrlKey('10'))
+		self.assertEqual(urlTitle_10, dui.getUrlTitleForUrlIndex(10))
 
+		self.assertEqual([1,2,3,4,5,6,7,8,9,10,11], dui.getSortedUrlIndexLst())
+		
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_1))
 		self.assertEqual(additionTimeStr, dui.getVideoDownloadTimeForVideoTitle(urlTitle_2))
 
@@ -63,8 +144,35 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual('', dui.getUrlDownloadDirForUrlIndex(2))
 		self.assertEqual('', dui.getUrlDownloadDirForUrlTitle(urlTitle_2))
 		
-		self.assertEqual(3, dui.getNextUrlIndex())
-
+		self.assertEqual(12, dui.getNextUrlIndex())
+		
+		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(downloadDir, '*' + DownloadUrlInfoDic.DIC_FILE_NAME_EXTENT)
+		dui_reloaded = DownloadUrlInfoDic(existingDicFilePathName=dicFilePathNameLst[0])
+		
+		self.assertEqual(url_1, dui_reloaded.getUrlForUrlTitle(urlTitle_1))
+		self.assertEqual(url_1, dui_reloaded.getUrlForUrlIndex(1))
+		self.assertEqual(url_1, dui_reloaded.getUrlForUrlKey('1'))
+		self.assertEqual(url_2, dui_reloaded.getUrlForUrlTitle(urlTitle_2))
+		self.assertEqual(url_2, dui_reloaded.getUrlForUrlIndex(2))
+		self.assertEqual(url_2, dui_reloaded.getUrlForUrlKey('2'))
+		self.assertEqual(url_10, dui_reloaded.getUrlForUrlIndex(10))
+		self.assertEqual(url_10, dui_reloaded.getUrlForUrlKey('10'))
+		self.assertEqual(urlTitle_10, dui_reloaded.getUrlTitleForUrlIndex(10))
+		
+		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], dui_reloaded.getSortedUrlIndexLst())
+		
+		self.assertEqual(additionTimeStr, dui_reloaded.getVideoDownloadTimeForVideoTitle(urlTitle_1))
+		self.assertEqual(additionTimeStr, dui_reloaded.getVideoDownloadTimeForVideoTitle(urlTitle_2))
+		
+		self.assertEqual(urlTitle_1, dui_reloaded.getUrlTitleForUrlIndex(1))
+		
+		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlIndex(1))
+		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_1))
+		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlIndex(2))
+		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_2))
+		
+		self.assertEqual(12, dui_reloaded.getNextUrlIndex())
+	
 	def testRemoveFirstVideoInfoForVideoTitle(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
 		playListName = 'test_download_vid_info_dic'

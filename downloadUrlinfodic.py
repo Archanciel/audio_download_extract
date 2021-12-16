@@ -444,19 +444,19 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		if videoIndexStr in self.dic[KEY_URL].keys():
 			del self.dic[KEY_URL][videoIndexStr]
 	
-	def _getUrlInfoForUrlIndex(self, urlKey):
+	def _getUrlInfoForUrlIndex(self, urlIndex):
 		'''
 		Returns the url info dic associated to the passed url index.
 		Protected method used internally only.
 
-		:param urlKey:
+		:param urlIndex:
 		
 		:return: dictionary containing url information or empty dictionary
 				 if no url info for the passed url index exist.
 		'''
-		urlKey = str(urlKey)
+		urlIndex = str(urlIndex)
 		
-		return self._getUrlInfoForUrlKey(urlKey)
+		return self._getUrlInfoForUrlKey(urlIndex)
 	
 	def _getUrlInfoForUrlKey(self, urlIndex):
 		urlInfoDic = None
@@ -508,8 +508,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 	def getDicDirSubDir(self):
 		return ''
 	
-	def getUrlKeys(self):
-		return self.dic[KEY_URL].keys()
+	def getSortedUrlIndexLst(self):
+		urlStrKeys = self.dic[KEY_URL].keys()
+		intIndexLst = [int(x) for x in urlStrKeys]
+		intIndexLst.sort()
+		
+		return intIndexLst
 	
 	def getUrlForUrlKey(self, urlKey):
 		urlInfoDic = self._getUrlInfoForUrlKey(urlKey)

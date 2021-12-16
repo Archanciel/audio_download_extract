@@ -908,11 +908,11 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.downloadUrlInfoDic = DownloadUrlInfoDic(existingDicFilePathName=pathFileName)
 
-		urlKeyLst = self.downloadUrlInfoDic.getUrlKeys()
+		urlSortedIndexLst = self.downloadUrlInfoDic.getSortedUrlIndexLst()
 		urlLst = []
 		
-		for urlKey in urlKeyLst:
-			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlKey(urlKey))
+		for urlIndex in urlSortedIndexLst:
+			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlIndex(urlIndex))
 
 		histoLines = [{'text' : val, 'selectable': True} for val in urlLst]
 		self.requestListRV.data = histoLines
