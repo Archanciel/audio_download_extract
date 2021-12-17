@@ -146,11 +146,11 @@ class DirUtil:
 		return [f for f in listdir(targetDir) if isfile(join(targetDir, f))]
 	
 	@staticmethod
-	def getFilePathNamesInDirForPattern(targetDir, fileNamePattern):
+	def getFilePathNamesInDirForPattern(targetDir, fileNamePattern, inSubDirs=False):
 		if not os.path.isdir(targetDir):
 			return None
 
-		return glob.glob(targetDir + sep + fileNamePattern)
+		return glob.glob(targetDir + sep + fileNamePattern, recursive=inSubDirs)
 	
 	@staticmethod
 	def getFileNamesInDirForPattern(targetDir, fileNamePattern):
@@ -375,6 +375,7 @@ class DirUtil:
 
 if __name__ == '__main__':
 	# PUT THAT IN UNIT TESTS !
+	"""
 	fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',
 								'Funny suspicious looking dog 2013-11-05.mp3',
 								'97-Funny suspicious looking dog.mp3',
@@ -412,3 +413,18 @@ if __name__ == '__main__':
 	print('fileNameLst_no_index_date')
 	lst_5 = DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date)
 	printLst(lst_5)
+	"""
+	#lst = DirUtil.getFilePathNamesInDirForPattern('/storage/emulated/0/Music','/**/*_dic.txt', True)
+	lst = DirUtil.getFilePathNamesInDirForPattern('/storage/9016-4EF8/Audio','/**/*_dic.txt', True)
+	#print(glob.glob('/storage/emulated/0/Music/**/*_dic.txt', recursive=True))
+	import fileinput
+
+	text_to_searchLst = ['pl_downloadDir', 'download', 'vd_downledFileName']
+	replacement_textLst = ['pl_downlSubDir', 'downl', 'vd_downlFileName']
+		
+	for text_to_search, replacement_text in zip(text_to_searchLst, replacement_textLst):
+		for fp in lst:
+			with fileinput.FileInput(fp, inplace=True, backup='.bak') as file:
+				for line in file:
+					print(line.replace(text_to_search, replacement_text), end='')
+	
