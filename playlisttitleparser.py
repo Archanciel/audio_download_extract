@@ -24,10 +24,19 @@ class PlaylistTitleParser:
 		
 		:param playlistUrl:                 playlist url to add to the
 											download video info div
-		:param audioRootDir:                audio dir as specified in the app
-											settings.
-		:param playlistDownloadRootPath:    full playlist path in which the
-											playlist dir will be created.
+		:param audioRootDir:                base dir set in the GUI settings containing
+											the extracted audio files
+		:param playlistDownloadRootPath:    if the playlist is downloaded without
+											modifying its download dir by clicking
+											on the "Select or create dir" button,
+											then the playlistDownloadRootPath is
+											equal to the audioRootDir. Otherwise,
+											its value is the dir selected or created
+											where the playlist will be downloaded.
+											In fact, audioRootDir + the selected or
+											created sub-dir(s). For example:
+											C:\\Users\\Jean-Pierre\\Downloads\\Audio\\
+											zz\\UCEM\\Gary Renard
 		:param originalPlaylistTitle:
 		:param modifiedPlaylistTitle:
 		:return:

@@ -49,7 +49,12 @@ class BaseInfoDic(metaclass=ABCMeta):
 			validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(self.getDicDirName())
 			playlistDownloadDir = self.getDicDirSubDir()
 			
-			dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=audioDirRoot + sep + playlistDownloadDir,
+			if playlistDownloadDir == '':
+				playlistDownloadBaseDir = audioDirRoot
+			else:
+				playlistDownloadBaseDir = audioDirRoot + sep + playlistDownloadDir
+				
+			dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=playlistDownloadBaseDir,
 			                                                validPlaylistDirName=validPlaylistDirName)
 
 		with open(dicFilePathName, 'w') as f:

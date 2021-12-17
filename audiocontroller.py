@@ -105,6 +105,26 @@ class AudioController:
 	                                                         modifiedPlaylistTitle,
 	                                                         isIndexAddedToPlaylistVideo,
 	                                                         isUploadDateAddedToPlaylistVideo):
+		"""
+		
+		:param playlistOrSingleVideoUrl:
+		:param playlistOrSingleVideoDownloadPath:   if the playlist is downloaded without
+													modifying its download dir by clicking
+													on the "Select or create dir" button,
+													then the playlistDownloadRootPath is
+													equal to the audioRootDir. Otherwise,
+													its value is the dir selected or created
+													where the playlist will be downloaded.
+													In fact, audioRootDir + the selected or
+													created sub-dir(s). For example:
+													C:\\Users\\Jean-Pierre\\Downloads\\Audio\\
+													zz\\UCEM\\Gary Renard
+		:param originalPlaylistTitle:
+		:param modifiedPlaylistTitle:
+		:param isIndexAddedToPlaylistVideo:
+		:param isUploadDateAddedToPlaylistVideo:
+		:return:
+		"""
 		
 		downloadVideoInfoDic = \
 			self.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
@@ -213,7 +233,17 @@ class AudioController:
 
 		:param playlistUrl:                         playlist url to add to the
 													download video info div
-		:param playlistOrSingleVideoDownloadPath:
+		:param playlistOrSingleVideoDownloadPath:   if the playlist is downloaded without
+													modifying its download dir by clicking
+													on the "Select or create dir" button,
+													then the playlistDownloadRootPath is
+													equal to the audioRootDir. Otherwise,
+													its value is the dir selected or created
+													where the playlist will be downloaded.
+													In fact, audioRootDir + the selected or
+													created sub-dir(s). For example:
+													C:\\Users\\Jean-Pierre\\Downloads\\Audio\\
+													zz\\UCEM\\Gary Renard
 		:param originalPlaylistTitle:
 		:param modifiedPlaylistTitle:
 

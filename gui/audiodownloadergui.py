@@ -976,7 +976,10 @@ class AudioDownloaderGUI(AudioGUI):
 			# data path defined specified in saved file path name does not exist. Error popup is displayed.
 			return
 
-		self.downloadUrlInfoDic.saveDic(pathContainedInFilePathName)
+		# self.downloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
+		#                                 dicFilePathName=pathContainedInFilePathName)
+		self.downloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
+		                                dicFilePathName=None)
 
 		# saving in config file if the saved file
 		# is to be loaded at application start

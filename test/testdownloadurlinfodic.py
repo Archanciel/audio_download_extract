@@ -583,4 +583,4 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadUrlInfoDic()
-	tst.testLoadExistingDownloadUrlInfoDic_specifying_only_info_dic_filePathName()
+	tst.testAddVideoInfoForVideoIndex_new_info_dic_file()

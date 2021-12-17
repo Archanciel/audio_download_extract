@@ -859,19 +859,17 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		expectedOriginalPlayListName = 'existing_dic_error'
 		originalPlaylistTitle = expectedOriginalPlayListName
 		
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedOriginalPlayListName
-		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
 			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle,
 			originalPlaylistTitle)
 		
 		self.assertIsNone(downloadedVideoInfoDic)
 		self.assertIsNotNone(accessError)
-		self.assertEqual("loading download video info dic located in C:\\Users\Jean-Pierre\Downloads\Audio\\test\existing_dic_error failed\nerror info: Expecting ',' delimiter: line 17 column 9 (char 918)\ndownloading playlist interrupted.", accessError.errorMsg)
+		self.assertEqual("loading download video info dic located in C:\\Users\Jean-Pierre\Downloads\Audio\\test\existing_dic_error failed\nerror info: Expecting ',' delimiter: line 17 column 9 (char 910)\ndownloading playlist interrupted.", accessError.errorMsg)
 
 
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestPlaylistTitleParser()
-	tst.testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_no_time_info()
+	tst.testCreateDownloadVideoInfoDic_existing_dic_format_error()
 	#tst.testCreateDownloadVideoInfoDic_two_time_frames_one_extract_one_suppress_no_braces()

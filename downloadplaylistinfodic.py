@@ -14,18 +14,30 @@ KEY_PLAYLIST_NAME_ORIGINAL = 'pl_name_original'
 KEY_PLAYLIST_NAME_MODIFIED = 'pl_name_modified'
 
 # playlist download dir name. This name DOES NOT contain the
-# audio dir root dir (defined in uthe GUI settings)
-KEY_PLAYLIST_DOWNLOAD_DIR = 'pl_downloadDir'
+# audio dir root dir (defined in the GUI settings).
+#
+# Example:
+
+# if the playlistDownloadRootPath ___init__() parm equals
+# C:\\Users\\Jean-Pierre\\Downloads\\Audio\\zz\\UCEM\\Gary Renard
+# then the playlist download sub dir will be
+# zz\\UCEM\\Gary Renard\\<playlist valid name>
+#
+# if the playlistDownloadRootPath ___init__() parm equals
+# C:\\Users\\Jean-Pierre\\Downloads\\Audio, i.e the audio
+# root path, then the playlist download sub dir will be
+# <playlist valid name> only.
+KEY_PLAYLIST_DOWNLOAD_SUB_DIR = 'pl_downlSubDir'
 
 KEY_PLAYLIST_NEXT_VIDEO_INDEX = 'pl_nextVideoIndex'
 
 KEY_VIDEOS = 'videos'
 KEY_VIDEO_TITLE = 'vd_title'
 KEY_VIDEO_URL = 'vd_url'
-KEY_VIDEO_DOWNLOAD_FILENAME = 'vd_downloadedFileName'
-KEY_VIDEO_DOWNLOAD_TIME = 'vd_downloadTime'
+KEY_VIDEO_DOWNLOAD_FILENAME = 'vd_downlFileName'
+KEY_VIDEO_DOWNLOAD_TIME = 'vd_downlTime'
 KEY_VIDEO_TIME_FRAMES_IN_SECONDS = 'vd_startEndTimeFramesInSeconds'
-KEY_VIDEO_DOWNLOAD_EXCEPTION = 'vd_downloadException'
+KEY_VIDEO_DOWNLOAD_EXCEPTION = 'vd_downlException'
 
 KEY_TIMEFRAME_EXTRACT = 'vd_extract'
 KEY_VIDEO_EXTRACTED_FILES = 'vd_extractedFiles'
@@ -68,8 +80,19 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		
 		:param playlistUrl:                 playlist url to add to the
 											download video info div
-		:param playlistDownloadRootPath:    base dir set in the GUI settings containing
+		:param audioRootDir:                base dir set in the GUI settings containing
 											the extracted audio files
+		:param playlistDownloadRootPath:    if the playlist is downloaded without
+											modifying its download dir by clicking
+											on the "Select or create dir" button,
+											then the playlistDownloadRootPath is
+											equal to the audioRootDir. Otherwise,
+											its value is the dir selected or created
+											where the playlist will be downloaded.
+											In fact, audioRootDir + the selected or
+											created sub-dir(s). For example:
+											C:\\Users\\Jean-Pierre\\Downloads\\Audio\\
+											zz\\UCEM\\Gary Renard
 		:param originalPaylistTitle:        may contain extract and/or suppress information.
 											Ex: E_Klein - le temps {(s01:05:52-01:07:23) (s01:05:52-01:07:23)}
 		:param originalPlaylistName:        contains only the playlist title part without extract
@@ -119,8 +142,8 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_MODIFIED] = modifiedPlaylistTitle
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED] = modifiedPlaylistName
-			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR] = DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
-			                                                                                            fullFilePathName=playlistVideoDownloadDir)
+			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_SUB_DIR] = DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
+			                                                                                                fullFilePathName=playlistVideoDownloadDir)
 			self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = 1
 			self.dic[KEY_VIDEOS] = {}
 	
@@ -733,7 +756,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		:return: playlist download dir name
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_DIR]
+			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_SUB_DIR]
 		else:
 			return None
 
