@@ -115,12 +115,11 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			
 			return  # skipping the rest of the __init__ method in this case
 
-		playlistVideoDownloadDir = audioRootDir + sep + urlListDicFileName
-
 		if loadDicIfDicFileExist:
 			# is always True, except when AudioController creates a download info
 			# dic in order to set in it clip audio start and end times. In this
 			# case, the dic must not be loaded from a file
+			playlistVideoDownloadDir = audioRootDir + sep + urlListDicFileName
 			self.dic = self._loadDicIfExist(playlistVideoDownloadDir)
 
 		if self.dic is None:
@@ -167,6 +166,14 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		Return the original play list title, which is the original playlist name +
 		the optional extract or suppress time frames definitions.
 	
+		:return:
+		"""
+		return self.getUrlListDicFileName()
+	
+	def getUrlListDicFileName(self):
+		"""
+		Return the download url dic file name..
+
 		:return:
 		"""
 		if KEY_GENERAL in self.dic.keys():
