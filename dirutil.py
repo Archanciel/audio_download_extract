@@ -1,5 +1,4 @@
-import glob
-import os
+import glob, os, fileinput
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
@@ -10,6 +9,7 @@ import re
 
 INDEX_PATTERN = r'(^[\d-]*)(.*).mp3'
 DATE_PATTERN = r'(.*) ([\d-]*).mp3'
+
 
 class DirUtil:
 	INDEX_DATE_POS = 0
@@ -146,10 +146,31 @@ class DirUtil:
 		return [f for f in listdir(targetDir) if isfile(join(targetDir, f))]
 	
 	@staticmethod
-	def getFilePathNamesInDirForPattern(targetDir, fileNamePattern, inSubDirs=False):
+	def getFilePathNamesInDirForPattern(targetDir,
+	                                    fileNamePattern,
+	                                    inSubDirs=False):
+		"""
+		Returns a list of file path names satisfying the passed fileNamePattern.
+		If the inSubDirs parm is True, the returned file path names are located
+		in the passed targetDir and in its sub dirs.
+		
+		:param targetDir:       example: c:\\temp\\testing\\audiobooks or
+										 /storage/9016-4EF8/Audio
+		:param fileNamePattern: example: *.mp3 or *_dic.txt
+		:param inSubDirs:       if False, search passed targetDir only.
+								if True,  search passed targetDir and its
+								sub dirs
+		
+		:return: None if the passed targetDir does not exist, [...] otherwise
+		"""
 		if not os.path.isdir(targetDir):
 			return None
 
+		if inSubDirs:
+			# adding /**/ is required by glob.glob() in order to search in sub dirs
+			# as well
+			fileNamePattern = '/**/' + fileNamePattern
+			
 		return glob.glob(targetDir + sep + fileNamePattern, recursive=inSubDirs)
 	
 	@staticmethod
@@ -226,8 +247,24 @@ class DirUtil:
 			DirUtil.deleteFileIfExist(filePathName)
 	
 	@staticmethod
-	def deleteFilesInDirForPattern(targetDir, fileNamePattern):
-		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(targetDir, fileNamePattern)
+	def deleteFilesInDirForPattern(targetDir,
+	                               fileNamePattern,
+	                               inSubDirs=False):
+		"""
+		Deletes the files whose name satisfies the passed fileNamePattern.
+		If the inSubDirs parm is True, the deleted files are located
+		in the passed targetDir and in its sub dirs.
+
+		:param targetDir:       example: c:\\temp\\testing\\audiobooks or
+										 /storage/9016-4EF8/Audio
+		:param fileNamePattern: example: *.mp3 or *_dic.txt
+		:param inSubDirs:       if False, search passed targetDir only.
+								if True,  search passed targetDir and its
+								sub dirs
+		"""
+		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(targetDir,
+		                                                          fileNamePattern,
+		                                                          inSubDirs)
 
 		if filePathNameLst:
 			for filePathName in filePathNameLst:
@@ -372,6 +409,19 @@ class DirUtil:
 			
 		return indexAndDateUsageLst
 
+	@staticmethod
+	def replaceStringsInFiles(searchRootDir,
+	                          fileNamePattern,
+	                          inSubDirs,
+	                          text_to_searchLst,
+	                          replacement_textLst):
+		lst = DirUtil.getFilePathNamesInDirForPattern(searchRootDir, fileNamePattern, inSubDirs)
+		for text_to_search, replacement_text in zip(text_to_searchLst, replacement_textLst):
+			for fp in lst:
+				with fileinput.FileInput(fp, inplace=inSubDirs, backup='.bak') as file:
+					for line in file:
+						print(line.replace(text_to_search, replacement_text), end='')
+
 
 if __name__ == '__main__':
 	# PUT THAT IN UNIT TESTS !
@@ -414,17 +464,19 @@ if __name__ == '__main__':
 	lst_5 = DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_no_index_date)
 	printLst(lst_5)
 	"""
-	#lst = DirUtil.getFilePathNamesInDirForPattern('/storage/emulated/0/Music','/**/*_dic.txt', True)
-	lst = DirUtil.getFilePathNamesInDirForPattern('/storage/9016-4EF8/Audio','/**/*_dic.txt', True)
-	#print(glob.glob('/storage/emulated/0/Music/**/*_dic.txt', recursive=True))
-	import fileinput
-
-	text_to_searchLst = ['pl_downloadDir', 'download', 'vd_downledFileName']
-	replacement_textLst = ['pl_downlSubDir', 'downl', 'vd_downlFileName']
-		
-	for text_to_search, replacement_text in zip(text_to_searchLst, replacement_textLst):
-		for fp in lst:
-			with fileinput.FileInput(fp, inplace=True, backup='.bak') as file:
-				for line in file:
-					print(line.replace(text_to_search, replacement_text), end='')
+	searchRootDir = "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test" # Windows audio dir
+#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
+#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
 	
+	fileNamePattern = '*_dic.txt'
+	inSubDirs = True
+	text_to_searchLst = ['pl_downlSubDirAAA', 'downlAAA', 'vd_downlFileNameAAA']
+	replacement_textLst = ['pl_downloadSubDir', 'downl', 'vd_downlFileName']
+
+	DirUtil.replaceStringsInFiles(searchRootDir,
+	                              fileNamePattern,
+	                              inSubDirs,
+	                              text_to_searchLst,
+	                              replacement_textLst)
+
+	DirUtil.deleteFilesInDirForPattern(searchRootDir, '*.bak', True)
