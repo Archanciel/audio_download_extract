@@ -940,6 +940,7 @@ class AudioDownloaderGUI(AudioGUI):
 		titleLst = []
 		
 		for urlIndex in urlSortedIndexLst:
+			typeLst.append((self.downloadUrlInfoDic.getT))
 			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlIndex(urlIndex))
 			titleLst.append((self.downloadUrlInfoDic.getUrlTitleForUrlIndex(urlIndex)))
 
@@ -976,10 +977,11 @@ class AudioDownloaderGUI(AudioGUI):
 			# data path defined specified in saved file path name does not exist. Error popup is displayed.
 			return
 
-		# self.downloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
-		#                                 dicFilePathName=pathContainedInFilePathName)
+		for listEntry in self.requestListRV.data:
+			title = listEntry['text']
+
 		self.downloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
-		                                dicFilePathName=None)
+		                                dicFilePathName=savingPathFileName)
 
 		# saving in config file if the saved file
 		# is to be loaded at application start

@@ -266,7 +266,15 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			return urlInfoDic[KEY_URL_TITLE]
 		else:
 			return None
-
+	
+	def getUrlTypeForUrlIndex(self, urlIndex):
+		urlInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
+		
+		if KEY_URL_TYPE in urlInfoDic.keys():
+			return urlInfoDic[KEY_URL_TYPE]
+		else:
+			return None
+	
 	def getUrlForUrlIndex(self, urlIndex):
 		urlInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
 		

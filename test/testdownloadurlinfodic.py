@@ -131,6 +131,9 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_10, dui.getUrlForUrlIndex(10))
 		self.assertEqual(url_10, dui.getUrlForUrlKey('10'))
 		self.assertEqual(urlTitle_10, dui.getUrlTitleForUrlIndex(10))
+		
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_PLAYLIST, dui.getUrlTypeForUrlIndex(1))
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, dui.getUrlTypeForUrlIndex(2))
 
 		self.assertEqual([1,2,3,4,5,6,7,8,9,10,11], dui.getSortedUrlIndexLst())
 		
@@ -158,6 +161,9 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_10, dui_reloaded.getUrlForUrlIndex(10))
 		self.assertEqual(url_10, dui_reloaded.getUrlForUrlKey('10'))
 		self.assertEqual(urlTitle_10, dui_reloaded.getUrlTitleForUrlIndex(10))
+		
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_PLAYLIST, dui_reloaded.getUrlTypeForUrlIndex(1))
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, dui_reloaded.getUrlTypeForUrlIndex(2))
 		
 		self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], dui_reloaded.getSortedUrlIndexLst())
 		
