@@ -47,6 +47,7 @@ from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 from septhreadexec import SepThreadExec
 from downloadUrlinfodic import DownloadUrlInfoDic
+from downloadUrlinfodic import UrlDownloadData
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
@@ -108,10 +109,10 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 		self.appGUI.refocusOnFirstRequestInput()
 	
 	def updateLineValues(self, moveDirection, movedItemSelIndex, movedItemNewSeIndex):
-		movedUrlType = self.parent.data[movedItemSelIndex]['type']
 		movedUrlTitle = self.parent.data[movedItemSelIndex]['text']
-		movedUrl = self.parent.data[movedItemSelIndex]['url']
-		dataDic = {'text': movedUrlTitle, 'url': movedUrl, 'type': movedUrlType, 'selectable': True}
+		movedUrlDownloadData = self.parent.data[movedItemSelIndex]['data']
+		replaceUrlDownloadData = self.parent.data[movedItemSelIndex]['data']
+		dataDic = {'text': movedUrlTitle, 'data': movedUrlDownloadData, 'selectable': True}
 		
 		if moveDirection == AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN:
 			if movedItemSelIndex > movedItemNewSeIndex:
@@ -121,12 +122,13 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				self.parent.data.insert(0, dataDic)
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
-				replaceDataDic = {'text': replacedValue, 'url': movedUrl, 'type': movedUrlType, 'selectable': True}
+				replaceUrlDownloadData.title = replacedValue
+				replaceDataDic = {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True}
 				self.parent.data.pop(movedItemSelIndex)
 				self.parent.data.insert(movedItemSelIndex, replaceDataDic)
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, replaceDataDic)
+				self.parent.data.insert(movedItemNewSeIndex, dataDic)
 		else:
 			# handling moving up
 			if movedItemSelIndex == 0:
@@ -136,7 +138,8 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				self.parent.data.append(dataDic)
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
-				replaceDataDic = {'text': replacedValue, 'url': movedUrl, 'type': movedUrlType, 'selectable': True}
+				replaceUrlDownloadData.title = replacedValue
+				replaceDataDic = {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True}
 				self.parent.data.pop(movedItemSelIndex)
 				self.parent.data.insert(movedItemSelIndex, replaceDataDic)
 				
@@ -187,8 +190,9 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 		
 		if is_selected:
 			selItemUrlTitle = rv.data[index]['text']
-			selItemUrl = rv.data[index]['url']
-			
+			selItemUrlDownloadData = rv.data[index]['data']
+			selItemUrl = selItemUrlDownloadData.url
+
 			Clipboard.copy(selItemUrl)
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
@@ -380,9 +384,12 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			self.enableButtons()
 			
+			uld = UrlDownloadData(type=type,
+			                      title=title,
+			                      url=playlistOrSingleVideoUrl)
+			
 			urlListEntry = {'text': title,
-			                'url': playlistOrSingleVideoUrl,
-			                'type': type,
+			                'data': uld,
 			                'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
@@ -425,7 +432,8 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
 		for listEntry in self.requestListRV.data:
-			playlistOrSingleVideoUrl = listEntry['url']
+			urlDownloadData = listEntry['data']
+			playlistOrSingleVideoUrl = urlDownloadData.url
 			_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
@@ -727,12 +735,15 @@ class AudioDownloaderGUI(AudioGUI):
 	def replaceRequest(self, *args):
 		# Remove the selected item
 		removedItem = self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
-		replaceUrlType = removedItem['type']
-		replaceUrl = removedItem['url']
+		replaceUrlDownloadData = removedItem['data']
+		replaceUrlType = replaceUrlDownloadData.type
+		replaceUrl = replaceUrlDownloadData.url
 
 		# Get the request from the TextInputs
 		requestStr = self.requestInput.text
-		dataDic = {'text': requestStr, 'url': replaceUrl, 'type': replaceUrlType, 'selectable': True}
+		replaceUrlDownloadData.title = requestStr
+		
+		dataDic = {'text': requestStr, 'data': replaceUrlDownloadData, 'selectable': True}
 
 		# Add the updated data to the list if not already in
 		requestListEntry = dataDic
@@ -949,17 +960,9 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.downloadUrlInfoDic = DownloadUrlInfoDic(existingDicFilePathName=pathFileName)
 
-		urlSortedIndexLst = self.downloadUrlInfoDic.getSortedUrlIndexLst()
-		typeLst = []
-		urlLst = []
-		titleLst = []
-		
-		for urlIndex in urlSortedIndexLst:
-			typeLst.append((self.downloadUrlInfoDic.getUrlTypeForUrlIndex(urlIndex)))
-			urlLst.append(self.downloadUrlInfoDic.getUrlForUrlIndex(urlIndex))
-			titleLst.append((self.downloadUrlInfoDic.getUrlTitleForUrlIndex(urlIndex)))
+		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
+		histoLines = [{'text': udl.title, 'data': udl, 'selectable': True} for udl in udlLst]
 
-		histoLines = [{'text' : title, 'url': url, 'type': urlType, 'selectable': True} for urlType, title, url in zip(typeLst, titleLst, urlLst)]
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
 
@@ -998,13 +1001,8 @@ class AudioDownloaderGUI(AudioGUI):
 			loadDicIfDicFileExist=False)
 
 		for listEntry in self.requestListRV.data:
-			type = listEntry['type']
-			title = listEntry['text']
-			url = listEntry['url']
-			updatedDownloadUrlInfoDic.addUrlInfo(type,
-			                                      title,
-			                                      url,
-			                                      '')
+			urlDownloadData = listEntry['data']
+			updatedDownloadUrlInfoDic.addUrlDownloadData(urlDownloadData)
 		
 		updatedDownloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
 		                                  dicFilePathName=savingPathFileName)
