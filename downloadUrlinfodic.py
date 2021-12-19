@@ -66,6 +66,7 @@ class UrlDownloadData():
 		self.type = type
 		self.title = title
 		self.url = url
+		self.downloadDir = '' # not really useful for now
 		
 	def __str__(self):
 		return self.type + ', ' + self.title + ', ' + self.url
@@ -418,17 +419,10 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			
 		urlIndex = self.getNextUrlIndex()
 		urlIndexKey = str(urlIndex)
-		self.setNextUrlIndex(urlIndex=urlIndex + 1)
-
 		
 		if not urlIndexKey in self.dic[KEY_URL].keys():
 			urlIndexDic = {}
 			self.dic[KEY_URL][urlIndexKey] = urlIndexDic
-
-			# if we are re-downloading a video whose previous download
-			# was unsuccessful, it is necessary to remove its video info
-			# dic since it will be replaced by the newly created dic.
-			#self.removeUrlDicForUrlTitleIfExist(urlTitle)
 		else:
 			urlIndexDic = self.dic[KEY_URL][urlIndexKey]
 			
@@ -441,7 +435,40 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		urlIndexDic[KEY_URL_DOWNLOAD_TIME] = additionTimeStr
 
 		self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex + 1
+		
+	def addUrlDownloadData(self,
+	                       urlDownloadData):
+		"""
+		Creates the url info sub-dic for next url index using data contained
+		in the passed UrlDownloadData instance.
 
+		:param urlDownloadData:
+		"""
+		#		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+		#		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
+		
+		if not KEY_URL in self.dic.keys():
+			self.dic[KEY_URL] = {}
+		
+		urlIndex = self.getNextUrlIndex()
+		urlIndexKey = str(urlIndex)
+		
+		if not urlIndexKey in self.dic[KEY_URL].keys():
+			urlIndexDic = {}
+			self.dic[KEY_URL][urlIndexKey] = urlIndexDic
+		else:
+			urlIndexDic = self.dic[KEY_URL][urlIndexKey]
+		
+		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
+		
+		urlIndexDic[KEY_URL_TYPE] = urlDownloadData.type
+		urlIndexDic[KEY_URL_TITLE] = urlDownloadData.title
+		urlIndexDic[KEY_URL_URL] = urlDownloadData.url
+		urlIndexDic[KEY_URL_DOWNLOAD_DIR] = urlDownloadData.downloadDir
+		urlIndexDic[KEY_URL_DOWNLOAD_TIME] = additionTimeStr
+		
+		self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex + 1
+	
 	def removeUrlDicForUrlTitleIfExist(self, urlTitle):
 		"""
 		Method probably not used !!!
