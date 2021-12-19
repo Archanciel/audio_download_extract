@@ -3,6 +3,7 @@ import unittest
 import os, sys, inspect, glob
 from os.path import sep
 from datetime import datetime
+from io import StringIO
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -151,6 +152,44 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual(12, dui.getNextUrlIndex())
 		
+		udl = dui.getUrlDownloadDataForUrlIndex(1)
+		
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_PLAYLIST, udl.type)
+		self.assertEqual('test warning index date files_noIndexNoDate', udl.title)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		for udl in dui.getAllUrlDownloadDataSortedList():
+			print(udl)
+		
+		sys.stdout = stdout
+
+		self.assertEqual(['playlist, test warning index date files_noIndexNoDate, '
+ 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
+ 'video, Here to help: Give him what he wants, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_3, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_4, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_5, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_6, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_7, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_8, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_9, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_10, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ 'video, Here to help: Give him what he wants_11, '
+ 'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+ ''], outputCapturingString.getvalue().split('\n'))
+
 		dicFilePathNameLst = DirUtil.getFilePathNamesInDirForPattern(downloadDir, '*' + DownloadUrlInfoDic.DIC_FILE_NAME_EXTENT)
 		dui_reloaded = DownloadUrlInfoDic(existingDicFilePathName=dicFilePathNameLst[0])
 		
@@ -182,6 +221,44 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_2))
 		
 		self.assertEqual(12, dui_reloaded.getNextUrlIndex())
+		
+		udl = dui_reloaded.getUrlDownloadDataForUrlIndex(2)
+		
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, udl.type)
+		self.assertEqual('Here to help: Give him what he wants', udl.title)
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		for udl in dui_reloaded.getAllUrlDownloadDataSortedList():
+			print(udl)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['playlist, test warning index date files_noIndexNoDate, '
+		                  'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
+		                  'video, Here to help: Give him what he wants, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_3, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_4, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_5, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_6, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_7, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_8, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_9, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_10, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  'video, Here to help: Give him what he wants_11, '
+		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
+		                  ''], outputCapturingString.getvalue().split('\n'))
 	
 	def testRemoveFirstVideoInfoForVideoTitle(self):
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'

@@ -58,6 +58,18 @@ KEY_URL_DOWNLOAD_RESULT = 'downlResult'
 
 KEY_URL_DOWNLOAD_DIR = 'downlDir'
 
+class UrlDownloadData():
+	def __init__(self,
+	             type,
+	             title,
+	             url):
+		self.type = type
+		self.title = title
+		self.url = url
+		
+	def __str__(self):
+		return self.type + ', ' + self.title + ', ' + self.url
+		
 class DownloadUrlInfoDic(BaseInfoDic):
 	"""
 	Stores the playlists or videos information which were added to the URL's
@@ -538,6 +550,31 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		else:
 			return None
 
+	def getUrlDownloadDataForUrlIndex(self, urlIndex):
+		urlInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
+		
+		type = None
+		title = None
+		url = None
+		
+		if KEY_URL_TYPE in urlInfoDic.keys():
+			type = urlInfoDic[KEY_URL_TYPE]
+		
+		if KEY_URL_TITLE in urlInfoDic.keys():
+			title = urlInfoDic[KEY_URL_TITLE]
+		
+		if KEY_URL_URL in urlInfoDic.keys():
+			url = urlInfoDic[KEY_URL_URL]
+		
+		return UrlDownloadData(type,
+		                       title,
+		                       url)
+	
+	def getAllUrlDownloadDataSortedList(self):
+		sortedIndexLst = self.getSortedUrlIndexLst()
+		
+		return [self.getUrlDownloadDataForUrlIndex(idx) for idx in sortedIndexLst]
+		
 
 if __name__ == "__main__":
 	if os.name == 'posix':
@@ -545,7 +582,7 @@ if __name__ == "__main__":
 	else:
 		audioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		
-	dvi = DownloadUrlInfoDic(
+	dui = DownloadUrlInfoDic(
 		audioRootDir=audioDir,
 		urlListDicFileName='urlListDic',
 		generalTotalDownlResultTuple=(13, 4, 7),
@@ -554,8 +591,13 @@ if __name__ == "__main__":
 		generalTotalDownlSkipTuple=(1, 2, 0, 0, 4),
 		loadDicIfDicFileExist=True,
 		existingDicFilePathName=None)
-	dvi.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle='test warning index date files_noIndexNoDate',
+	dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
+	               urlTitle='test warning index date files_noIndexNoDate',
 	               url='https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc', downloadDir='')
-	dvi.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, urlTitle='Here to help: Give him what he wants',
+	dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+	               urlTitle='Here to help: Give him what he wants',
 	               url='https://www.youtube.com/watch?v=Eqy6M6qLWGw', downloadDir='')
-	dvi.saveDic(audioDir)
+	dui.saveDic(audioDir)
+	
+	for udl in dui.getAllUrlDownloadDataSortedList():
+		print(udl)
