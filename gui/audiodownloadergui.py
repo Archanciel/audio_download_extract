@@ -115,30 +115,32 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 			if movedItemSelIndex > movedItemNewSeIndex:
 				# we are moving down the last list item. The item will be inserted at top
 				# of the list
-				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(0, {'text': movedValue, 'selectable': True})
+				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
+				self.parent.data.insert(0, {'text': movedValue, 'data':  movedUrlDownloadData,'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
-				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
+				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
 		else:
 			# handling moving up
 			if movedItemSelIndex == 0:
 				# we are moving up the first item. The first item will be appended to the
 				# end of the list
-				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.append({'text': movedValue, 'selectable': True})
+				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
+				self.parent.data.append({'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
-				self.parent.data.pop(movedItemSelIndex)
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'selectable': True})
+				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
+				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'selectable': True})
-		
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
+
 		# appGUI.recycleViewCurrentSelIndex is used by the
 		# deleteRequest() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
