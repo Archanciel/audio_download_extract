@@ -760,6 +760,18 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			return None
 
+	@staticmethod
+	def getAllPlaylistUrlTitleDic():
+		"""
+		Returns a {<urlStr>: <playlistTitleStr} dictionary containing
+		<urlStr>: <playlistTitleStr entries for all the download playlist info dic
+		located in the audio dir and sub dirs. This cached information dic is
+		stored in a json file located in the audio\settings dir. It avoids requesting
+		the playlist title via youtube_dl each time a playlist is re-downloaded.
+		
+		:return:    {<urlStr>: <playlistTitleStr}. Example:
+					{'Crypto'
+		"""
 
 if __name__ == "__main__":
 	if os.name == 'posix':
