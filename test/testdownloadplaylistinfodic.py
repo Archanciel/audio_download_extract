@@ -1,6 +1,6 @@
 import shutil
 import unittest
-import os, sys, inspect, glob, time
+import os, sys, inspect, glob
 from os.path import sep
 from datetime import datetime
 
@@ -973,6 +973,13 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 
 		self.assertEqual([1, 2], dvi.getFailedVideoIndexes())
 
+	def testGetAllPlaylistUrlTitleDic(self):
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+
+		urlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(audioDirRoot)
+		
+		a = 1
+		
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()

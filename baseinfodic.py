@@ -16,7 +16,8 @@ class BaseInfoDic(metaclass=ABCMeta):
 	def __init__(self):
 		self.dic = None
 	
-	def _loadDicIfExist(self, dicFilePathName):
+	@staticmethod
+	def _loadDicIfExist(dicFilePathName):
 		"""
 		If a file containing the dictionary data for the corresponding playlist
 		exists, it is loaded using json.
@@ -56,17 +57,20 @@ class BaseInfoDic(metaclass=ABCMeta):
 				
 			dicFilePathName = self.buildInfoDicFilePathName(playlistDownloadBaseDir=playlistDownloadBaseDir,
 			                                                validPlaylistDirName=validPlaylistDirName)
-
+		
+		self.jsonSaveDic(self.dic, dicFilePathName)
+	
+	@staticmethod
+	def jsonSaveDic(dic, dicFilePathName):
 		with open(dicFilePathName, 'w') as f:
 			try:
-				json.dump(self.dic,
-						  f,
-						  indent=4,
-						  sort_keys=True)
+				json.dump(dic,
+				          f,
+				          indent=4,
+				          sort_keys=True)
 			except Exception as e:
-				print(self)
 				print(e)
-
+	
 	@abstractmethod
 	def getDicDirName(self):
 		pass

@@ -761,18 +761,50 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			return None
 
 	@staticmethod
-	def getAllPlaylistUrlTitleDic():
+	def getAllPlaylistUrlTitleDic(audioDirRoot):
 		"""
 		Returns a {<urlStr>: <playlistTitleStr} dictionary containing
-		<urlStr>: <playlistTitleStr entries for all the download playlist info dic
-		located in the audio dir and sub dirs. This cached information dic is
+		<urlStr>: <playlistTitleStr> entries for all the download playlist info dic
+		located in the passed audioDirRoot dir and sub dirs. This cached information dic is
 		stored in a json file located in the audio\settings dir. It avoids requesting
 		the playlist title via youtube_dl each time a playlist is re-downloaded.
 		
+		:param audioDirRoot:    audio dir root path
+		
 		:return:    {<urlStr>: <playlistTitleStr}. Example:
-					{'Crypto'
+					{'https://youtube.com/playlist?list=PLzwWSJNcZTMSfeJzsR9st86uW590blzRp': 'Crypto'}
 		"""
+		dicFilePathName = audioDirRoot + sep + 'settings' + sep + 'cachedPlaylistUrlTitleDic' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		urlTitleDic = DownloadPlaylistInfoDic._loadDicIfExist(dicFilePathName)
+		
+		if urlTitleDic is not None:
+			return  urlTitleDic
 
+		urlTitleDic = {}
+		
+		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
+		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
+		                                                                    inSubDirs=True):
+			try:
+				downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
+				
+				if downloadPlaylistInfoDic.getPlaylistUrl() == None:
+					# the case for download url info dic
+					continue
+					
+				urlTitleDic[downloadPlaylistInfoDic.getPlaylistUrl()] = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
+			except Exception as e:
+				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
+				# we simply do not add this <urlStr>: <playlistTitleStr> entry to
+				# the dic.
+				pass
+				# print(playlistFilePathName)
+				# print(e)
+
+			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
+			
+		return urlTitleDic
+	
 if __name__ == "__main__":
 	if os.name == 'posix':
 		audioDir = '/storage/emulated/0/Download/Audiobooks/various'
