@@ -1,6 +1,8 @@
 import os,sys,inspect
 import time
 
+TIME_SLEEP_SECONDS = 1
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
@@ -367,7 +369,7 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			while title is None:
 				self.downloadFromClipboard(onlyGetDownloadObjectTitle=True)
-				time.sleep(3)
+				time.sleep(TIME_SLEEP_SECONDS)
 
 				title = self.originalPlaylistTitle
 			
@@ -453,7 +455,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
 			
 			while self.downloadThreadCreated:
-				time.sleep(3)
+				time.sleep(TIME_SLEEP_SECONDS)
 
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 			
