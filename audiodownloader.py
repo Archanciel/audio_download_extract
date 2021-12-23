@@ -18,20 +18,20 @@ class AudioDownloader(metaclass=ABCMeta):
 	def downloadPlaylistVideosForUrl(self,
 	                                 playlistUrl,
 	                                 downloadVideoInfoDic,
-	                                 isUploadDateAddedToPlaylistVideo,
-	                                 isIndexAddedToPlaylistVideo):
+	                                 isUploadDateSuffixAddedToPlaylistVideo,
+	                                 isDownloadDatePrefixAddedToPlaylistVideo):
 		"""
 		
 		:param playlistUrl:
 		:param downloadVideoInfoDic:
-		:param isUploadDateAddedToPlaylistVideo if True, the name of the video
-												audio files referenced in the
-												playlist will be terminated by
-												the video upload date.
-		:param isIndexAddedToPlaylistVideo      if True, the name of the video
-												audio files referenced in the
-												playlist will be started by
-												100 minus the video index.
+		:param isUploadDateSuffixAddedToPlaylistVideo   if True, the name of the video
+														audio files referenced in the
+														playlist will be terminated by
+														the video upload date.
+		:param isDownloadDatePrefixAddedToPlaylistVideo if True, the name of the video
+														audio files referenced in the
+														playlist will be started by
+														the video download date.
 		
 		:return: downloadVideoInfoDic, accessError
 		"""

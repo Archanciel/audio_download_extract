@@ -73,8 +73,8 @@ class AudioController:
 		_, accessError = \
 			self.audioDownloader.downloadPlaylistVideosForUrl(playlistUrl=downloadVideoInfoDic.getPlaylistUrl(),
 			                                                  downloadVideoInfoDic=downloadVideoInfoDic,
-			                                                  isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
-			                                                  isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
+			                                                  isUploadDateSuffixAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo,
+			                                                  isDownloadDatePrefixAddedToPlaylistVideo=isIndexAddedToPlaylistVideo)
 		
 		# extracting/suppressing the audio portions for the downloaded audio tracks
 		
@@ -134,8 +134,8 @@ class AudioController:
 		
 		indexAndDateSettingWarningMsg = self.defineIndexAndDateSettingWarningMsg(
 			downloadVideoInfoDic=downloadVideoInfoDic,
-			isIndexAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
-			isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
+			isDownloadDatePrefixAddedToPlaylistVideo=isIndexAddedToPlaylistVideo,
+			isUploadDateSuffixAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		return downloadVideoInfoDic, indexAndDateSettingWarningMsg
 	
@@ -443,32 +443,32 @@ class AudioController:
 
 	def defineIndexAndDateSettingWarningMsg(self,
 	                                        downloadVideoInfoDic,
-	                                        isIndexAddedToPlaylistVideo,
-											isUploadDateAddedToPlaylistVideo):
+	                                        isDownloadDatePrefixAddedToPlaylistVideo,
+	                                        isUploadDateSuffixAddedToPlaylistVideo):
 		"""
 		According to the value of the passed boolean params isIndexAddedToPlaylistVideo,
 		isUploadDateAddedToPlaylistVideo which represent how the user set the index
-		and upload date checkbox on the ConfirmDownloadPopup, this method returns
+		and upload date suffix checkbox on the ConfirmDownloadPopup, this method returns
 		the messages listed below which will be displayed by the YesNoPopup.
 		
 		Returnable messages:
 		
-		Playlist directory does not exist. Continue with adding index and upload date ?
+		Playlist directory does not exist. Continue with adding download date prefix and upload date suffix ?
 		Playlist directory does not exist. Continue with adding index ?
-		Playlist directory does not exist. Continue with adding upload date ?
+		Playlist directory does not exist. Continue with adding upload date suffix ?
 		
-		Playlist directory is empty. Continue with with adding index and upload date ?
+		Playlist directory is empty. Continue with with adding download date prefix and upload date suffix ?
 		Playlist directory is empty. Continue with with adding index ?
-		Playlist directory is empty. Continue with with adding upload date ?
+		Playlist directory is empty. Continue with with adding upload date suffix ?
 		
 		Currently, index is not used. Continue with adding index ?
 		Currently, index is used. Continue without adding index ?
-		Currently, upload date is not used. Continue with adding date ?
-		Currently, upload date is used. Continue without adding date ?
+		Currently, upload date suffix is not used. Continue with adding date ?
+		Currently, upload date suffix is used. Continue without adding date ?
 		
 		:param downloadVideoInfoDic:
-		:param isIndexAddedToPlaylistVideo:
-		:param isUploadDateAddedToPlaylistVideo:
+		:param isDownloadDatePrefixAddedToPlaylistVideo:
+		:param isUploadDateSuffixAddedToPlaylistVideo:
 		:return:
 		"""
 		warningMsg = ''
@@ -480,12 +480,12 @@ class AudioController:
 			# not exist.
 			warningMsgStart = 'Playlist directory does not exist. Continue with '
 
-			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding index and upload date ?'
-			elif isIndexAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding index ?'
-			elif isUploadDateAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding upload date ?'
+			if isDownloadDatePrefixAddedToPlaylistVideo and isUploadDateSuffixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding download date prefix and upload date suffix ?'
+			elif isDownloadDatePrefixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding download date prefix ?'
+			elif isUploadDateSuffixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date suffix ?'
 			
 			return warningMsg
 
@@ -494,32 +494,32 @@ class AudioController:
 			# empty.
 			warningMsgStart = 'Playlist directory is empty. Continue with '
 			
-			if isIndexAddedToPlaylistVideo and isUploadDateAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding index and upload date ?'
-			elif isIndexAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding index ?'
-			elif isUploadDateAddedToPlaylistVideo:
-				warningMsg = warningMsgStart + 'adding upload date ?'
+			if isDownloadDatePrefixAddedToPlaylistVideo and isUploadDateSuffixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding download date prefix and upload date suffix ?'
+			elif isDownloadDatePrefixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding download date prefix ?'
+			elif isUploadDateSuffixAddedToPlaylistVideo:
+				warningMsg = warningMsgStart + 'adding upload date suffix ?'
 			
 			return warningMsg
 		
-		if isIndexAddedToPlaylistVideo:
+		if isDownloadDatePrefixAddedToPlaylistVideo:
 			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
 				not indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
-				warningMsg += 'Currently, index is not used. Continue with adding index ?\n'
+				warningMsg += 'Currently, download date prefix is not used. Continue with adding download date prefix ?\n'
 		else:
 			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
 				indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
-				warningMsg += 'Currently, index is used. Continue without adding index ?\n'
+				warningMsg += 'Currently, download date prefix is used. Continue without adding download date prefix ?\n'
 
-		if isUploadDateAddedToPlaylistVideo:
+		if isUploadDateSuffixAddedToPlaylistVideo:
 			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
 				not indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
-				warningMsg += 'Currently, upload date is not used. Continue with adding date ?'
+				warningMsg += 'Currently, upload date suffix is not used. Continue with adding date suffix ?'
 		else:
 			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
 				indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
-				warningMsg += 'Currently, upload date is used. Continue without adding date ?'
+				warningMsg += 'Currently, upload date suffix is used. Continue without adding date suffix ?'
 
 		return warningMsg.strip() # strip() removes last '\n' !
 	

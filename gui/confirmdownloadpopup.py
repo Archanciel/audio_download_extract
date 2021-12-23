@@ -13,9 +13,9 @@ class ConfirmDownloadPopup(GridLayout):
 	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
 	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
-	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date) ...'
-	POPUP_TITLE_UPLOAD_DATE_INDEX = ' (adding index and upload date) ...'
-	POPUP_TITLE_NO_UPLOAD_DATE_INDEX = ' (adding index) ...'
+	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date suffix) ...'
+	POPUP_TITLE_UPLOAD_DATE_INDEX = ' (adding download date prefix and upload date suffix) ...'
+	POPUP_TITLE_NO_UPLOAD_DATE_INDEX = ' (adding download date prefix) ...'
 	POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX = ' ...'
 	text = StringProperty()
 	cols = ObjectProperty

@@ -53,8 +53,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -114,8 +114,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		sys.stdout = stdout
 
@@ -181,8 +181,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		sys.stdout = stdout
@@ -254,8 +254,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -332,8 +332,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		downloadVideoInfoDic, accessError = youtubeAccess.downloadPlaylistVideosForUrl(
 			playlistUrl=playlistUrl,
 			downloadVideoInfoDic=downloadVideoInfoDic,
-			isUploadDateAddedToPlaylistVideo=False,
-			isIndexAddedToPlaylistVideo=False)
+			isUploadDateSuffixAddedToPlaylistVideo=False,
+			isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		
 		sys.stdout = stdout
@@ -392,8 +392,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -467,8 +467,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -540,8 +540,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 
@@ -618,8 +618,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -696,8 +696,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		sys.stdout = stdout
 		
@@ -785,8 +785,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		sys.stdout = stdout
 		
@@ -882,8 +882,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -933,8 +933,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		redownloadVideoInfoDic, accessError = youtubeAccess.downloadPlaylistVideosForUrl(
 			playlistUrl=playlistUrl,
 			downloadVideoInfoDic=redownloadVideoInfoDic,
-			isUploadDateAddedToPlaylistVideo=False,
-			isIndexAddedToPlaylistVideo=False)
+			isUploadDateSuffixAddedToPlaylistVideo=False,
+			isDownloadDatePrefixAddedToPlaylistVideo=False)
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
 		sys.stdout = stdout
@@ -1037,8 +1037,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1139,8 +1139,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1231,8 +1231,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1315,8 +1315,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1388,8 +1388,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1472,8 +1472,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -1545,8 +1545,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -1621,8 +1621,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -1688,7 +1688,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 
-		renamedFileName = 'Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'
+		renamedFileName = 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3'
 		
 		renamedFilePathName = downloadDir + sep + renamedFileName
 		
@@ -1719,24 +1719,24 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=True,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=True,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3" '
+			['downloading "Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3" '
 			 'audio ...',
 			 '',
 			 '[WinError 183] Impossible de créer un fichier déjà existant: '
 			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19..mp3' -> "
 			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
-			 "a mask. Help slow the spread of Covid-19. 2020-07-31.mp3'.",
+			 "a mask. Help slow the spread of Covid-19. 20-07-31.mp3'.",
 			 'Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() '
 			 'method',
-			 'downloading "Here to help - Give him what he wants 2019-06-07.mp3" audio ...',
+			 'downloading "Here to help - Give him what he wants 19-06-07.mp3" audio ...',
 			 '',
 			 'video download complete.',
 			 '',
@@ -1776,8 +1776,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		

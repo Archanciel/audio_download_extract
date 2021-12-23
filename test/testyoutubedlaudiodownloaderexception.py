@@ -57,8 +57,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -114,8 +114,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -186,8 +186,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -250,8 +250,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -323,8 +323,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -381,8 +381,8 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess_redownload.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                                      downloadVideoInfoDic=redownloadVideoInfoDic,
-		                                                      isUploadDateAddedToPlaylistVideo=False,
-		                                                      isIndexAddedToPlaylistVideo=False)
+		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
 		
@@ -488,7 +488,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['98-Here to help - Give him what he wants 2019-06-07.mp3',
+		self.assertEqual(sorted(['211223-Here to help - Give him what he wants 2019-06-07.mp3',
  '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 		

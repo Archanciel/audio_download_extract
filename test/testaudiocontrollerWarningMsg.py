@@ -29,8 +29,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 
 		self.assertEqual('', warningMsg)
 	
@@ -50,11 +50,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Currently, index is not used. Continue with adding index ?\nCurrently, upload date is not used. Continue with adding date ?',
+			'Currently, download date prefix is not used. Continue with adding download date prefix ?\nCurrently, upload date suffix is not used. Continue with adding date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueTrue_index_true_date_false(self):
@@ -73,11 +73,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Currently, upload date is not used. Continue with adding date ?',
+			'Currently, upload date suffix is not used. Continue with adding date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueTrue_index_false_date_true(self):
@@ -96,10 +96,10 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
-		self.assertEqual('Currently, index is not used. Continue with adding index ?', warningMsg)
+		self.assertEqual('Currently, download date prefix is not used. Continue with adding download date prefix ?', warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_index_true_date_true(self):
 		playlistTitle = 'test warning index true date true files'
@@ -117,11 +117,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Currently, index is used. Continue without adding index ?',
+			'Currently, download date prefix is used. Continue without adding download date prefix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_index_false_date_false(self):
@@ -140,11 +140,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Currently, upload date is not used. Continue with adding date ?',
+			'Currently, upload date suffix is not used. Continue with adding date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_index_true_date_false(self):
@@ -163,11 +163,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Currently, index is used. Continue without adding index ?\nCurrently, upload date is not used. Continue with adding date ?',
+			'Currently, download date prefix is used. Continue without adding download date prefix ?\nCurrently, upload date suffix is not used. Continue with adding date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_index_false_date_true(self):
@@ -186,8 +186,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual('', warningMsg)
 
@@ -210,10 +210,10 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
-		self.assertEqual('Currently, upload date is used. Continue without adding date ?', warningMsg)
+		self.assertEqual('Currently, upload date suffix is used. Continue without adding date suffix ?', warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueFalse_index_false_date_false(self):
 		playlistTitle = 'test warning index false date false files'
@@ -231,11 +231,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
-			'Currently, index is not used. Continue with adding index ?',
+			'Currently, download date prefix is not used. Continue with adding download date prefix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueFalse_index_true_date_false(self):
@@ -254,8 +254,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
 			'',
@@ -277,10 +277,10 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
-		self.assertEqual('Currently, index is not used. Continue with adding index ?\nCurrently, upload date is used. Continue without adding date ?', warningMsg)
+		self.assertEqual('Currently, download date prefix is not used. Continue with adding download date prefix ?\nCurrently, upload date suffix is used. Continue without adding date suffix ?', warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseFalse_index_true_date_true(self):
 		playlistTitle = 'test warning index true date true files'
@@ -298,10 +298,10 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
-		self.assertEqual('Currently, index is used. Continue without adding index ?\nCurrently, upload date is used. Continue without adding date ?', warningMsg)
+		self.assertEqual('Currently, download date prefix is used. Continue without adding download date prefix ?\nCurrently, upload date suffix is used. Continue without adding date suffix ?', warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseFalse_index_false_date_false(self):
 		playlistTitle = 'test warning index false date false files'
@@ -319,8 +319,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
 			'',
@@ -342,11 +342,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
-			'Currently, index is used. Continue without adding index ?',
+			'Currently, download date prefix is used. Continue without adding download date prefix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseFalse_index_false_date_true(self):
@@ -365,10 +365,10 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
-		self.assertEqual('Currently, upload date is used. Continue without adding date ?', warningMsg)
+		self.assertEqual('Currently, upload date suffix is used. Continue without adding date suffix ?', warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueTrue_emptyDir(self):
 		playlistTitle = 'test warning index empty dir'
@@ -386,11 +386,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Playlist directory is empty. Continue with adding index and upload date ?',
+			'Playlist directory is empty. Continue with adding download date prefix and upload date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueFalse_emptyDir(self):
@@ -409,11 +409,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
-			'Playlist directory is empty. Continue with adding index ?',
+			'Playlist directory is empty. Continue with adding download date prefix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_emptyDir(self):
@@ -432,11 +432,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Playlist directory is empty. Continue with adding upload date ?',
+			'Playlist directory is empty. Continue with adding upload date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseFalse_emptyDir(self):
@@ -455,8 +455,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
 			'',
@@ -479,11 +479,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Playlist directory does not exist. Continue with adding index and upload date ?',
+			'Playlist directory does not exist. Continue with adding download date prefix and upload date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_TrueFalse_dirNotExist(self):
@@ -502,11 +502,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=True,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=True,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
-			'Playlist directory does not exist. Continue with adding index ?',
+			'Playlist directory does not exist. Continue with adding download date prefix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseTrue_dirNotExist(self):
@@ -525,11 +525,11 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=True)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=True)
 		
 		self.assertEqual(
-			'Playlist directory does not exist. Continue with adding upload date ?',
+			'Playlist directory does not exist. Continue with adding upload date suffix ?',
 			warningMsg)
 	
 	def testDefineIndexAndDateSettingWarning_FalseFalse_dirNotExist(self):
@@ -548,8 +548,8 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 			                                                        modifiedPlaylistTitle=playlistTitle)
 		
 		warningMsg = audioController.defineIndexAndDateSettingWarningMsg(downloadVideoInfoDic=downloadVideoInfoDic,
-		                                                                 isIndexAddedToPlaylistVideo=False,
-		                                                                 isUploadDateAddedToPlaylistVideo=False)
+		                                                                 isDownloadDatePrefixAddedToPlaylistVideo=False,
+		                                                                 isUploadDateSuffixAddedToPlaylistVideo=False)
 		
 		self.assertEqual(
 			'',
@@ -559,4 +559,4 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioControllerWarningMsg()
-	tst.testDefineIndexAndDateSettingWarning_TrueTrue_index_false_date_false()
+	tst.testDefineIndexAndDateSettingWarning_FalseTrue_emptyDir()

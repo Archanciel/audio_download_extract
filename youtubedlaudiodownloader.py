@@ -93,8 +93,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	def downloadPlaylistVideosForUrl(self,
 	                                 playlistUrl,
 	                                 downloadVideoInfoDic,
-	                                 isUploadDateAddedToPlaylistVideo,
-	                                 isIndexAddedToPlaylistVideo):
+	                                 isUploadDateSuffixAddedToPlaylistVideo,
+	                                 isDownloadDatePrefixAddedToPlaylistVideo):
 		"""
 		Downloads the video(s) of the play list referenced in the passed playlistUrl and add to
 		the passed downloadVideoInfoDic the downloaded videos information as well as the
@@ -102,14 +102,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 		:param playlistUrl:
 		:param downloadVideoInfoDic:
-		:param isUploadDateAddedToPlaylistVideo if True, the name of the video
-												audio files referenced in the
-												playlist will be terminated by
-												the video upload date.
-		:param isIndexAddedToPlaylistVideo      if True, the name of the video
-												audio files referenced in the
-												playlist will be started by
-												100 minus the video index.
+		:param isUploadDateSuffixAddedToPlaylistVideo   if True, the name of the video
+														audio files referenced in the
+														playlist will be terminated by
+														the video upload date.
+		:param isDownloadDatePrefixAddedToPlaylistVideo if True, the name of the video
+														audio files referenced in the
+														playlist will be started by
+														the video download date.
 		
 		:return: downloadVideoInfoDic, accessError
 		"""
@@ -136,6 +136,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
+		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
@@ -147,15 +148,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					
 					return downloadVideoInfoDic, None
 				
-				formattedUploadDate = ''
+				formattedUploadDateSuffix = ''
 				
 				try:
 					meta = ydl.extract_info(videoUrl, download=False)
 					videoTitle = meta['title']
 					
-					if isUploadDateAddedToPlaylistVideo:
+					if isUploadDateSuffixAddedToPlaylistVideo:
 						uploadDate = meta['upload_date']
-						formattedUploadDate = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
+						formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 				except AttributeError as e:
 					msgText = 'obtaining video title and upload date failed with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
@@ -176,22 +177,19 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 					continue
 
-				if isUploadDateAddedToPlaylistVideo:
-					if isIndexAddedToPlaylistVideo:
-						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
-						finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
+				if isUploadDateSuffixAddedToPlaylistVideo:
+					if isDownloadDatePrefixAddedToPlaylistVideo:
+						finalPurgedVideoTitleMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 					else:
-						if isIndexAddedToPlaylistVideo:
-							addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
-							finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + formattedUploadDate + '.mp3'
+						if isDownloadDatePrefixAddedToPlaylistVideo:
+							finalPurgedVideoTitleMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 						else:
-							finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+							finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 				else:
-					if isIndexAddedToPlaylistVideo:
-						addedIndexStr = str(MAX_VIDEO_INDEX - videoIndex) + '-'
-						finalPurgedVideoTitleMp3 = addedIndexStr + purgedVideoTitle + '.mp3'
+					if isDownloadDatePrefixAddedToPlaylistVideo:
+						finalPurgedVideoTitleMp3 = downloadDatePrefix + purgedVideoTitle + '.mp3'
 					else:
-						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded and so will be skipped
@@ -226,7 +224,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					msgStartStr = 'downloading'
 					
-				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
+				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
 					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
 				else:
 					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
@@ -263,7 +261,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 					continue
 				
-				if isUploadDateAddedToPlaylistVideo or isIndexAddedToPlaylistVideo:
+				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
 					# includes the video upload date.
 					
@@ -510,12 +508,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			# be added to the video mp3 audio file name so it is visible in
 			# the Smart Audiobook player app.
 
-			formattedUploadDate = ''
+			formattedUploadDateSuffix = ''
 			
 			try:
 				meta = ydl.extract_info(singleVideoUrl, download=False)
 				uploadDate = meta['upload_date']
-				formattedUploadDate = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %Y-%m-%d')
+				formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 			except AttributeError as e:
 				msgText = 'obtaining video upload date failed with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
@@ -526,7 +524,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				videoTitle = modifiedVideoTitle
 			
 			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-			purgedOriginalOrModifiedVideoTitleWithDateMp3 = purgedVideoTitle + formattedUploadDate + '.mp3'
+			purgedOriginalOrModifiedVideoTitleWithDateMp3 = purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 			
 			# testing if the single video has already been downloaded in the
 			# target audio dir. If yes, we do not re download it.

@@ -1214,7 +1214,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param confirmPopupMsg:
 		:param confirmPopupCallbackFunction:    function called when the user click on
 												yes or no button
-		:param isPlayListDownloaded             if True, index and upload date
+		:param isPlayListDownloaded             if True, download date prefix and upload date suffix
 												checkboxes will be displayed.
 												if False, for downloading a
 												single video, the index and

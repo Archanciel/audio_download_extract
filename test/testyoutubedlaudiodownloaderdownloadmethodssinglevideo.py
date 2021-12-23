@@ -3,6 +3,10 @@ import os, sys, inspect, shutil, glob
 from os.path import sep
 from io import StringIO
 
+from audiocontroller import AudioController
+from configmanager import ConfigManager
+from playlisttitleparser import PlaylistTitleParser
+
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
@@ -60,9 +64,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual(['downloading "Funny suspicious looking dog 2013-11-05.mp3" audio ...',
+			self.assertEqual(['downloading "Funny suspicious looking dog 13-11-05.mp3" audio ...',
  '',
- '"Funny suspicious looking dog 2013-11-05.mp3" audio downloaded in '
+ '"Funny suspicious looking dog 13-11-05.mp3" audio downloaded in '
  '"test\\Various_test" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -70,7 +74,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			                 downloadDir)
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Funny suspicious looking dog 2013-11-05.mp3']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Funny suspicious looking dog 13-11-05.mp3']), sorted(fileNameLst))
 	
 	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
@@ -121,9 +125,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
  'test\\Various_test_new',
  'was created.',
  '',
- 'downloading "Funny suspicious looking dog 2013-11-05.mp3" audio ...',
+ 'downloading "Funny suspicious looking dog 13-11-05.mp3" audio ...',
  '',
- '"Funny suspicious looking dog 2013-11-05.mp3" audio downloaded in '
+ '"Funny suspicious looking dog 13-11-05.mp3" audio downloaded in '
  '"test\\Various_test_new" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -131,7 +135,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			                 downloadDir)
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Funny suspicious looking dog 2013-11-05.mp3']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Funny suspicious looking dog 13-11-05.mp3']), sorted(fileNameLst))
 	
 	def testDownloadSingleVideoForUrl_redownloading_video(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
@@ -173,7 +177,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 		sys.stdout = stdout
 		
-		self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+		self.assertEqual(['"Funny suspicious looking dog 13-11-05.mp3" audio already downloaded in '
  '"test\\Various_test" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -204,7 +208,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertEqual(['"Comment Etudier Un Cours En Miracles  2018-12-16.mp3" audio already '
+		self.assertEqual(['"Comment Etudier Un Cours En Miracles  18-12-16.mp3" audio already '
  'downloaded in "Various_test_not_emptied" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -235,7 +239,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['"Aimer sans peur 3_9 - Gary Renard 2013-03-26.mp3" audio already downloaded '
+		self.assertEqual(['"Aimer sans peur 3_9 - Gary Renard 13-03-26.mp3" audio already downloaded '
  'in "Various_test_not_emptied" dir. Video skipped.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -289,9 +293,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['downloading "Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
- '2020-09-26.mp3" audio ...',
+ '20-09-26.mp3" audio ...',
  '',
- '"Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 2020-09-26.mp3" audio '
+ '"Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3" audio '
  'downloaded in "test\\Various_test" directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -304,7 +308,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			                 downloadDir)
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 2020-09-26.mp3']), sorted(fileNameLst))
+		self.assertEqual(sorted(['Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3']), sorted(fileNameLst))
 	
 	def testDownloadPlaylistWithNameOneVideo_title_or_char(self):
 		singleVideoDirName = "bug_or_char_single_video"
@@ -338,8 +342,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
-		                                           isUploadDateAddedToPlaylistVideo=False,
-		                                           isIndexAddedToPlaylistVideo=False)
+		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
+		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
 		sys.stdout = stdout
 		
@@ -390,4 +394,4 @@ if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadSingleVideoForUrl_redownloading_video_title_ending_with_question_mark()
+	tst.testDownloadPlaylistWithNameOneVideo_title_or_char()
