@@ -42,11 +42,11 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistDirName_10 = "test warning index date files_downloadDirEmpty"
 		self.playlistDirNameLst.append(self.playlistDirName_10)
 
-		self.singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 2021-12-05.mp3'
+		self.singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 21-12-05.mp3'
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_1)
 
-		self.singleVideoFileName_2 = 'Short King Struggles 🥲 2021-07-28.mp3'
+		self.singleVideoFileName_2 = 'Short King Struggles 🥲 21-07-28.mp3'
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
 
