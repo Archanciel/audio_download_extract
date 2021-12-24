@@ -7,15 +7,15 @@ import shutil
 import re
 
 
-INDEX_PATTERN = r'(^[\d-]*)(.*).mp3'
-DATE_PATTERN = r'(.*) ([\d-]*).mp3'
+DOWNLOAD_DATE_PATTERN = r'(^[\d-]*)(.*).mp3'
+UPLOAD_DATE_PATTERN = r'(.*) ([\d-]*).mp3'
 
 
 class DirUtil:
-	INDEX_DATE_POS = 0
-	INDEX_NO_DATE_POS = 1
-	NO_INDEX_DATE_POS = 2
-	NO_INDEX_NO_DATE_POS = 3
+	DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+	DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+	NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+	NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 	
 	@staticmethod
 	def getDefaultAudioRootPath():
@@ -319,18 +319,18 @@ class DirUtil:
 										exist or
 										[] if the passed audioDir is empty.
 
-										four elements list:  [INDEX_DATE boolean,
-															 INDEX_NO_DATE boolean,
-															 NO_INDEX_DATE boolean,
-															 NO_INDEX_NO_DATE boolean]
+										four elements list:  [DOWNLOAD_DATE_DATE boolean,
+															 DOWNLOAD_DATE_NO_DATE boolean,
+															 NO_DOWNLOAD_DATE_DATE boolean,
+															 NO_DOWNLOAD_DATE_NO_DATE boolean]
 	
 										the list index are defined by those DirUtil
 										constants:
 										
-										DirUtil.INDEX_DATE_POS = 0
-										DirUtil.INDEX_NO_DATE_POS = 1
-										DirUtil.NO_INDEX_DATE_POS = 2
-										DirUtil.NO_INDEX_NO_DATE_POS = 3
+										DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+										DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+										DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+										DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 
 		"""
 		audioFileNameLst = DirUtil.getFileNamesInDirForPattern(audioDir, '*.mp3')
@@ -372,40 +372,40 @@ class DirUtil:
 		
 		:param audioFileNameLst:
 		
-		:return:indexAndDateUsageLst  four elements list:    [INDEX_DATE boolean,
-															 INDEX_NO_DATE boolean,
-															 NO_INDEX_DATE boolean,
-															 NO_INDEX_NO_DATE boolean]
+		:return:indexAndDateUsageLst  four elements list:    [DOWNLOAD_DATE_DATE boolean,
+															 DOWNLOAD_DATE_NO_DATE boolean,
+															 NO_DOWNLOAD_DATE_DATE boolean,
+															 NO_DOWNLOAD_DATE_NO_DATE boolean]
 
 									  the list index are defined by those DirUtil
 									  constants:
 									  
-									  DirUtil.INDEX_DATE_POS = 0
-									  DirUtil.INDEX_NO_DATE_POS = 1
-									  DirUtil.NO_INDEX_DATE_POS = 2
-									  DirUtil.NO_INDEX_NO_DATE_POS = 3
+									  DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+									  DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+									  DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+									  DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 
 		"""
-		indexAndDateUsageLst = [False,  # INDEX_DATE
-		                        False,  # INDEX_NO_DATE
-		                        False,  # NO_INDEX_DATE
-		                        False]  # NO_INDEX_NO_DATE
+		indexAndDateUsageLst = [False,  # DOWNLOAD_DATE_DATE
+		                        False,  # DOWNLOAD_DATE_NO_DATE
+		                        False,  # NO_DOWNLOAD_DATE_DATE
+		                        False]  # NO_DOWNLOAD_DATE_NO_DATE
 
 		for fileName in audioFileNameLst:
-			match = re.search(INDEX_PATTERN, fileName)
+			match = re.search(DOWNLOAD_DATE_PATTERN, fileName)
 			
 			if match.group(1) != '':
-				match = re.search(DATE_PATTERN, fileName)
+				match = re.search(UPLOAD_DATE_PATTERN, fileName)
 				if match is not None:
-					indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] = True
+					indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] = True
 				else:
-					indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS] = True
+					indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS] = True
 			else:
-				match = re.search(DATE_PATTERN, fileName)
+				match = re.search(UPLOAD_DATE_PATTERN, fileName)
 				if match is not None:
-					indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS] = True
+					indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS] = True
 				else:
-					indexAndDateUsageLst[DirUtil.NO_INDEX_NO_DATE_POS] = True
+					indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS] = True
 			
 		return indexAndDateUsageLst
 
@@ -443,10 +443,10 @@ if __name__ == '__main__':
 	
 	def printLst(lst):
 		print('Index_date {}, index_no_date {}, no_index_date {}, no_index_no_date {}\n'.
-		      format(lst[DirUtil.INDEX_DATE_POS],
-		             lst[DirUtil.INDEX_NO_DATE_POS],
-		             lst[DirUtil.NO_INDEX_DATE_POS],
-		             lst[DirUtil.NO_INDEX_NO_DATE_POS]))
+		      format(lst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS],
+		             lst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS],
+		             lst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS],
+		             lst[DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]))
 	
 	print('fileNameLst_index_date_1')
 	lst_1 = DirUtil.getIndexAndDateUsageInFileNameLst(fileNameLst_index_date_1)

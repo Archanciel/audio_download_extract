@@ -10,7 +10,7 @@
     },
     "videos": {
         "1": {
-            "vd_downloadException": false,
+            "vd_downloadException": true,
             "vd_downloadTime": "02/12/2021 18:23:14",
             "vd_downloadedFileName": "99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3",
             "vd_title": "Wear a mask. Help slow the spread of Covid-19.",

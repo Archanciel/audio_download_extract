@@ -13,10 +13,10 @@ class ConfirmDownloadPopup(GridLayout):
 	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
 	POPUP_TITLE_VIDEO = 'Go on with downloading audio for video ...'
-	POPUP_TITLE_UPLOAD_DATE_NO_INDEX = ' (adding upload date suffix) ...'
-	POPUP_TITLE_UPLOAD_DATE_INDEX = ' (adding download date prefix and upload date suffix) ...'
-	POPUP_TITLE_NO_UPLOAD_DATE_INDEX = ' (adding download date prefix) ...'
-	POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX = ' ...'
+	POPUP_TITLE_NO_DOWNLOAD_DATE_UPLOAD_DATE = ' (adding upload date suffix) ...'
+	POPUP_TITLE_DOWNLOAD_DATE_UPLOAD_DATE = ' (adding download date prefix and upload date suffix) ...'
+	POPUP_TITLE_DOWNLOAD_DATE_NO_UPLOAD_DATE = ' (adding download date prefix) ...'
+	POPUP_TITLE_NO_DOWNLOAD_DATE_NO_UPLOAD_DATE = ' ...'
 	text = StringProperty()
 	cols = ObjectProperty
 	
@@ -67,14 +67,14 @@ class ConfirmDownloadPopup(GridLayout):
 
 		if isActive:
 			if isIndexChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_DOWNLOAD_DATE_UPLOAD_DATE
 			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_NO_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_DOWNLOAD_DATE_UPLOAD_DATE
 		else:
 			if isIndexChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_DOWNLOAD_DATE_NO_UPLOAD_DATE
 			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_DOWNLOAD_DATE_NO_UPLOAD_DATE
 
 	def toggleAddIndex(self, isActive):
 		containingPopup = self.parent.parent.parent
@@ -82,14 +82,14 @@ class ConfirmDownloadPopup(GridLayout):
 
 		if isActive:
 			if isUploadDateChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_DOWNLOAD_DATE_UPLOAD_DATE
 			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_DOWNLOAD_DATE_NO_UPLOAD_DATE
 		else:
 			if isUploadDateChkboxActive:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_UPLOAD_DATE_NO_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_DOWNLOAD_DATE_UPLOAD_DATE
 			else:
-				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_UPLOAD_DATE_NO_INDEX
+				containingPopup.title = self.POPUP_TITLE_PLAYLIST + self.POPUP_TITLE_NO_DOWNLOAD_DATE_NO_UPLOAD_DATE
 
 	def on_answer(self, *args):
 		pass

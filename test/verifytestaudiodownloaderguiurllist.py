@@ -1,3 +1,4 @@
+import datetime
 import unittest
 import os, sys, inspect, shutil, glob, time
 from io import StringIO
@@ -20,20 +21,22 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		
 		downloadDir = self.configMgr.dataPath + sep + self.playlistDirName_8
 		playlistDir_expectedFileNameLst = DirUtil.getFileNamesInDir(downloadDir)
-		
+
+		downloadDateTodayPrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+
 		# the three videos in the playlist have been partially downloaded
-		playlistDir_3_expectedFileNameLst = ['211223-Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3',
-		                                     '211223-Innovation (Short Film) 20-01-07.mp3',
-		                                     '211223-SLS DRIFT TAXI. Arina. #shorts 21-08-12.mp3',
+		playlistDir_3_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Innovation (Short Film) 20-01-07.mp3',
+		                                     '' + downloadDateTodayPrefix + 'SLS DRIFT TAXI. Arina. #shorts 21-08-12.mp3',
 		                                     'test_small_videos_3_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_3] = playlistDir_3_expectedFileNameLst
 		
 		# verifying a playlist with extract and suppress portion settings
 		# in playlist title
-		playlistDir_4_expectedFileNameLst = ['211223-Here to help - Give him what he wants 19-06-07.mp3',
-		                                     '211223-Here to help - Give him what he wants 19-06-07_s.mp3',
-		                                     '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
-		                                     '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
+		playlistDir_4_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07_s.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
 		                                     'test_audio_downloader_two_files_with_time_frames_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_4] = playlistDir_4_expectedFileNameLst
 
@@ -46,7 +49,7 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_5] = playlistDir_5_expectedFileNameLst
 		
-		playlistDir_6_expectedFileNameLst = ['211223-Funny suspicious looking dog.mp3',
+		playlistDir_6_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Funny suspicious looking dog.mp3',
 		                                     '98-Here to help - Give him what he wants.mp3',
 		                                     'test warning index date files_indexNoDate_dic.txt',
 		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
@@ -58,17 +61,17 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		                                      'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_7] = playlistDir_7_expectedFileNameLst
 
-		playlistDir_8_expectedFileNameLst = ['211223-Here to help - Give him what he wants 19-06-07.mp3',
+		playlistDir_8_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
 		                                     '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
 		                                     'Funny suspicious looking dog.mp3',
 		                                     'test warning index date files_IndexDate_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_8] = playlistDir_8_expectedFileNameLst
 
-		playlistDir_9_expectedFileNameLst = ['211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+		playlistDir_9_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
 		                                     'test warning index date files_downloadDirNotExist_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_9] = playlistDir_9_expectedFileNameLst
 
-		playlistDir_10_expectedFileNameLst = ['211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+		playlistDir_10_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
 		                                     'test warning index date files_downloadDirEmpty_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_10] = playlistDir_10_expectedFileNameLst
 

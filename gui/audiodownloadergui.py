@@ -474,7 +474,7 @@ class AudioDownloaderGUI(AudioGUI):
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
-				confirmPopupTitle = ConfirmDownloadPopup.POPUP_TITLE_PLAYLIST + ConfirmDownloadPopup.POPUP_TITLE_UPLOAD_DATE_INDEX
+				confirmPopupTitle = ConfirmDownloadPopup.POPUP_TITLE_PLAYLIST + ConfirmDownloadPopup.POPUP_TITLE_DOWNLOAD_DATE_UPLOAD_DATE
 				isPlayListDownloaded = True
 			else:
 				# url obtained from clipboard points to a single video
@@ -1170,10 +1170,10 @@ class AudioDownloaderGUI(AudioGUI):
 				isIndexAddedToAlreadyDownloadedPlaylistVideo = True
 				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = True
 			else:
-				isIndexAddedToAlreadyDownloadedPlaylistVideo = indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-				                                               indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]
-				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-				                                                    indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]
+				isIndexAddedToAlreadyDownloadedPlaylistVideo = indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				                                               indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]
+				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				                                                    indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS]
 
 			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
 			                                                        isIndexAddedToPlaylistVideo=isIndexAddedToAlreadyDownloadedPlaylistVideo,

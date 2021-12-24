@@ -1,3 +1,4 @@
+import datetime
 import unittest
 import os, sys, inspect, shutil, glob, time
 from io import StringIO
@@ -243,7 +244,7 @@ class TestAudioController(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
+			self.assertEqual(['"Funny suspicious looking dog 13-11-05.mp3" audio already downloaded in '
  '"Audio\\test\\Various\\single_video dir\\new dir\\new sub dir" dir. Video '
  'skipped.',
  '',
@@ -252,7 +253,7 @@ class TestAudioController(unittest.TestCase):
 		createdFileLst = os.listdir(playlistOrSingleVideoDownloadPath)
 		
 		self.assertEqual(
-			['Funny suspicious looking dog 2013-11-05.mp3'],
+			['Funny suspicious looking dog 13-11-05.mp3'],
 			createdFileLst)
 
 	def testDeleteAudioFiles_all(self):
@@ -466,7 +467,9 @@ class TestAudioController(unittest.TestCase):
 		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		sys.stdout = stdout
-		
+
+		downloadDateTodayPrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+
 		if os.name == 'posix':
 			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
 			                  '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
@@ -474,12 +477,12 @@ class TestAudioController(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "211223-Wear a mask. Help slow the spread of Covid-19. '
+			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
  '20-07-31.mp3" audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "211223-Here to help - Give him what he wants 19-06-07.mp3" '
+ 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
  'audio ...',
  '',
  'video download complete.',
@@ -495,8 +498,8 @@ class TestAudioController(unittest.TestCase):
 		createdFileLst = os.listdir(downloadDir)
 		
 		self.assertEqual(
-			['211223-Here to help - Give him what he wants 19-06-07.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+			['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
 			 'test_audio_downloader_two_files_dic.txt'],
 			createdFileLst)
 	
@@ -542,7 +545,9 @@ class TestAudioController(unittest.TestCase):
 		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		sys.stdout = stdout
-		
+
+		downloadDateTodayPrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+
 		if os.name == 'posix':
 			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
 			                  '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
@@ -550,12 +555,12 @@ class TestAudioController(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "211223-Wear a mask. Help slow the spread of Covid-19. '
+			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
  '20-07-31.mp3" audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "211223-Here to help - Give him what he wants 19-06-07.mp3" '
+ 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
  'audio ...',
  '',
  'video download complete.',
@@ -571,8 +576,8 @@ class TestAudioController(unittest.TestCase):
 		createdFileLst = os.listdir(downloadDir)
 		
 		self.assertEqual(
-			['211223-Here to help - Give him what he wants 19-06-07.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+			['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
 			 'test_audio_downloader_two_files_noTimeFrame_renamed_dic.txt'],
 			createdFileLst)
 	
@@ -618,16 +623,18 @@ class TestAudioController(unittest.TestCase):
 		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		sys.stdout = stdout
-		
+
+		downloadDateTodayPrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+
 		if os.name == 'posix':
 			pass
 		else:
-			self.assertEqual(['downloading "211223-Wear a mask. Help slow the spread of Covid-19. '
+			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
  '20-07-31.mp3" audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "211223-Here to help - Give him what he wants 19-06-07.mp3" '
+ 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
  'audio ...',
  '',
  'video download complete.',
@@ -636,21 +643,21 @@ class TestAudioController(unittest.TestCase):
  'download terminated.',
  '',
  '',
- 'extracting portions of "211223-Wear a mask. Help slow the spread of '
+ 'extracting portions of "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of '
  'Covid-19. 20-07-31.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\211223-Wear '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
  '\t\t0:0:02-0:0:08',
  '',
- 'suppressing portions of "211223-Here to help - Give him what he wants '
+ 'suppressing portions of "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
  '19-06-07.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\211223-Here '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',
@@ -670,10 +677,10 @@ class TestAudioController(unittest.TestCase):
 		createdFileLst = os.listdir(downloadDir)
 		
 		self.assertEqual(
-			['211223-Here to help - Give him what he wants 19-06-07.mp3',
-			 '211223-Here to help - Give him what he wants 19-06-07_s.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
+			['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+			 '' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07_s.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
 			 'test_audio_downloader_two_files_with_time_frames_dic.txt'],
 			createdFileLst)
 	
@@ -721,16 +728,18 @@ class TestAudioController(unittest.TestCase):
 		                                                   isUploadDateAddedToPlaylistVideo=isUploadDateAddedToPlaylistVideo)
 		
 		sys.stdout = stdout
-		
+
+		downloadDateTodayPrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+
 		if os.name == 'posix':
 			pass
 		else:
-			self.assertEqual(['downloading "211223-Wear a mask. Help slow the spread of Covid-19. '
+			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
  '20-07-31.mp3" audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "211223-Here to help - Give him what he wants 19-06-07.mp3" '
+ 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
  'audio ...',
  '',
  'video download complete.',
@@ -739,21 +748,21 @@ class TestAudioController(unittest.TestCase):
  'download terminated.',
  '',
  '',
- 'extracting portions of "211223-Wear a mask. Help slow the spread of '
+ 'extracting portions of "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of '
  'Covid-19. 20-07-31.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\211223-Wear '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
  '\t\t0:0:02-0:0:08',
  '',
- 'suppressing portions of "211223-Here to help - Give him what he wants '
+ 'suppressing portions of "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
  '19-06-07.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\211223-Here '
+ 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',
@@ -773,10 +782,10 @@ class TestAudioController(unittest.TestCase):
 		createdFileLst = os.listdir(downloadDir)
 		
 		self.assertEqual(
-			['211223-Here to help - Give him what he wants 19-06-07.mp3',
-			 '211223-Here to help - Give him what he wants 19-06-07_s.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
-			 '211223-Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
+			['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+			 '' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07_s.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
+			 '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
 			 'test_audio_downloader_two_files_with_time_frames_renamed_dic.txt'],
 			createdFileLst)
 

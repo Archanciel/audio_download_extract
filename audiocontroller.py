@@ -504,21 +504,21 @@ class AudioController:
 			return warningMsg
 		
 		if isDownloadDatePrefixAddedToPlaylistVideo:
-			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
-				not indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
+			if not indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] and \
+				not indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]:
 				warningMsg += 'Currently, download date prefix is not used. Continue with adding download date prefix ?\n'
 		else:
-			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-				indexAndDateUsageLst[DirUtil.INDEX_NO_DATE_POS]:
+			if indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]:
 				warningMsg += 'Currently, download date prefix is used. Continue without adding download date prefix ?\n'
 
 		if isUploadDateSuffixAddedToPlaylistVideo:
-			if not indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] and \
-				not indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
+			if not indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] and \
+				not indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS]:
 				warningMsg += 'Currently, upload date suffix is not used. Continue with adding date suffix ?'
 		else:
-			if indexAndDateUsageLst[DirUtil.INDEX_DATE_POS] or \
-				indexAndDateUsageLst[DirUtil.NO_INDEX_DATE_POS]:
+			if indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS]:
 				warningMsg += 'Currently, upload date suffix is used. Continue without adding date suffix ?'
 
 		return warningMsg.strip() # strip() removes last '\n' !
@@ -536,18 +536,18 @@ class AudioController:
 										exist or
 										[] if the passed audioDir is empty.
 
-										four elements list:  [INDEX_DATE boolean,
-															 INDEX_NO_DATE boolean,
-															 NO_INDEX_DATE boolean,
-															 NO_INDEX_NO_DATE boolean]
+										four elements list:  [DOWNLOAD_DATE_DATE boolean,
+															 DOWNLOAD_DATE_NO_DATE boolean,
+															 NO_DOWNLOAD_DATE_DATE boolean,
+															 NO_DOWNLOAD_DATE_NO_DATE boolean]
 	
 										the list index are defined by those DirUtil
 										constants:
 										
-										DirUtil.INDEX_DATE_POS = 0
-										DirUtil.INDEX_NO_DATE_POS = 1
-										DirUtil.NO_INDEX_DATE_POS = 2
-										DirUtil.NO_INDEX_NO_DATE_POS = 3
+										DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+										DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+										DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+										DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 		"""
 		playlistDownloadDir = self.configMgr.dataPath + sep + playlistDownloadVideoInfoDic.getPlaylistDownloadDir()
 		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
