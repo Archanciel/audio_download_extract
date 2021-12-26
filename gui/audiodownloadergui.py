@@ -1,5 +1,8 @@
+import logging
 import os,sys,inspect
 import time
+
+from kivy.uix.recycleview import RecycleView
 
 TIME_SLEEP_SECONDS = 1
 
@@ -63,6 +66,15 @@ NO_INTERNET = False
 class WindowManager(ScreenManager):
 	pass
 
+class MyRecycleView(RecycleView):
+	def on_scroll_stop(self, touch, check_children=True):
+		try:
+			super().on_scroll_stop(touch, check_children)
+		except IndexError as e:
+			audioDownloaderGUI = self.parent.parent.parent
+			
+			logging.info('Selecting the last list item caused this Kivy bug: ' + str(e))
+	
 class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
