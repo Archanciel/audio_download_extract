@@ -316,7 +316,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isIndexAddedToPlaylistVideo = False
 		self.downloadFromUrlDownloadLstThreadCreated = False
 		self.downloadUrlInfoDic = None
-
+		self.buttonDisabled = False
+		
 		self._doOnStart()
 	
 	def _doOnStart(self):
@@ -379,7 +380,7 @@ class AudioDownloaderGUI(AudioGUI):
 				else:
 					type = DownloadUrlInfoDic.URL_TYPE_PLAYLIST
 			
-			self.enableButtons()
+#			self.enableButtons()
 			
 			uld = UrlDownloadData(type=type,
 			                      title=title,
@@ -405,7 +406,6 @@ class AudioDownloaderGUI(AudioGUI):
 		download button defined in the audiodownloadergui.kv file.
 		"""
 		playlistOrSingleVideoUrl = Clipboard.paste()
-		self.disableButtons()
 		
 		if onlyGetDownloadObjectTitle:
 			# the case if method called after clicking on Add button
@@ -465,7 +465,8 @@ class AudioDownloaderGUI(AudioGUI):
 											# button on the ConfirmPopup dialog
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
-		self.enableButtons()
+		if self.buttonDisabled:
+			self.enableButtons()
 		
 		if self.accessError is None:
 			# the case if the url is neither pointing to a playlist nor to a
@@ -493,21 +494,34 @@ class AudioDownloaderGUI(AudioGUI):
 			popup.open()
 	
 	def getDownloadObjectTitleOnNewThread(self, playlistOrSingleVideoUrl):
+		if not self.buttonDisabled:
+			self.disableButtons()
+			
 		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
-	
+
+		if self.buttonDisabled:
+			self.enableButtons()
 		self.downloadObjectTitleThreadCreated = False
 		
 	def enableButtons(self):
+		import traceback
+		traceback.print_stack(file=sys.stdout)
+		print()
 		self.downloadButton.disabled = False
 		self.addDownloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
+		self.buttonDisabled = False
 
 	def disableButtons(self):
+		import traceback
+		traceback.print_stack(file=sys.stdout)
+		print()
 		self.downloadButton.disabled = True
 		self.addDownloadButton.disabled = True
 		self.stopDownloadButton.disabled = True
 		self.clearResultOutputButton.disabled = True
+		self.buttonDisabled = True
 
 	def onConfirmDownloadPopupAnswer(self, confirmPopupInstance, answer):
 		"""
@@ -1684,4 +1698,7 @@ class AudioDownloaderGUIMainApp(App):
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIMainApp()
 
-	dbApp.run()
+	try:
+		dbApp.run()
+	except IndexError as e:
+		print(e)
