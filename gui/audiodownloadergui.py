@@ -1684,4 +1684,9 @@ class AudioDownloaderGUIMainApp(App):
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIMainApp()
 
-	dbApp.run()
+	try:
+		dbApp.run()
+	except IndexError as e:
+		# exception sometimes raised when selecting last url list item
+		#.This avoids app failure.
+		print(e)
