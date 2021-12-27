@@ -132,50 +132,64 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 			if movedItemSelIndex > movedItemNewSeIndex:
 				# we are moving down the last list item. The item will be inserted at top
 				# of the list
+				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(0, {'text': movedValue, 'data':  movedUrlDownloadData,'selectable': True})
+				self.parent.data.insert(0, {'text': movedValue, 'data':  movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
 				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
+				replacedItemToDownloadValue = self.parent.data[movedItemNewSeIndex]['toDownload']
+				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True})
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'toDownload': replacedItemToDownloadValue, 'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
 		else:
 			# handling moving up
 			if movedItemSelIndex == 0:
 				# we are moving up the first item. The first item will be appended to the
 				# end of the list
+				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.append({'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
+				self.parent.data.append({'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
 				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
+				replacedItemToDownloadValue = self.parent.data[movedItemNewSeIndex]['toDownload']
+				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'selectable': True})
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'toDownload': replacedItemToDownloadValue, 'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
 
 		# appGUI.recycleViewCurrentSelIndex is used by the
 		# deleteRequest() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 
-class SelectableLabel(RecycleDataViewBehavior, Label):
+class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 	''' Add selection support to the Label '''
 	index = None
 	selected = BooleanProperty(False)
 	selectable = BooleanProperty(True)
 	
+	def __init__(self):
+		
+		super().__init__()
+		self.rv = None
+	
 	def refresh_view_attrs(self, rv, index, data):
 		''' Catch and handle the view changes '''
+		
+		# storing reference on the recycle view
+		
 		self.rv = rv
 		self.audioDownloaderGUI = rv.rootGUI
 		self.index = index
 		
-		return super(SelectableLabel, self).refresh_view_attrs(
+		return super(SelectableMultiFieldsItem, self).refresh_view_attrs(
 			rv, index, data)
 	
 	def on_touch_down(self, touch):
@@ -190,7 +204,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = -1
 
-		if super(SelectableLabel, self).on_touch_down(touch):
+		if super(SelectableMultiFieldsItem, self).on_touch_down(touch):
 			return True
 		if self.collide_point(*touch.pos) and self.selectable:
 			return self.parent.select_with_touch(self.index, touch)
@@ -204,16 +218,28 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 			selItemUrlTitle = rv.data[index]['text']
 			selItemUrlDownloadData = rv.data[index]['data']
 			selItemUrl = selItemUrlDownloadData.url
-
+			
 			Clipboard.copy(selItemUrl)
-
+			
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
-		
+
+		# next instruction fixes incomprehensible problem of setting chkbox
+		# to active on other items when moving an item where the chkbox is
+		# active !
+		self.ids.download_chkbox.active = rv.data[index]['toDownload']
+
 		self.audioDownloaderGUI.refocusOnFirstRequestInput()
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
+	
+	def toggleCheckbox(self, chkbox, isChecked):
+		selectableMultiFieldsItem = chkbox.parent
+		recycleView = selectableMultiFieldsItem.parent.parent
+		recycleView.data[selectableMultiFieldsItem.index]['toDownload'] = isChecked
+		
+		logging.info('toggleCheckbox in item {}: {}'.format(selectableMultiFieldsItem.index, isChecked))
 
 
 class SettingScrollOptions(SettingOptions):
@@ -402,6 +428,7 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			urlListEntry = {'text': title,
 			                'data': uld,
+			                'toDownload': False,
 			                'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
@@ -444,6 +471,9 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
 		for listEntry in self.requestListRV.data:
+			if listEntry['toDownload'] is False:
+				continue
+				
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
 			_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
@@ -748,6 +778,7 @@ class AudioDownloaderGUI(AudioGUI):
 		# Remove the selected item
 		removedItem = self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 		replaceUrlDownloadData = removedItem['data']
+		replaceItemToDownloadValue = removedItem['toDownload']
 		replaceUrlType = replaceUrlDownloadData.type
 		replaceUrl = replaceUrlDownloadData.url
 
@@ -755,7 +786,7 @@ class AudioDownloaderGUI(AudioGUI):
 		requestStr = self.requestInput.text
 		replaceUrlDownloadData.title = requestStr
 		
-		dataDic = {'text': requestStr, 'data': replaceUrlDownloadData, 'selectable': True}
+		dataDic = {'text': requestStr, 'data': replaceUrlDownloadData, 'toDownload': replaceItemToDownloadValue, 'selectable': True}
 
 		# Add the updated data to the list if not already in
 		requestListEntry = dataDic
@@ -973,7 +1004,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.downloadUrlInfoDic = DownloadUrlInfoDic(existingDicFilePathName=pathFileName)
 
 		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
-		histoLines = [{'text': udl.title, 'data': udl, 'selectable': True} for udl in udlLst]
+		histoLines = [{'text': udl.title, 'data': udl, 'toDownload': False, 'selectable': True} for udl in udlLst]
 
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
