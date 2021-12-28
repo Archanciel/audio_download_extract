@@ -255,12 +255,12 @@ class AudioGUI(Screen):
 			# request list is empty
 			self.toggleHistoButton.state = 'normal'
 			self.toggleHistoButton.disabled = True
-			self.replayAllButton.disabled = True
+			self.downloadAllButton.disabled = True
 			self.boxLayoutContainingRV.height = '0dp'
 			self.dropDownMenu.saveButton.disabled = True
 		else:
 			self.toggleHistoButton.disabled = False
-			self.replayAllButton.disabled = False
+			self.downloadAllButton.disabled = False
 			self.dropDownMenu.saveButton.disabled = False
 	
 	def resetListViewScrollToEnd(self):

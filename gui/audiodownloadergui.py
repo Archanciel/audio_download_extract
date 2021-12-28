@@ -403,10 +403,6 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			title = None
 			type = None
-			# title = self.originalPlaylistTitle
-			#
-			# if title is None:
-			# 	title = self.originalSingleVideoTitle
 			
 			while title is None:
 				self.downloadFromClipboard(onlyGetDownloadObjectTitle=True)
@@ -749,7 +745,7 @@ class AudioDownloaderGUI(AudioGUI):
 					self.updateStatusBar(fullCommandStrForStatusBar)
 
 
-		self.replayAllButton.disabled = False
+		self.downloadAllButton.disabled = False
 		self.clearResultOutputButton.disabled = False
 
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
@@ -796,11 +792,10 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.refocusOnFirstRequestInput()
 	
-	def replayAllRequests(self):
+	def downloadSelectedItems(self):
 		"""
-		Method linked to the Replay All button in kv file.
+		Method linked to the Download All button in kv file.
 		"""
-#		self.executeOnlineRequestOnNewThread(asyncOnlineRequestFunction=self.replayAllRequestsOnNewThread, kwargs={})
 		if len(self.requestListRV.data) > 0:
 			# the case if the Add button was pressed in order to add the
 			# playlist or single video url contained in the clipboard
@@ -829,7 +824,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param asyncOnlineRequestFunction:
 		:param kwargs: keyword args dic for the asyncOnlineRequestFunction
 		"""
-		self.replayAllButton.disabled = True
+		self.downloadAllButton.disabled = True
 		self.clearResultOutputButton.disabled = True
 		
 		sepThreadExec = SepThreadExec(callerGUI=self,
@@ -852,7 +847,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 			self.outputResult(outputResultStr)
 
-		self.replayAllButton.disabled = False
+		self.downloadAllButton.disabled = False
 		self.clearResultOutputButton.disabled = False
 
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
