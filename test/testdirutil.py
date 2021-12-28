@@ -36,6 +36,14 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedFileName, actualFileName)
 	
+	def testReplaceUnauthorizedDirOrFileNameChars_double_or_char(self):
+		playlistTitle = 'Lambda Expressions & Anonymous Functions ||  Python Tutorial  ||  Learn Python Programming'
+		expectedFileName = 'Lambda Expressions & Anonymous Functions _  Python Tutorial  _  Learn Python Programming'
+		
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistTitle)
+		
+		self.assertEqual(expectedFileName, actualFileName)
+	
 	def testExtractPathFromPathFileName(self):
 		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
 		pathFileName = expectedPath + sep + 'file.mp3'
@@ -577,4 +585,4 @@ class TestDirUtil(unittest.TestCase):
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testReplaceStringsInFiles()
+	tst.testReplaceUnauthorizedDirOrFileNameChars_double_or_char()

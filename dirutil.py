@@ -195,7 +195,11 @@ class DirUtil:
 		if rawFileName[-1] == '|':
 			rawFileName = rawFileName[:-1]  # since YoutubeDL replaces '|' by '
 											# if '|' is located at end of file name !
-			
+		
+		rawFileName = rawFileName.replace('||','|') # since YoutubeDL replaces '||' by '_'
+													# and that charToReplace dic keys must
+													# be one char length !
+		
 		charToReplace = {
 						 '\\': '',
 						 '/': '_', # since YoutubeDL replaces '/' by '_'

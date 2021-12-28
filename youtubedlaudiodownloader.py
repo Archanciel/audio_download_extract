@@ -271,7 +271,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					                                           newFileName=finalPurgedVideoTitleMp3)
 					
 					if fileNotFoundErrorInfo is not None:
-						self.audioController.displayError(fileNotFoundErrorInfo + '.\n' + 'Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method')
+						self.audioController.displayError(fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method[/b]\n')
 						playlistDownloadedVideoNb_failed += 1
 						self.convertingVideoToMp3 = False   # avoiding that the display
 															# conversion info spread

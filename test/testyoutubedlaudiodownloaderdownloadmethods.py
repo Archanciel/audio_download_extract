@@ -1734,8 +1734,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 "a mask. Help slow the spread of Covid-19..mp3' -> "
 			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19. 20-07-31.mp3'.",
-			 'Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() '
-			 'method',
+			 '"Possible cause: a problem in '
+			 'DirUtil.replaceUnauthorizedDirOrFileNameChars() method"',
+			 '',
 			 'downloading "Here to help - Give him what he wants 19-06-07.mp3" audio ...',
 			 '',
 			 'video download complete.',
