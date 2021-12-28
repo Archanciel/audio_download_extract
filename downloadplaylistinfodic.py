@@ -778,7 +778,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		urlTitleDic = DownloadPlaylistInfoDic._loadDicIfExist(dicFilePathName)
 		
 		if urlTitleDic is not None:
-			return  urlTitleDic
+			return urlTitleDic
 
 		urlTitleDic = {}
 		
@@ -791,8 +791,9 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				if downloadPlaylistInfoDic.getPlaylistUrl() == None:
 					# the case for download url info dic
 					continue
-					
-				urlTitleDic[downloadPlaylistInfoDic.getPlaylistUrl()] = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
+				
+				putain = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
+				urlTitleDic[downloadPlaylistInfoDic.getPlaylistUrl()] = putain
 			except Exception as e:
 				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
 				# we simply do not add this <urlStr>: <playlistTitleStr> entry to

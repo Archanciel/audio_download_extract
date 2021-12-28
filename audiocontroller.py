@@ -196,6 +196,39 @@ class AudioController:
 		
 		return audioExtractorVideoInfoDic
 	
+	def getPlaylistTitleOrVideoTitleForUrl(self, url):
+		"""
+		Returns a playlistTitle or a videoTitle if the passed url points to a Youtube single
+		video and an AccessError instance if the passed url does not contain a valid Youtube
+		url.
+
+		:param url: points either to a Youtube playlist or to a Youtube single video
+					or is invalid sinc obtained from the clipboard.
+		:return:    playlistTitle   if url points to a playlist or None otherwise,
+					videoTitle      if url points to a single video or None otherwise,
+					accessError     if the url is invalid (clipboard contained anything but
+									a Youtube valid url
+		"""
+		playlistUrlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(self.configMgr.dataPath)
+
+		playlistTitle = None
+		videoTitle = None
+		accessError = None
+		
+		try:
+			playlistTitle = playlistUrlTitleDic[url]
+		except KeyError:
+			pass
+		
+		if playlistTitle is None:
+			_, playlistTitle, videoTitle, accessError = \
+				self.audioDownloader.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(url)
+		
+		if accessError:
+			self.displayError(accessError.errorMsg)
+		
+		return playlistTitle, videoTitle, accessError
+	
 	def getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(self, url):
 		"""
 		Returns a pytube.Playlist instance if the passed url points to a Youtube

@@ -978,9 +978,10 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 
 		urlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(audioDirRoot)
 		
-		a = 1
-		
+		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'], 'Test download three short videos')
+		self.assertRaises(KeyError, lambda: urlTitleDic['https://youtube.com/pwSBjduI5HOh71R'])
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testAddExtractAndSuppressStartEndSecondsList_existing_info_dic_file()
+	tst.testGetAllPlaylistUrlTitleDic()
