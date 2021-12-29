@@ -106,7 +106,6 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# date suffix. Since one file in the playlist dir is named
 		# with index prefix, the downloaded file name must also be
 		# named with index prefix and without date suffix.
-		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "100%"
 		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "sav"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_6)
 		playlistUrl_6 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd'
