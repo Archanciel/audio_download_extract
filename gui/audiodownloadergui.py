@@ -466,7 +466,6 @@ class AudioDownloaderGUI(AudioGUI):
 			sepThreadExec.start()
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
-		start = time.time()
 		for listEntry in self.requestListRV.data:
 			if listEntry['toDownload'] is False:
 				continue
@@ -506,8 +505,6 @@ class AudioDownloaderGUI(AudioGUI):
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
-
-		print('downloadFromUrlDownloadLstOnNewThread() ', time.time() - start)
 		
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()

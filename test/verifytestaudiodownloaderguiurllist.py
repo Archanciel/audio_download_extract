@@ -49,21 +49,20 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_5] = playlistDir_5_expectedFileNameLst
 		
-		playlistDir_6_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Funny suspicious looking dog.mp3',
-		                                     '98-Here to help - Give him what he wants.mp3',
-		                                     'test warning index date files_indexNoDate_dic.txt',
-		                                     'Wear a mask. Help slow the spread of Covid-19..mp3']
+		playlistDir_6_expectedFileNameLst = ['211229-Funny suspicious looking dog.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19..mp3',
+		                                     'test warning index date files_indexNoDate_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_6] = playlistDir_6_expectedFileNameLst
 
-		playlistDir_7_expectedFileNameLst = ['Funny suspicious looking dog 2013-11-05.mp3',
-		                                      'Here to help - Give him what he wants.mp3',
+		playlistDir_7_expectedFileNameLst = ['Funny suspicious looking dog 13-11-05.mp3',
+		                                      'Here to help - Give him what he wants 19-06-07.mp3',
 		                                      'test warning index date files_noIndexDate_dic.txt',
 		                                      'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_7] = playlistDir_7_expectedFileNameLst
 
-		playlistDir_8_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
-		                                     '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
-		                                     'Funny suspicious looking dog.mp3',
+		playlistDir_8_expectedFileNameLst = ['211229-Funny suspicious looking dog 13-11-05.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3',
 		                                     'test warning index date files_IndexDate_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_8] = playlistDir_8_expectedFileNameLst
 
