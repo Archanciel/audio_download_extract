@@ -31,7 +31,7 @@ class TestAudioController(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -57,7 +57,7 @@ class TestAudioController(unittest.TestCase):
 
 	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
-		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		audioController = AudioController(guiOutput, ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		playlistUrl = ""
 		
 		stdout = sys.stdout
@@ -74,7 +74,7 @@ class TestAudioController(unittest.TestCase):
 	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_playlistUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
 		
 		stdout = sys.stdout
@@ -94,7 +94,7 @@ class TestAudioController(unittest.TestCase):
 	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_validVideotUrl(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		videoUrl = "https://youtu.be/LhH9uX3kgTI"
 		
 		stdout = sys.stdout
@@ -119,7 +119,7 @@ class TestAudioController(unittest.TestCase):
 		audioFilePathName = targetAudioDir + sep + audioFileName
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -142,7 +142,7 @@ class TestAudioController(unittest.TestCase):
 			getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1, timeFrameIndex=1)
 		audioFileList = os.listdir(targetAudioDir)
 		
-		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_controller_clip\\test\\test_audio_controller_clip\\LExpérience de Mort Imminente de Madame Mirjana Uzoh_1.mp3',
+		self.assertEqual('D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_controller_clip\\test\\test_audio_controller_clip\\LExpérience de Mort Imminente de Madame Mirjana Uzoh_1.mp3',
 		                 createdClipFilePathName)
 		self.assertEqual(
 			['LExpérience de Mort Imminente de Madame Mirjana Uzoh.mp3',
@@ -162,7 +162,7 @@ class TestAudioController(unittest.TestCase):
 		audioFilePathName = audioFilePath + sep + audioFileName
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		                                  ConfigManager(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		# deleting clipped mp3 files in test dir
 		files = glob.glob(audioFilePath + sep + '*_*.mp3')
@@ -214,7 +214,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		# first download
 		
@@ -303,7 +303,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
 		
@@ -349,7 +349,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
 	
@@ -404,7 +404,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		audioController.deleteAudioFiles(deletedFilePathNameLst)
 		
@@ -418,7 +418,7 @@ class TestAudioController(unittest.TestCase):
 		                                             loadDicIfDicFileExist=True,
 		                                             existingDicFilePathName=dicFilePathName)
 		
-		self.assertEqual(['C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test delete files\\99-Wear a '
+		self.assertEqual(['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test delete files\\99-Wear a '
  'mask. Help slow the spread of Covid-19. 2020-07-31.mp3'], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
 
 		self.assertEqual('https://www.youtube.com/watch?v=9iPvLx7gotk',
@@ -448,7 +448,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -526,7 +526,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -604,7 +604,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -647,7 +647,7 @@ class TestAudioController(unittest.TestCase):
  'Covid-19. 20-07-31.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Wear '
+ 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
@@ -657,7 +657,7 @@ class TestAudioController(unittest.TestCase):
  '19-06-07.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Here '
+ 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',
@@ -709,7 +709,7 @@ class TestAudioController(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -752,7 +752,7 @@ class TestAudioController(unittest.TestCase):
  'Covid-19. 20-07-31.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Wear '
+ 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
@@ -762,7 +762,7 @@ class TestAudioController(unittest.TestCase):
  '19-06-07.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Here '
+ 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',

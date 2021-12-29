@@ -974,12 +974,25 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual([1, 2], dvi.getFailedVideoIndexes())
 
 	def testGetAllPlaylistUrlTitleDic(self):
-		audioDirRoot = DirUtil.getTestAudioRootPath()
-
-		urlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(audioDirRoot)
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
 		
+		# deleting the cached dic file
+		testSettingsPath = audioDirTestRoot + sep + 'settings'
+		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
+		
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
+
+		urlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(audioDirTestRoot)
+
+		self.assertEqual(['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\settings\\cachedPlaylistUrlTitleDic_dic.txt'], DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
+
 		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'], 'Test download three short videos')
 		self.assertRaises(KeyError, lambda: urlTitleDic['https://youtube.com/pwSBjduI5HOh71R'])
+
+		urlTitleDic_reloaded = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(audioDirTestRoot)
+
+		self.assertEqual(urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'], 'Test download three short videos')
+		self.assertRaises(KeyError, lambda: urlTitleDic_reloaded['https://youtube.com/pwSBjduI5HOh71R'])
 
 if __name__ == '__main__':
 #	unittest.main()

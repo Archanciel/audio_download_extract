@@ -1053,12 +1053,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
+ 'file:D:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory. Playlist target dir '
- '"C:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
+ '"D:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
  'problème impossible à analyser" length = 169 chars (max '
  'acceptable length = 168 chars) !',
@@ -1078,7 +1078,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
+ 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
@@ -1155,12 +1155,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
+ 'file:D:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory. Playlist target dir '
- '"C:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
+ '"D:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
  'problème impossible à analyser" length = 169 chars (max '
  'acceptable length = 168 chars) !',
@@ -1180,7 +1180,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
+ 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
  'fatigué de ce problème impossible à analyser. Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
@@ -1404,11 +1404,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
+ 'file:D:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name/Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory. '
- 'Playlist target dir "C:/Users/Jean-Pierre/Downloads/Audio/test/127 '
+ 'Playlist target dir "D:/Users/Jean-Pierre/Downloads/Audio/test/127 '
  'char_____playlist name is very long and will cause a problem if the target '
  'dir name exceeds a maximum possible too big name" length = 169 chars (max '
  'acceptable length = 168 chars) !',
@@ -1428,7 +1428,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
+ 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
  'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory.',
@@ -1730,9 +1730,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 'audio ...',
 			 '',
 			 '[WinError 183] Impossible de créer un fichier déjà existant: '
-			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
+			 "'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19..mp3' -> "
-			 "'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
+			 "'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19. 20-07-31.mp3'.",
 			 '"Possible cause: a problem in '
 			 'DirUtil.replaceUnauthorizedDirOrFileNameChars() method"',

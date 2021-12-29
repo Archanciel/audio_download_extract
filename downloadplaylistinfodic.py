@@ -792,8 +792,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 					# the case for download url info dic
 					continue
 				
-				putain = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
-				urlTitleDic[downloadPlaylistInfoDic.getPlaylistUrl()] = putain
+				urlTitleDic[downloadPlaylistInfoDic.getPlaylistUrl()] = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
 			except Exception as e:
 				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
 				# we simply do not add this <urlStr>: <playlistTitleStr> entry to

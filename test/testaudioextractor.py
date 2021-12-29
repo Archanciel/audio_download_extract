@@ -1438,7 +1438,7 @@ class TestAudioExtractor(unittest.TestCase):
  'amitié.mp3" ...',
  '',
  'MoviePy - Writing audio in '
- 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_extractor_concatenate\\concatenatedAudio.mp3',
+ 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_extractor_concatenate\\concatenatedAudio.mp3',
  'MoviePy - Done.',
  '',
  '"Les vies où Jésus et Bouddha se connaissaient  1_22 L\'histoire d\'une '

@@ -57,15 +57,15 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedFileName, DirUtil.extractFileNameFromFilePathName(pathFileName))
 	
 	def testGetLastSubDirs(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\Test 3 short videos'
 		expectedShortDir = 'Audio\\Test 3 short videos'
 		
 		self.assertEqual(expectedShortDir, DirUtil.getLastSubDirs(fullDir,
 																  subDirsNumber=2))
 	
 	def testGetFullFilePathNameMinusRootDir_several_sub_dirs(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
-		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
+		audioRootDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur'
 		
@@ -76,8 +76,8 @@ class TestDirUtil(unittest.TestCase):
 																					 fullFilePathName=fullDir))
 	
 	def testGetFullFilePathNameMinusRootDir_one_sub_dir(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
-		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\Aimer sans peur'
+		audioRootDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\Aimer sans peur'
 		expectedShorterDir = 'Aimer sans peur'
 		
@@ -88,8 +88,8 @@ class TestDirUtil(unittest.TestCase):
 																					 fullFilePathName=fullDir))
 	
 	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_1(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
-		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		
@@ -100,8 +100,8 @@ class TestDirUtil(unittest.TestCase):
 																					 fullFilePathName=fullDir))
 	
 	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_None(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
-		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		
@@ -112,8 +112,8 @@ class TestDirUtil(unittest.TestCase):
 																					 fullFilePathName=fullDir))
 	
 	def testGetFullFilePathNameMinusRootDir_several_sub_dirs_mp3_fileName_0(self):
-		fullDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
-		audioRootDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
+		fullDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
+		audioRootDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audio'
 		expectedShortDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		expectedShorterDir = 'UCEM\\Gary Rennard\\Aimer sans peur\\chapter 1.mp3'
 		
@@ -221,7 +221,7 @@ class TestDirUtil(unittest.TestCase):
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
 		self.assertEqual(
-			"[WinError 2] Le fichier spécifié est introuvable: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			"[WinError 2] Le fichier spécifié est introuvable: 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
 			errorInfo)
 		
 		# removing test dir
@@ -254,7 +254,7 @@ class TestDirUtil(unittest.TestCase):
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
 		self.assertEqual(
-			"[WinError 183] Impossible de créer un fichier déjà existant: 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'C:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			"[WinError 183] Impossible de créer un fichier déjà existant: 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
 			errorInfo)
 		
 		# removing test dir
@@ -505,7 +505,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertIsNone(DirUtil.getIndexAndDateUsageInDir(testPath))
 
 	def testReplaceStringsInFiles(self):
-		searchRootDir = "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
+		searchRootDir = "D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
 		searchRootDirSaved = searchRootDir + '_saved'
 		#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
 		#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
@@ -550,7 +550,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertRaises(KeyError, downloadPlaylistInfoDic_reloaded_2.getDicDirSubDir)
 	
 	def testDeleteFilesInDirForPattern(self):
-		searchRootDir = "C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
+		searchRootDir = "D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
 		searchRootDirSaved = searchRootDir + '_saved'
 		#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
 		#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
@@ -564,11 +564,11 @@ class TestDirUtil(unittest.TestCase):
 		
 		shutil.copytree(searchRootDirSaved, searchRootDir)
 		
-		self.assertEqual(['C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
+		self.assertEqual(['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
 		                  'warning index date files save dir\\test warning index date files_dic.txt',
-		                  'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
+		                  'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
 		                  'warning index false date false files\\test warning index date files_dic.txt',
-		                  'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
+		                  'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
 		                  'warning index false date true files\\test warning index date files_dic.txt'],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=searchRootDir,
 		                                                         fileNamePattern=fileNamePattern,

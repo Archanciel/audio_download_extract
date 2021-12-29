@@ -37,10 +37,25 @@ class DirUtil:
 		return audioRootPath
 	
 	@staticmethod
-	def getTestAudioRootPath():
-		audioRootPath = DirUtil.getDefaultAudioRootPath()
+	def getDefaultAudioRootPathForTest():
+		"""
+		Used by unit tests only.
 		
-		return audioRootPath + sep + 'test'
+		Essentially used by ConfigManager to initialize the default audio
+		root path. Since this information can be modified with the settings
+		dialog which updates the audiodownload.ini file, obtaining the
+		real audiobook root path must be done using the ConfigManager.
+
+		:return:
+		"""
+		audioRootPath = DirUtil.getDefaultAudioRootPath()
+		testAudioRootPath = audioRootPath.replace('C', 'D')
+		
+		return testAudioRootPath
+
+	@staticmethod
+	def getTestAudioRootPath():
+		return DirUtil.getDefaultAudioRootPathForTest() + sep + 'test'
 	
 	@staticmethod
 	def getTestDataPath():

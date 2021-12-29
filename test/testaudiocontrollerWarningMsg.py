@@ -20,7 +20,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -41,7 +41,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -64,7 +64,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -87,7 +87,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -108,7 +108,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -131,7 +131,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -154,7 +154,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -177,7 +177,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -201,7 +201,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -222,7 +222,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -245,7 +245,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -268,7 +268,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -289,7 +289,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -310,7 +310,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -333,7 +333,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -356,7 +356,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -377,7 +377,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -400,7 +400,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -423,7 +423,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -446,7 +446,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -470,7 +470,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -493,7 +493,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -516,7 +516,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -539,7 +539,7 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
-			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
 		downloadVideoInfoDic = \
 			audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl='',  # not usefull
@@ -559,4 +559,4 @@ class TestAudioControllerWarningMsg(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioControllerWarningMsg()
-	tst.testDefineIndexAndDateSettingWarning_FalseTrue_emptyDir()
+	tst.testDefineIndexAndDateSettingWarning_FalseFalse_index_false_date_true()
