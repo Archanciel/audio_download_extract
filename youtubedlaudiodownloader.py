@@ -117,6 +117,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		playlistStartDownloadTime = time.time()
 		playlistDownloadedVideoNb_succeed = 0
 		playlistDownloadedVideoNb_failed = 0
+		playlistDownloadedVideoNb_skipped = 0
 		playlistObject, _, _, accessError = self.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 
 		if accessError:
@@ -214,6 +215,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b] which was deleted. Video skipped.\n'.format(
 									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 						
+						playlistDownloadedVideoNb_skipped += 1
+						
 						self.audioController.displayMessage(msgText)
 						
 						continue
@@ -288,6 +291,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						                            downloadedFileName=finalPurgedVideoTitleMp3,
 						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_succeed)
 				else:
+					playlistDownloadedVideoNb_failed += 1
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 
 				self.audioController.displayVideoDownloadEndMessage(msgText)
@@ -305,6 +309,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displayMessage(msgText)
 				self.audioController.displayPlaylistEndDownloadInfo([playlistDownloadedVideoNb_succeed,
 				                                                     playlistDownloadedVideoNb_failed,
+				                                                     playlistDownloadedVideoNb_skipped,
 				                                                     playlistTotalDownloadSize,
 				                                                     playlistTotalDownloadTime
 				                                                     ])
