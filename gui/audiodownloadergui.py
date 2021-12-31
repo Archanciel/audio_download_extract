@@ -357,6 +357,10 @@ class AudioDownloaderGUI(AudioGUI):
 		self.isIndexAddedToPlaylistVideo = False
 		self.downloadFromUrlDownloadLstThreadCreated = False
 		self.downloadUrlInfoDic = None
+		
+		self.totalDownloadVideoSuccessNb = 0
+		self.totalDownloadVideoFailedNb = 0
+		self.totalDownloadVideoSkippedNb = 0
 
 		self._doOnStart()
 	
@@ -807,7 +811,8 @@ class AudioDownloaderGUI(AudioGUI):
 			# So, the download information is displayed on the outputLabel.
 			if not self.downloadFromUrlDownloadLstThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
-				                              func=self.downloadFromUrlDownloadLstOnNewThread)
+				                              func=self.downloadFromUrlDownloadLstOnNewThread,
+				                              endFunc=self.displayUrlDownloadLstEndDownloadInfo)
 				
 				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
 				# 1 playlist or video is
@@ -1410,7 +1415,11 @@ class AudioDownloaderGUI(AudioGUI):
 		videoSuccessNb = endDownloadInfoLst[0]
 		videoFailedNb = endDownloadInfoLst[1]
 		videoSkippedNb = endDownloadInfoLst[2]
-
+		
+		self.totalDownloadVideoSuccessNb += videoSuccessNb
+		self.totalDownloadVideoFailedNb += videoFailedNb
+		self.totalDownloadVideoSkippedNb += videoSkippedNb
+		
 		if videoSuccessNb < 2:
 			videoSuccessStr = 'video downloaded'
 		else:
@@ -1434,6 +1443,39 @@ class AudioDownloaderGUI(AudioGUI):
 		                                                                  videoSkippedStr,
 		                                                                  endDownloadInfoLst[3],
 		                                                                  endDownloadInfoLst[4])
+		outputLabelLineLst = outputLabelLineLst[:-1]
+		outputLabelLineLst.append(endDownloadInfoStr)
+		
+		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
+		self.isFirstCurrentDownloadInfo = True
+	
+	def displayUrlDownloadLstEndDownloadInfo(self):
+		"""
+		Method called when the multi urls download is finished.
+		"""
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+
+		if self.totalDownloadVideoSuccessNb < 2:
+			videoSuccessStr = 'video downloaded'
+		else:
+			videoSuccessStr = 'videos downloaded'
+		
+		if self.totalDownloadVideoFailedNb < 2:
+			videoFailStr = 'video failed'
+		else:
+			videoFailStr = 'videos failed'
+		
+		if self.totalDownloadVideoSkippedNb < 2:
+			videoSkippedStr = 'video skipped'
+		else:
+			videoSkippedStr = 'videos skipped'
+		
+		endDownloadInfoStr = '\n[b]TOTAL {} {}, {} {}, {} {}[/b]\n'.format(self.totalDownloadVideoSuccessNb,
+		                                                                  videoSuccessStr,
+		                                                                  self.totalDownloadVideoFailedNb,
+		                                                                  videoFailStr,
+		                                                                  self.totalDownloadVideoSkippedNb,
+		                                                                  videoSkippedStr)
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 		
