@@ -361,7 +361,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.totalDownloadVideoSuccessNb = 0
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
-
+		self.downloadUrlLst = []
+		
 		self._doOnStart()
 	
 	def _doOnStart(self):
@@ -470,10 +471,7 @@ class AudioDownloaderGUI(AudioGUI):
 			sepThreadExec.start()
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
-		for listEntry in self.requestListRV.data:
-			if listEntry['toDownload'] is False:
-				continue
-				
+		for listEntry in self.downloadUrlLst:
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
 			
@@ -499,16 +497,17 @@ class AudioDownloaderGUI(AudioGUI):
 			# default single video dir as defined in the audiodownloader.ini
 			# file.
 			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
-			
-			while self.downloadThreadCreated:
-				time.sleep(TIME_SLEEP_SECONDS)
 
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
+
+			while self.downloadThreadCreated:
+				time.sleep(TIME_SLEEP_SECONDS)
 			
 		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
 											# where two download threads are
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
+		self.displayUrlDownloadLstEndDownloadInfo()
 		
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
@@ -801,7 +800,9 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		Method linked to the Download All button in kv file.
 		"""
-		if len(self.requestListRV.data) > 0:
+		self.downloadUrlLst = [x for x in self.requestListRV.data if x['toDownload']]
+		
+		if len(self.downloadUrlLst) > 0:
 			# the case if the Add button was pressed in order to add the
 			# playlist or single video url contained in the clipboard
 			# to the self.playlistOrSingleVideoUrlDownloadLst
@@ -811,8 +812,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# So, the download information is displayed on the outputLabel.
 			if not self.downloadFromUrlDownloadLstThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
-				                              func=self.downloadFromUrlDownloadLstOnNewThread,
-				                              endFunc=self.displayUrlDownloadLstEndDownloadInfo)
+				                              func=self.downloadFromUrlDownloadLstOnNewThread)
 				
 				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
 				# 1 playlist or video is
