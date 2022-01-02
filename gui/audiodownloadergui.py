@@ -800,6 +800,10 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		Method linked to the Download All button in kv file.
 		"""
+		self.totalDownloadVideoSuccessNb = 0
+		self.totalDownloadVideoFailedNb = 0
+		self.totalDownloadVideoSkippedNb = 0
+
 		self.downloadUrlLst = [x for x in self.requestListRV.data if x['toDownload']]
 		
 		if len(self.downloadUrlLst) > 0:
@@ -1448,6 +1452,27 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
+	
+	def displaySingleVideoEndDownloadInfo(self,
+	                                      msgText,
+	                                      singleVideoDownloadStatus):
+		"""
+		Method called when the single video download is finished by
+		AudioController.displaySingleVideoEndDownloadInfo().
+
+		:param msgText: contains the single video title and the download dir.
+		:param singleVideoDownloadStatus:   SINGLE_VIDEO_DOWNLOAD_SUCCESS or
+											SINGLE_VIDEO_DOWNLOAD_FAIL
+											SINGLE_VIDEO_DOWNLOAD_SKIPPED
+		"""
+		if singleVideoDownloadStatus == AudioController.SINGLE_VIDEO_DOWNLOAD_SUCCESS:
+			self.totalDownloadVideoSuccessNb += 1
+		elif singleVideoDownloadStatus == AudioController.SINGLE_VIDEO_DOWNLOAD_FAIL:
+			self.totalDownloadVideoFailedNb += 1
+		elif singleVideoDownloadStatus == AudioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED:
+			self.totalDownloadVideoSkippedNb += 1
+
+		self.outputResult(msgText)
 	
 	def displayUrlDownloadLstEndDownloadInfo(self):
 		"""

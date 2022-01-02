@@ -536,7 +536,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			if purgedOriginalOrModifiedVideoTitleWithDateMp3 in targetAudioDirFileNameList:
 				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
-				self.audioController.displayMessage(msgText)
+				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
+				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED)
 				
 				return
 		
@@ -548,10 +549,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			try:
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
-				self.audioController.displayError(
-					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
-						purgedOriginalOrModifiedVideoTitleWithDateMp3, e))
-		
+				msgText = "downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
+					purgedOriginalOrModifiedVideoTitleWithDateMp3, e)
+				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
+				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)
+
 		self.convertingVideoToMp3 = False
 		
 		# finally, renaming the downloaded video to a name which is either
@@ -566,7 +568,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		if fileNotFoundErrorInfo is None:
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(
 				purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
-			self.audioController.displayMessage(msgText)
+			self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
+			                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SUCCESS)
 		else:
 			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
 	

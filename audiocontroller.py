@@ -3,7 +3,6 @@ import traceback
 import datetime
 import os
 
-from constants import *
 from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from dirutil import DirUtil
@@ -17,7 +16,10 @@ else:
 from playlisttitleparser import PlaylistTitleParser
 
 class AudioController:
-	
+	SINGLE_VIDEO_DOWNLOAD_SUCCESS = 0
+	SINGLE_VIDEO_DOWNLOAD_FAIL = 1
+	SINGLE_VIDEO_DOWNLOAD_SKIPPED = 2
+
 	def __init__(self, audioGUI, configMgr):
 		"""
 		
@@ -355,6 +357,22 @@ class AudioController:
 		endDownloadInfoLst[4] = hhmmssStr
 		
 		self.audioGUI.displayPlaylistEndDownloadInfo(endDownloadInfoLst)
+	
+	def displaySingleVideoEndDownloadInfo(self,
+	                                      msgText,
+	                                      singleVideoDownloadStatus):
+		"""
+		Method called when the single video download is finished by
+		YoutubeDlAudioDownloader.downloadSingleVideoForUrl().
+
+		:param msgText:                     contains the single video title and the download dir.
+		:param singleVideoDownloadStatus:   SINGLE_VIDEO_DOWNLOAD_SUCCESS or
+											SINGLE_VIDEO_DOWNLOAD_FAIL
+											SINGLE_VIDEO_DOWNLOAD_SKIPPED
+
+		"""
+		self.audioGUI.displaySingleVideoEndDownloadInfo(msgText=msgText,
+		                                                singleVideoDownloadStatus=singleVideoDownloadStatus)
 	
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)

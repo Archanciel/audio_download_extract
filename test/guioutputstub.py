@@ -70,7 +70,23 @@ class GuiOutputStub:
 									seconds
 		"""
 		pass # avoid printing variable info values when running unit tests
+	
+	def displaySingleVideoEndDownloadInfo(self,
+	                                      msgText,
+	                                      singleVideoDownloadStatus):
+		"""
+		Method called when the single video download is finished by
+		AudioController.displaySingleVideoEndDownloadInfo().
 
+		:param msgText: contains the single video title and the download dir.
+		:param singleVideoDownloadStatus:   SINGLE_VIDEO_DOWNLOAD_SUCCESS or
+											SINGLE_VIDEO_DOWNLOAD_FAIL
+											SINGLE_VIDEO_DOWNLOAD_SKIPPED
+		"""
+		msgText = msgText.replace('[b]', '"').replace('[/b]', '"')
+		
+		print(msgText)
+	
 	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
 		"""
 		Method called every n seconds by
