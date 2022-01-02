@@ -83,9 +83,7 @@ class GuiOutputStub:
 											SINGLE_VIDEO_DOWNLOAD_FAIL
 											SINGLE_VIDEO_DOWNLOAD_SKIPPED
 		"""
-		msgText = msgText.replace('[b]', '"').replace('[/b]', '"')
-		
-		print(msgText)
+		self.displayMessage(msgText)
 	
 	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
 		"""
