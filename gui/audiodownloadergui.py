@@ -1,5 +1,7 @@
+import logging
 import os,sys,inspect
 import time
+from configparser import NoOptionError
 
 TIME_SLEEP_SECONDS = 1
 
@@ -1659,6 +1661,8 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
+				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
 		elif platform == 'ios':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
@@ -1719,16 +1723,22 @@ class AudioDownloaderGUIMainApp(App):
 					"options": ["Full", "Half"]
 				},
 				{"type": "numeric",
-					"title": "History list item height",
-					"desc": "Set the height of each item in the history list",
+					"title": "URL list item height",
+					"desc": "Set the height of each item in the URL list",
 					"section": "Layout",
 					"key": "histolistitemheight"
 				},
 				{"type": "numeric",
-					"title": "History list visible item number",
-					"desc": "Set the number of items displayed in the history list",
+					"title": "URL list visible item number",
+					"desc": "Set the number of items displayed in the URL list",
 					"section": "Layout",
 					"key": "histolistvisiblesize"
+				},
+				{"type": "numeric",
+					"title": "Drop down menu width",
+					"desc": "Set the width of the drop down menu. Effective on smartphone only !",
+					"section": "Layout",
+					"key": "dropdownmenuwidth"
 				},
 				{"type": "numeric",
 					"title": "Half size application proportion",
@@ -1755,6 +1765,11 @@ class AudioDownloaderGUIMainApp(App):
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
 				self.audioDownloaderGUI.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
 				self.audioDownloaderGUI.rvListSizeSettingsChanged()
+			elif key == ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH:
+				if os.name == 'posix':
+					if GuiUtil.onSmartPhone():
+						self.audioDownloaderGUI.dropDownMenu.auto_width = False
+						self.audioDownloaderGUI.dropDownMenu.width = dp(self.audioDownloaderGUI.configMgr.dropDownMenuWidth)
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
 				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.audioDownloaderGUI.applyAppPosAndSize()
@@ -1763,7 +1778,7 @@ class AudioDownloaderGUIMainApp(App):
 		'''
 		Redefining super class method to control the name and location of the
 		application	settings ini file. WARNING: this method is necessary for
-		the appconfig file to be updated when a value was changed with the
+		the app config file to be updated when a value was changed with the
 		Kivy settings dialog.
 
 		:return: the app config file path name
@@ -1781,7 +1796,12 @@ class AudioDownloaderGUIMainApp(App):
 		:param largs:
 		"""
 		self.audioDownloaderGUI.dropDownMenu.dismiss()
-		super().open_settings(*largs)
+		
+		try:
+			super().open_settings(*largs)
+		except NoOptionError as e:
+			logging.info(str(e) + '. Default value has been set in audiodownloader.ini file')
+			self.stop()
 
 
 if __name__ == '__main__':

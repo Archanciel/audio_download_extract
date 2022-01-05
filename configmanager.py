@@ -29,10 +29,14 @@ class ConfigManager:
 	CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT = 'histolistitemheight'
 	DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID = '90'
 	DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS = '25'
-	
+
 	CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE = 'histolistvisiblesize'
 	DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE = '3'
-	
+
+	CONFIG_KEY_DROP_DOWN_MENU_WIDTH = 'dropdownmenuwidth'
+	DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID = '100'
+	DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_WINDOWS = '25'
+
 	CONFIG_KEY_APP_SIZE_HALF_PROPORTION = 'appsizehalfproportion'
 	APP_SIZE_HALF = 'Half'
 	APP_SIZE_FULL = 'Full'
@@ -95,6 +99,15 @@ class ConfigManager:
 			self._updated = True
 		
 		try:
+			self.__dropDownMenuWidth = self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_DROP_DOWN_MENU_WIDTH]
+		except KeyError:
+			if os.name == 'posix':
+				self.__dropDownMenuWidth = self.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID
+			else:
+				self.__dropDownMenuWidth = self.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_WINDOWS
+			self._updated = True
+		
+		try:
 			self.__appSize = self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE]
 		except KeyError:
 			self.__appSize = self.APP_SIZE_HALF
@@ -125,11 +138,13 @@ class ConfigManager:
 			self.dataPath = self.DEFAULT_DATA_PATH_ANDROID
 			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID
+			self.dropDownMenuWidth = self.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID
 			self.appSize = self.APP_SIZE_HALF
 		else:
 			self.dataPath = self.DEFAULT_DATA_PATH_WINDOWS
 			self.singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS
 			self.histoListItemHeight = self.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS
+			self.dropDownMenuWidth = self.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_WINDOWS
 			self.appSize = self.APP_SIZE_FULL
 		
 		self.loadAtStartPathFilename = self.DEFAULT_LOAD_AT_START_PATH_FILENAME
@@ -195,6 +210,15 @@ class ConfigManager:
 		self._updated = True
 	
 	@property
+	def dropDownMenuWidth(self):
+		return self.__dropDownMenuWidth
+	
+	@dropDownMenuWidth.setter
+	def histoListItemHeight(self, dropDownMenuWidthStr):
+		self.__dropDownMenuWidth = dropDownMenuWidthStr
+		self._updated = True
+	
+	@property
 	def appSize(self):
 		return self.__appSize
 	
@@ -224,6 +248,7 @@ class ConfigManager:
 			self.CONFIG_KEY_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME] = self.loadAtStartShareContactsPathFilename
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE] = self.histoListVisibleSize
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT] = self.histoListItemHeight
+		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_DROP_DOWN_MENU_WIDTH] = self.dropDownMenuWidth
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE] = self.appSize
 		self.config[self.CONFIG_SECTION_LAYOUT][self.CONFIG_KEY_APP_SIZE_HALF_PROPORTION] = self.appSizeHalfProportion
 		

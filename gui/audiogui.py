@@ -29,7 +29,6 @@ class AudioGUI(Screen):
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
 		self.isDeleteDropDownMenuItemDisplayed = True
-		self.dropDownMenu = CustomDropDown(owner=self)
 		self.error = False
 		
 		# WARNING: accessing MainWindow fields defined in kv file
@@ -74,6 +73,7 @@ class AudioGUI(Screen):
 		self.setRVListSizeParms(int(self.configMgr.histoListItemHeight),
 								int(self.configMgr.histoListVisibleSize),
 								requestListRVSpacing)
+		self.dropDownMenu = CustomDropDown(rootGUI=self)
 
 	def outputResult(self, resultStr):
 		if len(self.outputLabel.text) == 0:
