@@ -5,6 +5,7 @@
 # Pycharm when optimizing the imports or applying some refactoring !
 
 #: import ScrollEffect kivy.effects.scroll.ScrollEffect
+#: import RecycleViewKivyBugFix gui.recycleviewkivybugfix.RecycleViewKivyBugFix
 
 <AudioDownloaderGUI>: # sub-class of Screen
 	name: "audioDownloaderScreen"
@@ -150,7 +151,9 @@
 			size_hint_y: None
 			height: "0dp"
 
-			RecycleViewKivyBugFix:
+			RecycleViewKivyBugFix:  # sub-class of RecycleView. Fixes a Kivy bug which
+			                        # sometimes causes an app failure when the first
+			                        # selected item in a displayed list is the last item
 				id: request_RecycleView_list
 				rootGUI: root
 				scroll_y: 0 # forces scrolling to list bottom after adding an entry
@@ -160,7 +163,8 @@
 				scroll_wheel_distance: dp(114)
 				bar_width: dp(10)
 
-				AudioDownloadSelectableRecycleBoxLayout:
+				AudioDownloadSelectableRecycleBoxLayout:    # subclass of SelectableRecycleBoxLayout
+				                                            # which derives from RecycleBoxLayout
 					id: selectable_recyclebox_layout
 				    appGUI: root
 					key_selection: 'selectable' # required so that 'selectable'

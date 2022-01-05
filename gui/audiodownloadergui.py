@@ -1,8 +1,5 @@
-import logging
 import os,sys,inspect
 import time
-
-from kivy.uix.recycleview import RecycleView
 
 TIME_SLEEP_SECONDS = 1
 
@@ -20,7 +17,6 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.scrollview import ScrollView
@@ -66,18 +62,7 @@ NO_INTERNET = False
 class WindowManager(ScreenManager):
 	pass
 
-class RecycleViewKivyBugFix(RecycleView):
-	"""
-	This class fixes a Kivy bug which sometimes causes an app failure when the
-	first selected item in a displayed list is the last item.
-	"""
-	def on_scroll_stop(self, touch, check_children=True):
-		try:
-			super().on_scroll_stop(touch, check_children)
-		except IndexError as e:
-			# avoids app failure due to the uncaught IndexError exception
-			logging.info('Selecting the last list item caused this Kivy bug: ' + str(e))
-	
+
 class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 	''' Adds selection and focus behaviour to the view. '''
 	
