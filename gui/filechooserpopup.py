@@ -319,7 +319,8 @@ class DeleteFileChooserPopup(FileChooserPopup):
 	
 	def handleSelection(self, selectionLst):
 		"""
-		Method called when selecting or unselecting a file.
+		Method called when selecting or unselecting a file or a dir if
+		FileChooserIconView.dirselect is set to True in filechooser.kv.
 		
 		:param selectionLst:
 		"""

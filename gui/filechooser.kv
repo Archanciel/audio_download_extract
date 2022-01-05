@@ -207,11 +207,13 @@
 		BoxLayout:
 			orientation: 'vertical'
 
-			FileChooserIconView: # FileChooserListView does display multi selected files !
+			FileChooserIconView: # FileChooserListView does not display multi selected files !
 				id: file_chooser
 				multiselect: True
 				filters: ["!*.sys", "*.mp3"] # "!*.sys" avoids pywintypes.error: (32, 'GetFileAttributesEx'
 											 # exception when clicking on C: list item
+				dirselect: True # if True, the on_selection linked method is called
+				                # when selecting a directory
 				on_selection: root.handleSelection(self.selection)
 
 			GridLayout:
