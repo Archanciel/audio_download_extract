@@ -214,7 +214,7 @@ class ConfigManager:
 		return self.__dropDownMenuWidth
 	
 	@dropDownMenuWidth.setter
-	def histoListItemHeight(self, dropDownMenuWidthStr):
+	def dropDownMenuWidth(self, dropDownMenuWidthStr):
 		self.__dropDownMenuWidth = dropDownMenuWidthStr
 		self._updated = True
 	

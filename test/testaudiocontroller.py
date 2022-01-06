@@ -237,6 +237,8 @@ class TestAudioController(unittest.TestCase):
 			modifiedVideoTitle=None)
 		sys.stdout = stdout
 		
+		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+		
 		if os.name == 'posix':
 			self.assertEqual(['"Funny suspicious looking dog 2013-11-05.mp3" audio already downloaded in '
  '"Audio/test/Various/single_video dir/new dir/new sub dir" dir. Video '
@@ -244,16 +246,16 @@ class TestAudioController(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['"Funny suspicious looking dog 13-11-05.mp3" audio already downloaded in '
+			self.assertEqual(['"{}Funny suspicious looking dog 13-11-05.mp3" audio already downloaded in '
  '"Audio\\test\\Various\\single_video dir\\new dir\\new sub dir" dir. Video '
- 'skipped.',
+ 'skipped.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		createdFileLst = os.listdir(playlistOrSingleVideoDownloadPath)
 		
 		self.assertEqual(
-			['Funny suspicious looking dog 13-11-05.mp3'],
+			['{}Funny suspicious looking dog 13-11-05.mp3'.format(downloadDatePrefix)],
 			createdFileLst)
 
 	def testDeleteAudioFiles_all(self):

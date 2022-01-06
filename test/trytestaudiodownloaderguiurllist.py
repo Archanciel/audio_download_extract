@@ -2,6 +2,7 @@ import shutil
 import unittest
 import os, sys, inspect
 from os.path import sep
+import datetime
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentDir = os.path.dirname(currentDir)
@@ -41,12 +42,14 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistDirNameLst.append(self.playlistDirName_9)
 		self.playlistDirName_10 = "test warning index date files_downloadDirEmpty"
 		self.playlistDirNameLst.append(self.playlistDirName_10)
-
-		self.singleVideoFileName_1 = 'Try Not To Laugh _ The most interesting funny short video tik tok #shorts 21-12-05.mp3'
+		
+		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+		
+		self.singleVideoFileName_1 = '{}Try Not To Laugh _ The most interesting funny short video tik tok #shorts 21-12-05.mp3'.format(downloadDatePrefix)
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_1)
 
-		self.singleVideoFileName_2 = 'Short King Struggles 🥲 21-07-28.mp3'
+		self.singleVideoFileName_2 = '{}Short King Struggles 🥲 21-07-28.mp3'.format(downloadDatePrefix)
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
 

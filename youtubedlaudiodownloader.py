@@ -137,7 +137,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		self.ydl_opts['outtmpl'] = targetAudioDir + self.ydlOutTmplFormat
 
 		videoIndex = downloadVideoInfoDic.getNextVideoIndex()
-		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
+		downloadDatePrefix = self.buildDownloadDatePrefix()
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 			for videoUrl in playlistObject.video_urls:
@@ -318,6 +318,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displayMessage(msgText)
 
 		return downloadVideoInfoDic, None
+	
+	def buildDownloadDatePrefix(self):
+		return datetime.datetime.today().strftime("%y%m%d") + '-'
 	
 	def addVideoInfoAndSaveDic(self,
 	                           downloadVideoInfoDic,
@@ -529,7 +532,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				videoTitle = modifiedVideoTitle
 			
 			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-			purgedOriginalOrModifiedVideoTitleWithDateMp3 = purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
+			downloadDatePrefix = self.buildDownloadDatePrefix()
+			purgedOriginalOrModifiedVideoTitleWithDateMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 			
 			# testing if the single video has already been downloaded in the
 			# target audio dir. If yes, we do not re download it.

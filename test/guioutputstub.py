@@ -4,6 +4,11 @@ class GuiOutputStub:
 	'''
 	This class is used for testing only
 	'''
+
+	SINGLE_VIDEO_DOWNLOAD_SUCCESS = 0
+	SINGLE_VIDEO_DOWNLOAD_FAIL = 1
+	SINGLE_VIDEO_DOWNLOAD_SKIPPED = 2
+
 	def getPlaylistUrlFromClipboard(self):
 		pass
 	
