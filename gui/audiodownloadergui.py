@@ -1712,7 +1712,7 @@ class AudioDownloaderGUIMainApp(App):
 				)  # To use another drive, simply define it as datapath value
 				   # in the app config file
 
-		# add 'Layout' settings pannel
+		# add 'Layout' settings panel
 		settings.add_json_panel("Layout", self.config, data=("""
 			[
 				{"type": "options",
@@ -1769,7 +1769,8 @@ class AudioDownloaderGUIMainApp(App):
 				if os.name == 'posix':
 					if GuiUtil.onSmartPhone():
 						self.audioDownloaderGUI.dropDownMenu.auto_width = False
-						self.audioDownloaderGUI.dropDownMenu.width = dp(self.audioDownloaderGUI.configMgr.dropDownMenuWidth)
+						self.audioDownloaderGUI.dropDownMenu.width = \
+							dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH, ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
 				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.audioDownloaderGUI.applyAppPosAndSize()
