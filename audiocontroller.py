@@ -205,20 +205,20 @@ class AudioController:
 		url.
 
 		:param url: points either to a Youtube playlist or to a Youtube single video
-					or is invalid sinc obtained from the clipboard.
+					or is invalid since obtained from the clipboard.
 		:return:    playlistTitle   if url points to a playlist or None otherwise,
 					videoTitle      if url points to a single video or None otherwise,
 					accessError     if the url is invalid (clipboard contained anything but
 									a Youtube valid url
 		"""
-		playlistUrlTitleDic = DownloadPlaylistInfoDic.getAllPlaylistUrlTitleDic(self.configMgr.dataPath)
+		playlistUrlTitleCachedDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(self.configMgr.dataPath)
 
 		playlistTitle = None
 		videoTitle = None
 		accessError = None
 		
 		try:
-			playlistTitle = playlistUrlTitleDic[url]
+			playlistTitle = playlistUrlTitleCachedDic[url]
 		except KeyError:
 			pass
 		
@@ -228,6 +228,15 @@ class AudioController:
 		
 		if accessError:
 			self.displayError(accessError.errorMsg)
+		else:
+			if playlistTitle:
+				# here, the passed url points to a playlist which is not referenced
+				# in the playlistUrlTitleCachedDic returned by the DownloadPlaylistInfoDic.
+				# This means that DownloadPlaylistInfoDic must update the cached
+				# url: playlist title dic.
+				DownloadPlaylistInfoDic.updatePlaylistUrlTitleCachedDic(audioDirRoot=self.configMgr.dataPath,
+				                                                        playlistUrl=url,
+				                                                        playlistTitle=playlistTitle)
 		
 		return playlistTitle, videoTitle, accessError
 	

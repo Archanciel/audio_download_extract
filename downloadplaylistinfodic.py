@@ -761,13 +761,16 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			return None
 
 	@staticmethod
-	def getAllPlaylistUrlTitleDic(audioDirRoot):
+	def getPlaylistUrlTitleCachedDic(audioDirRoot):
 		"""
 		Returns a {<urlStr>: <playlistTitleStr} dictionary containing
 		<urlStr>: <playlistTitleStr> entries for all the download playlist info dic
 		located in the passed audioDirRoot dir and sub dirs. This cached information dic is
 		stored in a json file located in the audio\settings dir. It avoids requesting
 		the playlist title via youtube_dl each time a playlist is re-downloaded.
+		
+		If the cached dic file does not exist in the settings dir, it is created and
+		saved into the settings dir.
 		
 		:param audioDirRoot:    audio dir root path
 		
@@ -804,7 +807,29 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 			
 		return urlTitleDic
-	
+
+	@staticmethod
+	def updatePlaylistUrlTitleCachedDic(audioDirRoot,
+	                                    playlistUrl,
+	                                    playlistTitle):
+		"""
+		This method adds the passed playListUrl/playlistTitle entry to the cached
+		urlTitleDic and then saves the updated dic in the settings dir.
+		
+		If no cached dic exist in the settings dir, the method does nothing.
+		
+		:param audioDirRoot:
+		:param playlistUrl:
+		:param playlistTitle:
+		"""
+		dicFilePathName = audioDirRoot + sep + 'settings' + sep + 'cachedPlaylistUrlTitleDic' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		urlTitleDic = DownloadPlaylistInfoDic._loadDicIfExist(dicFilePathName)
+		
+		if urlTitleDic is not None:
+			urlTitleDic[playlistUrl] = playlistTitle
+			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
+
+
 if __name__ == "__main__":
 	if os.name == 'posix':
 		audioDir = '/storage/emulated/0/Download/Audiobooks/various'
