@@ -222,7 +222,9 @@ class AudioController:
 		except KeyError:
 			pass
 		
-		if playlistTitle is None:
+		if playlistTitle:
+			return playlistTitle, videoTitle, accessError
+		else:
 			_, playlistTitle, videoTitle, accessError = \
 				self.audioDownloader.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(url)
 		

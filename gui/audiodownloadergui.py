@@ -392,7 +392,7 @@ class AudioDownloaderGUI(AudioGUI):
 				playlistOrSingleVideoUrl != ' ' and \
 				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
 				playlistOrSingleVideoUrl.startswith('https://'):
-			
+
 			title = None
 			type = None
 			
@@ -431,21 +431,27 @@ class AudioDownloaderGUI(AudioGUI):
 		
 	def downloadFromClipboard(self, onlyGetDownloadObjectTitle=False):
 		"""
-		Method called either at application start or when pressing the
-		download button defined in the audiodownloadergui.kv file.
+		Method called at application start or when pressing the
+		Download button or when clicking the Add button. In this last
+		call type, the passed onlyGetDownloadObjectTitle is True since
+		only obtaining the playlist title related to the url stored in
+		the clipboard is required.
 		"""
 		playlistOrSingleVideoUrl = Clipboard.paste()
 		self.disableButtons()
 		
 		if onlyGetDownloadObjectTitle:
-			# the case if method called after clicking on Add button
+			# the case if method called after clicking on Add button.
+			# In this case, playlist download is not performed, only
+			# adding the playlist to the URL list is done.
 			endFunc = None
 		else:
 			endFunc = self.executeDownload
 			
 		# obtaining the playlist or single video title using a separate thread
 		# for the playlist or single video referenced by the url obtained from
-		# the clipboard..
+		# the clipboard.
+		
 		if not self.downloadObjectTitleThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
 			                              func=self.getDownloadObjectTitleOnNewThread,
@@ -525,8 +531,9 @@ class AudioDownloaderGUI(AudioGUI):
 			popup.open()
 	
 	def getDownloadObjectTitleOnNewThread(self, playlistOrSingleVideoUrl):
-		_, self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
-			self.audioController.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
+		self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
+			self.audioController.getPlaylistTitleOrVideoTitleForUrl(
+				playlistOrSingleVideoUrl)
 	
 		self.downloadObjectTitleThreadCreated = False
 		
