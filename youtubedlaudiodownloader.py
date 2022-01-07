@@ -557,7 +557,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					purgedOriginalOrModifiedVideoTitleWithDateMp3, e)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)
-
+				return  # this avoids that the video which was partially downloaded
+						# is renamed, which will display a file not found error since
+						# the downloaded file has a mp3.part extension.
+		
 		self.convertingVideoToMp3 = False
 		
 		# finally, renaming the downloaded video to a name which is either
