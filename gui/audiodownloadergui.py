@@ -1754,6 +1754,18 @@ class AudioDownloaderGUIMainApp(App):
 					"key": "dropdownmenuwidth"
 				},
 				{"type": "numeric",
+					"title": "Status bar height",
+					"desc": "Set the height of the status bar",
+					"section": "Layout",
+					"key": "statusbarheight"
+				},
+				{"type": "numeric",
+					"title": "Clear button width",
+					"desc": "Set the width of the clear button",
+					"section": "Layout",
+					"key": "clearbuttonwidth"
+				},
+				{"type": "numeric",
 					"title": "Half size application proportion",
 					"desc": "Set the proportion of vertical screen size the app occupies so that the smartphone keyboard does not hide part of the application. Must be between 0 and 1",
 					"section": "Layout",
