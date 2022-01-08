@@ -15,7 +15,7 @@ class GuiOutputStub:
 	def displayMessage(self, msgText):
 		msgText = msgText.replace('[b]', '"'). \
 			replace('[/b]', '"'). \
-			replace('[color=HH0000]', '"').\
+			replace('[color=FF0000]', '"').\
 			replace('[color=00HH00]', '"').\
 			replace('[/color]', '"')
 		
