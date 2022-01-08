@@ -138,7 +138,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 		# playlist whose download dir does not exist. The downloaded file
 		# will be named with index prefix and with upload date suffix.
-		playlistUrl_9 = 'hhttps://youtube.com/playlist?list=PLzwWSJNcZTMRXamI-VlOly97Prt4_Jj2W'
+		playlistUrl_9 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRXamI-VlOly97Prt4_Jj2W'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_9,
 		                              url=playlistUrl_9, downloadDir='')
 
