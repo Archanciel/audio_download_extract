@@ -237,7 +237,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				try:
 					ydl.download([videoUrl])
 				except AttributeError as e:
-					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(videoTitle, e))
+					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. [color=HH0000]WARNING[/color]: bookmarks will be ignored !\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					self.convertingVideoToMp3 = False   # avoiding that the display
 														# conversion info spread
@@ -553,7 +553,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			try:
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
-				msgText = "downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
+				msgText = "downloading video [b]{}[/b] caused this Attribute exception: {}. [color=HH0000]WARNING[/color]: bookmarks will be ignored !\n".format(
 					purgedOriginalOrModifiedVideoTitleWithDateMp3, e)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)
@@ -617,7 +617,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				ydl.download([videoUrl])
 			except AttributeError as e:
 				self.audioController.displayError(
-					"downloading video [b]{}[/b] caused this Attribute exception: {}. WARNING: bookmarks will be ignored !\n".format(
+					"downloading video [b]{}[/b] caused this Attribute exception: {}. [color=HH0000]WARNING[/color]: bookmarks will be ignored !\n".format(
 						videoAudioFileName, e))
 				
 				return False

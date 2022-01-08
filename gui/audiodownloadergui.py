@@ -1433,7 +1433,7 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			videoSkippedStr = 'videos skipped'
 		
-		endDownloadInfoStr = '{} {}, {} {}, {} {}, {} bytes, {}\n'.format(videoSuccessNb,
+		endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
 		                                                                  videoSuccessStr,
 		                                                                  videoFailedNb,
 		                                                                  videoFailStr,
@@ -1489,7 +1489,7 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			videoSkippedStr = 'videos skipped'
 		
-		endDownloadInfoStr = '\n[b]TOTAL {} {}, {} {}, {} {}[/b]\n'.format(self.totalDownloadVideoSuccessNb,
+		endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, {} {}, {} {}[/color][/b]\n'.format(self.totalDownloadVideoSuccessNb,
 		                                                                  videoSuccessStr,
 		                                                                  self.totalDownloadVideoFailedNb,
 		                                                                  videoFailStr,
