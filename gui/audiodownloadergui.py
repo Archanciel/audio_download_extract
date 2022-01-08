@@ -1670,6 +1670,8 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
+				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID})
 		elif platform == 'ios':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
@@ -1679,6 +1681,8 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_IOS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
+				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_IOS})
 		elif platform == 'win':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
 							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
@@ -1688,6 +1692,8 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH: ConfigManager.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS})
+			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
+				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_WINDOWS})
 
 		config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 			ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE: ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE})
