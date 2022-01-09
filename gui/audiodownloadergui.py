@@ -298,19 +298,15 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		if os.name == 'posix':
 			if GuiUtil.onSmartPhone():
-				self.boxLayoutContainingStatusBar.height = "73dp"
 				self.stopDownloadButton.width = 150
 				self.downloadButton.width = 300
 				self.addDownloadButton.width = 150
 			else:
-				self.boxLayoutContainingStatusBar.height = "43dp"
 				self.stopDownloadButton.width = 80
 				self.downloadButton.width = 190
 				self.addDownloadButton.width = 80
-
 		else:
 			#self.stopDownloadButton.text = 'Half'  # correct on Windows !
-			self.boxLayoutContainingStatusBar.height = "63dp"
 			self.stopDownloadButton.width = 40
 			self.downloadButton.width = 80
 			self.addDownloadButton.width = 40
@@ -319,8 +315,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
-		self.boxLayoutContainingStatusBar.height = self.configMgr.statusbarHeight
-		self.clearResultOutputButton.width = self.configMgr.clearButtonWidth
+		self.boxLayoutContainingStatusBar.height = dp(self.configMgr.statusbarHeight)
+		self.clearResultOutputButton.width = dp(self.configMgr.clearButtonWidth)
 		# self.applyAppPosAndSize() # commenting it since it is currently not
 									# usefull in the AudioDownload app !
 									# Additionally, it avoids that the 'Stop'
