@@ -124,7 +124,7 @@ class FileChooserPopup(AbstractPopup):
 			self.pathList.data.append({'text': 'Main RAM', 'selectable': True, 'pathOnly': '/storage/emulated/0'})
 			
 			if self.onSmartPhone():
-				self.sdCardDir = GuiUtil.SD_CARD_DIR_SMARTPHONE
+				self.sdCardDir = GuiUtil.SD_CARD_DIR_SMARTPHONE_S20
 			else:
 				self.sdCardDir = GuiUtil.SD_CARD_DIR_TABLET
 			
