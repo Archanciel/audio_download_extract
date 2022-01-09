@@ -319,6 +319,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.appSize = self.configMgr.appSize
 		self.defaultAppPosAndSize = self.configMgr.appSize
 		self.appSizeHalfProportion = float(self.configMgr.appSizeHalfProportion)
+		self.boxLayoutContainingStatusBar.height = self.configMgr.statusbarHeight
+		self.clearResultOutputButton.width = self.configMgr.clearButtonWidth
 		# self.applyAppPosAndSize() # commenting it since it is currently not
 									# usefull in the AudioDownload app !
 									# Additionally, it avoids that the 'Stop'
@@ -1774,6 +1776,16 @@ class AudioDownloaderGUIMainApp(App):
 			]""")
 								)
 	def on_config_change(self, config, section, key, value):
+		"""
+		Event handler fired when a configuration token has been changed by the settings
+		page.
+		
+		:param config:
+		:param section:
+		:param key:
+		:param value:
+		:return:
+		"""
 		if config is self.config:
 			if key == ConfigManager.CONFIG_KEY_APP_SIZE:
 				appSize = config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE, "Half").upper()
@@ -1796,6 +1808,16 @@ class AudioDownloaderGUIMainApp(App):
 						self.audioDownloaderGUI.dropDownMenu.auto_width = False
 						self.audioDownloaderGUI.dropDownMenu.width = \
 							dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH, ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
+			elif key == ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT:
+				self.audioDownloaderGUI.boxLayoutContainingStatusBar.height = \
+					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+					                         ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT,
+					                         ConfigManager.DEFAULT_CONFIG_KEY_STATUS_BAR_HEIGHT_WINDOWS)))
+			elif key == ConfigManager.CONFIG_KEY_CLEAR_BUTTON_WIDTH:
+				self.audioDownloaderGUI.clearResultOutputButton.width = \
+					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+					                         ConfigManager.CONFIG_KEY_CLEAR_BUTTON_WIDTH,
+					                         ConfigManager.DEFAULT_CONFIG_KEY_CLEAR_BUTTON_WIDTH_WINDOWS)))
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
 				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.audioDownloaderGUI.applyAppPosAndSize()
