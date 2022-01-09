@@ -18,7 +18,7 @@ class AccessError:
 			else:
 				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nwrong URL: {}\nnothing to download.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_NO_INTERNET:
-			self.errorMsg = "{}\nprogram will be closed.".format(errorMsg)
+			self.errorMsg = "{}".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_VIDEO_DOWNLOAD_FAILURE:
 			self.errorMsg = errorMsg + ' download failed.\ndownloading playlist interrupted.\n[b]retry downloading the playlist to download the remaining videos ![/b]'
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_DOWNLOAD_FAILURE:
