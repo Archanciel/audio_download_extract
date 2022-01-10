@@ -777,7 +777,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		:return:    {<urlStr>: <playlistTitleStr}. Example:
 					{'https://youtube.com/playlist?list=PLzwWSJNcZTMSfeJzsR9st86uW590blzRp': 'Crypto'}
 		"""
-		dicFilePathName = audioDirRoot + sep + 'settings' + sep + 'cachedPlaylistUrlTitleDic' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		settingsDir = audioDirRoot + sep + 'settings'
+		
+		DirUtil.createTargetDirIfNotExist(audioDirRoot, settingsDir)
+		
+		dicFilePathName = settingsDir + sep + 'cachedPlaylistUrlTitleDic' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
 		urlTitleDic = DownloadPlaylistInfoDic._loadDicIfExist(dicFilePathName)
 		
 		if urlTitleDic is not None:
