@@ -72,12 +72,12 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
+					text: "Cancel"
+					on_release: root.cancel()
+				Button:
 					id: btn_load
 					text: "Load"
 					on_release: root.loadFile(file_chooser.path, file_chooser.selection)
-				Button:
-					text: "Cancel"
-					on_release: root.cancel()
 
 <SaveFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
 						# AbstractPopup, which derives from Popup
@@ -164,11 +164,11 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-					text: "Save"
-					on_release: root.save(file_chooser.path, path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
-				Button:
 					text: "Cancel"
 					on_release: root.cancel()
+				Button:
+					text: "Save"
+					on_release: root.save(file_chooser.path, path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
 
 <DeleteFileChooserPopup>:   # sub-class of FileChooserPopup, which derives from
 							# AbstractPopup, which derives from Popup
@@ -262,16 +262,16 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-				    id: delete_button
-					text: "Delete"
-					disabled: True
-					on_release: root.delete()
+					text: "Cancel"
+					on_release: root.cancel()
 				Button:
 					text: "Unselect all"
 					on_release: root.unselectAll()
 				Button:
-					text: "Cancel"
-					on_release: root.cancel()
+				    id: delete_button
+					text: "Delete"
+					disabled: True
+					on_release: root.delete()
 
 <SelectOrCreateDirFileChooserPopup>: # sub-class of FileChooserPopup, which derives from
 									 # AbstractPopup, which derives from Popup
@@ -351,11 +351,11 @@
 				size_hint_y: None
 				height: '28dp'
 				Button:
-					text: "Select or create dir"
-					on_release: root.selOrCreateDir(path_name_text_input.text, file_name_text_input.text)
-				Button:
 					text: "Cancel"
 					on_release: root.cancel()
+				Button:
+					text: "Select or create dir"
+					on_release: root.selOrCreateDir(path_name_text_input.text, file_name_text_input.text)
 
 <SelectableLabelFileChooser>:
 	# Draw a background to indicate selection
