@@ -504,8 +504,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.enableButtons()
 		
 		if self.accessError is None:
-			# the case if the url is neither pointing to a playlist nor to a
-			# single video. Here, an error message was displayed in the UI !
+			# self.accessError is not None if the playlistOrSingleVideoUrl is neither pointing to
+			# a playlist nor to a single video. In this case, an error message was displayed in
+			# the UI !
 			
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
@@ -548,7 +549,9 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def onConfirmDownloadPopupAnswer(self, confirmPopupInstance, answer):
 		"""
-		Method called when one of the ConfirmPopup button is pushed.
+		Method called when one of the ConfirmPopup button is pushed. This method is
+		linkec to the ConfirmDownloadPopup 'on_answer' event in the
+		createDownloadConfirmPopup() mrthod called by executeDownload() method.
 		
 		:param confirmPopupInstance:
 		:param answer:
