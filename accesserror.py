@@ -46,7 +46,7 @@ class AccessError:
 		# stdout = sys.stdout
 		# outputCapturingString = StringIO()
 		# sys.stdout = outputCapturingString
-		# 
+		#
 		# traceback.print_stack(file=sys.stdout)
 		#
 		# sys.stdout = stdout
