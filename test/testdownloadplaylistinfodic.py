@@ -1052,9 +1052,32 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# since the cached dic was not available in the settings dir,
 		# the new playlist info was not added to it
 		self.assertRaises(KeyError, lambda: urlTitleDic[newPlaylistUUrl])
+	
+	def testGetPlaylistUrlTitleCachedDic_settings_dir_not_exist(self):
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
+		testSettingsPath = audioDirTestRoot + sep + 'settings'
+
+		# deleting the settings dir
+		DirUtil.removeDirAndItsSubDirs(testSettingsPath)
+
+		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
+		
+		self.assertEqual(
+			['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\settings\\cachedPlaylistUrlTitleDic_dic.txt'],
+			DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
+		
+		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
+		                 'Test download three short videos')
+		self.assertRaises(KeyError, lambda: urlTitleDic['https://youtube.com/pwSBjduI5HOh71R'])
+		
+		urlTitleDic_reloaded = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
+		
+		self.assertEqual(urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
+		                 'Test download three short videos')
+		self.assertRaises(KeyError, lambda: urlTitleDic_reloaded['https://youtube.com/pwSBjduI5HOh71R'])
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testGetPlaylistUrlTitleCachedDic()
+	tst.testGetPlaylistUrlTitleCachedDic_settings_dir_not_exist()

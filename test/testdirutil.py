@@ -145,8 +145,9 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-2])))
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 		
+		self.assertFalse(os.path.isdir(testBaseRootPath))
 		self.assertFalse(os.path.isfile(createdFilePathName))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-1])))
 		self.assertFalse(os.path.isdir(sep.join(filePathNameComponents[:-2])))
@@ -175,7 +176,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(renamedFilePathName))
 		
 		# removing test dir and its file
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_with_invalid_file_name(self):
 		createdFileName = 'temp.txt'
@@ -202,7 +203,7 @@ class TestDirUtil(unittest.TestCase):
 			errorInfo)
 		
 		# removing test dir
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_file_to_rename_not_exist(self):
 		createdFileName = 'temp.txt'
@@ -225,7 +226,7 @@ class TestDirUtil(unittest.TestCase):
 			errorInfo)
 		
 		# removing test dir
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_file_with_new_name_already_exist(self):
 		createdFileName = 'temp.txt'
@@ -258,7 +259,7 @@ class TestDirUtil(unittest.TestCase):
 			errorInfo)
 		
 		# removing test dir
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testCreateTargetDirIfNotExist_singleVideo(self):
 		testBaseRootDir = 'Audio' + sep + 'Various'
@@ -267,7 +268,7 @@ class TestDirUtil(unittest.TestCase):
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 		
 		subdirs = createdSubdirsPath.split(sep)
 		
@@ -291,7 +292,7 @@ class TestDirUtil(unittest.TestCase):
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 		
 		subdirs = createdSubdirsPath.split(sep)
 		
@@ -338,7 +339,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(filePathName_2, filePathNameLst[1])
 		
 		# removing test dir and its file
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testGetFileNamesInDirForPattern(self):
 		fileName_1 = 'file_one.mp3'
@@ -371,7 +372,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(fileName_2, fileNameLst[1])
 		
 		# removing test dir and its file
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles(self):
 		deletedFileName_1 = 'file_one.mp3'
@@ -404,7 +405,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertFalse(os.path.isfile(deletedFilePathName_2))
 		
 		# removing test dir and its file
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles_file_list_empty(self):
 		deletedFileName_1 = 'file_one.mp3'
@@ -437,7 +438,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(deletedFilePathName_2))
 		
 		# removing test dir and its file
-		DirUtil.removeSubDirsContainedInDir(testBaseRootPath)
+		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 
 	def testGetIndexAndDateUsageInFileNameLst(self):
 		fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',

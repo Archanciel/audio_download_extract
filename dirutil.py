@@ -240,17 +240,16 @@ class DirUtil:
 		return validFileName
 	
 	@staticmethod
-	def removeSubDirsContainedInDir(dirsToRemoveContainingDir):
+	def removeDirAndItsSubDirs(dirToRemove):
 		"""
-		Removes recursively the sub dirs contained in the passed
-		dirsToRemoveContainingDir. Any file contained in the sub dirs are
-		deleted as well.
+		Removes recursively the sub dirs contained in the passed dirToRemove as well as
+		the dirToRemove. Any file contained in the dirs are	deleted as well.
 		
-		:param dirsToRemoveContainingDir:
+		:param dirToRemove:
 		"""
-		if os.path.isdir(dirsToRemoveContainingDir):
-			shutil.rmtree(dirsToRemoveContainingDir)
-			
+		if os.path.isdir(dirToRemove):
+			shutil.rmtree(dirToRemove)
+	
 	@staticmethod
 	def renameFile(originalFilePathName, newFileName):
 		newFilePathName = DirUtil.extractPathFromPathFileName(originalFilePathName) + sep + newFileName
