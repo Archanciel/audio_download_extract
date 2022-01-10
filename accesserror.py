@@ -37,3 +37,20 @@ class AccessError:
 				self.errorMsg = "the URL obtained from clipboard is empty.\nnothing to download."
 			else:
 				self.errorMsg = "the URL obtained from clipboard is not pointing to a playlist.\nerror msg: {}\nnothing to download.".format(errorMsg)
+		
+		# import logging
+		# import traceback
+		# from io import StringIO
+		# import sys
+		#
+		# stdout = sys.stdout
+		# outputCapturingString = StringIO()
+		# sys.stdout = outputCapturingString
+		# 
+		# traceback.print_stack(file=sys.stdout)
+		#
+		# sys.stdout = stdout
+		#
+		# logging.info('AccessError ctor ' + errorMsg)
+		# logging.info('PRINTING CALL STACK')
+		# logging.info(outputCapturingString.getvalue())
