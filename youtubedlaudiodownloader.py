@@ -121,6 +121,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		playlistObject, _, _, accessError = self.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 
 		if accessError:
+			self.audioController.displayError(accessError.errorMsg)
 			return None, accessError
 
 		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
