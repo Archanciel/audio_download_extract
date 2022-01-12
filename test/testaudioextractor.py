@@ -1389,7 +1389,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertTrue(r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(targetAudioDir + sep, targetAudioDir + sep) in outputCapturingString.getvalue())
+		self.assertTrue(r'extracted audio file {}Short low video quality.mp3 from video file {}Short low video quality.mp4'.format(targetAudioDir + sep, targetAudioDir + sep) in outputCapturingString.getvalue())
 
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 		
@@ -1432,10 +1432,10 @@ class TestAudioExtractor(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertEqual(['',
- 'Concatenating "Les vies où Jésus et Bouddha se connaissaient  1_22 '
- "L'histoire d'une noble amitié.mp3,",
+ "Concatenating Les vies où Jésus et Bouddha se connaissaient  1_22 L'histoire "
+ "d'une noble amitié.mp3,",
  "Les vies où Jésus et Bouddha se connaissaient  2_22 L'histoire d'une noble "
- 'amitié.mp3" ...',
+ 'amitié.mp3 ...',
  '',
  'MoviePy - Writing audio in '
  'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_extractor_concatenate\\concatenatedAudio.mp3',
@@ -1444,7 +1444,7 @@ class TestAudioExtractor(unittest.TestCase):
  '"Les vies où Jésus et Bouddha se connaissaient  1_22 L\'histoire d\'une '
  'noble amitié.mp3,',
  "Les vies où Jésus et Bouddha se connaissaient  2_22 L'histoire d'une noble "
- 'amitié.mp3 concatenated into "concatenatedAudio.mp3"',
+ 'amitié.mp3 concatenated into concatenatedAudio.mp3',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1465,4 +1465,4 @@ class TestAudioExtractor(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
-	tst.testExtractAudioPortions_one_mp3_with_two_superposed_extract_no_suppress_timeframe()
+	tst.testExtractAudioFromVideoFile()

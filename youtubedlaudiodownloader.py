@@ -358,7 +358,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		downloadVideoInfoDic.saveDic(self.audioDirRoot)
 		videoIndex += 1
 		playlistDownloadedVideoNb += 1
-		msgText = 'video download complete.\n'
+		msgText = 'video download [b][color=00FF00]complete[/color][/b].\n'
 		
 		return videoIndex, playlistDownloadedVideoNb, msgText
 	

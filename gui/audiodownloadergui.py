@@ -1490,12 +1490,22 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			videoSkippedStr = 'videos skipped'
 		
-		endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, {} {}, {} {}[/color][/b]\n'.format(self.totalDownloadVideoSuccessNb,
-		                                                                  videoSuccessStr,
-		                                                                  self.totalDownloadVideoFailedNb,
-		                                                                  videoFailStr,
-		                                                                  self.totalDownloadVideoSkippedNb,
-		                                                                  videoSkippedStr)
+		if self.totalDownloadVideoFailedNb == 0:
+			endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, {} {}, {} {}[/color][/b]\n'.format(self.totalDownloadVideoSuccessNb,
+			                                                                  videoSuccessStr,
+			                                                                  self.totalDownloadVideoFailedNb,
+			                                                                  videoFailStr,
+			                                                                  self.totalDownloadVideoSkippedNb,
+			                                                                  videoSkippedStr)
+		else:
+			endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, [/color][color=FF0000]{} {}[/color][color=00FF00], {} {}[/color][/b]\n'.format(
+				self.totalDownloadVideoSuccessNb,
+				videoSuccessStr,
+				self.totalDownloadVideoFailedNb,
+				videoFailStr,
+				self.totalDownloadVideoSkippedNb,
+				videoSkippedStr)
+			
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 		

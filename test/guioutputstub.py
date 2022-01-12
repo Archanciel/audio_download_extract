@@ -13,11 +13,17 @@ class GuiOutputStub:
 		pass
 	
 	def displayMessage(self, msgText):
-		msgText = msgText.replace('[b]', '"'). \
-			replace('[/b]', '"'). \
-			replace('[color=FF0000]', '"').\
-			replace('[color=00HH00]', '"').\
-			replace('[/color]', '"')
+		"""
+		This method removes the msg color setting.
+		
+		:param msgText:
+		:return:
+		"""
+		msgText = msgText.replace('[b]', ''). \
+			replace('[/b]', ''). \
+			replace('[color=FF0000]', '').\
+			replace('[color=00FF00]', '').\
+			replace('[/color]', '')
 		
 		print(msgText)
 	
@@ -31,7 +37,7 @@ class GuiOutputStub:
 		"""
 		self.isFirstCurrentDownloadInfo = True
 
-		print(msgText)
+		self.displayMessage(msgText)
 
 	def outputResult(self, msgText):
 		msgText = msgText.replace('[b]', '"').replace('[/b]', '"')
