@@ -168,11 +168,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		                           dicFilePathName=self.configMgr.loadAtStartPathFilename)
 
 		Clipboard.copy('  ')
-#		Clipboard.copy(playlistUrl_6)   # causes the downloaded video to be prefixed
-										# with index and suffixed with upload date !!
 
-		dbApp = AudioDownloaderGUIMainApp()
-		dbApp.run()
+		if input('Type g to open the GUI') == 'g':
+			dbApp = AudioDownloaderGUIMainApp()
+			dbApp.run()
 	
 	def restorePlaylistDownloadDirs(self,
 	                                playlistDirNameLst,
