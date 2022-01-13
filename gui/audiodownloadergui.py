@@ -1434,14 +1434,26 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			videoSkippedStr = 'videos skipped'
 		
-		endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
-		                                                                  videoSuccessStr,
-		                                                                  videoFailedNb,
-		                                                                  videoFailStr,
-		                                                                  videoSkippedNb,
-		                                                                  videoSkippedStr,
-		                                                                  endDownloadInfoLst[3],
-		                                                                  endDownloadInfoLst[4])
+		if videoFailedNb == 0:
+			endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
+			                                                                  videoSuccessStr,
+			                                                                  videoFailedNb,
+			                                                                  videoFailStr,
+			                                                                  videoSkippedNb,
+			                                                                  videoSkippedStr,
+			                                                                  endDownloadInfoLst[3],
+			                                                                  endDownloadInfoLst[4])
+		else:
+			endDownloadInfoStr = '[b][color=00FF00]{} {}, [/color][color=FF0000]{} {}[/color][color=00FF00], {} {}, {} bytes, {}[/color][/b]\n'.format(
+																			videoSuccessNb,
+																			videoSuccessStr,
+																			videoFailedNb,
+																			videoFailStr,
+																			videoSkippedNb,
+																			videoSkippedStr,
+																			endDownloadInfoLst[3],
+																			endDownloadInfoLst[4])
+
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 		

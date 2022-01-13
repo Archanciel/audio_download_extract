@@ -524,7 +524,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				uploadDate = meta['upload_date']
 				formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 			except AttributeError as e:
-				msgText = 'obtaining video upload date failed with error {}.\n'.format(e)
+				msgText = 'obtaining single video upload date failed with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
 			
 			if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
@@ -540,7 +540,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			# target audio dir. If yes, we do not re download it.
 			
 			if purgedOriginalOrModifiedVideoTitleWithDateMp3 in targetAudioDirFileNameList:
-				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
+				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Single video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED)
 				
@@ -554,7 +554,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			try:
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
-				msgText = "downloading video [b]{}[/b] caused this Attribute exception: {}. [color=FF0000]WARNING[/color]: bookmarks will be ignored !\n".format(
+				msgText = "downloading single video [b]{}[/b] caused this Attribute exception: {}. [color=FF0000]WARNING[/color]: bookmarks will be ignored !\n".format(
 					purgedOriginalOrModifiedVideoTitleWithDateMp3, e)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)

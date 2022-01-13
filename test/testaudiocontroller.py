@@ -246,7 +246,7 @@ class TestAudioController(unittest.TestCase):
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual('{}Funny suspicious looking dog 13-11-05.mp3 audio already downloaded in Audio\\test\\Various\\single_video dir\\new dir\\new sub dir dir. Video skipped.\n\n'.format(downloadDatePrefix), outputCapturingString.getvalue())
+			self.assertEqual('{}Funny suspicious looking dog 13-11-05.mp3 audio already downloaded in Audio\\test\\Various\\single_video dir\\new dir\\new sub dir dir. Single video skipped.\n\n'.format(downloadDatePrefix), outputCapturingString.getvalue())
 		
 		createdFileLst = os.listdir(playlistOrSingleVideoDownloadPath)
 		

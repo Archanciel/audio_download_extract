@@ -169,7 +169,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 		Clipboard.copy('  ')
 
-		if input('Type g to open the GUI') == 'g':
+		if input('Type g to open the GUI: ') == 'g':
 			dbApp = AudioDownloaderGUIMainApp()
 			dbApp.run()
 	
