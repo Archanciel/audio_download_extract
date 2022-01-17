@@ -1869,7 +1869,7 @@ class AudioDownloaderGUIMainApp(App):
 		try:
 			super().open_settings(*largs)
 		except NoOptionError as e:
-			logging.info(str(e) + '. Default value has been set in audiodownloader.ini file')
+			logging.info(str(e) + '. Default settings values have been set in audiodownloader.ini file')
 			self.stop()
 
 
