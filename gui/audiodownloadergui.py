@@ -1828,7 +1828,9 @@ class AudioDownloaderGUIMainApp(App):
 					if GuiUtil.onSmartPhone():
 						self.audioDownloaderGUI.dropDownMenu.auto_width = False
 						self.audioDownloaderGUI.dropDownMenu.width = \
-							dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH, ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
+							dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+							                         ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH,
+							                         ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
 			elif key == ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT:
 				self.audioDownloaderGUI.boxLayoutContainingStatusBar.height = \
 					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
@@ -1866,6 +1868,13 @@ class AudioDownloaderGUIMainApp(App):
 		"""
 		self.audioDownloaderGUI.dropDownMenu.dismiss()
 		
+		# catching NoOptionError avoids displaying the exception stack trace
+		# which happens the first time the application is executed after
+		# a new settings param has been added. In this case, thanks to the
+		# exception catch, the app is closed and when it is started again,
+		# no exception is thrown since the missing parms were added to the
+		# app ini file.
+
 		try:
 			super().open_settings(*largs)
 		except NoOptionError as e:

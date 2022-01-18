@@ -3,7 +3,6 @@ import os
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.dropdown import DropDown
-from kivy.utils import platform
 
 from gui.guiutil import GuiUtil
 
