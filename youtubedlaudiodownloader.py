@@ -579,7 +579,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 			                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SUCCESS)
 		else:
-			self.audioController.displayError(fileNotFoundErrorInfo + '\n')
+			self.audioController.displayError(
+				fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method[/b]\n')
 	
 	def redownloadPlaylistVideoForVideoUrl(self,
 	                                       videoUrl,
