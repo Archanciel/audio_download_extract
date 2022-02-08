@@ -44,6 +44,14 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual(expectedFileName, actualFileName)
 	
+	def testReplaceUnauthorizedDirOrFileNameChars_double_slash_char(self):
+		videoTitle = '9 Dart concepts to know before you jump into Flutter // for super beginners in Flutter'
+		expectedFileName = '9 Dart concepts to know before you jump into Flutter _ for super beginners in Flutter'
+		
+		actualFileName = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
+		
+		self.assertEqual(expectedFileName, actualFileName)
+	
 	def testExtractPathFromPathFileName(self):
 		expectedPath = 'c:' + sep + 'users' + sep + 'jean-pierre'
 		pathFileName = expectedPath + sep + 'file.mp3'

@@ -214,7 +214,10 @@ class DirUtil:
 		rawFileName = rawFileName.replace('||','|') # since YoutubeDL replaces '||' by '_'
 													# and that charToReplace dic keys must
 													# be one char length !
-		
+		rawFileName = rawFileName.replace('//','/') # since YoutubeDL replaces '//' by '_'
+													# and that charToReplace dic keys must
+													# be one char length !
+
 		charToReplace = {
 						 '\\': '',
 						 '/': '_', # since YoutubeDL replaces '/' by '_'
