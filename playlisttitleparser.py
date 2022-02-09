@@ -5,13 +5,13 @@ from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from accesserror import AccessError
 
 class PlaylistTitleParser:
-	
 	@staticmethod
 	def createDownloadVideoInfoDicForPlaylist(playlistUrl,
 											  audioRootDir,
 											  playlistDownloadRootPath,
 											  originalPlaylistTitle,
-											  modifiedPlaylistTitle=None):
+	                                          modifiedPlaylistTitle=None,
+	                                          parsePlaylistTitleTimeframeInfo=False):
 		"""
 		Returns the playlist name and a dictionary whose key is the video index
 		and value is a list of two lists, one containing the start and
@@ -38,22 +38,37 @@ class PlaylistTitleParser:
 											C:\\Users\\Jean-Pierre\\Downloads\\Audio\\
 											zz\\UCEM\\Gary Renard
 		:param originalPlaylistTitle:
+		:param parsePlaylistTitleTimeframeInfo: set to True if the playlist title may
+												contain extract/suppress timeframe info.
+												Since this functionality is no longer
+												used, this parameter is set to False
+												by default. In case this functionality
+												would be used again, the AudioDownloaderGUI
+												should enable to set he parm to True !
 		:param modifiedPlaylistTitle:
-		:return:
 		"""
 		playlistNamePattern = r"([a-zA-Z0-9ÉéÂâÊêÎîÔôÛûÀàÈèÙùËëÏïÜüŸÿçÇö/ '\\_\-:*?\"<>|+,\.]+)(\{.*\})?"
-		
-		match = re.match(playlistNamePattern, originalPlaylistTitle)
-		originalPlaylistName = match.group(1)
-		
-		videoTimeFramesInfo = originalPlaylistTitle.replace(originalPlaylistName, '')
-		originalPlaylistName = originalPlaylistName.strip() # removing originalPlaylistName last space if exist
+
+		if parsePlaylistTitleTimeframeInfo:
+			
+			match = re.match(playlistNamePattern, originalPlaylistTitle)
+			originalPlaylistName = match.group(1)
+			
+			videoTimeFramesInfo = originalPlaylistTitle.replace(originalPlaylistName, '')
+			originalPlaylistName = originalPlaylistName.strip() # removing originalPlaylistName last space if exist
+		else:
+			videoTimeFramesInfo = ''
+			originalPlaylistName = originalPlaylistTitle
 		
 		if modifiedPlaylistTitle is not None:
-			match = re.match(playlistNamePattern, modifiedPlaylistTitle)
-			modifiedPlaylistName = match.group(1)
-			videoTimeFramesInfo = modifiedPlaylistTitle.replace(modifiedPlaylistName, '')
-			modifiedPlaylistName = modifiedPlaylistName.strip()  # removing originalPlaylistName last space if exist
+			if parsePlaylistTitleTimeframeInfo:
+				match = re.match(playlistNamePattern, modifiedPlaylistTitle)
+				modifiedPlaylistName = match.group(1)
+				videoTimeFramesInfo = modifiedPlaylistTitle.replace(modifiedPlaylistName, '')
+				modifiedPlaylistName = modifiedPlaylistName.strip()  # removing originalPlaylistName last space if exist
+			else:
+				videoTimeFramesInfo = ''
+				modifiedPlaylistName = modifiedPlaylistTitle
 		else:
 			modifiedPlaylistTitle = originalPlaylistTitle
 			modifiedPlaylistName = originalPlaylistName

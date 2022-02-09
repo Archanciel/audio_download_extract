@@ -30,7 +30,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -56,7 +56,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -84,7 +84,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -112,7 +112,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -140,7 +140,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -166,7 +166,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -194,7 +194,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -218,7 +218,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -242,7 +242,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -268,7 +268,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -296,7 +296,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -322,7 +322,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -354,7 +354,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -386,7 +386,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -414,7 +414,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -434,7 +434,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -462,7 +462,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -491,7 +491,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		self.assertIsNotNone(accessError)
 		self.assertEqual('time frame syntax error "e-0:0:4-0:0:6" detected in playlist title: "Test 3 short videos (e-0:0:4-0:0:6 e0:0:12-e s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (s0:0:1-0:0:3 s0:0:4-0:0:6 s0:0:9-e) (e0:0:2-0:0:3 e0:0:5-e)".\ndownloading playlist interrupted.', accessError.errorMsg)
 		
@@ -528,7 +528,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -557,7 +557,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -578,7 +578,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
@@ -598,7 +598,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -626,7 +626,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -661,7 +661,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -695,7 +695,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -732,7 +732,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -766,7 +766,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 			os.remove(f)
 		
 		downloadedVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
-			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle)
+			'', DirUtil.getTestAudioRootPath(), DirUtil.getTestAudioRootPath(), originalPlaylistTitle, originalPlaylistTitle, parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
@@ -811,7 +811,8 @@ class TestPlaylistTitleParser(unittest.TestCase):
 				DirUtil.getTestAudioRootPath(),
 				DirUtil.getTestAudioRootPath(),
 				originalPlaylistTitle,
-				modifiedPlaylistTitle)
+				modifiedPlaylistTitle,
+				parsePlaylistTitleTimeframeInfo=True)
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
