@@ -150,6 +150,12 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	def updatePlaylistTitle(self, playlistTitle):
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_TITLE_ORIGINAL] = playlistTitle
 
+	def updateOriginalPlaylistName(self, originalPlaylistName):
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_ORIGINAL] = originalPlaylistName
+
+	def updateModifiedPlaylistName(self, modifiedPlaylistName):
+		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED] = modifiedPlaylistName
+
 	def buildDownloadDirValue(self, playlistTitle):
 		# must be changed !!!
 		return playlistTitle

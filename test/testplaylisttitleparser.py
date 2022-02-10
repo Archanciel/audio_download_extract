@@ -855,6 +855,33 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
 		self.assertEqual(expectedModifiedPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
 	
+	def testCreateDownloadVideoInfoDicForPlaylistTitleNoTimeframeButParentheses(self):
+		expectedOriginalPlayListName = 'Seconds Out (1977) - Genesis [Full Album]'
+		expectedModifiedPlayListName = 'Seconds Out (1977) - Genesis [Full Album]'
+		originalPlaylistTitle = expectedOriginalPlayListName
+		modifiedPlaylistTitle = expectedModifiedPlayListName
+		
+		downloadDir = DirUtil.getTestAudioRootPath() + sep + expectedOriginalPlayListName
+		
+		# deleting dic file in downloadDir
+		files = glob.glob(downloadDir + sep + '*.txt')
+		
+		for f in files:
+			os.remove(f)
+		
+		downloadedVideoInfoDic, accessError = \
+			PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
+				'',
+				DirUtil.getTestAudioRootPath(),
+				DirUtil.getTestAudioRootPath(),
+				originalPlaylistTitle,
+				modifiedPlaylistTitle)
+		
+		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
+		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
+		self.assertEqual(modifiedPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
+		self.assertEqual(expectedModifiedPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
+	
 	def testCreateDownloadVideoInfoDic_existing_dic_format_error(self):
 		expectedOriginalPlayListName = 'existing_dic_error'
 		originalPlaylistTitle = expectedOriginalPlayListName

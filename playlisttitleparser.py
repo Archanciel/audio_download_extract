@@ -75,9 +75,21 @@ class PlaylistTitleParser:
 		
 		
 		if videoTimeFramesInfo is not None and videoTimeFramesInfo != '':
-			downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
-																					videoTimeFramesInfo,
-																					downloadVideoInfoDic.getPlaylistTitleModified())
+			try:
+				downloadVideoInfoDic, accessError = PlaylistTitleParser.extractTimeInfo(downloadVideoInfoDic,
+																						videoTimeFramesInfo,
+																						downloadVideoInfoDic.getPlaylistTitleModified())
+			except IndexError:
+				# the case for example for a playlist title containing parentheses
+				# like 'Seconds Out (1977) - Genesis [Full Album]'
+				originalPlaylistName = originalPlaylistTitle
+				if modifiedPlaylistTitle:
+					modifiedPlaylistName = modifiedPlaylistTitle
+				else:
+					modifiedPlaylistName = originalPlaylistName
+				
+				downloadVideoInfoDic.updateOriginalPlaylistName(originalPlaylistName)
+				downloadVideoInfoDic.updateModifiedPlaylistName(modifiedPlaylistName)
 		
 		return downloadVideoInfoDic, accessError
 	
