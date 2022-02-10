@@ -429,6 +429,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					meta = ydl.extract_info(url, download=False)
 					videoTitle = meta['title']
 			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError, AttributeError, DownloadError) as e:
+				try:
+					meta
+				except NameError as e:
+					errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
+					accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST, errorInfoStr)
+					return playlistObject, playlistTitle, videoTitle, accessError
+				
 				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
 				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
 

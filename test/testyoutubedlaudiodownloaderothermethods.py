@@ -150,6 +150,27 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual([], videoTitleLst)
+		
+	def testGetPlaylistVideoTitlesForVideoUrlVideoNoLongerExist(self):
+		guiOutput = GuiOutputStub()
+		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		playlistUrl = "https://youtu.be/zUEmV7ubwyc"
+		
+		stdout = sys.stdout
+		outputCapturingString = StringIO()
+		sys.stdout = outputCapturingString
+		
+		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
+		
+		sys.stdout = stdout
+		
+		self.assertEqual(['trying to obtain playlist video titles on an invalid url or a url pointing '
+		                  'to a single video.',
+		                  '',
+		                  ''], outputCapturingString.getvalue().split('\n'))
+		
+		self.assertIsNone(accessError)
+		self.assertEqual([], videoTitleLst)
 	
 	def testGetPlaylistVideoTitlesForInvalidUrl(self):
 		guiOutput = GuiOutputStub()

@@ -8,6 +8,7 @@ class AccessError:
 	ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR = 8
 	ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM = 9
 	ERROR_TYPE_LOADING_DOWNLOAD_DIC = 10
+	ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST = 11
 
 	def __init__(self, errorType, errorMsg):
 		self.errorType = errorType
@@ -31,6 +32,9 @@ class AccessError:
 			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed.\n{}\nnothing to download.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_LOADING_DOWNLOAD_DIC:
 			self.errorMsg = "trying to load the existing download dictionary failed.\n{}\ndownload interrupted.".format(
+				errorMsg)
+		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST:
+			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed. Cause: the video does no longer exist\n{}\nnothing to download.".format(
 				errorMsg)
 		else:
 			if errorMsg == '':
