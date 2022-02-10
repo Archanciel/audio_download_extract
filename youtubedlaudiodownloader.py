@@ -430,6 +430,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					videoTitle = meta['title']
 			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError, AttributeError, DownloadError) as e:
 				try:
+					# when a video is no longer accessible on Youtube, evaluating
+					# meta throws a NameError exception. Catching it enables to
+					# display a better error msg
 					meta
 				except NameError as e:
 					errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
