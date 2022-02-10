@@ -436,6 +436,10 @@ class AudioDownloaderGUI(AudioGUI):
 		the clipboard is required.
 		"""
 		playlistOrSingleVideoUrl = Clipboard.paste()
+		
+		if 'HTTP' not in playlistOrSingleVideoUrl.upper():
+			return
+		
 		self.disableButtons()
 		
 		if onlyGetDownloadObjectTitle:
@@ -469,6 +473,12 @@ class AudioDownloaderGUI(AudioGUI):
 			self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
+			if self.accessError:
+				# the case if the video or playlist referenced by the playlistOrSingleVideoUrl
+				# no longer exist on Youtube
+				self.totalDownloadVideoFailedNb += 1
+				continue
+				
 			if self.originalSingleVideoTitle is None:
 				# url obtained from clipboard points to a playlist
 				downloadObjectTitle = self.originalPlaylistTitle
