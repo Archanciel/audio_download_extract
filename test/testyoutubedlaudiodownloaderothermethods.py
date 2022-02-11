@@ -45,7 +45,7 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertIsNotNone(accessError)
 		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, accessError.errorType)
 		self.assertEqual(
-			"trying to get the video title for the URL obtained from clipboard did not succeed.\nfailing URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nerror info: ERROR: Unsupported URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nnothing to download.".format(playlistUrl),
+			"trying to get the video title for the URL obtained from clipboard [b][color=FF0000]did not succeed[/color][/b].\nfailing URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nerror info: ERROR: Unsupported URL: https://www.geeksforgeeks.org/python-how-to-use-multiple-kv-files-in-kivy/\nnothing to download.".format(playlistUrl),
 			accessError.errorMsg)
 		self.assertIsNone(videoTitle)
 	
@@ -150,28 +150,31 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual([], videoTitleLst)
-		
-	def testGetPlaylistVideoTitlesForVideoUrlVideoNoLongerExist(self):
+
+	@unittest.skip
+	"""
+	There's a bug in Python since when executing this test, a DownloadError exception
+	is thrown when executing videoTitle = meta['title'].
+	Instead, when trying to download this single video url with the GUI app,
+	an AttributeError exception is thrown, which enables us to ser a more pecise
+	error msg (see the code in YoutubeDlAudioDownloader.
+	getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl())
+	"""
+	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrlVideoNoLongerExist(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtu.be/zUEmV7ubwyc"
 		
-		stdout = sys.stdout
-		outputCapturingString = StringIO()
-		sys.stdout = outputCapturingString
+		youtubePlaylist, playlistTitle, videoTitle, accessError = \
+			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
-		videoTitleLst, accessError = youtubeAccess.getVideoTitlesInPlaylistForUrl(playlistUrl)
-		
-		sys.stdout = stdout
-		
-		self.assertEqual(['trying to obtain playlist video titles on an invalid url or a url pointing '
-		                  'to a single video.',
-		                  '',
-		                  ''], outputCapturingString.getvalue().split('\n'))
-		
-		self.assertIsNone(accessError)
-		self.assertEqual([], videoTitleLst)
-	
+		self.assertIsNotNone(accessError)
+		self.assertEqual(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST, accessError.errorType)
+		self.assertEqual(
+			"trying to get the video title for the URL obtained from clipboard [b][color=FF0000]did not succeed[/color][/b]. Cause: the video does no longer exist\nfailing URL: {}\nerror info: local variable 'meta' referenced before assignment\nnothing to download.".format(playlistUrl), accessError.errorMsg)
+		self.assertIsNone(playlistTitle)
+		self.assertIsNone(videoTitle)
+
 	def testGetPlaylistVideoTitlesForInvalidUrl(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
@@ -196,4 +199,4 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 if __name__ == '__main__':
 	#unittest.main()
 	tst = TestYoutubeDlAudioDownloaderOtherMethods()
-	tst.testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl()
+	tst.testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrlVideoNoLongerExist()

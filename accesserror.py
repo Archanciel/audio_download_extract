@@ -29,12 +29,12 @@ class AccessError:
 		elif errorType == AccessError.ERROR_TYPE_PLAYLIST_TIME_FRAME_SYNTAX_ERROR:
 			self.errorMsg = errorMsg + '\ndownloading playlist interrupted.'
 		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM:
-			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed.\n{}\nnothing to download.".format(errorMsg)
+			self.errorMsg = "trying to get the video title for the URL obtained from clipboard [b][color=FF0000]did not succeed[/color][/b].\n{}\nnothing to download.".format(errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_LOADING_DOWNLOAD_DIC:
 			self.errorMsg = "trying to load the existing download dictionary failed.\n{}\ndownload interrupted.".format(
 				errorMsg)
 		elif errorType == AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST:
-			self.errorMsg = "trying to get the video title for the URL obtained from clipboard did not succeed. Cause: the video does no longer exist\n{}\nnothing to download.".format(
+			self.errorMsg = "trying to get the video title for the URL obtained from clipboard [b][color=FF0000]did not succeed[/color][/b]. Cause: the video does no longer exist\n{}\nnothing to download.".format(
 				errorMsg)
 		else:
 			if errorMsg == '':

@@ -428,7 +428,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
 					meta = ydl.extract_info(url, download=False)
 					videoTitle = meta['title']
-			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError, AttributeError, DownloadError) as e:
+			except (RegexMatchError, VideoUnavailable, KeyError, HTTPError, DownloadError) as e:
+				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
+				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
+			except AttributeError as e:
 				try:
 					# when a video is no longer accessible on Youtube, evaluating
 					# meta throws a NameError exception. Catching it enables to
@@ -437,11 +440,11 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except NameError as e:
 					errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
 					accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_NO_LONGER_EXIST, errorInfoStr)
-					return playlistObject, playlistTitle, videoTitle, accessError
-				
-				errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
-				accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
-
+		
+				if accessError is None:
+					errorInfoStr = 'failing URL: {}\nerror info: {}'.format(url, str(e))
+					accessError = AccessError(AccessError.ERROR_TYPE_SINGLE_VIDEO_URL_PROBLEM, errorInfoStr)
+		
 		if accessError is None and playlistTitle is None and videoTitle is None:
 			accessError = AccessError(AccessError.ERROR_TYPE_NOT_PLAYLIST_URL, url)
 
