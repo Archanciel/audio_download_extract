@@ -151,7 +151,6 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 		self.assertIsNone(accessError)
 		self.assertEqual([], videoTitleLst)
 
-	@unittest.skip
 	"""
 	There's a bug in Python since when executing this test, a DownloadError exception
 	is thrown when executing videoTitle = meta['title'].
@@ -160,6 +159,7 @@ class TestYoutubeDlAudioDownloaderOtherMethods(unittest.TestCase):
 	error msg (see the code in YoutubeDlAudioDownloader.
 	getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl())
 	"""
+	@unittest.skip
 	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrlVideoNoLongerExist(self):
 		guiOutput = GuiOutputStub()
 		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
