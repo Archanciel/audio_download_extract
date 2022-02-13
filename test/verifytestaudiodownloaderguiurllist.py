@@ -27,7 +27,7 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 		# the three videos in the playlist have been partially downloaded
 		playlistDir_3_expectedFileNameLst = ['' + downloadDateTodayPrefix + 'Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3',
 		                                     '' + downloadDateTodayPrefix + 'Innovation (Short Film) 20-01-07.mp3',
-		                                     '' + downloadDateTodayPrefix + 'SLS DRIFT TAXI. Arina. #shorts 21-08-12.mp3',
+		                                     '' + downloadDateTodayPrefix + 'Lama Tanz 15-06-11.mp3',
 		                                     'test_small_videos_3_dic.txt']
 		playlistDirExpectedFileNameLstDic[self.playlistDirName_3] = playlistDir_3_expectedFileNameLst
 		
@@ -102,7 +102,12 @@ class VerifyTestAudioDownloaderGUIUrlList(TryTestAudioDownloaderGUIUrlList):
 
 		for singleVideoAudioFileName in singleVideoExpectedFileNameLst:
 			print('verifying ' + singleVideoAudioFileName)
-			self.assertTrue(singleVideoAudioFileName in singleVideoActualFileNameLst)
+			if 'Try Not To Laugh' in singleVideoAudioFileName:
+				# Try Not To Laugh _ The most interesting funny short video tik tok #shorts
+				# is no longer on Youtube
+				self.assertFalse(singleVideoAudioFileName in singleVideoActualFileNameLst)
+			else:
+				self.assertTrue(singleVideoAudioFileName in singleVideoActualFileNameLst)
 
 
 if __name__ == '__main__':

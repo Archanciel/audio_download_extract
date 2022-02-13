@@ -45,6 +45,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		
 		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 		
+		# this video is no longer on Youtube and so will cause a download error !
 		self.singleVideoFileName_1 = '{}Try Not To Laugh _ The most interesting funny short video tik tok #shorts 21-12-05.mp3'.format(downloadDatePrefix)
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_1)
@@ -52,6 +53,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.singleVideoFileName_2 = '{}Short King Struggles 🥲 21-07-28.mp3'.format(downloadDatePrefix)
 		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
+
+		self.singleVideoFileName_3 = '{}Lama Tanz 15-06-11.mp3'.format(downloadDatePrefix)
+		self.singleVideoUrl_3 = 'https://youtu.be/FqC2lO3Yy_4'
+		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_3)
 
 	def tryTestAudioDownloaderGUI(self):
 		urlListDicFileName = DirUtil.extractFileNameFromFilePathName(self.configMgr.loadAtStartPathFilename)
@@ -73,7 +78,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_3,
 		                              url=playlistUrl_3, downloadDir='')
 		
-		# adding first single video url
+		# adding first single video url (this video is no longer on Youtube !)
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, urlTitle='Short King Struggles',
 		                              url=self.singleVideoUrl_1, downloadDir='')
 
@@ -114,7 +119,12 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		playlistUrl_6 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_6,
 		                              url=playlistUrl_6, downloadDir='')
-
+		
+		# adding second single video url
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		                              urlTitle='Lama Tanz',
+		                              url=self.singleVideoUrl_3, downloadDir='')
+		
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. No file in the playlist dir is named with index
 		# prefix. Since one file in the playlist dir is named with upload date
@@ -169,7 +179,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 
 		Clipboard.copy('  ')
 
-		if input('Type g to open the GUI: ') == 'g':
+		if input('Type g to open the GUI (you can run reinittrytestaudiodownloaderguiurllist.py to reinitialize the test data ...) : ') == 'g':
 			dbApp = AudioDownloaderGUIMainApp()
 			dbApp.run()
 	
