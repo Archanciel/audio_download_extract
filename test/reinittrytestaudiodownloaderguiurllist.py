@@ -13,8 +13,8 @@ class ReInitTryTestAudioDownloaderGUIUrlList:
 	Test utility class which executes TryTestAudioDownloaderGUIUrlList after
 	having entered a different letter than 'g' in stdin so that the
 	TryTestAudioDownloaderGUIUrlList is executed without opening the GUI,
-	but only in restoring the output dirs. So, Re-download all can be redone
-	without restarting TryTestAudioDownloaderGUIUrlList and re-selecting
+	but only in restoring the output dirs. So, re-download all can be redone
+	without restarting TryTestAudioDownloaderGUIUrlList and loose time re-selecting
 	the URL items to download.
 	"""
 	def doReinit(self):
