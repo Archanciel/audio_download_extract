@@ -51,7 +51,7 @@ class SelectableLabelFileChooser(RecycleDataViewBehavior, Label):
 			# text input field is not ended by '/'
 			# which causes a bug corrected on 15.1.21
 			
-			selectOrCreateDirFileChooserPopup.fileChooser.path = selectedPath
+			selectOrCreateDirFileChooserPopup.fileChooser.audioSubDir = selectedPath
 			selectOrCreateDirFileChooserPopup.updateFilePathNameFields(selectedPath)
 
 

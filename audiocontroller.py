@@ -617,6 +617,10 @@ class AudioController:
 		
 		return indexAndDateUsageLst
 
+	def getAudioFilesSortedByDateInfoList(self,
+	                                      excludedSubDirNameLst=[]):
+		return DirUtil.getAudioFilesSortedByDateInfoList(targetDir=self.configMgr.dataPath,
+		                                                 excludedSubDirNameLst=excludedSubDirNameLst)
 
 if __name__ == "__main__":
 	downloader = AudioController()

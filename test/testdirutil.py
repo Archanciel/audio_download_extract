@@ -591,7 +591,25 @@ class TestDirUtil(unittest.TestCase):
 		                                                             fileNamePattern=fileNamePattern,
 		                                                             inSubDirs=inSubDirs))
 
+	def testGetAudioFilesSortedByDateInfoList(self):
+		testDirName = 'testDownloadFilesHisto'
+		
+		testAudioDirRoot = DirUtil.getTestDataPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		audioFileHistoryLst = DirUtil.getAudioFilesSortedByDateInfoList(targetDir=testPath,
+		                                                                excludedSubDirNameLst=['Excluded dir'])
+		self.assertEqual([['JMJ', [['200310-exploreAudio.mp3', '220219'], ['Here to help - Give him what he wants.mp3', '220219']]], ['Crypto', [['98-Here to help - Give him what he wants.mp3', '220219'], ['Funny suspicious looking dog.mp3', '220219']]]],
+		                 audioFileHistoryLst)
+
+		'''
+		for audioSubDirLst in audioFileHistoryLst:
+			print(audioSubDirLst[0])
+			for audioFileNameSubList in audioSubDirLst[1]:
+				print('\t', audioFileNameSubList)
+		'''
+		
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testReplaceUnauthorizedDirOrFileNameChars_double_or_char()
+	tst.testGetAudioFilesSortedByDateInfoList()

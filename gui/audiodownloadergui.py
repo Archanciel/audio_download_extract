@@ -1378,6 +1378,21 @@ class AudioDownloaderGUI(AudioGUI):
 			outputLabelLineLst.append(currentConversionInfoStr)
 		
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
+
+	def displayDownloadHisto(self):
+			self.dropDownMenu.dismiss()
+			
+			outputLines = 0;
+			
+			audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=['EMI','UCEM','Gary Renard en français','GARY RENARD','settings','Bug','Bug_','Un Cours En Miracles'])
+	
+			for audioSubDirLst in audioFileHistoryLst:
+				self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]))
+				for audioFileName in audioSubDirLst[1]:
+					if outputLines > 85: 
+						return
+					self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0])
+					outputLines += 1
 	
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""

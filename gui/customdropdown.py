@@ -47,5 +47,8 @@ class CustomDropDown(DropDown):
 	def shareAudio(self):
 		self.rootGUI.openShareAudioPopup()
 	
+	def downloadHisto(self):
+		self.rootGUI.displayDownloadHisto()
+	
 	def help(self):
 		self.rootGUI.displayHelp()
