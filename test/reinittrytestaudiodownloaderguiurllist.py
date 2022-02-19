@@ -28,7 +28,7 @@ class ReInitTryTestAudioDownloaderGUIUrlList:
 
 		tryTst = TryTestAudioDownloaderGUIUrlList()
 		tryTst.tryTestAudioDownloaderGUI()
-		print('\n\nTryTestAudioDownloaderGUIUrlList output dirs reinitialized')
+		print('\n\nTryTestAudioDownloaderGUIUrlList output dirs reinitialized. Download All can be retried.')
 		
 		sys.stdin = stdin
 
