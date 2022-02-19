@@ -619,6 +619,41 @@ class AudioController:
 
 	def getAudioFilesSortedByDateInfoList(self,
 	                                      excludedSubDirNameLst=[]):
+		"""
+		Returns a list of sub-lists formatted according to this model:
+		
+		[
+			[<audio sub-dir name 1>, [
+					[<audio file name 1>, <yymmdd download date>],
+					[<audio file name 2>, <yymmdd download date>]
+				]
+			],
+			[<audio sub-dir name 2>, [
+					[<audio file name 1>, <yymmdd download date>],
+					[<audio file name 2>, <yymmdd download date>]
+				]
+			]
+		]
+		
+		Example:
+		
+		[
+			['JMJ', [
+					['200310-exploreAudio.mp3', '220219'],
+					['Here to help - Give him what he wants.mp3', '220219']
+				]
+			],
+			['Crypto', [
+					['98-Here to help - Give him what he wants.mp3', '220219'],
+					['Funny suspicious looking dog.mp3', '220219']
+				]
+			]
+		]
+		
+		:param excludedSubDirNameLst: [<sub-dir name 1>, <sub-dir name 1>, ...]
+		
+		:return: see above
+		"""
 		return DirUtil.getAudioFilesSortedByDateInfoList(targetDir=self.configMgr.dataPath,
 		                                                 excludedSubDirNameLst=excludedSubDirNameLst)
 

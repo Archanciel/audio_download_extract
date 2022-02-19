@@ -447,6 +447,41 @@ class DirUtil:
 	@staticmethod
 	def getAudioFilesSortedByDateInfoList(targetDir,
 	                                      excludedSubDirNameLst=[]):
+		"""
+		Returns a list of sub-lists formatted according to this model:
+
+		[
+			[<targetDir sub-dir name 1>, [
+					[<audio file name 1>, <yymmdd download date>],
+					[<audio file name 2>, <yymmdd download date>]
+				]
+			],
+			[<targetDir sub-dir name 2>, [
+					[<audio file name 1>, <yymmdd download date>],
+					[<audio file name 2>, <yymmdd download date>]
+				]
+			]
+		]
+
+		Example:
+
+		[
+			['JMJ', [
+					['200310-exploreAudio.mp3', '220219'],
+					['Here to help - Give him what he wants.mp3', '220219']
+				]
+			],
+			['Crypto', [
+					['98-Here to help - Give him what he wants.mp3', '220219'],
+					['Funny suspicious looking dog.mp3', '220219']
+				]
+			]
+		]
+
+		:param excludedSubDirNameLst: [<sub-dir name 1>, <sub-dir name 1>, ...]
+
+		:return: see above
+		"""
 		# list audioRootDir sub-dirs
 		updtDateSortedSubDirLst = [s for s in os.listdir(targetDir) if os.path.isdir(os.path.join(targetDir, s))]
 		

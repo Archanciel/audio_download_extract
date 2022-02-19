@@ -1380,11 +1380,17 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 
 	def displayDownloadHisto(self):
+		"""
+		Called by CustomDropDown.downloadHisto() which is called by Downl histo
+		menu item defined in customdropdown.kv file.
+		"""
 		self.dropDownMenu.dismiss()
 			
 		outputLines = 0;
-			
-		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=['EMI','UCEM','Gary Renard en français','GARY RENARD','settings','Bug','Bug_','Un Cours En Miracles'])
+		
+		excludedSubDirNameLst = ['EMI', 'UCEM', 'Gary Renard en français', 'GARY RENARD', 'settings', 'Bug', 'Bug_',
+		             'Un Cours En Miracles']
+		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=excludedSubDirNameLst)
 	
 		for audioSubDirLst in audioFileHistoryLst:
 			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),

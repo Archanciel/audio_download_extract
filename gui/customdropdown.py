@@ -48,6 +48,9 @@ class CustomDropDown(DropDown):
 		self.rootGUI.openShareAudioPopup()
 	
 	def downloadHisto(self):
+		"""
+		Called by Downl histo menu item defined in customdropdown.kv file.
+		"""
 		self.rootGUI.displayDownloadHisto()
 	
 	def help(self):
