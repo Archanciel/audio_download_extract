@@ -75,22 +75,24 @@ class AudioGUI(Screen):
 								requestListRVSpacing)
 		self.dropDownMenu = CustomDropDown(rootGUI=self)
 
-	def outputResult(self, resultStr):
+	def outputResult(self, resultStr, scrollToEnd=True):
 		if len(self.outputLabel.text) == 0:
 			self.outputLabel.text = resultStr
 		else:
 			self.outputLabel.text = self.outputLabel.text + '\n' + resultStr
-
-		# scrolling to end of output text
-		self.outputScrollView.scroll_y = 0
+			
+		if scrollToEnd:
+			self.outputScrollView.scroll_y = 0
+		else:	
+			self.outputScrollView.scroll_y = 1
 
 	def displayPopupWarning(self, message):
 		self.displayOkPopup(title='AudioDownloader WARNING',
-		                    message=message)
+							message=message)
 	
 	def displayPopupError(self, message):
 		self.displayOkPopup(title='AudioDownloader ERROR',
-		                    message=message)
+							message=message)
 	
 	def displayOkPopup(self, title, message):
 		popupSize = None
@@ -114,11 +116,11 @@ class AudioGUI(Screen):
 		okPopup.ids.txt_input_multiline.text = resizedMsg
 		
 		popup = Popup(title=title,
-		              content=okPopup,
-		              size_hint=(None, None),
-		              pos_hint={'top': 0.8},
-		              size=popupSize,
-		              auto_dismiss=False)
+					  content=okPopup,
+					  size_hint=(None, None),
+					  pos_hint={'top': 0.8},
+					  size=popupSize,
+					  auto_dismiss=False)
 		
 		okPopup.popup = popup
 		popup.open()

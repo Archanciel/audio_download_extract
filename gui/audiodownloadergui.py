@@ -1330,8 +1330,8 @@ class AudioDownloaderGUI(AudioGUI):
 			# not downloading (clip or share file ...)
 			return self.audiobookPath
 
-	def outputResult(self, resultStr):
-		super(AudioDownloaderGUI, self).outputResult(resultStr)
+	def outputResult(self, resultStr, scrollToEnd=True):
+		super(AudioDownloaderGUI, self).outputResult(resultStr, scrollToEnd=scrollToEnd)
 		
 		self.clearResultOutputButton.disabled = False
 	
@@ -1380,19 +1380,21 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 
 	def displayDownloadHisto(self):
-			self.dropDownMenu.dismiss()
+		self.dropDownMenu.dismiss()
 			
-			outputLines = 0;
+		outputLines = 0;
 			
-			audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=['EMI','UCEM','Gary Renard en français','GARY RENARD','settings','Bug','Bug_','Un Cours En Miracles'])
+		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=['EMI','UCEM','Gary Renard en français','GARY RENARD','settings','Bug','Bug_','Un Cours En Miracles'])
 	
-			for audioSubDirLst in audioFileHistoryLst:
-				self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]))
-				for audioFileName in audioSubDirLst[1]:
-					if outputLines > 85: 
-						return
-					self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0])
-					outputLines += 1
+		for audioSubDirLst in audioFileHistoryLst:
+			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
+			                  scrollToEnd=False)
+			for audioFileName in audioSubDirLst[1]:
+				if outputLines > 85: 
+					return
+				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
+				                  scrollToEnd=False)
+				outputLines += 1
 	
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
