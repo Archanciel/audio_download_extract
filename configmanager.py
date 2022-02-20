@@ -17,6 +17,9 @@ class ConfigManager:
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID = DirUtil.getDefaultAudioRootPath()
 	DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS = DirUtil.getDefaultAudioRootPath()
 	
+	CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST = 'excludedaudiosubdirnamelst'
+	DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST = 'settings'
+
 	CONFIG_KEY_LOAD_AT_START_PATH_FILENAME = 'loadatstartpathfilename'
 	DEFAULT_LOAD_AT_START_PATH_FILENAME = ''
 	
@@ -73,6 +76,14 @@ class ConfigManager:
 				self.__singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_ANDROID
 			else:
 				self.__singleVideoDataPath = self.DEFAULT_SINGLE_VIDEO_DATA_PATH_WINDOWS
+			
+			self._updated = True
+		
+		try:
+			self.__excludedAudioSubdirNameLst = self.config[self.CONFIG_SECTION_GENERAL][
+				self.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST]
+		except KeyError:
+			self.__excludedAudioSubdirNameLst = self.DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST
 			
 			self._updated = True
 		
@@ -204,6 +215,15 @@ class ConfigManager:
 		self._updated = True
 	
 	@property
+	def excludedAudioSubdirNameLst(self):
+		return self.__excludedAudioSubdirNameLst
+	
+	@excludedAudioSubdirNameLst.setter
+	def excludedAudioSubdirNameLst(self, excludedAudioSubdirNameLstStr):
+		self.__excludedAudioSubdirNameLst = excludedAudioSubdirNameLstStr
+		self._updated = True
+	
+	@property
 	def loadAtStartPathFilename(self):
 		return self.__loadAtStartPathFilename
 	
@@ -290,6 +310,7 @@ class ConfigManager:
 		
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_DATA_PATH] = self.dataPath
 		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_SINGLE_VIDEO_DATA_PATH] = self.singleVideoDataPath
+		self.config[self.CONFIG_SECTION_GENERAL][self.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST] = self.excludedAudioSubdirNameLst
 		self.config[self.CONFIG_SECTION_GENERAL][
 			self.CONFIG_KEY_LOAD_AT_START_PATH_FILENAME] = self.loadAtStartPathFilename
 		self.config[self.CONFIG_SECTION_GENERAL][
