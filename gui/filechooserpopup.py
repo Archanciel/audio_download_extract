@@ -69,6 +69,7 @@ class FileChooserPopup(AbstractPopup):
 	SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE = 'Select or create directory where the playlist video audios will be downloaded'
 	SELECT_OR_CREATE_DIR_SINGLE_VIDEO_POPUP_TITLE = 'Select or create directory where the single video audio will be downloaded'
 	SELECT_FILE_TO_CLIP = 'Select audio file to clip'
+	SELECT_FILE_TO_DELETE = 'Select audio file to delete'
 	SELECT_FILE_TO_SHARE = 'Select audio file to share'
 
 	load = ObjectProperty(None)
@@ -280,10 +281,9 @@ class DeleteFileChooserPopup(FileChooserPopup):
 
 	"""
 	
-	def __init__(self, rootGUI, rootPath, **kwargs):
+	def __init__(self, rootGUI, **kwargs):
 		super(DeleteFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
-		self.rootPath = rootPath
 		self.loadAtStartFilePathName = ''
 	
 	def _setPopupSize(self):

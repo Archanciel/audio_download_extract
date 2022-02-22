@@ -910,7 +910,6 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_DELETE)
 		self.fileChooserPopup = DeleteFileChooserPopup(title=popupTitle,
 													   rootGUI=self,
-													   rootPath=self.audiobookPath,
 													   cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
 	
@@ -968,6 +967,8 @@ class AudioDownloaderGUI(AudioGUI):
 				return SaveFileChooserPopup.SELECT_OR_CREATE_DIR_PLAYLIST_POPUP_TITLE
 		elif fileAction == FILE_ACTION_SELECT_FILE_TO_SPLIT:
 			return SaveFileChooserPopup.SELECT_FILE_TO_CLIP
+		elif fileAction == FILE_ACTION_DELETE:
+			return SaveFileChooserPopup.SELECT_FILE_TO_DELETE
 		else:
 			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
 			return SaveFileChooserPopup.SELECT_FILE_TO_SHARE
