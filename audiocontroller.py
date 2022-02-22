@@ -483,7 +483,8 @@ class AudioController:
 		
 		# deleting audio files
 		
-		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[0])
+		# the first element in the list is the playlist dir path ...
+		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[-1])
 		DirUtil.deleteFiles(filePathNameLst)
 		
 		# now removing video entries in download video info dic
