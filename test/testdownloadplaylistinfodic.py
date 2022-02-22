@@ -1080,4 +1080,4 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testGetPlaylistUrlTitleCachedDic_settings_dir_not_exist()
+	tst.testDeleteVideoInfoForVideoFileName()
