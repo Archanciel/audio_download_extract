@@ -47,7 +47,15 @@ class AudioExtractor:
 
 	def extractAudioPortions(self, videoIndex, downloadVideoInfoDic, floatSpeed=1.0):
 		"""
-		Extract audio portions from
+		Extract audio portions from the audio file corresponding to the passed video
+		index contained in the passed download video info dictionary.
+		
+		This method is called by AudioController.downloadVideosReferencedInPlaylist(),
+		itself called by AudioDownloaderGUI. It handles playlists whose title contains
+		extract and/or suppress time frames.
+		
+		This method is also called by AudioController.clipAudioFile(), itself called by
+		AudioClipperGUI.
 		
 		:param videoIndex:
 		:param downloadVideoInfoDic:
@@ -72,14 +80,24 @@ class AudioExtractor:
 				timeEndSec = videoAudioFrame.duration
 				extractStartEndSecondsList[1] = timeEndSec
 				videoAudioFrame.close()
+				
+			if timeStartSec > timeEndSec:
+				msgText = '\nskipping extracting portion due to start time {} greater than end time {}...\n'.format(timeStartSec, timeEndSec)
+				self.audioController.displayMessage(msgText)
+				continue
 			
 			clip = mp.AudioFileClip(audioFilePathName).subclip(timeStartSec,
 			                                                   timeEndSec)
 			mp3FileName = os.path.splitext(audioOrVideoFileName)[0] + '_' + str(timeFrameIndex) + '.mp3'
 			mp3FilePathName = os.path.join(self.targetAudioDir,
 			                               mp3FileName)
-			clip.write_audiofile(mp3FilePathName)
-			clip.close()
+			
+			try:
+				clip.write_audiofile(mp3FilePathName)
+				clip.close()
+			except IOError as e:
+				self.audioController.displayMessage(str(e))
+				return
 			
 			# now changing the speed of the split audio file
 			if floatSpeed != 1.0:
@@ -136,7 +154,15 @@ class AudioExtractor:
 				if extractStartEndSecondsList[0] == 'end':
 					suppressStartEndSecondsLists[extractIdx - 1][1] = duration
 					continue
-					
+				
+				timeStartSec = extractStartEndSecondsList[0]
+				
+				if timeStartSec > duration:
+					msgText = '\nskipping suppression portion due to start time {} greater than duration time {}...\n'.format(
+						timeStartSec, duration)
+					self.audioController.displayMessage(msgText)
+					continue
+				
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
 				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 			else:
@@ -145,12 +171,21 @@ class AudioExtractor:
 				keptStartEndSecondsLists.append(extractStartEndSecondsList)
 				clips.append(self.extractClip(videoAudioFrame, extractStartEndSecondsList))
 
+		if clips == []:
+			# the case if suppression time frames were invalid
+			return
+		
 		clip = mp.concatenate_audioclips(clips)
 		mp3FileName = os.path.splitext(videoAudioFileName)[0] + '_s.mp3'
 		mp3FilePathName = os.path.join(self.targetAudioDir,
 		                               mp3FileName)
-		clip.write_audiofile(mp3FilePathName)
-		clip.close()
+		try:
+			clip.write_audiofile(mp3FilePathName)
+			clip.close()
+		except IOError as e:
+			self.audioController.displayMessage(str(e))
+			return
+		
 		videoAudioFrame.close()
 		HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(suppressStartEndSecondsLists)
 		HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(keptStartEndSecondsLists)
