@@ -192,6 +192,7 @@ class ConfigManager:
 		self.loadAtStartShareContactsPathFilename = self.DEFAULT_LOAD_AT_START_SHARE_CONTACTS_PATH_FILENAME
 		self.histoListVisibleSize = self.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE
 		self.appSizeHalfProportion = self.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION
+		self.excludedAudioSubdirNameLst = self.DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST
 		self._updated = True
 		
 		self.saveConfig()
