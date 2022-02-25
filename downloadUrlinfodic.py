@@ -146,33 +146,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = 1
 			self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME] = urlListDicFileName
 			self.dic[KEY_URL] = {}
-	
-	def updateUrlIdxDownloadOk(self, urlIdxDownlOkTuple):
-		"""
-		The passed tuple contains the indexes of the downloaded playlists which
-		had no downloaded video failure, only video successfully downloaded or
-		skipped.
-		
-		The passed tuple also contains the indexes of the successfully downloaded
-		single videos.
-		
-		:param urlIdxDownlOkTuple:
-		"""
-		self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_OK] = urlIdxDownlOkTuple
-
-	def buildDownloadDirValue(self, playlistTitle):
-		# must be changed !!!
-		return playlistTitle
 
 	def getNextUrlIndex(self):
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX]
 		else:
 			return None
-
-	def setNextUrlIndex(self, urlIndex):
-		if KEY_GENERAL in self.dic.keys():
-			self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex
 
 	def getPlaylistTitleOriginal(self):
 		"""
@@ -204,6 +183,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 		:return: failed url index tuple
 		"""
+		# TODO: add method usage and test or delete the method
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_FAIL]
 		else:
@@ -219,6 +199,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		
 		:return: skipped url index tuple
 		"""
+		# TODO: add method usage and test or delete the method
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_IDX_DOWNL_SKIP]
 		else:
@@ -231,6 +212,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		
 		:return: playlist download dir name
 		"""
+		# TODO: add method usage and test or delete the method
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_URL_LIST_FILE_NAME]
 		else:
@@ -247,6 +229,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 		:return: total download result tuple
 		"""
+		# TODO: add method usage and test or delete the method
 		if KEY_GENERAL in self.dic.keys():
 			return self.dic[KEY_GENERAL][KEY_GENERAL_TOTAL_DOWNLOAD_RESULT]
 		else:
@@ -265,19 +248,6 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		:return: playlist DownloadVideoInfoDic file path name
 		"""
 		return playlistDownloadBaseDir + sep + validPlaylistDirName + DownloadUrlInfoDic.DIC_FILE_NAME_EXTENT
-	
-	def getVideoIndexStrings(self):
-		'''
-		Returns a list of video indexes as string.
-		
-		:return: example: ['1', '2']
-		'''
-		return list(self.dic[KEY_URL].keys())
-	
-	def existVideoInfoForVideoTitle(self, videoTitle):
-		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
-		
-		return videoIndex is not None
 	
 	def getUrlTitleForUrlIndex(self, urlIndex):
 		urlInfoDic = self._getUrlInfoForUrlIndex(urlIndex)
@@ -342,6 +312,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		
 		:return:    download result 3 elements tuple or None
 		"""
+		# TODO: add method usage and test or delete the method
 		urlIndex = self.getUrlIndexForUrlTitle(urlTitle)
 
 		if urlIndex:
@@ -350,22 +321,6 @@ class DownloadUrlInfoDic(BaseInfoDic):
 				return videoInfoDic[KEY_URL_DOWNLOAD_RESULT]
 
 		return None
-	
-	def setVideoDownloadExceptionForVideoTitle(self,
-	                                           videoTitle,
-	                                           isDownloadSuccess):
-		"""
-		Sets the video download exception value for the passed video
-		title to True if the passed isDownloadSuccess is False, and to
-		False otherwise.
-
-		:param videoTitle:
-		"""
-		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
-		
-		if videoIndex:
-			self.setUrlDownloadResultTupleForUrlIndex(videoIndex,
-			                                          isDownloadSuccess)
 	
 	def setUrlDownloadResultTupleForUrlIndex(self,
 	                                         urlIndex,
@@ -377,15 +332,8 @@ class DownloadUrlInfoDic(BaseInfoDic):
 
 		:param urlIndex:
 		"""
+		# TODO: add method usage and test or delete the method
 		self._getUrlInfoForUrlIndex(urlIndex)[KEY_URL_DOWNLOAD_RESULT] = downloadResultTuple
-	
-	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
-		videoInfoDic = self._getUrlInfoForUrlIndex(videoIndex)
-		
-		if KEY_URL_DOWNLOAD_TIME in videoInfoDic.keys():
-			return videoInfoDic[KEY_URL_DOWNLOAD_TIME]
-		else:
-			return None
 
 	def getVideoDownloadTimeForVideoTitle(self, videoTitle):
 		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
@@ -435,69 +383,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		urlIndexDic[KEY_URL_DOWNLOAD_TIME] = additionTimeStr
 
 		self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex + 1
-		
-	def addUrlDownloadData(self,
-	                       urlDownloadData):
-		"""
-		Creates the url info sub-dic for next url index using data contained
-		in the passed UrlDownloadData instance.
 
-		:param urlDownloadData:
-		"""
-		#		logging.info('DownloadVideoInfoDic.addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
-		#		print('addVideoInfoForVideoIndex(videoIndex={}, videoTitle={}, downloadedFileName={})'.format(videoIndex, videoTitle, downloadedFileName))
-		
-		if not KEY_URL in self.dic.keys():
-			self.dic[KEY_URL] = {}
-		
-		urlIndex = self.getNextUrlIndex()
-		urlIndexKey = str(urlIndex)
-		
-		if not urlIndexKey in self.dic[KEY_URL].keys():
-			urlIndexDic = {}
-			self.dic[KEY_URL][urlIndexKey] = urlIndexDic
-		else:
-			urlIndexDic = self.dic[KEY_URL][urlIndexKey]
-		
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
-		
-		urlIndexDic[KEY_URL_TYPE] = urlDownloadData.type
-		urlIndexDic[KEY_URL_TITLE] = urlDownloadData.title
-		urlIndexDic[KEY_URL_URL] = urlDownloadData.url
-		urlIndexDic[KEY_URL_DOWNLOAD_DIR] = urlDownloadData.downloadDir
-		urlIndexDic[KEY_URL_DOWNLOAD_TIME] = additionTimeStr
-		
-		self.dic[KEY_GENERAL][KEY_GENERAL_NEXT_URL_INDEX] = urlIndex + 1
-	
-	def removeUrlDicForUrlTitleIfExist(self, urlTitle):
-		"""
-		Method probably not used !!!
-		
-		If we are re-downloading a video whose previous download
-		was unsuccessful, it is necessary to remove its video info
-		dic since it will be replaced by the newly created dic.
-
-		:param urlTitle:
-		"""
-		urlIndex = self.getUrlIndexForUrlTitle(urlTitle)
-		
-		if urlIndex:
-			del self.dic[KEY_URL][urlIndex]
-		
-	def removeVideoInfoForVideoTitle(self,
-									 videoTitle):
-		videoIndex = self.getUrlIndexForUrlTitle(videoTitle)
-
-		if videoIndex:
-			del self.dic[KEY_URL][videoIndex]
-	
-	def removeVideoInfoForVideoIndex(self,
-									 videoIndex):
-		videoIndexStr = str(videoIndex)
-		
-		if videoIndexStr in self.dic[KEY_URL].keys():
-			del self.dic[KEY_URL][videoIndexStr]
-	
 	def _getUrlInfoForUrlIndex(self, urlIndex):
 		'''
 		Returns the url info dic associated to the passed url index.
@@ -522,39 +408,12 @@ class DownloadUrlInfoDic(BaseInfoDic):
 			urlInfoDic = {}
 		return urlInfoDic
 	
-	def getFailedVideoIndexes(self):
-		"""
-		Returns a list of download failed video integer indexes.
-		
-		:return: list of download failed video integer indexes
-		"""
-		# failedVideoIndexLst = []
-		#
-		# for indexKey, videoDic in self.dic[KEY_URL].items():
-		#
-		# 	if videoDic[KEY_URL_DOWNLOAD_RESULT] is True:
-		# 		failedVideoIndexLst.append(int(indexKey))
-		#
-		# return failedVideoIndexLst
-		pass
-	
 	def getUrlIndexForUrlTitle(self, urlTitle):
 		for key in self.dic[KEY_URL].keys():
 			if self.getUrlTitleForUrlIndex(key) == urlTitle:
 				return key
 		
 		return None
-	
-	def getVideoIndexForVideoFileName(self, videoFileName):
-		for key in self.dic[KEY_URL].keys():
-			if self.getUrlDownloadDirForUrlIndex(key) == videoFileName:
-				return key
-		
-		return None
-
-	def deleteVideoInfoForVideoFileName(self, videoFileName):
-		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
-		self.removeVideoInfoForVideoIndex(videoIndex)
 	
 	def getDicDirName(self):
 		return self.getPlaylistTitleOriginal()
