@@ -12,7 +12,7 @@ from gui.helppopup import HelpPopup
 from gui.okpopup import OkPopup
 from dirutil import DirUtil
 
-AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.1'
+AUDIODOWNLOADER_VERSION = 'AudioDownloader 2.2'
 FILE_ACTION_LOAD = 0
 
 class AudioGUI(Screen):
