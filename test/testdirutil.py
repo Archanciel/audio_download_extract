@@ -599,7 +599,7 @@ class TestDirUtil(unittest.TestCase):
 		
 		audioFileHistoryLst = DirUtil.getAudioFilesSortedByDateInfoList(targetDir=testPath,
 		                                                                excludedSubDirNameLst=['Excluded dir'])
-		self.assertEqual([['JMJ', [['200310-exploreAudio.mp3', '220219'], ['Here to help - Give him what he wants.mp3', '220219']]], ['Crypto', [['98-Here to help - Give him what he wants.mp3', '220219'], ['Funny suspicious looking dog.mp3', '220219']]]],
+		self.assertEqual([['JMJ',  [['Here to help - Give him what he wants.mp3', '220222'],   ['200310-exploreAudio.mp3', '220222']]], ['Crypto',  [['Funny suspicious looking dog.mp3', '220222'],   ['98-Here to help - Give him what he wants.mp3', '220222']]]],
 		                 audioFileHistoryLst)
 
 		'''
