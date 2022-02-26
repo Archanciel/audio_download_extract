@@ -29,6 +29,8 @@ class AudioGUI(Screen):
 		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
 		self.isDeleteDropDownMenuItemDisplayed = True
+		self.isDownHistoDropDownMenuItemDisplayed = True
+		self.isDelHistoDropDownMenuItemDisplayed = True
 		self.error = False
 		
 		# WARNING: accessing MainWindow fields defined in kv file
@@ -183,6 +185,20 @@ class AudioGUI(Screen):
 		else:
 			# hide drop down menu items
 			self.dropDownMenu.gridLayoutShare.height = 0
+		
+		if self.isDownHistoDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutDownHisto.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutDownHisto.height = 0
+		
+		if self.isDelHistoDropDownMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridLayoutDelHisto.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridLayoutDelHisto.height = 0
 		
 		if self.isSettingsDropDownMenuItemDisplayed:
 			# set drop down menu items visible

@@ -12,6 +12,8 @@ class AudioPositionGUI(AudioGUI):
 		self.isShareFileDropDownMenuItemDisplayed = False
 		self.isSettingsDropDownMenuItemDisplayed = False
 		self.isDeleteDropDownMenuItemDisplayed = False
+		self.isDownHistoDropDownMenuItemDisplayed = False
+		self.isDelHistoDropDownMenuItemDisplayed = False
 
 	def updateFileSoundPos(self,
 	                       soundloaderMp3Obj,
