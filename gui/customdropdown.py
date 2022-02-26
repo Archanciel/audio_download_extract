@@ -21,30 +21,46 @@ class CustomDropDown(DropDown):
 				self.width = dp(self.rootGUI.configMgr.dropDownMenuWidth)
 
 	def showLoad(self):
+		"""
+		Open the file load popup
+		"""
 		message = 'Data path ' + self.rootGUI.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.rootGUI.ensureDataPathExist(self.rootGUI.audiobookPath, message):
 			self.rootGUI.openFileLoadPopup()
 
 	def showSave(self):
+		"""
+		Open the file save popup
+		"""
 		message = 'Data path ' + self.rootGUI.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.rootGUI.ensureDataPathExist(self.rootGUI.audiobookPath, message):
 			self.rootGUI.openFileSavePopup()
 
 	def showDelete(self):
+		"""
+		Open the file delete popup. Files will be removed from playlist dir aswell as
+		from playlist dictionary file.
+		"""
 		message = 'Data path ' + self.rootGUI.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.rootGUI.ensureDataPathExist(self.rootGUI.audiobookPath, message):
 			self.rootGUI.openFileDeletePopup()
 
 	def showClipAudioFile(self):
+		"""
+		Show file open popup in order to select file opened in clip audio file screen.
+		"""
 		message = 'Data path ' + self.rootGUI.audiobookPath + ' as defined in the settings does not exist ! Either create the directory or change the data path value using the Settings menu.'
 
 		if self.rootGUI.ensureDataPathExist(self.rootGUI.audiobookPath, message):
 			self.rootGUI.openFileToClipLoadPopup()
 
 	def shareAudio(self):
+		"""
+		Show file open popup in order to select file opened in share audio file screen.
+		"""
 		self.rootGUI.openShareAudioPopup()
 	
 	def downloadHisto(self):

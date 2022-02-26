@@ -992,10 +992,10 @@ class AudioDownloaderGUI(AudioGUI):
 			# no file selected. Load dialog remains open ..
 			return
 		
-		currentLoadedFathFileName = os.path.join(path, filename[0])
-		self.loadHistoryFromPathFilename(currentLoadedFathFileName)
+		currentLoadedPathFileName = os.path.join(path, filename[0])
+		self.loadHistoryFromPathFilename(currentLoadedPathFileName)
 		self.dismissPopup()
-		self.displayFileActionOnStatusBar(currentLoadedFathFileName, FILE_ACTION_LOAD)
+		self.displayFileActionOnStatusBar(currentLoadedPathFileName, FILE_ACTION_LOAD)
 
 	def displayFileActionOnStatusBar(self, pathFileName, actionType, isLoadAtStart=None):
 		if actionType == FILE_ACTION_LOAD:
@@ -1398,8 +1398,6 @@ class AudioDownloaderGUI(AudioGUI):
 			
 		outputLines = 0;
 		
-		excludedSubDirNameLst = ['EMI', 'UCEM', 'Gary Renard en français', 'GARY RENARD', 'settings', 'Bug', 'Bug_',
-					 'Un Cours En Miracles']
 		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=self.excludedSubDirNameLst)
 	
 		for audioSubDirLst in audioFileHistoryLst:
@@ -1424,23 +1422,32 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.dropDownMenu.dismiss()
 		
-		outputLines = 0;
-		
-		excludedSubDirNameLst = ['EMI', 'UCEM', 'Gary Renard en français', 'GARY RENARD', 'settings', 'Bug', 'Bug_',
-		                         'Un Cours En Miracles']
 		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
+		histoLines = []
+		
 		for audioSubDirLst in audioFileHistoryLst:
-			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
-			                  scrollToEnd=False)
+			playlistName = audioSubDirLst[0]
+			histoLines.append(
+				{'text': playlistName, 'data': playlistName, 'toDownload': False,
+				 'selectable': False})
 			for audioFileName in audioSubDirLst[1]:
-				if outputLines > 85:
-					return
-				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
-				                  scrollToEnd=False)
-				outputLines += 1
-	
+				downloadDate = audioFileName[1]
+				audioFileName = audioFileName[0]
+				histoLines.append(
+					{'text': downloadDate + ' ' + audioFileName, 'data': playlistName, 'toDownload': False,
+					 'selectable': False})
+
+		self.requestListRV.data = histoLines
+		self.requestListRVSelBoxLayout.clear_selection()
+
+		# Reset the ListView
+		self.resetListViewScrollToEnd()
+
+		self.manageStateOfGlobalRequestListButtons()
+		self.refocusOnFirstRequestInput()
+
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by

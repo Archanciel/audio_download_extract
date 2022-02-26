@@ -169,6 +169,23 @@ class LoadFileChooserPopup(FileChooserPopup):
 		super(LoadFileChooserPopup, self).__init__(rootGUI, **kwargs)
 		
 	def loadFile(self, path, selection):
+		"""
+		Due to the load=self.load argument setting used in the
+		AudioDownloaderGUI.openFileLoadPopup() method displayed below,
+		when executing self.load(path, selection) in this method body,
+		the AudioDownloaderGUI.load() method is called !
+		
+		def openFileLoadPopup(self):
+			self.dropDownMenu.dismiss()
+			popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
+			self.fileChooserPopup = LoadFileChooserPopup(title=popupTitle,
+														 rootGUI=self,
+													>>>	 load=self.load,
+														 cancel=self.dismissPopup)
+		
+		:param path:
+		:param selection:
+		"""
 		self.load(path, selection)
 
 class SaveFileChooserPopup(FileChooserPopup):
