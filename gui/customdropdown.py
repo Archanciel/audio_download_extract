@@ -50,8 +50,24 @@ class CustomDropDown(DropDown):
 	def downloadHisto(self):
 		"""
 		Called by Downl histo menu item defined in customdropdown.kv file.
+		
+		Displays the download history in the output result label, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first.
 		"""
 		self.rootGUI.displayDownloadHisto()
+	
+	def downloadHistoDel(self):
+		"""
+		Called by Del histo menu item defined in customdropdown.kv file.
+
+		Displays the download history in the main GUI selectable list, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first. Each file list item
+		has a checkbox in order to set if the file must be deleted physically,
+		without being removed from the playlist dictionary file.
+		"""
+		self.rootGUI.displayDownloadHistoForDeletion()
 	
 	def help(self):
 		self.rootGUI.displayHelp()

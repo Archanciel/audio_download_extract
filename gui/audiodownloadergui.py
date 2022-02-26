@@ -1078,6 +1078,10 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		Called by DeleteFileChooserPopup.delete().
 		
+		Displays the download history in the output result label, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first.
+		
 		:param filePathNameLst:
 		"""
 		self.audioController.deleteAudioFiles(filePathNameLst=filePathNameLst)
@@ -1385,6 +1389,10 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		Called by CustomDropDown.downloadHisto() which is called by Downl histo
 		menu item defined in customdropdown.kv file.
+		
+		Displays the download history in the output result label, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first.
 		"""
 		self.dropDownMenu.dismiss()
 			
@@ -1402,6 +1410,35 @@ class AudioDownloaderGUI(AudioGUI):
 					return
 				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
 								  scrollToEnd=False)
+				outputLines += 1
+
+	def displayDownloadHistoForDeletion(self):
+		"""
+		Called by Del histo menu item defined in customdropdown.kv file.
+
+		Displays the download history in the main GUI selectable list, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first. Each file list item
+		has a checkbox in order to set if the file must be deleted physically,
+		without being removed from the playlist dictionary file.
+		"""
+		self.dropDownMenu.dismiss()
+		
+		outputLines = 0;
+		
+		excludedSubDirNameLst = ['EMI', 'UCEM', 'Gary Renard en français', 'GARY RENARD', 'settings', 'Bug', 'Bug_',
+		                         'Un Cours En Miracles']
+		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
+			excludedSubDirNameLst=self.excludedSubDirNameLst)
+		
+		for audioSubDirLst in audioFileHistoryLst:
+			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
+			                  scrollToEnd=False)
+			for audioFileName in audioSubDirLst[1]:
+				if outputLines > 85:
+					return
+				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
+				                  scrollToEnd=False)
 				outputLines += 1
 	
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):

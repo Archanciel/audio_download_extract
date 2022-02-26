@@ -66,6 +66,12 @@
         height: '28dp'
         disabled: False
         on_release: root.downloadHisto()
+    Button:
+        text: 'Del histo'
+        size_hint_y: None
+        height: '28dp'
+        disabled: False
+        on_release: root.downloadHistoDel()
     GridLayout: # enable to hide or display 'Settings' menu item
         id: gridlayout_settingsButton
 		cols: 1
