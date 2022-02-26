@@ -1426,6 +1426,7 @@ class AudioDownloaderGUI(AudioGUI):
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
 		histoLines = []
+		fileNameMaxLength = 42
 		
 		for audioSubDirLst in audioFileHistoryLst:
 			playlistName = audioSubDirLst[0]
@@ -1433,10 +1434,9 @@ class AudioDownloaderGUI(AudioGUI):
 				{'text': playlistName, 'data': playlistName, 'toDownload': False,
 				 'selectable': False})
 			for audioFileName in audioSubDirLst[1]:
-				downloadDate = audioFileName[1]
 				audioFileName = audioFileName[0]
 				histoLines.append(
-					{'text': downloadDate + ' ' + audioFileName, 'data': playlistName, 'toDownload': False,
+					{'text': audioFileName[0:fileNameMaxLength], 'data': playlistName, 'toDownload': False,
 					 'selectable': False})
 
 		self.requestListRV.data = histoLines
