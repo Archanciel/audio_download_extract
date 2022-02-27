@@ -1395,39 +1395,41 @@ class AudioDownloaderGUI(AudioGUI):
 		playlist dir ordered by date, most recent first.
 		"""
 		self.dropDownMenu.dismiss()
-			
-		outputLines = 0;
 		
-		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(excludedSubDirNameLst=self.excludedSubDirNameLst)
-	
+		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
+			excludedSubDirNameLst=self.excludedSubDirNameLst)
+		
+		self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
+		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
+
+	def printDownloadHistoryToOutputLabel(self, audioFileHistoryLst):
+		"""
+		Displays the download history in the output result label, i.e.
+		for each playlist the file names of the files still present in the
+		playlist dir ordered by date, most recent first.
+		"""
+		outputLines = 0;
+
 		for audioSubDirLst in audioFileHistoryLst:
 			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
-							  scrollToEnd=False)
+			                  scrollToEnd=False)
 			for audioFileName in audioSubDirLst[1]:
-				if outputLines > 85: 
-					return
+				if outputLines > 85:
+					break
 				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
-								  scrollToEnd=False)
+				                  scrollToEnd=False)
 				outputLines += 1
-
-	def displayDownloadHistoForDeletion(self):
+	
+	def fillHistoryListWithDownloadHistory(self, audioFileHistoryLst):
 		"""
-		Called by Del histo menu item defined in customdropdown.kv file.
-
 		Displays the download history in the main GUI selectable list, i.e.
 		for each playlist the file names of the files still present in the
 		playlist dir ordered by date, most recent first. Each file list item
 		has a checkbox in order to set if the file must be deleted physically,
 		without being removed from the playlist dictionary file.
 		"""
-		self.dropDownMenu.dismiss()
-		
-		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
-			excludedSubDirNameLst=self.excludedSubDirNameLst)
-		
 		histoLines = []
 		fileNameMaxLength = 42
-		
 		for audioSubDirLst in audioFileHistoryLst:
 			playlistName = audioSubDirLst[0]
 			histoLines.append(
@@ -1438,16 +1440,24 @@ class AudioDownloaderGUI(AudioGUI):
 				histoLines.append(
 					{'text': audioFileName[0:fileNameMaxLength], 'data': playlistName, 'toDownload': False,
 					 'selectable': False})
-
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
-
+		
 		# Reset the ListView
 		self.resetListViewScrollToEnd()
-
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
+	
+	def moveAudioFileToOtherPlaylist(self):
+		"""
+		Called by Chge playlst menu item defined in customdropdown.kv file.
 
+		Move an audio file to another playlist and update the source and destination
+		playlist dic file.
+		"""
+		self.dropDownMenu.dismiss()
+		print('not yet used')
+	
 	def displayVideoEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the video download is finished by

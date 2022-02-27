@@ -73,17 +73,14 @@ class CustomDropDown(DropDown):
 		"""
 		self.rootGUI.displayDownloadHisto()
 	
-	def downloadHistoDel(self):
+	def moveAudioFileToOtherPlaylist(self):
 		"""
-		Called by Del histo menu item defined in customdropdown.kv file.
+		Called by Chge playlst menu item defined in customdropdown.kv file.
 
-		Displays the download history in the main GUI selectable list, i.e.
-		for each playlist the file names of the files still present in the
-		playlist dir ordered by date, most recent first. Each file list item
-		has a checkbox in order to set if the file must be deleted physically,
-		without being removed from the playlist dictionary file.
+		Move an audio file to another playlist and update the source and destination
+		playlist dic file.
 		"""
-		self.rootGUI.displayDownloadHistoForDeletion()
+		self.rootGUI.moveAudioFileToOtherPlaylist()
 	
 	def help(self):
 		self.rootGUI.displayHelp()
