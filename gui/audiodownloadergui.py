@@ -3,6 +3,12 @@ import os,sys,inspect
 import time
 from configparser import NoOptionError
 
+TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL = 'Down All'
+TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL = 'Del All'
+
+TOGGLE_HISTO_BUTTON_URL = "Url's"
+TOGGLE_HISTO_BUTTON_DOWN_DEL = 'Down Del'
+
 TIME_SLEEP_SECONDS = 1
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -419,6 +425,7 @@ class AudioDownloaderGUI(AudioGUI):
 							'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
+			self.toggleHistoButton.text = "Url's"
 			
 			if self.showRequestList:
 				self.adjustRequestListSize()
@@ -773,6 +780,14 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.clearResultOutputButton.disabled = True
 		self.refocusOnFirstRequestInput()
+		
+		if self.toggleHistoButton.text == TOGGLE_HISTO_BUTTON_DOWN_DEL:
+			# means the list contains downloaded audio files history. In this
+			# case, the history list must be refilled with Url's data contained
+			# in urlListDic_dic.txt
+			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
+			self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL
+			self.loadHistoryDataIfSet() # reload urlListDic_dic.txt
 	
 	def emptyRequestFields(self):
 		self.requestInput.text = ''
@@ -802,10 +817,23 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.refocusOnFirstRequestInput()
 	
-	def downloadSelectedItems(self):
+	def deleteSelectedAudioDownloadedFiles(self):
+		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
+		print(selectedAudioDownloadedFileLst)
+		# for listEntry in selectedAudioDownloadedFileLst:
+		# 	urlDownloadData = listEntry['data']
+		# 	playlistOrSingleVideoUrl = urlDownloadData.url
+	
+	def handleSelectedItems(self):
 		"""
 		Method linked to the Download All button in kv file.
 		"""
+		if self.toggleHistoButton.text == TOGGLE_HISTO_BUTTON_URL:
+			self.downloadSelectedItems()
+		else:
+			self.deleteSelectedAudioDownloadedFiles()
+			
+	def downloadSelectedItems(self):
 		self.totalDownloadVideoSuccessNb = 0
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
@@ -1444,6 +1472,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.requestListRVSelBoxLayout.clear_selection()
 		
 		# Reset the ListView
+		self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_DOWN_DEL
+		self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL
 		self.resetListViewScrollToEnd()
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
