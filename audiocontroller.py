@@ -476,7 +476,7 @@ class AudioController:
 	
 	def deleteAudioFilesFromDirAndFromDic(self, filePathNameLst):
 		"""
-		Called by AudioDownloaderGUI.deleteAudioFiles().
+		Called by AudioDownloaderGUI.deleteAudioFilesFromDirAndFromDic().
 		
 		Delete the files listed in the passed filePathNameLst and remove
 		their corresponding entry in the relevant playlist dic file.
@@ -507,7 +507,25 @@ class AudioController:
 				downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
 	
 			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
+	
+	def deleteAudioFilesFromDirOnly(self, delFileDic):
+		"""
+		Called by AudioDownloaderGUI.deleteSelectedAudioDownloadedFiles().
 
+		Delete the files listed in the passed delFileDic without removing
+		their corresponding entry from the relevant playlist dic file.
+
+		:param  delFileDic: dictionary with key == playlist name and value == list
+				of audio file partial names contained in the playlist dir.
+		"""
+		
+		# deleting audio files
+		audioRoot = self.configMgr.dataPath
+	
+		deletedFilePathNameLst = DirUtil.deletePartialNameAudioFiles(audioRootPath=audioRoot,
+		                                                             delFileDic=delFileDic)
+		self.audioGUI.displayDeletedAudioFiles(deletedFilePathNameLst)
+	
 	def defineIndexAndDateSettingWarningMsg(self,
 	                                        downloadVideoInfoDic,
 	                                        isDownloadDatePrefixAddedToPlaylistVideo,

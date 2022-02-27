@@ -854,12 +854,19 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
-		print(selectedAudioDownloadedFileLst)
+		delFileDic = {}
 	
 		for listEntry in selectedAudioDownloadedFileLst:
-			audioPartialFileName = listEntry['text']
+			audioFilePartialName = listEntry['text']
 			playlistName = listEntry['data']
+			
+			if playlistName in delFileDic.keys():
+				delFileDic[playlistName].append(audioFilePartialName)
+			else:
+				delFileDic[playlistName] = [audioFilePartialName]
 	
+		self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
+		
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
 		"""
 		This generic method first disable the buttons whose usage could disturb
@@ -1430,6 +1437,15 @@ class AudioDownloaderGUI(AudioGUI):
 		self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
 		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
 
+	def displayDeletedAudioFiles(self, deletedFilePathNameLst):
+		if len(deletedFilePathNameLst) > 0:
+			self.outputResult('\naudio files deleted\n')
+		else:
+			return
+		
+		for audioFilePath in deletedFilePathNameLst:
+			self.outputResult(audioFilePath)
+	
 	def printDownloadHistoryToOutputLabel(self, audioFileHistoryLst):
 		"""
 		Displays the download history in the output result label, i.e.

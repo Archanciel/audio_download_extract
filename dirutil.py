@@ -515,6 +515,31 @@ class DirUtil:
 			
 		return audioFileHistoryLst
 
+	@staticmethod
+	def deletePartialNameAudioFiles(audioRootPath, delFileDic):
+		"""
+		
+		:param audioRootPath:
+		:param delFileDic: ex: {'Politique': ['220324-Nouveau document texte.mp3',
+											  'Nouveau document t'],
+								'EMI': ['211224-Nouveau document texte jjjhmhfhmgfj']}
+		:return: deletedFilePathNameLst (path is playlist name only !)
+		"""
+		deletedFilePathNameLst = []
+		
+		for playlistName, partialFileNameList in delFileDic.items():
+			playlistDir = audioRootPath + sep + playlistName
+			playlisrDirFileNameList = os.listdir(playlistDir)
+			for partialFileName in partialFileNameList:
+				for fileName in playlisrDirFileNameList:
+					if fileName.startswith(partialFileName) and fileName.endswith('.mp3'):
+						filePathName = playlistDir + sep + fileName
+						DirUtil.deleteFileIfExist(filePathName)
+						deletedFilePathNameLst.append(DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootPath,
+						                                                                      fullFilePathName=filePathName))
+						
+		return deletedFilePathNameLst
+
 
 if __name__ == '__main__':
 	# PUT THAT IN UNIT TESTS !
