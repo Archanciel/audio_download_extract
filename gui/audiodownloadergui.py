@@ -817,13 +817,6 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.refocusOnFirstRequestInput()
 	
-	def deleteSelectedAudioDownloadedFiles(self):
-		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
-		print(selectedAudioDownloadedFileLst)
-		# for listEntry in selectedAudioDownloadedFileLst:
-		# 	urlDownloadData = listEntry['data']
-		# 	playlistOrSingleVideoUrl = urlDownloadData.url
-	
 	def handleSelectedItems(self):
 		"""
 		Method linked to the Download All button in kv file.
@@ -858,6 +851,14 @@ class AudioDownloaderGUI(AudioGUI):
 				# time.
 				
 				sepThreadExec.start()
+	
+	def deleteSelectedAudioDownloadedFiles(self):
+		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
+		print(selectedAudioDownloadedFileLst)
+	
+		for listEntry in selectedAudioDownloadedFileLst:
+			audioPartialFileName = listEntry['text']
+			playlistName = listEntry['data']
 	
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
 		"""
@@ -1102,17 +1103,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
 
-	def deleteAudioFiles(self, filePathNameLst):
+	def deleteAudioFilesFromDirAndFromDic(self, filePathNameLst):
 		"""
 		Called by DeleteFileChooserPopup.delete().
 		
-		Displays the download history in the output result label, i.e.
-		for each playlist the file names of the files still present in the
-		playlist dir ordered by date, most recent first.
+		Delete the files listed in the passed filePathNameLst and remove
+		their corresponding entry in the relevant playlist dic file.
 		
 		:param filePathNameLst:
 		"""
-		self.audioController.deleteAudioFiles(filePathNameLst=filePathNameLst)
+		self.audioController.deleteAudioFilesFromDirAndFromDic(filePathNameLst=filePathNameLst)
 		
 	# --- end file chooser code ---
 

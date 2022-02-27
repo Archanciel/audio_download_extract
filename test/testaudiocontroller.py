@@ -254,7 +254,7 @@ class TestAudioController(unittest.TestCase):
 			['{}Funny suspicious looking dog 13-11-05.mp3'.format(downloadDatePrefix)],
 			createdFileLst)
 
-	def testDeleteAudioFiles_all(self):
+	def testDeleteAudioFilesFromDirAndFromDic_all(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
 		
@@ -303,7 +303,7 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
-		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		audioController.deleteAudioFilesFromDirAndFromDic(deletedFilePathNameLst)
 		
 		dvi_after_deletion = DownloadPlaylistInfoDic(playlistUrl=None,
 		                                             audioRootDir=None,
@@ -320,7 +320,7 @@ class TestAudioController(unittest.TestCase):
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_2))
 		self.assertIsNone(dvi_after_deletion.getVideoUrlForVideoTitle(videoTitle_3))
 	
-	def testDeleteAudioFiles_all_noDownloadInfoDicFile(self):
+	def testDeleteAudioFilesFromDirAndFromDic_all_noDownloadInfoDicFile(self):
 		testDirName = 'test delete files noDownloadInfoDic'
 		testDirNameSaved = 'test delete files save dir'
 		
@@ -349,11 +349,11 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
-		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		audioController.deleteAudioFilesFromDirAndFromDic(deletedFilePathNameLst)
 	
 		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
 	
-	def testDeleteAudioFiles_some(self):
+	def testDeleteAudioFilesFromDirAndFromDic_some(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
 		
@@ -404,7 +404,7 @@ class TestAudioController(unittest.TestCase):
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 		
-		audioController.deleteAudioFiles(deletedFilePathNameLst)
+		audioController.deleteAudioFilesFromDirAndFromDic(deletedFilePathNameLst)
 		
 		dvi_after_deletion = DownloadPlaylistInfoDic(playlistUrl=None,
 		                                             audioRootDir=None,

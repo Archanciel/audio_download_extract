@@ -474,9 +474,12 @@ class AudioController:
 
 		self.audioGUI.displayVideoMp3ConversionCurrentInfo(videoCurrentMp3ConversionInfoList)
 	
-	def deleteAudioFiles(self, filePathNameLst):
+	def deleteAudioFilesFromDirAndFromDic(self, filePathNameLst):
 		"""
 		Called by AudioDownloaderGUI.deleteAudioFiles().
+		
+		Delete the files listed in the passed filePathNameLst and remove
+		their corresponding entry in the relevant playlist dic file.
 
 		:param filePathNameLst:
 		"""
