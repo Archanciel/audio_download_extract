@@ -140,7 +140,7 @@
 				text: "Down All"
 				size_hint_x: 15
 				disabled: True
-				on_press: root.downloadSelectedItems()
+				on_press: root.handleSelectedItems()
 			Button:
 				id: menu_Button
 				text: "..."
@@ -157,7 +157,8 @@
 									# selected item in a displayed list is the last item
 				id: request_RecycleView_list
 				rootGUI: root
-				scroll_y: 0 # forces scrolling to list bottom after adding an entry
+				scroll_y: 1 # 0 forces scrolling to list bottom after adding an entry,
+				            # 1 forces scrolling to top
 				effect_cls: "ScrollEffect" # prevents overscrolling
 				viewclass: 'SelectableMultiFieldsItem'
 				scroll_type: ['bars', 'content']
@@ -258,6 +259,7 @@
 	Label:
 		size_hint_x: 0.9
 		text: root.text
+		markup: True
 	CheckBox:
 		id: download_chkbox
 		size_hint_x: 0.1

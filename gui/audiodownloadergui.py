@@ -1434,7 +1434,13 @@ class AudioDownloaderGUI(AudioGUI):
 		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
-		self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
+		if os.name == 'posix':
+			if not GuiUtil.onSmartPhone():
+				# on smartphone, not enough room on output result label
+				self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
+		else:
+			self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
+
 		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
 
 	def displayDeletedAudioFiles(self, deletedFilePathNameLst):
@@ -1452,7 +1458,7 @@ class AudioDownloaderGUI(AudioGUI):
 		for each playlist the file names of the files still present in the
 		playlist dir ordered by date, most recent first.
 		"""
-		outputLines = 0;
+		outputLines = 0
 
 		for audioSubDirLst in audioFileHistoryLst:
 			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
@@ -1476,8 +1482,9 @@ class AudioDownloaderGUI(AudioGUI):
 		fileNameMaxLength = 42
 		for audioSubDirLst in audioFileHistoryLst:
 			playlistName = audioSubDirLst[0]
+			formattedPlaylistName = '[b]' + playlistName + '[/b]'
 			histoLines.append(
-				{'text': playlistName, 'data': playlistName, 'toDownload': False,
+				{'text': formattedPlaylistName, 'data': playlistName, 'toDownload': False,
 				 'selectable': False})
 			for audioFileName in audioSubDirLst[1]:
 				audioFileName = audioFileName[0]
@@ -1762,9 +1769,11 @@ class AudioDownloaderGUIMainApp(App):
 	"""
 	settings_cls = SettingsWithTabbedPanel
 	
-	def build(self): # implicitely looks for a kv file of name cryptopricergui.kv which is
-					 # class name without App, in lowercases
-					
+	def build(self):
+		"""
+		Implicitely looks for a kv file of name cryptopricergui.kv which is
+		class name without App, in lowercases
+		"""
 		# Builder is a global Kivy instance used
 		# in widgets that you can use to load other
 		# kv files in addition to the default ones.
@@ -1886,9 +1895,8 @@ class AudioDownloaderGUIMainApp(App):
 					"section": "General",
 					"key": "excludedaudiosubdirnamelst"
 				}
-			]""")  # "key": "dataPath" above is the key in the app config file.
-				)  # To use another drive, simply define it as datapath value
-				   # in the app config file
+			]"""))  # "key": "dataPath" above is the key in the app config file. To use another
+					# drive, simply define it as datapath value in the app config file
 
 		# add 'Layout' settings panel
 		settings.add_json_panel("Layout", self.config, data=("""
@@ -1989,13 +1997,14 @@ class AudioDownloaderGUIMainApp(App):
 			elif key == ConfigManager.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST:
 				self.audioDownloaderGUI.excludedSubDirNameLst = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL, ConfigManager.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST, ConfigManager.DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST)
 
-	def get_application_config(self):
+	def get_application_config(self, **kwargs):
 		'''
 		Redefining super class method to control the name and location of the
 		application	settings ini file. WARNING: this method is necessary for
 		the app config file to be updated when a value was changed with the
 		Kivy settings dialog.
 
+		:param **kwargs:
 		:return: the app config file path name
 		'''
 		configFilePathName = DirUtil.getConfigFilePathName()
