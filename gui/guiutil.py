@@ -18,6 +18,13 @@ class GuiUtil:
             return False
 
     @staticmethod
+    def onTablet():
+        if os.path.isdir(GuiUtil.SD_CARD_DIR_TABLET):
+            return True
+        else:
+            return False
+
+    @staticmethod
     def splitLineToLines(longLine, maxLineLen, replaceUnderscoreBySpace=False):
         '''
 		Add '\n' chars to the passed lonLine in order to respect the passed maxLineLen.

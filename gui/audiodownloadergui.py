@@ -1435,7 +1435,7 @@ class AudioDownloaderGUI(AudioGUI):
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
 		if os.name == 'posix':
-			if not GuiUtil.onSmartPhone():
+			if GuiUtil.onTablet():
 				# on smartphone, not enough room on output result label
 				self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
 		else:
