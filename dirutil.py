@@ -529,6 +529,9 @@ class DirUtil:
 		
 		for playlistName, partialFileNameList in delFileDic.items():
 			playlistDir = audioRootPath + sep + playlistName
+			if not os.path.isdir(playlistDir):
+				# the case if the dir was deleted
+				continue
 			playlisrDirFileNameList = os.listdir(playlistDir)
 			for partialFileName in partialFileNameList:
 				for fileName in playlisrDirFileNameList:

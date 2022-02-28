@@ -649,6 +649,50 @@ class TestDirUtil(unittest.TestCase):
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
+	
+	def testDeletePartialNameAudioFiles_playlist_dir_not_exist(self):
+		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
+		testRootDirSaved = testRootDir + '_saved'
+		
+		# restoring dic text files
+		
+		if os.path.exists(testRootDir):
+			shutil.rmtree(testRootDir)
+		
+		shutil.copytree(testRootDirSaved, testRootDir)
+		
+		self.assertEqual([
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
+			                 'document texte jjjhmhfhmgfj zkuztuz.mp3',
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
+			                 'document texte.mp3',
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
+			                 'document text_dic.txt',
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\220324-Nouveau '
+			                 'document texte.mp3',
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\Nouveau '
+			                 'document texte.mp3'],
+		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
+		                                                         fileNamePattern='*.*',
+		                                                         inSubDirs=True))
+		delFileDic = {}
+		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document t']
+		delFileDic['Playlist not exist'] = ['211226-Nouveau document texte jjjhmhfhmgfj']
+		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj']
+
+		deletedFilePathNameLst = DirUtil.deletePartialNameAudioFiles(testRootDir, delFileDic)
+		
+		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
+		                  'Politique\\Nouveau document texte.mp3',
+		                  'EMI\\211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFilePathNameLst)
+		self.assertEqual([
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
+			                 'document texte.mp3',
+			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
+			                 'document text_dic.txt'],
+		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
+		                                                         fileNamePattern='*.*',
+		                                                         inSubDirs=True))
 
 
 if __name__ == '__main__':
