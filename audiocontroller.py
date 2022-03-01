@@ -516,15 +516,23 @@ class AudioController:
 		their corresponding entry from the relevant playlist dic file.
 
 		:param  delFileDic: dictionary with key == playlist name and value == list
-				of audio file partial names contained in the playlist dir.
+				of audio file to delete names contained in the playlist dir. Ex:
+				{'Politique': ['220324-Nouveau document texte.mp3',
+							   'Nouveau document texte.mp3'],
+				 'EMI':       ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']}
+				 
+		:return:    deletedFileNameLst
 		"""
 		
 		# deleting audio files
 		audioRoot = self.configMgr.dataPath
-	
-		deletedFilePathNameLst = DirUtil.deletePartialNameAudioFiles(audioRootPath=audioRoot,
-		                                                             delFileDic=delFileDic)
+		
+		deletedFileNameLst, deletedFilePathNameLst = DirUtil.deleteAudioFiles(audioRootPath=audioRoot,
+		                                                                      delFileDic=delFileDic)
+		
 		self.audioGUI.displayDeletedAudioFiles(deletedFilePathNameLst)
+
+		return deletedFileNameLst
 	
 	def defineIndexAndDateSettingWarningMsg(self,
 	                                        downloadVideoInfoDic,

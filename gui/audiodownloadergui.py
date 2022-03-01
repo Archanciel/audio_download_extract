@@ -857,15 +857,20 @@ class AudioDownloaderGUI(AudioGUI):
 		delFileDic = {}
 	
 		for listEntry in selectedAudioDownloadedFileLst:
-			audioFilePartialName = listEntry['text']
-			playlistName = listEntry['data']
+			audiofileDataLst = listEntry['data']
+			playlistName = audiofileDataLst[0]
+			audioFileName = audiofileDataLst[1]
 			
 			if playlistName in delFileDic.keys():
-				delFileDic[playlistName].append(audioFilePartialName)
+				delFileDic[playlistName].append(audioFileName)
 			else:
-				delFileDic[playlistName] = [audioFilePartialName]
-	
-		self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
+				delFileDic[playlistName] = [audioFileName]
+		
+		deletedFileNameLst = self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
+
+		# removing deleted files from the download histo list
+		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['data'][1] not in deletedFileNameLst]
+		self.requestListRV.data = remainingAudioDownloadedFileLst
 		
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
 		"""
@@ -1477,19 +1482,36 @@ class AudioDownloaderGUI(AudioGUI):
 		playlist dir ordered by date, most recent first. Each file list item
 		has a checkbox in order to set if the file must be deleted physically,
 		without being removed from the playlist dictionary file.
+		
+		:param audioFileHistoryLst  [
+										[<audio sub-dir name 1>, [
+												[<audio file name 1>, <yymmdd download date>],
+												[<audio file name 2>, <yymmdd download date>]
+											]
+										],
+										[<audio sub-dir name 2>, [
+												[<audio file name 1>, <yymmdd download date>],
+												[<audio file name 2>, <yymmdd download date>]
+											]
+										]
+									]
+
 		"""
 		histoLines = []
-		fileNameMaxLength = 42
-		for audioSubDirLst in audioFileHistoryLst:
-			playlistName = audioSubDirLst[0]
+		fileNameMaxLength = 42 # value ok for Android smartphone
+		
+		for audioSubDirDataLst in audioFileHistoryLst:
+			playlistName = audioSubDirDataLst[0]
 			formattedPlaylistName = '[b]' + playlistName + '[/b]'
 			histoLines.append(
 				{'text': formattedPlaylistName, 'data': playlistName, 'toDownload': False,
 				 'selectable': False})
-			for audioFileName in audioSubDirLst[1]:
-				audioFileName = audioFileName[0]
+			for audioFileDataLst in audioSubDirDataLst[1]:
+				audioFileName = audioFileDataLst[0]
+				shortenedAudioFileName = audioFileName[0:fileNameMaxLength]
+				audioFileDownladDate_yymmdd = audioFileDataLst[1]
 				histoLines.append(
-					{'text': audioFileName[0:fileNameMaxLength], 'data': playlistName, 'toDownload': False,
+					{'text': shortenedAudioFileName, 'data': [playlistName, audioFileName, audioFileDownladDate_yymmdd], 'toDownload': False,
 					 'selectable': False})
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
