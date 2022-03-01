@@ -69,9 +69,10 @@ class CustomDropDown(DropDown):
 		
 		Displays the download history in the output result label, i.e.
 		for each playlist the file names of the files still present in the
-		playlist dir ordered by date, most recent first.
+		playlist dir ordered by date, most recent first. Fills the download
+		history list so that list items can be deleted.
 		"""
-		self.rootGUI.displayDownloadHisto()
+		self.rootGUI.handleDownloadHistory()
 	
 	def moveAudioFileToOtherPlaylist(self):
 		"""

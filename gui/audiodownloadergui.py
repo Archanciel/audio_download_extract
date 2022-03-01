@@ -1436,14 +1436,15 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 
-	def displayDownloadHisto(self):
+	def handleDownloadHistory(self):
 		"""
 		Called by CustomDropDown.downloadHisto() which is called by Downl histo
 		menu item defined in customdropdown.kv file.
 		
 		Displays the download history in the output result label, i.e.
 		for each playlist the file names of the files still present in the
-		playlist dir ordered by date, most recent first.
+		playlist dir ordered by date, most recent first. Fills the download
+		history list so that list items can be deleted.
 		"""
 		self.dropDownMenu.dismiss()
 		
