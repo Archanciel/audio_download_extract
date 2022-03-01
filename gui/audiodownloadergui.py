@@ -210,6 +210,11 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		if is_selected:
 			selItemUrlTitle = rv.data[index]['text']
 			selItemUrlDownloadData = rv.data[index]['data']
+			if isinstance(selItemUrlDownloadData, list):
+				# here, the liost contains download history information
+				self.audioDownloaderGUI.displayDownloadedFileName(selItemUrlDownloadData[1])
+				return
+			
 			selItemUrl = selItemUrlDownloadData.url
 			
 			Clipboard.copy(selItemUrl)
@@ -1456,6 +1461,9 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		for audioFilePath in deletedFilePathNameLst:
 			self.outputResult(audioFilePath)
+
+	def displayDownloadedFileName(self, fileName):
+		self.outputResult(fileName)
 	
 	def printDownloadHistoryToOutputLabel(self, audioFileHistoryLst):
 		"""
@@ -1512,7 +1520,7 @@ class AudioDownloaderGUI(AudioGUI):
 				audioFileDownladDate_yymmdd = audioFileDataLst[1]
 				histoLines.append(
 					{'text': shortenedAudioFileName, 'data': [playlistName, audioFileName, audioFileDownladDate_yymmdd], 'toDownload': False,
-					 'selectable': False})
+					 'selectable': True})
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
 		
