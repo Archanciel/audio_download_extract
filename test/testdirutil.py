@@ -609,7 +609,7 @@ class TestDirUtil(unittest.TestCase):
 				print('\t', audioFileNameSubList)
 		'''
 		
-	def testDeletePartialNameAudioFiles(self):
+	def testDeleteAudioFiles(self):
 		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
 		testRootDirSaved = testRootDir + '_saved'
 		
@@ -634,10 +634,10 @@ class TestDirUtil(unittest.TestCase):
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
 		delFileDic = {}
-		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document t']
-		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj']
+		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document texte.mp3']
+		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']
 
-		deletedFilePathNameLst = DirUtil.deletePartialNameAudioFiles(testRootDir, delFileDic)
+		deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
 		
 		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
  'Politique\\Nouveau document texte.mp3',
@@ -650,7 +650,7 @@ class TestDirUtil(unittest.TestCase):
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
 	
-	def testDeletePartialNameAudioFiles_playlist_dir_not_exist(self):
+	def testDeleteAudioFiles_playlist_dir_not_exist(self):
 		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
 		testRootDirSaved = testRootDir + '_saved'
 		
@@ -676,11 +676,11 @@ class TestDirUtil(unittest.TestCase):
 		                                                         fileNamePattern='*.*',
 		                                                         inSubDirs=True))
 		delFileDic = {}
-		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document t']
+		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document texte.mp3']
 		delFileDic['Playlist not exist'] = ['211226-Nouveau document texte jjjhmhfhmgfj']
-		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj']
+		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']
 
-		deletedFilePathNameLst = DirUtil.deletePartialNameAudioFiles(testRootDir, delFileDic)
+		deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
 		
 		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
 		                  'Politique\\Nouveau document texte.mp3',

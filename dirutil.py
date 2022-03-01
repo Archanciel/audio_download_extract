@@ -516,32 +516,34 @@ class DirUtil:
 		return audioFileHistoryLst
 
 	@staticmethod
-	def deletePartialNameAudioFiles(audioRootPath, delFileDic):
+	def deleteAudioFiles(audioRootPath, delFileDic):
 		"""
 		
 		:param audioRootPath:
 		:param delFileDic: ex: {'Politique': ['220324-Nouveau document texte.mp3',
-											  'Nouveau document t'],
-								'EMI': ['211224-Nouveau document texte jjjhmhfhmgfj']}
-		:return: deletedFilePathNameLst (path is playlist name only !)
+											  'Nouveau document texte.mp3'],
+								'EMI': ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']}
+		:return:    deletedFileNameLst,
+					deletedFilePathNameLst (path is playlist name only !)
 		"""
 		deletedFilePathNameLst = []
-		
-		for playlistName, partialFileNameList in delFileDic.items():
+		deletedFileNameLst = []
+
+		for playlistName, fileNameLst in delFileDic.items():
 			playlistDir = audioRootPath + sep + playlistName
 			if not os.path.isdir(playlistDir):
 				# the case if the dir was deleted
 				continue
-			playlisrDirFileNameList = os.listdir(playlistDir)
-			for partialFileName in partialFileNameList:
-				for fileName in playlisrDirFileNameList:
-					if fileName.startswith(partialFileName) and fileName.endswith('.mp3'):
-						filePathName = playlistDir + sep + fileName
-						DirUtil.deleteFileIfExist(filePathName)
-						deletedFilePathNameLst.append(DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootPath,
-						                                                                      fullFilePathName=filePathName))
+			playlistDirFileNameLst = os.listdir(playlistDir)
+			for fileName in fileNameLst:
+				if fileName in playlistDirFileNameLst:
+					filePathName = playlistDir + sep + fileName
+					DirUtil.deleteFileIfExist(filePathName)
+					deletedFileNameLst.append(fileName)
+					deletedFilePathNameLst.append(DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootPath,
+					                                                                      fullFilePathName=filePathName))
 						
-		return deletedFilePathNameLst
+		return deletedFileNameLst, deletedFilePathNameLst
 
 
 if __name__ == '__main__':
