@@ -637,8 +637,11 @@ class TestDirUtil(unittest.TestCase):
 		delFileDic['Politique'] = ['220324-Nouveau document texte.mp3', 'Nouveau document texte.mp3']
 		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']
 
-		deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
+		deletedFileNameLst, deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
 		
+		self.assertEqual(['220324-Nouveau document texte.mp3',
+ 'Nouveau document texte.mp3',
+ '211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFileNameLst)
 		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
  'Politique\\Nouveau document texte.mp3',
  'EMI\\211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFilePathNameLst)
@@ -680,8 +683,11 @@ class TestDirUtil(unittest.TestCase):
 		delFileDic['Playlist not exist'] = ['211226-Nouveau document texte jjjhmhfhmgfj']
 		delFileDic['EMI'] = ['211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3']
 
-		deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
+		deletedFileNameLst, deletedFilePathNameLst = DirUtil.deleteAudioFiles(testRootDir, delFileDic)
 		
+		self.assertEqual(['220324-Nouveau document texte.mp3',
+ 'Nouveau document texte.mp3',
+ '211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFileNameLst)
 		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
 		                  'Politique\\Nouveau document texte.mp3',
 		                  'EMI\\211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFilePathNameLst)
