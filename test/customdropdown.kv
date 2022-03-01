@@ -3,6 +3,8 @@
 	gridLayoutShare: gridlayout_shareButton
 	gridLayoutSettings: gridlayout_settingsButton
 	gridLayoutDelete: gridlayout_deleteButton
+	gridLayoutDownHisto: gridlayout_downHistoButton
+	gridLayoutChangePlaylist: gridlayout_changePlaylistButton
 	saveButton: save_Button
 
     # defining canvas causes disabled drop down menu items to be
@@ -60,12 +62,28 @@
             height: '28dp'
             disabled: False
             on_release: root.shareAudio()
-    Button:
-        text: 'Down histo'
+    GridLayout: # enable to hide or display 'Down histo' menu item
+        id: gridlayout_downHistoButton
+		cols: 1
         size_hint_y: None
-        height: '28dp'
-        disabled: False
-        on_release: root.downloadHisto()
+        height: "0dp"
+        Button:
+            text: 'Down histo'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.downloadHisto()
+    GridLayout: # enable to hide or display 'Del histo' menu item
+        id: gridlayout_changePlaylistButton
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            text: 'Chge playlst'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.moveAudioFileToOtherPlaylist()
     GridLayout: # enable to hide or display 'Settings' menu item
         id: gridlayout_settingsButton
 		cols: 1

@@ -13,7 +13,7 @@ class FocusTextInput(TextInput):
 	
 	Defining class FocusTextInput(FocusBehavior, TextInput)
 	raises a TypeError: Cannot create a consistent method resolution
-	 order (MRO) for bases FocusBehavior, TextInput.
+	order (MRO) for bases FocusBehavior, TextInput.
 
 	The reason is that TextInput already inherits from FocusBehavior.
 	"""

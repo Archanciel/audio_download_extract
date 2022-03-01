@@ -211,24 +211,30 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 			selItemUrlTitle = rv.data[index]['text']
 			selItemUrlDownloadData = rv.data[index]['data']
 			if isinstance(selItemUrlDownloadData, list):
-				# here, the liost contains download history information
-				self.audioDownloaderGUI.displayDownloadedFileName(selItemUrlDownloadData[1])
-				return
-			
-			selItemUrl = selItemUrlDownloadData.url
-			
-			Clipboard.copy(selItemUrl)
-			
+				# here, the list contains download history information
+				self.audioDownloaderGUI.isDownloadHistoDisplayed = True
+				fullDownloadedFileName = selItemUrlDownloadData[1]
+				downloadedDate = selItemUrlDownloadData[2]
+				if downloadedDate not in fullDownloadedFileName:
+					fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
+				self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
+			else:
+				self.audioDownloaderGUI.isDownloadHistoDisplayed = False
+				selItemUrl = selItemUrlDownloadData.url
+				Clipboard.copy(selItemUrl)
+				self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
+
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
-			self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
-
+			
 		# next instruction fixes incomprehensible problem of setting chkbox
 		# to active on other items when moving an item where the chkbox is
 		# active !
-		self.ids.download_chkbox.active = rv.data[index]['toDownload']
-
+		if index <= len(rv.data) - 1:
+			# avoids IndexError exception happenning sometimes
+			self.ids.download_chkbox.active = rv.data[index]['toDownload']
+			
 		self.audioDownloaderGUI.refocusOnFirstRequestInput()
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 	
