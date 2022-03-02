@@ -243,15 +243,17 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 	
 	def toggleCheckbox(self, chkbox, isChecked):
-		selectableMultiFieldsItem = chkbox.parent.parent
+		selectableMultiFieldsItem = chkbox.parent
 		recycleView = selectableMultiFieldsItem.parent.parent
-		
-		if not recycleView.data[selectableMultiFieldsItem.index]['selectable']:
-			# useful when the request list contains downloaded files histo.
-			# The playlist list items 'selectable' element is set to False.
-			# So, checking the checkbox for a playlist name does not set
-			# the chkbox to active.
-			chkbox.active = False
+
+		# problem: after deleting a file, the playlist item chkbox is selected !!!
+		#
+		# if not recycleView.data[selectableMultiFieldsItem.index]['selectable']:
+		# 	# useful when the request list contains downloaded files histo.
+		# 	# The playlist list items 'selectable' element is set to False.
+		# 	# So, checking the checkbox for a playlist name does not set
+		# 	# the chkbox to active.
+		# 	chkbox.active = False
 
 		recycleView.data[selectableMultiFieldsItem.index]['toDownload'] = isChecked
 		
