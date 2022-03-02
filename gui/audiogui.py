@@ -292,6 +292,10 @@ class AudioGUI(Screen):
 		if listLength > maxVisibleItemNumber:
 			# for the moment, I do not know how to scroll to end of RecyclweView !
 			# listView.scroll_to(listLength - maxVisibleItemNumber)
+			#
+			# SOLUTION innaudiodownloadergui.kv file:
+			# 	scroll_y: 1 # 0 forces scrolling to list bottom after adding an entry,
+			# 	            # 1 forces scrolling to top
 			pass
 		else:
 			if self.showRequestList:
@@ -351,8 +355,6 @@ class AudioGUI(Screen):
 	def adjustRequestListSize(self):
 		listItemNumber = len(self.requestListRV.data)
 		self.boxLayoutContainingRV.height = min(listItemNumber * self.rvListItemHeight, self.maxRvListHeight)
-		
-		return listItemNumber
 	
 	def _refocusOnFirstTextInput(self, *args):
 		'''
