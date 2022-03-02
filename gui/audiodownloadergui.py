@@ -181,6 +181,10 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		self.rv = rv
 		self.audioDownloaderGUI = rv.rootGUI
 		self.index = index
+		# if not data['selectable']:
+		# 	self.itemLabel.size_hint_x = 0.8
+		# 	self.itemGridLayoutCkeckbox.size_hint_x = 0
+		# 	self.itemGridLayoutEmpty.size_hint_x = 0.2
 		
 		return super(SelectableMultiFieldsItem, self).refresh_view_attrs(
 			rv, index, data)
@@ -239,8 +243,16 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 	
 	def toggleCheckbox(self, chkbox, isChecked):
-		selectableMultiFieldsItem = chkbox.parent
+		selectableMultiFieldsItem = chkbox.parent.parent
 		recycleView = selectableMultiFieldsItem.parent.parent
+		
+		if not recycleView.data[selectableMultiFieldsItem.index]['selectable']:
+			# useful when the request list contains downloaded files histo.
+			# The playlist list items 'selectable' element is set to False.
+			# So, checking the checkbox for a playlist name does not set
+			# the chkbox to active.
+			chkbox.active = False
+
 		recycleView.data[selectableMultiFieldsItem.index]['toDownload'] = isChecked
 		
 #		logging.info('toggleCheckbox in item {}: {}'.format(selectableMultiFieldsItem.index, isChecked))
@@ -1451,15 +1463,27 @@ class AudioDownloaderGUI(AudioGUI):
 		audioFileHistoryLst = self.audioController.getAudioFilesSortedByDateInfoList(
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
+		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
+
 		if os.name == 'posix':
 			if GuiUtil.onTablet():
 				# on smartphone, not enough room on output result label
-				self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
+				self.displayDownloadedFilesHistory(audioFileHistoryLst)
+			else:
+				self.openDownloadHistoRequestList()
 		else:
-			self.printDownloadHistoryToOutputLabel(audioFileHistoryLst)
-
-		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
-
+			self.displayDownloadedFilesHistory(audioFileHistoryLst)
+	
+	def openDownloadHistoRequestList(self):
+		"""
+		Method called on smartphone only. On smartphone, the download history info
+		is not displayed in the output result label. Instead, the request list
+		containing the downloaded file names ordered by playlist and by download
+		time is opened.
+		"""
+		self.showRequestList = False # forces the list to be displayed
+		self.toggleRequestList()
+	
 	def displayDeletedAudioFiles(self, deletedFilePathNameLst):
 		if len(deletedFilePathNameLst) > 0:
 			self.outputResult('\naudio files deleted\n')
@@ -1472,7 +1496,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def displayDownloadedFileName(self, fileName):
 		self.outputResult(fileName)
 	
-	def printDownloadHistoryToOutputLabel(self, audioFileHistoryLst):
+	def displayDownloadedFilesHistory(self, audioFileHistoryLst):
 		"""
 		Displays the download history in the output result label, i.e.
 		for each playlist the file names of the files still present in the
@@ -1480,13 +1504,15 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		outputLines = 0
 
-		for audioSubDirLst in audioFileHistoryLst:
-			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioSubDirLst[0]),
+		for audioPlaylistDirLst in audioFileHistoryLst:
+			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioPlaylistDirLst[0]),
 			                  scrollToEnd=False)
-			for audioFileName in audioSubDirLst[1]:
+			for audioFileInfoLst in audioPlaylistDirLst[1]:
 				if outputLines > 85:
 					break
-				self.outputResult('    [b]' + audioFileName[1] + '[/b]: ' + audioFileName[0],
+				downloadDate = audioFileInfoLst[1]
+				downloadFileFullName = audioFileInfoLst[0]
+				self.outputResult('    [b]{}[/b] {}'.format(downloadDate, downloadFileFullName),
 				                  scrollToEnd=False)
 				outputLines += 1
 	
