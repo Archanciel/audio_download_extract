@@ -173,6 +173,7 @@ class AudioExtractor:
 
 		if clips == []:
 			# the case if suppression time frames were invalid
+			videoAudioFrame.close()
 			return
 		
 		clip = mp.concatenate_audioclips(clips)
@@ -187,6 +188,7 @@ class AudioExtractor:
 			return
 		
 		videoAudioFrame.close()
+		
 		HHMMSS_suppressedTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(suppressStartEndSecondsLists)
 		HHMMSS_keptTimeFramesList = self.convertStartEndSecondsListsTo_HHMMSS_TimeFramesList(keptStartEndSecondsLists)
 		downloadVideoInfoDic.addSuppressedFileInfoForVideoIndex(videoIndex,
