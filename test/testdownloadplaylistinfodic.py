@@ -1058,7 +1058,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		testSettingsPath = audioDirTestRoot + sep + 'settings'
 
 		# deleting the settings dir
-		DirUtil.removeDirAndItsSubDirs(testSettingsPath)
+		DirUtil.deleteDirAndItsSubDirs(testSettingsPath)
 
 		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 		

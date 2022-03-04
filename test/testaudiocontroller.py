@@ -209,7 +209,7 @@ class TestAudioController(unittest.TestCase):
 		playlistOrSingleVideoDownloadPath = testBaseRootPath + sep + playlistOrSingleVideoDownloadRootSubdirs
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,

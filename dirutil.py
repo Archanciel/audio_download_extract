@@ -33,7 +33,8 @@ class DirUtil:
 		else:
 			# Path.home() returns C:\users\my name\ even if my OneDrive folder is
 			# on D:\users\my name\ !!!
-			audioRootPath = str(Path.home() / "Downloads" / 'Audio')
+			#audioRootPath = str(Path.home() / "Downloads" / 'Audio')
+			audioRootPath = str(Path.home()) + sep + "Downloads" + sep + 'Audio'
 
 		return audioRootPath
 	
@@ -249,10 +250,11 @@ class DirUtil:
 		return validFileName
 	
 	@staticmethod
-	def removeDirAndItsSubDirs(dirToRemove):
+	def deleteDirAndItsSubDirs(dirToRemove):
 		"""
-		Removes recursively the sub dirs contained in the passed dirToRemove as well as
-		the dirToRemove. Any file contained in the dirs are	deleted as well.
+		Removes recursively the sub dirs contained in the passed dirToRemove as
+		well as the dirToRemove itself. Any file contained in the deleted dirs are
+		deleted as well.
 		
 		:param dirToRemove:
 		"""
