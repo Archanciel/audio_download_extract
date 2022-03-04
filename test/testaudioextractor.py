@@ -31,8 +31,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_video_with_no_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -50,7 +50,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -84,8 +84,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -106,7 +106,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -141,8 +141,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_endTimeTooBig(self):
 		playlistTitle = 'test_audio_extractor_extractEndTimeTooBig'
 		playlistName = playlistTitle
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -163,7 +163,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 		            targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -177,7 +177,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertEqual('\nextracting portions of Wear a mask Help slow the spread of Covid-19.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19_1.mp3\nError in file {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19.mp4, Accessing time t=14.65-14.70 seconds, with clip duration=14 seconds, \n'.format(testAudioRoothPath, testAudioRoothPath), outputCapturingString.getvalue())
+		self.assertEqual('\nextracting portions of Wear a mask Help slow the spread of Covid-19.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19_1.mp3\nError in file {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19.mp4, Accessing time t=14.65-14.70 seconds, with clip duration=14 seconds, \n'.format(testAudioRootPath, testAudioRootPath), outputCapturingString.getvalue())
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 		self.assertEqual(
 			['Wear a mask Help slow the spread of Covid-19.mp4', 'Wear a mask Help slow the spread of Covid-19_1.mp3'],
@@ -202,8 +202,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_startAfterEnd(self):
 		playlistTitle = 'test_audio_extractor_extractStartAfterEnd'
 		playlistName = playlistTitle
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -224,7 +224,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 		            targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -255,8 +255,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -277,7 +277,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -317,8 +317,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -339,7 +339,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -379,8 +379,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -401,7 +401,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -441,8 +441,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -468,7 +468,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 
 		guiOutput = GuiOutputStub()
@@ -511,8 +511,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_mp3_with_two_superposed_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -538,7 +538,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + audioFileName,
+		shutil.copy(testAudioRootPath + sep + audioFileName,
 					targetAudioDir + sep + audioFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -586,8 +586,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -613,7 +613,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -661,8 +661,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -703,9 +703,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName_1,
+		shutil.copy(testAudioRootPath + sep + videoFileName_1,
 					targetAudioDir + sep + videoFileName_1)
-		shutil.copy(testAudioRoothPath + sep + videoFileName_2,
+		shutil.copy(testAudioRootPath + sep + videoFileName_2,
 					targetAudioDir + sep + videoFileName_2)
 		
 		guiOutput = GuiOutputStub()
@@ -773,8 +773,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -799,7 +799,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -838,8 +838,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -864,7 +864,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -906,8 +906,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor_suppressEndTimeTooBig'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -928,7 +928,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 		            targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -956,9 +956,9 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		testAudioRoothPath = testAudioRoothPath
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testAudioRootPath = testAudioRootPath
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -979,7 +979,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 		            targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -994,7 +994,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 
-		self.assertEqual('\nsuppressing portions of test_suppress_audio_file.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor\\test_suppress_audio_file_s.mp3\nError in file {}\\test_audio_extractor\\test_suppress_audio_file.mp4, Accessing time t=20.45-20.49 seconds, with clip duration=20 seconds, \n'.format(testAudioRoothPath, testAudioRoothPath), outputCapturingString.getvalue())
+		self.assertEqual('\nsuppressing portions of test_suppress_audio_file.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor\\test_suppress_audio_file_s.mp3\nError in file {}\\test_audio_extractor\\test_suppress_audio_file.mp4, Accessing time t=20.45-20.49 seconds, with clip duration=20 seconds, \n'.format(testAudioRootPath, testAudioRootPath), outputCapturingString.getvalue())
 
 		self.assertEqual(
 			['test_suppress_audio_file.mp4', 'test_suppress_audio_file_s.mp3'],
@@ -1020,8 +1020,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1048,7 +1048,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -1086,8 +1086,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1128,9 +1128,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName_1,
+		shutil.copy(testAudioRootPath + sep + videoFileName_1,
 					targetAudioDir + sep + videoFileName_1)
-		shutil.copy(testAudioRoothPath + sep + videoFileName_2,
+		shutil.copy(testAudioRootPath + sep + videoFileName_2,
 					targetAudioDir + sep + videoFileName_2)
 		
 		guiOutput = GuiOutputStub()
@@ -1180,8 +1180,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1219,7 +1219,7 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		shutil.copy(testAudioRootPath + sep + videoFileName,
 					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
@@ -1277,8 +1277,8 @@ class TestAudioExtractor(unittest.TestCase):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + playlistName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1353,9 +1353,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		shutil.copy(testAudioRoothPath + sep + videoFileNameOne,
+		shutil.copy(testAudioRootPath + sep + videoFileNameOne,
 					targetAudioDir + sep + videoFileNameOne)
-		shutil.copy(testAudioRoothPath + sep + videoFileNameTwo,
+		shutil.copy(testAudioRootPath + sep + videoFileNameTwo,
 					targetAudioDir + sep + videoFileNameTwo)
 		
 		guiOutput = GuiOutputStub()
@@ -1453,8 +1453,8 @@ class TestAudioExtractor(unittest.TestCase):
 
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + testDirName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + testDirName
 		videoFileName = 'Short low video quality'
 		videoFilePathName = targetAudioDir + sep + videoFileName + '.mp4'
 		
@@ -1498,8 +1498,8 @@ class TestAudioExtractor(unittest.TestCase):
 		
 	def testConcatenateAudioFiles(self):
 		testDirName = "test_audio_extractor_concatenate"
-		testAudioRoothPath = DirUtil.getTestAudioRootPath()
-		targetAudioDir = testAudioRoothPath + sep + testDirName
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRootPath + sep + testDirName
 		audioFileName_1 = "Les vies où Jésus et Bouddha se connaissaient  1_22 L'histoire d'une noble amitié.mp3"
 		audioFileName_2 = "Les vies où Jésus et Bouddha se connaissaient  2_22 L'histoire d'une noble amitié.mp3"
 		sourceFileNameLst = [audioFileName_1, audioFileName_2]
@@ -1532,7 +1532,7 @@ class TestAudioExtractor(unittest.TestCase):
  'amitié.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- '{}\\test_audio_extractor_concatenate\\concatenatedAudio.mp3'.format(testAudioRoothPath),
+ '{}\\test_audio_extractor_concatenate\\concatenatedAudio.mp3'.format(testAudioRootPath),
  'MoviePy - Done.',
  '',
  '"Les vies où Jésus et Bouddha se connaissaient  1_22 L\'histoire d\'une '
