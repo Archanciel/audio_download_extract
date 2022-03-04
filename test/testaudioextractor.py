@@ -1,3 +1,4 @@
+import time
 import unittest
 import os, sys, inspect, shutil, glob
 from os.path import sep
@@ -30,7 +31,8 @@ class TestAudioExtractor(unittest.TestCase):
 	def testExtractAudioPortions_one_video_with_no_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -48,9 +50,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -73,11 +75,17 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
 	
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -98,9 +106,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -125,10 +133,16 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_endTimeTooBig(self):
 		playlistTitle = 'test_audio_extractor_extractEndTimeTooBig'
 		playlistName = playlistTitle
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -149,9 +163,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		            targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-		            targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -163,7 +177,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertEqual('\nextracting portions of Wear a mask Help slow the spread of Covid-19.mp4 ...\n\nMoviePy - Writing audio in D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19_1.mp3\nError in file D:\\Users\\Jean-Pierre\\Downloads\Audio\\test\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19.mp4, Accessing time t=14.65-14.70 seconds, with clip duration=14 seconds, \n', outputCapturingString.getvalue())
+		self.assertEqual('\nextracting portions of Wear a mask Help slow the spread of Covid-19.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19_1.mp3\nError in file {}\\test_audio_extractor_extractEndTimeTooBig\\Wear a mask Help slow the spread of Covid-19.mp4, Accessing time t=14.65-14.70 seconds, with clip duration=14 seconds, \n'.format(testAudioRoothPath, testAudioRoothPath), outputCapturingString.getvalue())
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 		self.assertEqual(
 			['Wear a mask Help slow the spread of Covid-19.mp4', 'Wear a mask Help slow the spread of Covid-19_1.mp3'],
@@ -179,11 +193,17 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_startAfterEnd(self):
 		playlistTitle = 'test_audio_extractor_extractStartAfterEnd'
 		playlistName = playlistTitle
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -204,9 +224,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		            targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-		            targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -225,12 +245,18 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual(
 			['Wear a mask Help slow the spread of Covid-19.mp4'],
 			videoAndAudioFileList)
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_doubleSpeed(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -251,9 +277,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -281,12 +307,18 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_0(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -307,9 +339,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -338,11 +370,17 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_one_extract_no_suppress_timeframe_extract_from_n_to_end(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -363,9 +401,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -393,12 +431,18 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -424,9 +468,8 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
@@ -459,11 +502,17 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_mp3_with_two_superposed_extract_no_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -489,9 +538,8 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + audioFileName,
-					targetAudioDir + '\\' + audioFileName)
+		shutil.copy(testAudioRoothPath + sep + audioFileName,
+					targetAudioDir + sep + audioFileName)
 		
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
@@ -528,12 +576,18 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + audioFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_one_video_with_two_extract_no_suppress_timeframe_last_extract_to_end(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -559,9 +613,8 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
-		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
@@ -598,12 +651,18 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioPortions_two_video_with_two_extract_no_suppress_timeframe_each(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -644,11 +703,11 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName_1,
+					targetAudioDir + sep + videoFileName_1)
+		shutil.copy(testAudioRoothPath + sep + videoFileName_2,
+					targetAudioDir + sep + videoFileName_2)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName_1,
-					targetAudioDir + '\\' + videoFileName_1)
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName_2,
-					targetAudioDir + '\\' + videoFileName_2)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -703,12 +762,19 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName_1)
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName_2)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -733,9 +799,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -762,12 +828,18 @@ class TestAudioExtractor(unittest.TestCase):
 
 		self.assertEqual([["0:0:04", "0:0:08"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20']], downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_one_video_with_no_extract_and_three_suppress_timeframe_last_suppress_to_end(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -792,9 +864,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -825,18 +897,23 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15']],
 						 downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_one_video_with_no_extract_and_one_suppress_timeframe_starting_at_zero_endTimeTooBig(self):
 		playlistTitle = 'test_audio_extractor_suppressEndTimeTooBig'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
 		
 		videoIndex = 1
 		suppressStartEndSecondsList_1 = [0, 60]
-		expectedSuppressedFileDuration = 0.4
 		downloadVideoInfoDic = DownloadPlaylistInfoDic('', targetAudioDir, targetAudioDir, playlistTitle, playlistName,
 		                                               playlistTitle, playlistName)
 		videoFileName = 'test_suppress_audio_file.mp4'
@@ -851,9 +928,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		            targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-		            targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -870,13 +947,18 @@ class TestAudioExtractor(unittest.TestCase):
 		self.assertEqual(
 			['test_suppress_audio_file.mp4'],
 			videoAndAudioFileList)
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+
 	def testSuppressAudioPortions_one_video_with_no_extract_and_one_suppress_timeframe_starting_at_zero_startAfterEndTime(
 			self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		testAudioRoothPath = testAudioRoothPath
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -897,9 +979,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+		            targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-		            targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -912,7 +994,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 
-		self.assertEqual('\nsuppressing portions of test_suppress_audio_file.mp4 ...\n\nMoviePy - Writing audio in D:\\Users\\Jean-Pierre\Downloads\Audio\\test\\test_audio_extractor\\test_suppress_audio_file_s.mp3\nError in file D:\\Users\\Jean-Pierre\\Downloads\Audio\\test\\test_audio_extractor\\test_suppress_audio_file.mp4, Accessing time t=20.45-20.49 seconds, with clip duration=20 seconds, \n', outputCapturingString.getvalue())
+		self.assertEqual('\nsuppressing portions of test_suppress_audio_file.mp4 ...\n\nMoviePy - Writing audio in {}\\test_audio_extractor\\test_suppress_audio_file_s.mp3\nError in file {}\\test_audio_extractor\\test_suppress_audio_file.mp4, Accessing time t=20.45-20.49 seconds, with clip duration=20 seconds, \n'.format(testAudioRoothPath, testAudioRoothPath), outputCapturingString.getvalue())
 
 		self.assertEqual(
 			['test_suppress_audio_file.mp4', 'test_suppress_audio_file_s.mp3'],
@@ -928,12 +1010,18 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		self.assertIsNone(downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertIsNone(downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_one_video_with_no_extract_and_four_suppress_timeframe_one_starting_at_zero(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -960,9 +1048,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -988,12 +1076,18 @@ class TestAudioExtractor(unittest.TestCase):
 
 		self.assertEqual([['0:0:00', '0:0:02'], ['0:0:04', '0:0:08'], ['0:0:11', '0:0:13'], ['0:0:15', '0:0:17']], downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertEqual([['0:0:02', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20']], downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_two_video_with_two_suppress_no_extract_timeframe_each(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1034,11 +1128,11 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName_1,
+					targetAudioDir + sep + videoFileName_1)
+		shutil.copy(testAudioRoothPath + sep + videoFileName_2,
+					targetAudioDir + sep + videoFileName_2)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName_1,
-					targetAudioDir + '\\' + videoFileName_1)
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName_2,
-					targetAudioDir + '\\' + videoFileName_2)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		stdout = sys.stdout
@@ -1075,12 +1169,19 @@ class TestAudioExtractor(unittest.TestCase):
 
 		self.assertEqual([["0:0:04", "0:0:08"], ["0:0:11", "0:0:13"], ["0:0:15", "0:0:17"]], downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20']], downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName_1)
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName_2)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_one_video_with_two_extract_and_three_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1118,9 +1219,9 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileName,
+					targetAudioDir + sep + videoFileName)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileName,
-					targetAudioDir + '\\' + videoFileName)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -1166,12 +1267,18 @@ class TestAudioExtractor(unittest.TestCase):
 						 downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15'], ['0:0:17', '0:0:20']],
 						 downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndex))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileName)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testSuppressAudioPortions_two_videos_with_two_extract_and_three_suppress_timeframe(self):
 		playlistTitle = 'test_audio_extractor'
 		playlistName = playlistTitle
 		
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + playlistName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + playlistName
 		
 		if not os.path.isdir(targetAudioDir):
 			os.mkdir(targetAudioDir)
@@ -1246,12 +1353,11 @@ class TestAudioExtractor(unittest.TestCase):
 			os.remove(f)
 		
 		# restoring mp4 file
+		shutil.copy(testAudioRoothPath + sep + videoFileNameOne,
+					targetAudioDir + sep + videoFileNameOne)
+		shutil.copy(testAudioRoothPath + sep + videoFileNameTwo,
+					targetAudioDir + sep + videoFileNameTwo)
 		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileNameOne,
-					targetAudioDir + '\\' + videoFileNameOne)
-		
-		shutil.copy('D:\\Development\\Python\\audiodownload\\test\\testData\\' + videoFileNameTwo,
-					targetAudioDir + '\\' + videoFileNameTwo)
 		guiOutput = GuiOutputStub()
 		audioExtractor = AudioExtractor(guiOutput, targetAudioDir, downloadVideoInfoDic)
 		
@@ -1338,14 +1444,21 @@ class TestAudioExtractor(unittest.TestCase):
 						 downloadVideoInfoDic.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
 		self.assertEqual([['0:0:00', '0:0:04'], ['0:0:08', '0:0:11'], ['0:0:13', '0:0:15']],
 						 downloadVideoInfoDic.getKeptStartEndHHMMSS_TimeFramesForVideoIndex(videoIndexTwo))
-	
+
+		# deleting restored video file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileNameOne)
+		DirUtil.deleteFileIfExist(targetAudioDir + sep + videoFileNameTwo)
+		DirUtil.deleteFilesInDirForPattern(targetDir=targetAudioDir,
+		                                   fileNamePattern='*.mp3')
+
 	def testExtractAudioFromVideoFile(self):
 		testDirName = 'test_audible_mobizen'
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + testDirName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + testDirName
 		videoFileName = 'Short low video quality'
 		videoFilePathName = targetAudioDir + sep + videoFileName + '.mp4'
 		
-		expectedExtractedAudioFileDuration = 964.661
+		expectedExtractedAudioFileDuration = 19.57
 		
 		# deleting mp3 files in test dir
 		files = glob.glob(targetAudioDir + sep + '*.mp3')
@@ -1374,22 +1487,28 @@ class TestAudioExtractor(unittest.TestCase):
 			videoAndAudioFileList)
 		
 		from mutagen.mp3 import MP3
-		extractedMp3FileName = videoAndAudioFileList[1]
-		audio = MP3(targetAudioDir + sep + extractedMp3FileName)
+		extractedMp3FileName = videoAndAudioFileList[0]
+		extractedMp3FilePathName = targetAudioDir + sep + extractedMp3FileName
+		audio = MP3(extractedMp3FilePathName)
 		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
 
+		# deleting newly created audio file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(extractedMp3FilePathName)
+
+		
 	def testConcatenateAudioFiles(self):
 		testDirName = "test_audio_extractor_concatenate"
-		targetAudioDir = DirUtil.getTestAudioRootPath() + sep + testDirName
+		testAudioRoothPath = DirUtil.getTestAudioRootPath()
+		targetAudioDir = testAudioRoothPath + sep + testDirName
 		audioFileName_1 = "Les vies où Jésus et Bouddha se connaissaient  1_22 L'histoire d'une noble amitié.mp3"
 		audioFileName_2 = "Les vies où Jésus et Bouddha se connaissaient  2_22 L'histoire d'une noble amitié.mp3"
 		sourceFileNameLst = [audioFileName_1, audioFileName_2]
-		targetAudioFileName = 'concatenatedAudio.mp3'
-		targetAudioFilePathName = targetAudioDir + sep + targetAudioFileName
+		concatenatedAudioFileName = 'concatenatedAudio.mp3'
+		concatenatedAudioFilePathName = targetAudioDir + sep + concatenatedAudioFileName
 		expectedTargetAudioFileDuration = 96.13
 		
 		try:
-			os.remove(targetAudioFilePathName)
+			os.remove(concatenatedAudioFilePathName)
 		except Exception:
 			pass
 		
@@ -1402,7 +1521,7 @@ class TestAudioExtractor(unittest.TestCase):
 		
 		audioExtractor.concatenateAudioFiles(audioSourcePath=targetAudioDir,
 											 sourceFileNameLst=sourceFileNameLst,
-											 targetFileName=targetAudioFileName)
+											 targetFileName=concatenatedAudioFileName)
 		
 		sys.stdout = stdout
 		
@@ -1413,7 +1532,7 @@ class TestAudioExtractor(unittest.TestCase):
  'amitié.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- 'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_audio_extractor_concatenate\\concatenatedAudio.mp3',
+ '{}\\test_audio_extractor_concatenate\\concatenatedAudio.mp3'.format(testAudioRoothPath),
  'MoviePy - Done.',
  '',
  '"Les vies où Jésus et Bouddha se connaissaient  1_22 L\'histoire d\'une '
@@ -1433,11 +1552,14 @@ class TestAudioExtractor(unittest.TestCase):
 			audioFileList)
 		
 		from mutagen.mp3 import MP3
-		audio = MP3(targetAudioFilePathName)
+		audio = MP3(concatenatedAudioFilePathName)
 		self.assertAlmostEqual(expectedTargetAudioFileDuration, audio.info.length, delta=0.1)
+		
+		# deleting newly created audio file in order to avoid uploading it on GitHub
+		DirUtil.deleteFileIfExist(concatenatedAudioFilePathName)
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioExtractor()
-	tst.testSuppressAudioPortions_one_video_with_no_extract_and_one_suppress_timeframe_starting_at_zero_startAfterEndTime()
+	tst.testSuppressAudioPortions_one_video_with_no_extract_and_one_suppress_timeframe_starting_at_zero_endTimeTooBig()
