@@ -153,7 +153,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(filePathNameComponents[:-2])))
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 		
 		self.assertFalse(os.path.isdir(testBaseRootPath))
 		self.assertFalse(os.path.isfile(createdFilePathName))
@@ -184,7 +184,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(renamedFilePathName))
 		
 		# removing test dir and its file
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_with_invalid_file_name(self):
 		createdFileName = 'temp.txt'
@@ -211,16 +211,20 @@ class TestDirUtil(unittest.TestCase):
 			errorInfo)
 		
 		# removing test dir
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_file_to_rename_not_exist(self):
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'
 		
 		testBaseRootDir = 'test dir util'
 		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
 		
-		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
+		# removing test dir and recreating it
+
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.createTargetDirIfNotExist(rootDir=testAudioRootPath,
 										  targetAudioDir=testBaseRootPath)
 		
 		createdFilePathName = testBaseRootPath + sep + createdFileName
@@ -229,19 +233,19 @@ class TestDirUtil(unittest.TestCase):
 		
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
+		testAudioRootPathDoubleBackSlash = testAudioRootPath.replace('\\', '\\\\')
+		expectedErrorMsg = "[WinError 2] Le fichier spécifié est introuvable: '{}\\\\test dir util\\\\temp.txt' -> '{}\\\\test dir util\\\\renamed_temp.txt'".format(testAudioRootPathDoubleBackSlash, testAudioRootPathDoubleBackSlash)
 		self.assertEqual(
-			"[WinError 2] Le fichier spécifié est introuvable: 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			expectedErrorMsg,
 			errorInfo)
-		
-		# removing test dir
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_file_with_new_name_already_exist(self):
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'
 		
 		testBaseRootDir = 'test dir util'
-		testBaseRootPath = DirUtil.getTestAudioRootPath() + sep + testBaseRootDir
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testBaseRootPath = testAudioRootPath + sep + testBaseRootDir
 		
 		DirUtil.createTargetDirIfNotExist(rootDir=testBaseRootPath,
 										  targetAudioDir=testBaseRootPath)
@@ -262,12 +266,14 @@ class TestDirUtil(unittest.TestCase):
 		
 		errorInfo = DirUtil.renameFile(createdFilePathName, renamedFileName)
 		
+		testAudioRootPathDoubleBackSlash = testAudioRootPath.replace('\\', '\\\\')
+
 		self.assertEqual(
-			"[WinError 183] Impossible de créer un fichier déjà existant: 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\temp.txt' -> 'D:\\\\Users\\\\Jean-Pierre\\\\Downloads\\\\Audio\\\\test\\\\test dir util\\\\renamed_temp.txt'",
+			"[WinError 183] Impossible de créer un fichier déjà existant: '{}\\\\test dir util\\\\temp.txt' -> '{}\\\\test dir util\\\\renamed_temp.txt'".format(testAudioRootPathDoubleBackSlash, testAudioRootPathDoubleBackSlash),
 			errorInfo)
 		
-		# removing test dir
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testCreateTargetDirIfNotExist_singleVideo(self):
 		testBaseRootDir = 'Audio' + sep + 'Various'
@@ -276,7 +282,7 @@ class TestDirUtil(unittest.TestCase):
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 		
 		subdirs = createdSubdirsPath.split(sep)
 		
@@ -300,7 +306,7 @@ class TestDirUtil(unittest.TestCase):
 		createdSubdirsPath = testBaseRootPath + sep + createdSubdirs
 		
 		# removing test dir and sub dirs and its files
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 		
 		subdirs = createdSubdirsPath.split(sep)
 		
@@ -347,7 +353,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(filePathName_2, filePathNameLst[1])
 		
 		# removing test dir and its file
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testGetFileNamesInDirForPattern(self):
 		fileName_1 = 'file_one.mp3'
@@ -380,7 +386,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(fileName_2, fileNameLst[1])
 		
 		# removing test dir and its file
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles(self):
 		deletedFileName_1 = 'file_one.mp3'
@@ -413,7 +419,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertFalse(os.path.isfile(deletedFilePathName_2))
 		
 		# removing test dir and its file
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles_file_list_empty(self):
 		deletedFileName_1 = 'file_one.mp3'
@@ -446,7 +452,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(deletedFilePathName_2))
 		
 		# removing test dir and its file
-		DirUtil.removeDirAndItsSubDirs(testBaseRootPath)
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 
 	def testGetIndexAndDateUsageInFileNameLst(self):
 		fileNameLst_index_date_1 = ['97-Funny suspicious looking dog 2013-11-05.mp3',
@@ -514,7 +520,8 @@ class TestDirUtil(unittest.TestCase):
 		self.assertIsNone(DirUtil.getIndexAndDateUsageInDir(testPath))
 
 	def testReplaceStringsInFiles(self):
-		searchRootDir = "D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		searchRootDir = testAudioRootPath + sep + "test_DirUtil_replace"  # Windows audio dir
 		searchRootDirSaved = searchRootDir + '_saved'
 		#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
 		#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
@@ -559,7 +566,8 @@ class TestDirUtil(unittest.TestCase):
 		self.assertRaises(KeyError, downloadPlaylistInfoDic_reloaded_2.getDicDirSubDir)
 	
 	def testDeleteFilesInDirForPattern(self):
-		searchRootDir = "D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace"  # Windows audio dir
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		searchRootDir = testAudioRootPath + sep + "test_DirUtil_replace"  # Windows audio dir
 		searchRootDirSaved = searchRootDir + '_saved'
 		#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
 		#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
@@ -573,12 +581,12 @@ class TestDirUtil(unittest.TestCase):
 		
 		shutil.copytree(searchRootDirSaved, searchRootDir)
 		
-		self.assertEqual(['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
-		                  'warning index date files save dir\\test warning index date files_dic.txt',
-		                  'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
-		                  'warning index false date false files\\test warning index date files_dic.txt',
-		                  'D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\test_DirUtil_replace\\test '
-		                  'warning index false date true files\\test warning index date files_dic.txt'],
+		self.assertEqual(['{}\\test_DirUtil_replace\\test '
+		                  'warning index date files save dir\\test warning index date files_dic.txt'.format(testAudioRootPath),
+		                  '{}\\test_DirUtil_replace\\test '
+		                  'warning index false date false files\\test warning index date files_dic.txt'.format(testAudioRootPath),
+		                  '{}\\test_DirUtil_replace\\test '
+		                  'warning index false date true files\\test warning index date files_dic.txt'.format(testAudioRootPath)],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=searchRootDir,
 		                                                         fileNamePattern=fileNamePattern,
 		                                                         inSubDirs=inSubDirs))
@@ -704,4 +712,4 @@ class TestDirUtil(unittest.TestCase):
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testDeletePartialNameAudioFiles()
+	tst.testRenameFile_file_to_rename_not_exist()
