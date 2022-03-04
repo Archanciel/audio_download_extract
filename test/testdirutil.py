@@ -131,7 +131,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(expectedShorterDir, DirUtil.getFullFilePathNameMinusRootDir(rootDir=audioRootDir,
 																					 fullFilePathName=fullDir))
 	
-	def testRemoveSubDirsContainedInDir(self):
+	def testDeleteDirAndItsSubDirs(self):
 		createdFileName = 'temp.txt'
 		
 		testBaseRootDir = 'test dir util'
@@ -183,7 +183,7 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertTrue(os.path.isfile(renamedFilePathName))
 		
-		# removing test dir and its file
+		# removing test dir and its file so that they are not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_with_invalid_file_name(self):
@@ -210,7 +210,7 @@ class TestDirUtil(unittest.TestCase):
 			"[WinError 123] La syntaxe du nom de fichier, de répertoire ou de volume est incorrecte: 'temp ?.txt' -> '\\\\renamed_temp.txt'",
 			errorInfo)
 		
-		# removing test dir
+		# removing test dir and its file so that they are not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testRenameFile_file_to_rename_not_exist(self):
@@ -238,7 +238,10 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(
 			expectedErrorMsg,
 			errorInfo)
-	
+
+		# removing test dir and its file so that they are not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
+
 	def testRenameFile_file_with_new_name_already_exist(self):
 		createdFileName = 'temp.txt'
 		renamedFileName = 'renamed_temp.txt'
@@ -298,6 +301,9 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual('Audio' + sep + 'Various' + sep + 'France' + sep + 'politique', targetAudioDirShort)
 		self.assertEqual("directory\nAudio" + sep + 'Various' + sep + 'France' + sep + "politique\nwas created.\n",
 						 dirCreationMessage)
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testCreateTargetDirIfNotExist_playlist(self):
 		testBaseRootDir = 'Audio'
@@ -321,7 +327,10 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isdir(sep.join(subdirs[:-2])))
 		self.assertEqual('Audio' + sep + 'France' + sep + 'politique', targetAudioDirShort)
 		self.assertEqual("directory\nAudio" + sep + 'France' + sep + "politique\nwas created.\n", dirCreationMessage)
-
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
+	
 	def testGetFilePathNamesInDirForPattern(self):
 		fileName_1 = 'file_one.mp3'
 		fileName_2 = 'file_two.mp3'
@@ -352,7 +361,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(filePathName_1, filePathNameLst[0])
 		self.assertEqual(filePathName_2, filePathNameLst[1])
 		
-		# removing test dir and its file
+		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testGetFileNamesInDirForPattern(self):
@@ -385,7 +394,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(fileName_1, fileNameLst[0])
 		self.assertEqual(fileName_2, fileNameLst[1])
 		
-		# removing test dir and its file
+		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles(self):
@@ -418,7 +427,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertFalse(os.path.isfile(deletedFilePathName_1))
 		self.assertFalse(os.path.isfile(deletedFilePathName_2))
 		
-		# removing test dir and its file
+		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 	
 	def testDeleteFiles_file_list_empty(self):
@@ -451,7 +460,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertTrue(os.path.isfile(deletedFilePathName_1))
 		self.assertTrue(os.path.isfile(deletedFilePathName_2))
 		
-		# removing test dir and its file
+		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
 
 	def testGetIndexAndDateUsageInFileNameLst(self):
@@ -494,6 +503,9 @@ class TestDirUtil(unittest.TestCase):
 		shutil.copytree(testPathSaved, testPath)
 
 		self.assertEqual([True, True, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testPath)
 	
 	def testGetIndexAndDateUsageInEmptyDir(self):
 		testDirName = 'test warning index date files'
@@ -510,6 +522,9 @@ class TestDirUtil(unittest.TestCase):
 										  targetAudioDir=testPath)
 		
 		self.assertEqual([], DirUtil.getIndexAndDateUsageInDir(testPath))
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testPath)
 	
 	def testGetIndexAndDateUsageInDirNotExist(self):
 		testDirName = 'test warning index date files not exist'
@@ -564,6 +579,9 @@ class TestDirUtil(unittest.TestCase):
 		                                                             existingDicFilePathName=downloadplaylistinfodicFilePathName_2)
 
 		self.assertRaises(KeyError, downloadPlaylistInfoDic_reloaded_2.getDicDirSubDir)
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(searchRootDir)
 	
 	def testDeleteFilesInDirForPattern(self):
 		testAudioRootPath = DirUtil.getTestAudioRootPath()
@@ -598,7 +616,10 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(targetDir=searchRootDir,
 		                                                             fileNamePattern=fileNamePattern,
 		                                                             inSubDirs=inSubDirs))
-
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(searchRootDir)
+	
 	def testGetAudioFilesSortedByDateInfoList(self):
 		testDirName = 'testDownloadFilesHisto'
 		
@@ -660,6 +681,9 @@ class TestDirUtil(unittest.TestCase):
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testRootDir)
 	
 	def testDeleteAudioFiles_playlist_dir_not_exist(self):
 		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
@@ -707,6 +731,9 @@ class TestDirUtil(unittest.TestCase):
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 		                                                         inSubDirs=True))
+		
+		# removing test dir so that it is not uploaded on GitHub
+		DirUtil.deleteDirAndItsSubDirs(testRootDir)
 
 
 if __name__ == '__main__':
