@@ -984,7 +984,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 
 		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 
-		self.assertEqual(['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\settings\\cachedPlaylistUrlTitleDic_dic.txt'],
+		self.assertEqual(['{}\\settings\\cachedPlaylistUrlTitleDic_dic.txt'.format(audioDirTestRoot)],
 		                 DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
 
 		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
@@ -1011,7 +1011,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 		
 		self.assertEqual(
-			['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\settings\\cachedPlaylistUrlTitleDic_dic.txt'],
+			['{}\\settings\\cachedPlaylistUrlTitleDic_dic.txt'.format(audioDirTestRoot)],
 			DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
 		
 		self.assertRaises(KeyError, lambda: urlTitleDic[newPlaylistUUrl])
@@ -1063,7 +1063,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 		
 		self.assertEqual(
-			['D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\settings\\cachedPlaylistUrlTitleDic_dic.txt'],
+			['{}\\settings\\cachedPlaylistUrlTitleDic_dic.txt'.format(audioDirTestRoot)],
 			DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
 		
 		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],

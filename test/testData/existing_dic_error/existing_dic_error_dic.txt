@@ -1,0 +1,150 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "UCEM\\Gary Renard\\LVOJEB",
+        "pl_name_modified": "LVOJEB",
+        "pl_name_original": "Audio - LES VIES O\u00d9 J\u00c9SUS ET BOUDDHA SE CONNAISSAIENT L'histoire d'une noble amiti\u00e9 de Gary Renard",
+        "pl_nextVideoIndex": 24,
+        "pl_title_modified": "LVOJEB",
+        "pl_title_original": "Audio - LES VIES O\u00d9 J\u00c9SUS ET BOUDDHA SE CONNAISSAIENT L'histoire d'une noble amiti\u00e9 de Gary Renard"
+    },
+    "videos": {
+        "1": {
+            "vd_downlTime": "12/10/2021 19:51:34",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  1_22 L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  1/22 L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=gteWON2vHZM"
+        }
+        "10": {
+            "vd_downlTime": "26/09/2021 21:17:08",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  9_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  9/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=Eqjy3FIvGog"
+        },
+        "11": {
+            "vd_downlTime": "27/09/2021 16:50:31",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  10_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  10/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=I41owZ1QAZ8"
+        },
+        "12": {
+            "vd_downlTime": "29/09/2021 22:18:12",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  11_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  11/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=93iQpfI7mh4"
+        },
+        "13": {
+            "vd_downlTime": "29/09/2021 22:20:33",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  12_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  12/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=HtuL9aLu-rM"
+        },
+        "14": {
+            "vd_downlTime": "29/09/2021 22:22:00",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  13_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  13/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=SncdLcqWTt4"
+        },
+        "15": {
+            "vd_downlTime": "29/09/2021 22:24:22",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  14_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  14/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=OQMqyowCTIg"
+        },
+        "16": {
+            "vd_downlTime": "29/09/2021 22:25:44",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  15_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  15/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=y5mUe3FZKoE"
+        },
+        "17": {
+            "vd_downlTime": "29/09/2021 22:28:04",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  16_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  16/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=xLZ9NKQO1To"
+        },
+        "18": {
+            "vd_downlTime": "29/09/2021 22:31:22",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  17_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  17/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=twQuUelq9MA"
+        },
+        "19": {
+            "vd_downlTime": "29/09/2021 22:33:38",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  18_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  18/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=CzCPnRzHakU"
+        },
+        "2": {
+            "vd_downlTime": "18/09/2021 16:49:07",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  2_22 L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  2/22 L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=cnhJn6xu0_4"
+        },
+        "20": {
+            "vd_downlTime": "29/09/2021 22:36:04",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  19_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  19/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=oYmwAAhZgoM"
+        },
+        "21": {
+            "vd_downlTime": "29/09/2021 22:37:39",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  20_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  20/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=JiW0QFmac8I"
+        },
+        "22": {
+            "vd_downlTime": "29/09/2021 22:39:13",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  21_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  21/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=SGPrwo5iRmw"
+        },
+        "23": {
+            "vd_downlTime": "29/09/2021 22:39:19",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  22_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  22/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=Fdlidt2mkms"
+        },
+        "3": {
+            "vd_downlTime": "18/09/2021 16:50:16",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  3_22 L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  3/22 L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=XZmYirJMoFo"
+        },
+        "4": {
+            "vd_downlTime": "21/09/2021 20:07:38",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  4_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  4/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=TBS9dT63KEw"
+        },
+        "5": {
+            "vd_downlTime": "21/09/2021 20:13:21",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  5_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  5/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=kBl-nOmD8V0"
+        },
+        "6": {
+            "vd_downlTime": "23/09/2021 21:29:00",
+            "vd_downlFileName": "Funny suspicious looking dog.mp3",
+            "vd_title": "Funny suspicious looking dog",
+            "vd_url": "https://www.youtube.com/watch?v=vU1NEZ9sTOM"
+        },
+        "7": {
+            "vd_downlTime": "24/09/2021 17:02:12",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  6_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  6/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=4MlpoYdV65E"
+        },
+        "8": {
+            "vd_downlTime": "24/09/2021 23:42:28",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  7_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  7/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=ijapfymSrBI"
+        },
+        "9": {
+            "vd_downlTime": "25/09/2021 16:30:25",
+            "vd_downlFileName": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  8_22  L'histoire d'une noble amiti\u00e9.mp3",
+            "vd_title": "Les vies o\u00f9 J\u00e9sus et Bouddha se connaissaient  8/22  L'histoire d'une noble amiti\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=CqzA8SpOMdQ"
+        }
+    }
+}
