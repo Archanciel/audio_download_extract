@@ -260,6 +260,13 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		                  'video, Here to help: Give him what he wants_11, '
 		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                  ''], outputCapturingString.getvalue().split('\n'))
+
+		# deleting files in test dir so that it is not uploaded on GitHub
+
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testLoadExistingDownloadUrlInfoDic_specifying_only_info_dic_filePathName(self):
 		audioDirRoot = DirUtil.getTestAudioRootPath()
@@ -303,6 +310,10 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual('', dui.getUrlDownloadDirForUrlTitle(urlTitle_2))
 		
 		self.assertEqual(3, dui.getNextUrlIndex())
+
+		# deleting files in test dir so that it is not uploaded on GitHub
+		DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
+
 
 if __name__ == '__main__':
 #	unittest.main()

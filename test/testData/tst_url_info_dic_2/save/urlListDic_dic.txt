@@ -1,0 +1,48 @@
+{
+    "general": {
+        "nextUrlIndex": 3,
+        "totalDownlResult": [
+            13,
+            4,
+            7
+        ],
+        "urlIdxDownlFail": [
+            0,
+            2,
+            0,
+            0,
+            2
+        ],
+        "urlIdxDownlOk": [
+            3,
+            5,
+            1,
+            1,
+            2
+        ],
+        "urlIdxDownlSkip": [
+            1,
+            2,
+            0,
+            0,
+            4
+        ],
+        "urlListFileName": "urlListDic"
+    },
+    "urls": {
+        "1": {
+            "downlDir": "",
+            "downlTime": "14/12/2021 18:30:55",
+            "title": "test warning index date files_noIndexNoDate",
+            "type": "playlist",
+            "url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc"
+        },
+        "2": {
+            "downlDir": "",
+            "downlTime": "14/12/2021 18:30:55",
+            "title": "Here to help: Give him what he wants",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=Eqy6M6qLWGw"
+        }
+    }
+}
