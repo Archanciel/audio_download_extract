@@ -1218,7 +1218,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		Verifying that downloading a playlist whose name length = one char less than
 		the max possible playlist name is ok.
 		"""
-		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyse'
+		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
@@ -1227,9 +1227,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		
-		from configmanager import ConfigManager
+		
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQRlpXCFMkrgSnJXNRNAgn8"
@@ -1270,8 +1270,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
-			                  'test\\Je commence à être fatigué de ce problème impossible à analyser Je '
-			                  'commence à être fatigué de ce problème impossible à analyse',
+			                  'testData\\Je commence à être fatigué de ce problème impossible à analyser Je '
+			                  'commence à être fatigué de ce problème impossible à',
 			                  'was created.',
 			                  '',
 			                  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
@@ -1280,14 +1280,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  'video download complete.',
 '',
 			                  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
-			                  'à être fatigué de ce problème impossible à analyse" playlist audio(s) '
+			                  'à être fatigué de ce problème impossible à" playlist audio(s) '
 			                  'download terminated.',
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Je commence à être fatigué de ce problème impossible à analyser Je commence '
-		                         'à être fatigué de ce problème impossible à analyse_dic.txt',
+		                         'à être fatigué de ce problème impossible à_dic.txt',
 		                         'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
 		                         'Keller.mp3']), sorted(fileNameLst))
 	
