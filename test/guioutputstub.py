@@ -1,5 +1,5 @@
 import os
-from tkinter import Tk, TclError, Message
+
 class GuiOutputStub:
 	'''
 	This class is used for testing only
