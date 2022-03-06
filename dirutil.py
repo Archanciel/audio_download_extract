@@ -57,9 +57,6 @@ class DirUtil:
 
 	@staticmethod
 	def getTestAudioRootPath():
-		oldTstDir = DirUtil.getDefaultAudioRootPathForTest() + sep + 'test'
-		print('\nOLD TST DIR: ' + oldTstDir + '\n')
-	
 		currentDir = os.getcwd()
 		
 		return currentDir + sep + 'testData'
