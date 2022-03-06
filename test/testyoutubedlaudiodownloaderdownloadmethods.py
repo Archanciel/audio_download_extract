@@ -13,7 +13,7 @@ from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from dirutil import DirUtil
 from playlisttitleparser import PlaylistTitleParser
 from audiocontroller import AudioController
-from configmanager import ConfigManager
+from configmanagerstub import ConfigManagerStub
 from downloadplaylistinfodic import DownloadPlaylistInfoDic
 
 class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
@@ -36,7 +36,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
@@ -97,7 +97,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS"
@@ -131,7 +131,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\test_audio_downloader_one_file',
+ 'testData\\test_audio_downloader_one_file',
  'was created.',
  '',
  'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
@@ -145,7 +145,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
-
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+	
 	def testDownloadPlaylistVideosForUrlMultipleVideo(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '1'
@@ -164,7 +168,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
@@ -237,7 +241,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
@@ -318,7 +322,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadPlaylistVideosForUrl_invalid_url(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=invalid"
@@ -343,7 +347,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadPlaylistVideosForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = ""
@@ -375,7 +379,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ"
@@ -449,7 +453,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
@@ -524,7 +528,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# re-downloading the playlist
 	
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		
@@ -602,7 +606,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# re-downloading the playlist
 		
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		
@@ -673,7 +677,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn"
@@ -769,7 +773,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		# re-downloading the playlist
 		
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		
@@ -865,7 +869,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'
@@ -1012,7 +1016,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		AudioDownloaderGUI succeeds !
 		"""
 		playlistNameWindowsAcceptable = 'Je commence à être fatigué de ce problème impossible à analyser Je commence à être fatigué de ce problème impossible à analyser'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		downloadDir = testAudioRootPath + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistNameWindowsAcceptable)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1020,9 +1025,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootPath)
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMRTPgK-xIKcbu5JbKpN49Tn"
 		
 		stdout = sys.stdout
@@ -1056,7 +1061,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:D:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or '
  'directory. Playlist target dir '
  '"D:/Users/Jean-Pierre/Downloads/Audio/test/Je commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
@@ -1069,7 +1074,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\Je commence à être fatigué de ce problème impossible à analyser Je '
+ 'testData\\Je commence à être fatigué de ce problème impossible à analyser Je '
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
@@ -1078,11 +1083,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Je commence à être '
+ 'file:{}\\Je commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
- 'directory.',
+ 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or '
+ 'directory.'.format(testAudioRootPath),
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
@@ -1095,6 +1100,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
  'Keller.mp3']), sorted(fileNameLst))
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
 	
 	def testDownloadMaxNamePlaylist_with_point(self):
 		"""
@@ -1122,7 +1131,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMSqBPP5sFHilrgG6dbNr6ei"
@@ -1158,7 +1167,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:D:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être '
  'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
  'ce problème impossible à analyser/Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or '
  'directory. Playlist target dir '
  '"D:/Users/Jean-Pierre/Downloads/Audio/test/Il commence à être fatigué '
  'de ce problème impossible à analyser Je commence à être fatigué de ce '
@@ -1171,7 +1180,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\Il commence à être fatigué de ce problème impossible à analyser. Je '
+ 'testData\\Il commence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
@@ -1183,7 +1192,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\Il commence à être '
  'fatigué de ce problème impossible à analyser. Je commence à être fatigué de '
  'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
+ 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or '
  'directory.',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
@@ -1200,6 +1209,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
 		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+	
 	def testDownloadMaxNamePlaylist_minus_one_char(self):
 		"""
 		Verifying that downloading a playlist whose name length = one char less than
@@ -1213,6 +1226,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
+		
+		from configmanager import ConfigManager
 		audioController = AudioController(guiOutput,
 		                                  ConfigManager(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
@@ -1276,6 +1291,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                         'Les imaginaires effondristes sont les seuls qui tiennent la route - Arthur '
 		                         'Keller.mp3']), sorted(fileNameLst))
 	
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+	
 	def testDownloadMaxNamePlaylist_minus_one_char_with_point(self):
 		"""
 		Verifying that downloading a playlist whose name length = one char less than
@@ -1295,7 +1314,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSkA0--6AhpekQXmAZXbAmz"
@@ -1339,7 +1358,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\Gcommence à être fatigué de ce problème impossible à analyser. Je '
+ 'testData\\Gcommence à être fatigué de ce problème impossible à analyser. Je '
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
@@ -1361,10 +1380,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Keller.mp3']), sorted(fileNameLst))
 
 		self.assertEqual(longPlaylistNameMinusOneChar, downloadVideoInfoDic.getPlaylistNameOriginal())
-
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+	
 	def testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist(self):
 		playlistName = '127 char_____playlist name is very long and will cause a problem if the target dir name exceeds a maximum possible too big name.'
-		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		downloadDir = testAudioRootPath + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
 		
 		# deleting downloadDir (dir and content)
 		if os.path.exists(downloadDir):
@@ -1372,9 +1396,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
-		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootPath)
 		playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMQou0yHh8npCY2_ls8dwgVn'
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -1407,7 +1431,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'file:D:/Users/Jean-Pierre/Downloads/Audio/test/127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name/Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory. '
+ 'qui tiennent la route - Arthur Keller.mp3: No such file or directory. '
  'Playlist target dir "D:/Users/Jean-Pierre/Downloads/Audio/test/127 '
  'char_____playlist name is very long and will cause a problem if the target '
  'dir name exceeds a maximum possible too big name" length = 169 chars (max '
@@ -1419,7 +1443,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'test\\127 char_____playlist name is very long and will cause a problem if '
+ 'testData\\127 char_____playlist name is very long and will cause a problem if '
  'the target dir name exceeds a maximum possible too big name.',
  'was created.',
  '',
@@ -1428,10 +1452,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  '',
  'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
  'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:D:\\Users\\Jean-Pierre\\Downloads\\Audio\\test\\127 char_____playlist '
+ 'file:{}\\127 char_____playlist '
  'name is very long and will cause a problem if the target dir name exceeds a '
  'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.temp.mp3: No such file or directory.',
+ 'qui tiennent la route - Arthur Keller.mp3: No such file or directory.'.format(testAudioRootPath),
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
@@ -1443,6 +1467,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted([]), sorted(fileNameLst))
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
 	
 	def testDownloadPlaylistWithName_two_points(self):
 		playlistName = "test short_n\'ame pl, aylist: avec deux points"
@@ -1455,7 +1483,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMSg3vAMZWqdGiEPQEuZi2Zh"
@@ -1508,7 +1536,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  "test short_n'ame pl, aylist - avec deux points_dic.txt"]), sorted(fileNameLst))
 
 		self.assertEqual(playlistName, downloadVideoInfoDic.getPlaylistNameOriginal())
-
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+	
 	def testRedownloading_the_playlist_with_deleted_audio_files(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '3'
@@ -1528,7 +1560,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
@@ -1605,7 +1637,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		os.remove(downloadDir + sep + deletedAudioFileName)
 		
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess_redownload = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		
@@ -1699,7 +1731,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, testAudioRootSubDirPath)
 		playlistUrl = "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv"
@@ -1760,7 +1792,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput,
-		                                  ConfigManager(
+		                                  ConfigManagerStub(
 			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
 		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		playlistUrl = "https://youtube.com/playlist?list=PLzwWSJNcZTMQnJYXjC9vDnWwG2pT9YNVV"
@@ -1822,9 +1854,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertEqual("\ud83d\udca5 EFFONDREMEN Imminent de l'Euro ! _ \ud83d\udc49 Maintenant, La Fin de l'Euro Approche !.mp3",
 		                 dvi.getVideoAudioFileNameForVideoIndex(1))
+		
+		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloadPlaylistWithNameOneVideo_title_or_char()
+	tst.testDownloadMaxNamePlaylist_minus_one_char()
