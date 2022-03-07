@@ -330,7 +330,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + sep + '*')
+		files = glob.glob(downloadDir + sep + '*.*')
 		
 		for f in files:
 			os.remove(f)
@@ -690,11 +690,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 	def testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 		originalPlaylistName = 'test_audio_downloader_two_files_with_time_frames'
-		modifiedPlaylistName = 'test_audio_downloader_two_files_with_time_frames_redownloading'
 		downloadDir = DirUtil.getTestAudioRootPath()
 		
 		# deleting files in downloadDir
-		targetAudioPath = downloadDir + sep + modifiedPlaylistName
+		targetAudioPath = downloadDir + sep + originalPlaylistName
 		
 		files = glob.glob(targetAudioPath + sep + '*.*')
 		
@@ -715,14 +714,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		playlistObject, originalPlaylistTitle, videoTitle, accessError = \
 			youtubeAccess.getPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl(playlistUrl)
 		
-		modifiedPlaylistTitle = originalPlaylistTitle.replace(originalPlaylistName, modifiedPlaylistName)
-
 		downloadVideoInfoDic, accessError = PlaylistTitleParser.createDownloadVideoInfoDicForPlaylist(
 			playlistUrl=playlistUrl,
 			audioRootDir=youtubeAccess.audioDirRoot,
 			playlistDownloadRootPath=downloadDir,
-			originalPlaylistTitle=originalPlaylistTitle,
-			modifiedPlaylistTitle=modifiedPlaylistTitle)
+			originalPlaylistTitle=originalPlaylistTitle)
 
 		youtubeAccess.downloadPlaylistVideosForUrl(playlistUrl=playlistUrl,
 		                                           downloadVideoInfoDic=downloadVideoInfoDic,
@@ -794,7 +790,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
-			        'test_audio_downloader_two_files_with_time_frames_redownloading_dic.txt']), sorted(fileNameLst))
+			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 
 		# re-downloading the playlist
 		
@@ -875,7 +871,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
-			        'test_audio_downloader_two_files_with_time_frames_redownloading_dic.txt']), sorted(fileNameLst))
+			        'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
 		
 		# deleting files in downloadDir
 		files = glob.glob(targetAudioPath + sep + '*.*')
@@ -1036,7 +1032,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + sep + '*.mp3')
+		files = glob.glob(downloadDir + sep + '*.*')
 		
 		for f in files:
 			os.remove(f)
