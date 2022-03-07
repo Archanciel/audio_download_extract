@@ -693,9 +693,6 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		modifiedPlaylistName = 'test_audio_downloader_two_files_with_time_frames_redownloading'
 		downloadDir = DirUtil.getTestAudioRootPath()
 		
-		if not os.path.exists(downloadDir):
-			os.mkdir(downloadDir)
-		
 		# deleting files in downloadDir
 		targetAudioPath = downloadDir + sep + modifiedPlaylistName
 		
@@ -1039,7 +1036,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + sep + '*')
+		files = glob.glob(downloadDir + sep + '*.mp3')
 		
 		for f in files:
 			os.remove(f)

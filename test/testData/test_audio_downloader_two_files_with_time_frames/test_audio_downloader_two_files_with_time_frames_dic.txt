@@ -12,7 +12,7 @@
         "1": {
             "vd_downlException": false,
             "vd_downlFileName": "Wear a mask. Help slow the spread of Covid-19..mp3",
-            "vd_downlTime": "07/03/2022 11:07:07",
+            "vd_downlTime": "07/03/2022 13:22:25",
             "vd_startEndTimeFramesInSeconds": {
                 "vd_extract": [
                     [
@@ -28,7 +28,7 @@
         "2": {
             "vd_downlException": false,
             "vd_downlFileName": "Here to help - Give him what he wants.mp3",
-            "vd_downlTime": "07/03/2022 11:07:10",
+            "vd_downlTime": "07/03/2022 13:22:28",
             "vd_startEndTimeFramesInSeconds": {
                 "vd_extract": [],
                 "vd_suppress": [
