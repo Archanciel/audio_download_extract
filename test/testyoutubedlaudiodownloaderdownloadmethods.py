@@ -85,7 +85,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_one_file_dic.txt']), sorted(fileNameLst))
-
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testDownloadPlaylistVideosForUrl_targetFolder_not_exist(self):
 		playlistName = 'test_audio_downloader_one_file'
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -222,6 +228,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 								 'Wear a mask. Help slow the spread of Covid-19..mp3',
 								 'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames(self):
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -316,7 +328,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			sorted(['Here to help - Give him what he wants.mp3',
 					'Wear a mask. Help slow the spread of Covid-19..mp3',
 					'test_audio_downloader_two_files_with_time_frames_dic.txt']), sorted(fileNameLst))
-
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	@unittest.skip # this test takes too much time
 	def testDownloadPlaylistVideosForUrl_invalid_url(self):
 		guiOutput = GuiOutputStub()
@@ -432,6 +450,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		self.assertEqual(sorted(['Test_title_one_time_frame_extract_dic.txt',
 								 'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
 		self.assertEqual([[5, 10]], downloadVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1))
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testDownloadPlaylistVideosForUrlMultipleVideo_redownloading_the_playlist(self):
 		playlistName = 'test_audio_downloader_two_files'
@@ -594,6 +618,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testDownloadPlaylistVideosForUrlOneVideo_with_title_ending_with_question_mark_redownloading_the_playlist(self):
 		playlistName = "Test playlist with one video whose title ends with ? char"
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
@@ -849,7 +879,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			sorted(['Here to help - Give him what he wants.mp3',
 			        'Wear a mask. Help slow the spread of Covid-19..mp3',
 			        'test_audio_downloader_two_files_with_time_frames_redownloading_dic.txt']), sorted(fileNameLst))
-
+		
+		# deleting files in downloadDir
+		files = glob.glob(targetAudioPath + sep + '*.*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames_redownloading_the_playlist_after_adding_a_new_video(self):
 		# re-downloading playlist with clearing all files but one in the destination dir
 		# playlist title: test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
@@ -1001,7 +1037,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'Here to help - Give him what he wants.mp3',
  'Test download three short videos_dic.txt',
  'Wear a mask. Help slow the spread of Covid-19..mp3']), sorted(fileNameLst))
-
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testDownloadMaxNamePlaylist(self):
 		"""
 		Verifying that downloading a playlist whose name exceeds with only one char
@@ -1722,7 +1764,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Wear a mask. Help slow the spread of Covid-19..mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
-
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testDownloadPlaylistVideosForUrl_renamedFile_already_exist(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '4'
@@ -1799,6 +1847,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
+		
+		# deleting files in downloadDir
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testDownloadPlaylistWithNameOneVideo_title_or_char(self):
 		playlistDirName = "bugeco"

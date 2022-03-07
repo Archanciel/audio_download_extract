@@ -1,0 +1,20 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "Test playlist with one video whose title ends with  char",
+        "pl_name_modified": "Test playlist with one video whose title ends with ? char",
+        "pl_name_original": "Test playlist with one video whose title ends with ? char",
+        "pl_nextVideoIndex": 2,
+        "pl_title_modified": "Test playlist with one video whose title ends with ? char",
+        "pl_title_original": "Test playlist with one video whose title ends with ? char",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMTA4XDsubBsSfTCVLxqy1jG"
+    },
+    "videos": {
+        "1": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Comment Etudier Un Cours En Miracles .mp3",
+            "vd_downlTime": "04/03/2022 21:19:26",
+            "vd_title": "Comment Etudier Un Cours En Miracles ?",
+            "vd_url": "https://www.youtube.com/watch?v=tT032M6mSGQ"
+        }
+    }
+}

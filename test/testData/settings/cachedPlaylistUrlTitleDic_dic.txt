@@ -1,0 +1,14 @@
+{
+    "https://www.youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv": "test_audio_downloader_two_files",
+    "https://www.youtube.com/playlist?list=PLzwWSJNcZTMSFWGrRGKOypqN29MlyuQvn": "test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)",
+    "https://www.youtube.com/playlist?list=PLzwWSJNcZTMTB7GasAttwVnPPk3-WTMNJ": "Test_title_one_time_frame_extract (e0:0:5-0:0:10)",
+    "https://www.youtube.com/playlist?list=PLzwWSJNcZTMT_P0bftfIjKbKdaVaxem4D": "test warning index date files_noIndexDate",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRGA1T1vOn500RuLFo_lGJv": "test_audio_downloader_two_files",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRMhkp5nzUm_h02fKsiy1se": "test warning index date files_IndexDate",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc": "test warning index date files",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R": "Test download three short videos",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_": "test delete files",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd": "test warning index date files_indexNoDate",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo": "test_small_videos_3",
+    "https://youtube.com/playlist?list=PLzwWSJNcZTMTA4XDsubBsSfTCVLxqy1jG": "Test playlist with one video whose title ends with ? char"
+}
