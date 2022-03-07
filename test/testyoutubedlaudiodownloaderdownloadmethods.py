@@ -1875,7 +1875,9 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                              loadDicIfDicFileExist=True,
 		                              existingDicFilePathName=dicFilePathName)
 
-		self.assertEqual("\ud83d\udca5 EFFONDREMEN Imminent de l'Euro ! _ \ud83d\udc49 Maintenant, La Fin de l'Euro Approche !.mp3",
+		expectedAudioFileName = '💥 EFFONDREMENT Imminent de l\'Euro ! _ 👉 Maintenant, La Fin de l\'Euro Approche !.mp3'
+		
+		self.assertEqual(expectedAudioFileName,
 		                 dvi.getVideoAudioFileNameForVideoIndex(1))
 		
 		# deleting downloadDir (dir and content) to avoid uploading the data to GitHub
@@ -1887,4 +1889,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloadMaxNamePlaylist_minus_one_char()
+	tst.testDownloadPlaylistWithNameOneVideo_title_or_char()
