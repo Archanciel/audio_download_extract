@@ -987,15 +987,16 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual(['{}\\settings\\cachedPlaylistUrlTitleDic_dic.txt'.format(audioDirTestRoot)],
 		                 DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
 
-		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		self.assertRaises(KeyError, lambda: urlTitleDic['https://youtube.com/pwSBjduI5HOh71R'])
 
 		urlTitleDic_reloaded = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 
-		self.assertEqual(urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		self.assertRaises(KeyError, lambda: urlTitleDic_reloaded['https://youtube.com/pwSBjduI5HOh71R'])
+		
+		# deleting the cached dic file so it is not uploaded on GitHub
+		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
 	
 	def testUpdatePlaylistUrlTitleCachedDic(self):
 		audioDirTestRoot = DirUtil.getTestAudioRootPath()
@@ -1025,9 +1026,11 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# previously obtained cached dic not containing the new playlist url/title entry !
 		self.assertRaises(KeyError, lambda: urlTitleDic[newPlaylistUUrl])
 		
-		self.assertEqual(urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		self.assertEqual(newPlaylistTitle, urlTitleDic_reloaded[newPlaylistUUrl])
+		
+		# deleting the cached dic file so it is not uploaded on GitHub
+		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
 	
 	def testUpdatePlaylistUrlTitleCachedDic_dic_not_exist(self):
 		audioDirTestRoot = DirUtil.getTestAudioRootPath()
@@ -1046,12 +1049,14 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		
 		urlTitleDic = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 		
-		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		
 		# since the cached dic was not available in the settings dir,
 		# the new playlist info was not added to it
 		self.assertRaises(KeyError, lambda: urlTitleDic[newPlaylistUUrl])
+		
+		# deleting the cached dic file so it is not uploaded on GitHub
+		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
 	
 	def testGetPlaylistUrlTitleCachedDic_settings_dir_not_exist(self):
 		audioDirTestRoot = DirUtil.getTestAudioRootPath()
@@ -1066,18 +1071,19 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 			['{}\\settings\\cachedPlaylistUrlTitleDic_dic.txt'.format(audioDirTestRoot)],
 			DirUtil.getFilePathNamesInDirForPattern(testSettingsPath, '*.txt'))
 		
-		self.assertEqual(urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		self.assertRaises(KeyError, lambda: urlTitleDic['https://youtube.com/pwSBjduI5HOh71R'])
 		
 		urlTitleDic_reloaded = DownloadPlaylistInfoDic.getPlaylistUrlTitleCachedDic(audioDirTestRoot)
 		
-		self.assertEqual(urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRlLR6cTkwSBjduI5HOh71R'],
-		                 'Test download three short videos')
+		self.assertEqual('test delete files', urlTitleDic_reloaded['https://youtube.com/playlist?list=PLzwWSJNcZTMRqP1alMeLi6U7eQNVtDpw_'])
 		self.assertRaises(KeyError, lambda: urlTitleDic_reloaded['https://youtube.com/pwSBjduI5HOh71R'])
+		
+		# deleting the cached dic file so it is not uploaded on GitHub
+		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testDeleteVideoInfoForVideoFileName()
+	tst.testGetPlaylistUrlTitleCachedDic()
