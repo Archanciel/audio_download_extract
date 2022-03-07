@@ -61,10 +61,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual(['downloading "{}Funny suspicious looking dog 13-11-05.mp3" audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
  '',
- '"{}Funny suspicious looking dog 13-11-05.mp3" audio downloaded in '
- '"test\\Various_test" directory.'.format(downloadDatePrefix),
+ '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
+ 'testData\\Various_test directory.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
@@ -72,6 +72,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['{}Funny suspicious looking dog 13-11-05.mp3'.format(downloadDatePrefix)]), sorted(fileNameLst))
+	
+		# deleting files in downloadDir in order to avoid uploading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testDownloadSingleVideoForUrl_targetFolder_not_exist(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
@@ -120,13 +126,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			                 downloadDir)
 		else:
 			self.assertEqual(['directory',
- 'test\\Various_test_new',
+ 'testData\\Various_test_new',
  'was created.',
  '',
- 'downloading "{}Funny suspicious looking dog 13-11-05.mp3" audio ...'.format(downloadDatePrefix),
+ 'downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
  '',
- '"{}Funny suspicious looking dog 13-11-05.mp3" audio downloaded in '
- '"test\\Various_test_new" directory.'.format(downloadDatePrefix),
+ '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
+ 'testData\\Various_test_new directory.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 			self.assertEqual(DirUtil.getTestAudioRootPath() + sep + audioSubDirName,
@@ -134,6 +140,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['{}Funny suspicious looking dog 13-11-05.mp3'.format(downloadDatePrefix)]), sorted(fileNameLst))
+		
+		# deleting downloadDir (dir and content)
+		if os.path.exists(downloadDir):
+			shutil.rmtree(downloadDir)
 	
 	def testDownloadSingleVideoForUrl_redownloading_video(self):
 		expectedVideoTitle = 'Funny suspicious looking dog'
@@ -177,10 +187,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 
-		self.assertEqual(['"{}Funny suspicious looking dog 13-11-05.mp3" audio already downloaded in '
- '"test\\Various_test" dir. Video skipped.'.format(downloadDatePrefix),
+		self.assertEqual(['{}Funny suspicious looking dog 13-11-05.mp3 audio already downloaded in testData\\Various_test dir. Single video skipped.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
+		
+		# deleting files in downloadDir in order to avoid uploading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testDownloadSingleVideoForUrl_redownloading_video_title_ending_with_question_mark(self):
 		expectedVideoTitle = 'Comment Etudier Un Cours En Miracles ?'
@@ -210,8 +225,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 
-		self.assertEqual(['"{}Comment Etudier Un Cours En Miracles  18-12-16.mp3" audio already '
- 'downloaded in "Various_test_not_emptied" dir. Video skipped.'.format(downloadDatePrefix),
+		self.assertEqual(['{}Comment Etudier Un Cours En Miracles  18-12-16.mp3 audio already '
+ 'downloaded in Various_test_not_emptied dir. Single video skipped.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 	
@@ -243,8 +258,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 
 		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 
-		self.assertEqual(['"{}Aimer sans peur 3_9 - Gary Renard 13-03-26.mp3" audio already downloaded '
- 'in "Various_test_not_emptied" dir. Video skipped.'.format(downloadDatePrefix),
+		self.assertEqual(['{}Aimer sans peur 3_9 - Gary Renard 13-03-26.mp3 audio already downloaded '
+ 'in Various_test_not_emptied dir. Single video skipped.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 	
@@ -298,11 +313,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
- '20-09-26.mp3" audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading {}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
+ '20-09-26.mp3 audio ...'.format(downloadDatePrefix),
  '',
- '"{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3" audio '
- 'downloaded in "test\\Various_test" directory.'.format(downloadDatePrefix),
+ '{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3 audio '
+ 'downloaded in testData\\Various_test directory.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -315,6 +330,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3'.format(downloadDatePrefix)]), sorted(fileNameLst))
+		
+		# deleting files in downloadDir in order to avoid uploading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 
 
 if __name__ == '__main__':

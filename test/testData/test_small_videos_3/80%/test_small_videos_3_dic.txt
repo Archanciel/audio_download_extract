@@ -1,6 +1,6 @@
 {
     "playlist": {
-        "pl_downloadDir": "test_small_videos_3",
+        "pl_downlSubDir": "test_small_videos_3",
         "pl_name_modified": "test_small_videos_3",
         "pl_name_original": "test_small_videos_3",
         "pl_nextVideoIndex": 2,

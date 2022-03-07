@@ -147,6 +147,12 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 	
+		# deleting files in downloadDir to avoid loading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testRedownloadingTwoVideosPlaylist_after_2_videos_download_exception(self):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = '5'
@@ -283,6 +289,12 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+		# deleting files in downloadDir to avoid loading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testRedownloadingTwoVideosPlaylist_after_second_video_download_exception(self):
 		playlistName = 'test_audio_downloader_two_files'
@@ -413,6 +425,12 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
 		                         'Wear a mask. Help slow the spread of Covid-19..mp3',
 		                         'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
+		
+		# deleting files in downloadDir to avoid loading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
 	
 	def testRedownloadFailedVideosInDownloadVideoInfoDic(self):
 		playlistName = 'test_audio_downloader_two_files'
@@ -488,7 +506,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual(['1', '2'], downloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
-		self.assertEqual(sorted(['211223-Here to help - Give him what he wants 2019-06-07.mp3',
+		self.assertEqual(sorted(['98-Here to help - Give him what he wants 2019-06-07.mp3',
  '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3',
  'test_audio_downloader_two_files_dic.txt']), sorted(fileNameLst))
 		
@@ -505,6 +523,13 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                                                 existingDicFilePathName=existingDicFilePathName)
 
 		self.assertFalse(redownloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle("Wear a mask. Help slow the spread of Covid-19."))
+		
+		# deleting files in downloadDir to avoid loading them on GitHub
+		files = glob.glob(downloadDir + sep + '*')
+		
+		for f in files:
+			os.remove(f)
+
 
 if __name__ == '__main__':
 #	unittest.main()
