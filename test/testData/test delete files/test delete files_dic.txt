@@ -1,6 +1,6 @@
 {
     "playlist": {
-        "pl_downlSubDir": "test\\test delete files",
+        "pl_downlSubDir": "test delete files",
         "pl_name_modified": "test delete files",
         "pl_name_original": "test delete files",
         "pl_nextVideoIndex": 4,

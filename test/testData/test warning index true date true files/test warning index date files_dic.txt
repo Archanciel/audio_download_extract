@@ -1,0 +1,37 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "test warning index date files",
+        "pl_name_modified": "test warning index date files",
+        "pl_name_original": "test warning index date files",
+        "pl_nextVideoIndex": 9,
+        "pl_title_modified": "test warning index date files",
+        "pl_title_original": "test warning index date files",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc"
+    },
+    "videos": {
+        "3": {
+            "vd_downlTime": "17/11/2021 17:17:59",
+            "vd_downlFileName": "Funny suspicious looking dog 2013-11-05.mp3",
+            "vd_title": "Funny suspicious looking dog",
+            "vd_url": "https://www.youtube.com/watch?v=vU1NEZ9sTOM"
+        },
+        "5": {
+            "vd_downlTime": "17/11/2021 17:19:32",
+            "vd_downlFileName": "95-Shmeksss Short Video.mp3",
+            "vd_title": "Shmeksss Short Video",
+            "vd_url": "https://www.youtube.com/watch?v=XbqFZMIidZI"
+        },
+        "7": {
+            "vd_downlTime": "17/11/2021 17:21:19",
+            "vd_downlFileName": "93-Here to help - Give him what he wants 2019-06-07.mp3",
+            "vd_title": "Here to help: Give him what he wants",
+            "vd_url": "https://www.youtube.com/watch?v=Eqy6M6qLWGw"
+        },
+        "8": {
+            "vd_downlTime": "17/11/2021 17:23:49",
+            "vd_downlFileName": "Wear a mask. Help slow the spread of Covid-19..mp3",
+            "vd_title": "Wear a mask. Help slow the spread of Covid-19.",
+            "vd_url": "https://www.youtube.com/watch?v=9iPvLx7gotk"
+        }
+    }
+}
