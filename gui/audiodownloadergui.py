@@ -1512,7 +1512,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param fileName:
 		:return:
 		"""
-		self.outputResult(fileName)
+		self.outputResult('\n' + fileName)
 	
 	def displayDownloadedFilesHistory(self, audioFileHistoryLst):
 		"""
