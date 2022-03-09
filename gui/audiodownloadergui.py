@@ -3,6 +3,8 @@ import os,sys,inspect
 import time
 from configparser import NoOptionError
 
+from downloadhistorydata import DownloadHistoryData
+
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL = 'Down All'
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL = 'Del All'
 
@@ -213,21 +215,23 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		
 		if is_selected:
 			selItemUrlTitle = rv.data[index]['text']
-			selItemUrlDownloadData = rv.data[index]['data']
-			if isinstance(selItemUrlDownloadData, list):
+			selItemDownloadData = rv.data[index]['data']
+			if isinstance(selItemDownloadData, DownloadHistoryData):
 				# here, the list contains download history information
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = True
-				fullDownloadedFileName = selItemUrlDownloadData[1]
-				downloadedDate = selItemUrlDownloadData[2]
+				fullDownloadedFileName = selItemDownloadData.audioFileName
+				downloadedDate = selItemDownloadData.audioFileDownladDate
 				if downloadedDate not in fullDownloadedFileName:
 					fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
 				self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
-			else:
-				# here, selItemUrlDownloadData is an instance of UrlDownLoadData
+			elif isinstance(selItemDownloadData, UrlDownloadData):
+				# here, selItemDownloadData is an instance of UrlDownLoadData
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = False
-				selItemUrl = selItemUrlDownloadData.url
+				selItemUrl = selItemDownloadData.url
 				Clipboard.copy(selItemUrl)
 				self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
+			else:
+				print(selItemDownloadData)
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteRequest() and updateRequest() appGUI methods
@@ -883,19 +887,23 @@ class AudioDownloaderGUI(AudioGUI):
 		delFileDic = {}
 	
 		for listEntry in selectedAudioDownloadedFileLst:
-			audiofileDataLst = listEntry['data']
-			playlistName = audiofileDataLst[0]
-			audioFileName = audiofileDataLst[1]
-			
-			if playlistName in delFileDic.keys():
-				delFileDic[playlistName].append(audioFileName)
+			downloadHistoryData = listEntry['data']
+			if isinstance(downloadHistoryData, str):
+				# list item is a playlist, not a downloaded file
+				continue
 			else:
-				delFileDic[playlistName] = [audioFileName]
+				playlistName = downloadHistoryData.playlistName
+				audioFileName = downloadHistoryData.audioFileName
+				
+				if playlistName in delFileDic.keys():
+					delFileDic[playlistName].append(audioFileName)
+				else:
+					delFileDic[playlistName] = [audioFileName]
 		
 		deletedFileNameLst = self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
 
 		# removing deleted files from the download histo list
-		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['data'][1] not in deletedFileNameLst]
+		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if isinstance(x['data'], str) or x['data'].audioFileName not in deletedFileNameLst]
 		self.requestListRV.data = remainingAudioDownloadedFileLst
 		
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
@@ -1561,8 +1569,11 @@ class AudioDownloaderGUI(AudioGUI):
 				audioFileName = audioFileDataLst[0]
 				shortenedAudioFileName = audioFileName[0:fileNameMaxLength]
 				audioFileDownladDate_yymmdd = audioFileDataLst[1]
+				downloadHistoryData = DownloadHistoryData(playlistName=playlistName,
+				                                          audioFileName=audioFileName,
+				                                          audioFileDownladDate=audioFileDownladDate_yymmdd)
 				histoLines.append(
-					{'text': shortenedAudioFileName, 'data': [playlistName, audioFileName, audioFileDownladDate_yymmdd], 'toDownload': False,
+					{'text': shortenedAudioFileName, 'data': downloadHistoryData, 'toDownload': False,
 					 'selectable': True})
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
