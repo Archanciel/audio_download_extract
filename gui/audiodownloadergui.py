@@ -3,8 +3,6 @@ import os,sys,inspect
 import time
 from configparser import NoOptionError
 
-from downloadhistorydata import DownloadHistoryData
-
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL = 'Down All'
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL = 'Del All'
 
@@ -59,6 +57,7 @@ from dirutil import DirUtil
 from septhreadexec import SepThreadExec
 from downloadUrlinfodic import DownloadUrlInfoDic
 from urldownloaddata import UrlDownloadData
+from downloadhistorydata import DownloadHistoryData
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
