@@ -223,6 +223,7 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 					fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
 				self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
 			else:
+				# here, selItemUrlDownloadData is an instance of UrlDownLoadData
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = False
 				selItemUrl = selItemUrlDownloadData.url
 				Clipboard.copy(selItemUrl)
@@ -1496,6 +1497,13 @@ class AudioDownloaderGUI(AudioGUI):
 			self.outputResult(audioFilePath)
 
 	def displayDownloadedFileName(self, fileName):
+		"""
+		Called by SelectableMultiFieldsItem.apply_selection(). When selecting
+		a downloaded file displayed in the download histo list, displays the
+		full name of the selected file.
+		:param fileName:
+		:return:
+		"""
 		self.outputResult(fileName)
 	
 	def displayDownloadedFilesHistory(self, audioFileHistoryLst):
