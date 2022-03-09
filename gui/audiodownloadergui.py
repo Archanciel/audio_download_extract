@@ -1566,11 +1566,11 @@ class AudioDownloaderGUI(AudioGUI):
 				 'selectable': False})
 			for audioFileDataLst in audioSubDirDataLst[1]:
 				audioFileName = audioFileDataLst[0]
-				shortenedAudioFileName = audioFileName[0:fileNameMaxLength]
 				audioFileDownladDate_yymmdd = audioFileDataLst[1]
 				downloadHistoryData = DownloadHistoryData(playlistName=playlistName,
 				                                          audioFileName=audioFileName,
 				                                          audioFileDownladDate=audioFileDownladDate_yymmdd)
+				shortenedAudioFileName = downloadHistoryData.getAudioFileNameShortened(fileNameMaxLength)
 				histoLines.append(
 					{'text': shortenedAudioFileName, 'data': downloadHistoryData, 'toDownload': False,
 					 'selectable': True})
