@@ -56,7 +56,7 @@ from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 from septhreadexec import SepThreadExec
 from downloadUrlinfodic import DownloadUrlInfoDic
-from downloadUrlinfodic import UrlDownloadData
+from urldownloaddata import UrlDownloadData
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1

@@ -4,6 +4,7 @@ from os.path import sep
 
 from constants import *
 from baseinfodic import BaseInfoDic
+from urldownloaddata import UrlDownloadData
 
 KEY_GENERAL = 'general'
 # key for a 4 elements tuple value.
@@ -58,19 +59,7 @@ KEY_URL_DOWNLOAD_RESULT = 'downlResult'
 
 KEY_URL_DOWNLOAD_DIR = 'downlDir'
 
-class UrlDownloadData():
-	def __init__(self,
-	             type,
-	             title,
-	             url):
-		self.type = type
-		self.title = title
-		self.url = url
-		self.downloadDir = '' # not really useful for now
-		
-	def __str__(self):
-		return self.type + ', ' + self.title + ', ' + self.url
-		
+
 class DownloadUrlInfoDic(BaseInfoDic):
 	"""
 	Stores the playlists or videos information which were added to the URL's

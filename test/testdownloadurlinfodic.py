@@ -10,7 +10,7 @@ parentDir = os.path.dirname(currentDir)
 sys.path.insert(0, parentDir)
 		
 from downloadUrlinfodic import DownloadUrlInfoDic
-from downloadUrlinfodic import UrlDownloadData
+from urldownloaddata import UrlDownloadData
 from constants import *
 from dirutil import DirUtil
 			
