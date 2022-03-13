@@ -488,6 +488,12 @@ class AudioController:
 		
 		# the first element in the list is the playlist dir path ...
 		deletedFilesPath = DirUtil.extractPathFromPathFileName(filePathNameLst[-1])
+		
+		if deletedFilesPath == self.configMgr.dataPath:
+			# the case if a playlist dir in audio root path was selected instead
+			# a playlist audio file inside the playlist dir
+			return
+		
 		DirUtil.deleteFiles(filePathNameLst)
 		
 		# now removing video entries in download video info dic
