@@ -1501,7 +1501,7 @@ class AudioDownloaderGUI(AudioGUI):
 			return
 		
 		for audioFilePath in deletedFilePathNameLst:
-			self.outputResult(audioFilePath)
+			self.outputResult(audioFilePath + '\n')
 
 	def displayDownloadedFileName(self, fileName):
 		"""
