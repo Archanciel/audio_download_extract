@@ -7,7 +7,10 @@ TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL = 'Down All'
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL = 'Del All'
 
 TOGGLE_HISTO_BUTTON_URL = "Url's"
-TOGGLE_HISTO_BUTTON_DOWN_DEL = 'Down Del'
+TOGGLE_HISTO_BUTTON_DOWN_HIST = 'Down Hist'
+
+TOGGLE_DELETE_BUTTON_DELETE = "Delete"
+TOGGLE_DELETE_BUTTON_BROWSER = 'Browser'
 
 TIME_SLEEP_SECONDS = 1
 
@@ -36,6 +39,8 @@ from kivy.uix.widget import Widget
 from kivy.utils import platform
 
 from kivy.core.clipboard import Clipboard
+
+import webbrowser
 
 from gui.filechooserpopup import LoadFileChooserPopup
 from gui.filechooserpopup import SaveFileChooserPopup
@@ -383,6 +388,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
 		self.downloadUrlLst = []
+		self.isDownloadHistoDisplayed = False
 		
 		self._doOnStart()
 	
@@ -454,8 +460,9 @@ class AudioDownloaderGUI(AudioGUI):
 							'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
-			self.toggleHistoButton.text = "Url's"
-			
+			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
+			self.deleteButton.text = TOGGLE_DELETE_BUTTON_DELETE
+
 			if self.showRequestList:
 				self.adjustRequestListSize()
 			
@@ -689,6 +696,23 @@ class AudioDownloaderGUI(AudioGUI):
 			self.pos_hint = {'x': 0, 'y': 0}
 			self.stopDownloadButton.text = 'Half'
 	
+	def applyDeleteRequest(self):
+		if self.isDownHistoDropDownMenuItemDisplayed:
+			# Download histo files are displayed
+			selItemDownloadData = self.requestListRV.data[self.recycleViewCurrentSelIndex]['data']
+			fullDownloadedFileName = selItemDownloadData.audioFileName
+			playlistName = selItemDownloadData.playlistName
+			downloadVideoInfoDic = self.audioController.getDownloadVideoInfoDic(playlistName=playlistName)
+			url = downloadVideoInfoDic.getVideoUrlForVideoFileName(fullDownloadedFileName)
+
+			# url = "https://www.youtube.com/watch?v=ZKv6hpddWYc"
+			# url = "https://youtube.com/playlist?list=PLzwWSJNcZTMRKdsBnVLvj-0P2GlKJi6Pd"
+			webbrowser.open(url, new=1)
+		
+		else:
+			# URL are displayed
+			self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
+	
 	def submitRequest(self):
 		'''
 		Submit the request, output the result and add the request to the
@@ -810,11 +834,12 @@ class AudioDownloaderGUI(AudioGUI):
 		self.clearResultOutputButton.disabled = True
 		self.refocusOnFirstRequestInput()
 		
-		if self.toggleHistoButton.text == TOGGLE_HISTO_BUTTON_DOWN_DEL:
+		if self.toggleHistoButton.text == TOGGLE_HISTO_BUTTON_DOWN_HIST:
 			# means the list contains downloaded audio files history. In this
 			# case, the history list must be refilled with Url's data contained
 			# in urlListDic_dic.txt
 			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
+			self.deleteButton.text = TOGGLE_DELETE_BUTTON_DELETE
 			self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL
 			self.loadHistoryDataIfSet() # reload urlListDic_dic.txt
 	
@@ -1578,7 +1603,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.requestListRVSelBoxLayout.clear_selection()
 		
 		# Reset the ListView
-		self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_DOWN_DEL
+		self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_DOWN_HIST
+		self.deleteButton.text = TOGGLE_DELETE_BUTTON_BROWSER
 		self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL
 		self.resetListViewScrollToEnd()
 		self.manageStateOfGlobalRequestListButtons()

@@ -834,6 +834,9 @@ class TestAudioController(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 
+	def testGetDownloadVideoInfoDic(self):
+		# implements the tst !
+		self.assertTrue(False);
 
 if __name__ == '__main__':
 #	unittest.main()

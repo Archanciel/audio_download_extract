@@ -1082,7 +1082,10 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# deleting the cached dic file so it is not uploaded on GitHub
 		DirUtil.deleteFilesInDirForPattern(testSettingsPath, '*.txt')
 
-
+	def testGetVideoUrlForVideoFileName(self):
+		# implement tst !
+		self.assertTrue(False)
+		
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()

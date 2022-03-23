@@ -513,6 +513,18 @@ class AudioController:
 				downloadVideoInfoDic.deleteVideoInfoForVideoFileName(fileName)
 	
 			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
+
+	def getDownloadVideoInfoDic(self,
+	                            playlistName):
+		'''
+		Load the existing download video info dic for the passed playlist name.
+		
+		:param playlistName:
+		:return:
+		'''
+		dicFilePathName = self.configMgr.dataPath + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		
+		return DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
 	
 	def deleteAudioFilesFromDirOnly(self, delFileDic):
 		"""

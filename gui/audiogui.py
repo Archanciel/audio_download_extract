@@ -315,18 +315,22 @@ class AudioGUI(Screen):
 		This method handles the states of the single items of the request
 		history list.
 		"""
-		if len(self.requestListRVSelBoxLayout.selected_nodes) and \
-				not self.isDownloadHistoDisplayed:
-			# here, a request list item is selected and the
-			# requestListRVSelBoxLayout.selected_nodes list has one
-			# element !
-			self.deleteButton.disabled = False
-			self.replaceButton.disabled = False
-			self.moveUpButton.disabled = False
-			self.moveDownButton.disabled = False
+		if len(self.requestListRVSelBoxLayout.selected_nodes):
+			if self.isDownloadHistoDisplayed:
+				# Download histo list is displayed
+				self.deleteButton.disabled = False
+			else:
+				# URL list is displayed
+				# here, a request list item is selected and the
+				# requestListRVSelBoxLayout.selected_nodes list has one
+				# element !
+				self.deleteButton.disabled = False
+				self.replaceButton.disabled = False
+				self.moveUpButton.disabled = False
+				self.moveDownButton.disabled = False
 		else:
 			self.disableStateOfRequestListSingleItemButtons()
-	
+
 	def toggleRequestList(self):
 		'''
 		called by 'History' toggle button to toggle the display of the history
@@ -380,7 +384,7 @@ class AudioGUI(Screen):
 	
 	def deleteRequest(self, *args):
 		# deleting selected item from RecycleView list
-		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
+		self.applyDeleteRequest()
 		
 		remainingItemNb = len(self.requestListRV.data)
 		
@@ -405,6 +409,9 @@ class AudioGUI(Screen):
 		
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
+	
+	def applyDeleteRequest(self):
+		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 	
 	def emptyRequestFields(self):
 		pass

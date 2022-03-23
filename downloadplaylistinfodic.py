@@ -250,6 +250,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			return None
 	
+	def getVideoUrlForVideoFileName(self, videoFileName):
+		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
+		
+		if videoIndex:
+			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_URL]
+		else:
+			return None
+	
 	def getVideoAudioFileNameForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
