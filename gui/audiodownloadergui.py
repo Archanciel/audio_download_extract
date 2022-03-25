@@ -7,7 +7,7 @@ TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL = 'Down All'
 TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL = 'Del All'
 
 TOGGLE_HISTO_BUTTON_URL = "Url's"
-TOGGLE_HISTO_BUTTON_DOWN_HIST = 'Down Hist'
+TOGGLE_HISTO_BUTTON_DOWN_HIST = 'Dl Hist'
 
 TOGGLE_DELETE_BUTTON_DELETE = "Delete"
 TOGGLE_DELETE_BUTTON_BROWSER = 'Browser'
@@ -660,7 +660,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 	def downloadStopped(self):
 		self.stopDownloadButton.disabled = False
-		self.updateStatusBar("")
+		self.clearStatusBar()
 
 	def toggleAppPosAndSize(self):
 		"""
@@ -712,6 +712,11 @@ class AudioDownloaderGUI(AudioGUI):
 			if selItemData.type == DHD_TYPE_AUDIO_FILE:
 				fullDownloadedFileName = selItemData.audioFileName
 				url = downloadVideoInfoDic.getVideoUrlForVideoFileName(fullDownloadedFileName)
+				if url is None:
+					# possibly due ti the fact that the file download encountered
+					# a problem which caused the file renaming with prefix/suffix
+					# to be skipped.
+					url = downloadVideoInfoDic.getVideoUrlForVideoTitle(fullDownloadedFileName.replace('.mp3', ''))
 			else:
 				url = downloadVideoInfoDic.getPlaylistUrl()
 			
