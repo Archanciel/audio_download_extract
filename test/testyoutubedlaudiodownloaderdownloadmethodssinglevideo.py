@@ -342,4 +342,4 @@ if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadPlaylistWithNameOneVideo_title_or_char()
+	tst.testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash()
