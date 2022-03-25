@@ -54,7 +54,13 @@ class TestAudioController(unittest.TestCase):
 		extractedMp3FileName = videoAndAudioFileList[1]
 		audio = MP3(targetAudioDir + sep + extractedMp3FileName)
 		self.assertAlmostEqual(expectedExtractedAudioFileDuration, audio.info.length, delta=0.1)
-
+	
+		# deleting mp3 files in test dir to avoid reloading to github
+		files = glob.glob(targetAudioDir + sep + '*.mp3')
+		
+		for f in files:
+			os.remove(f)
+	
 	def testGetPlaylistObjectAndPlaylistTitleOrVideoTitleForUrl_empty_url(self):
 		guiOutput = GuiOutputStub()
 		audioController = AudioController(guiOutput, ConfigManagerStub(DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
@@ -265,7 +271,10 @@ class TestAudioController(unittest.TestCase):
 		self.assertEqual(
 			['{}Funny suspicious looking dog 13-11-05.mp3'.format(downloadDatePrefix)],
 			createdFileLst)
-
+		
+		# removing test dir and sub dirs and its files to avoid reloading to github
+		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
+	
 	def testDeleteAudioFilesFromDirAndFromDic_all(self):
 		testDirName = 'test delete files'
 		testDirNameSaved = 'test delete files save dir'
