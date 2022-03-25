@@ -160,7 +160,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						uploadDate = meta['upload_date']
 						formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 				except AttributeError as e:
-					msgText = 'obtaining video title and upload date failed with error {}.\n'.format(e)
+					msgText = 'obtaining video title and upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
 					self.audioController.displayError(msgText)
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1
@@ -172,7 +172,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					# did happen on Android and caused an uncaught exception
 					# which made the app no longer usable.
-					msgText = 'obtaining video title failed for unknown reason.\n'
+					msgText = 'obtaining video title [b][color=FF0000]failed[/color][/b] for unknown reason.\n'
 					self.audioController.displayError(msgText)
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1
@@ -487,7 +487,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					if maxTitlesNumber <= 0:
 						break
 			except AttributeError as e:
-				msgText = 'obtaining video title failed with error {}.\n'.format(e)
+				msgText = 'obtaining video title [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
 			except KeyError:
 				msgText = 'trying to obtain playlist video titles on an invalid url or a url pointing to a single video.\n'
@@ -537,7 +537,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				uploadDate = meta['upload_date']
 				formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 			except AttributeError as e:
-				msgText = 'obtaining single video upload date failed with error {}.\n'.format(e)
+				msgText = 'obtaining single video upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
 			
 			if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
@@ -617,7 +617,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				meta = ydl.extract_info(videoUrl, download=False)
 				videoTitle = meta['title']
 			except AttributeError as e:
-				msgText = 'obtaining video title and upload date failed with error {}.\n'.format(e)
+				msgText = 'obtaining video title and upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
 				self.audioController.displayError(msgText)
 
 				return False
