@@ -62,7 +62,7 @@ from dirutil import DirUtil
 from septhreadexec import SepThreadExec
 from downloadUrlinfodic import DownloadUrlInfoDic
 from urldownloaddata import UrlDownloadData
-from downloadhistorydata import DownloadHistoryData
+from downloadhistorydata import *
 
 STATUS_BAR_ERROR_SUFFIX = ' --> ERROR ...'
 FILE_ACTION_SAVE = 1
@@ -187,10 +187,6 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		self.rv = rv
 		self.audioDownloaderGUI = rv.rootGUI
 		self.index = index
-		# if not data['selectable']:
-		# 	self.itemLabel.size_hint_x = 0.8
-		# 	self.itemGridLayoutCkeckbox.size_hint_x = 0
-		# 	self.itemGridLayoutEmpty.size_hint_x = 0.2
 		
 		return super(SelectableMultiFieldsItem, self).refresh_view_attrs(
 			rv, index, data)
@@ -223,11 +219,12 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 			if isinstance(selItemDownloadData, DownloadHistoryData):
 				# here, the list contains download history information
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = True
-				fullDownloadedFileName = selItemDownloadData.audioFileName
-				downloadedDate = selItemDownloadData.audioFileDownladDate
-				if downloadedDate not in fullDownloadedFileName:
-					fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
-				self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
+				if selItemDownloadData.type == DHD_TYPE_AUDIO_FILE:
+					fullDownloadedFileName = selItemDownloadData.audioFileName
+					downloadedDate = selItemDownloadData.audioFileDownloadDate
+					if downloadedDate not in fullDownloadedFileName:
+						fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
+					self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
 			elif isinstance(selItemDownloadData, UrlDownloadData):
 				# here, selItemDownloadData is an instance of UrlDownLoadData
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = False
@@ -245,7 +242,7 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		# to active on other items when moving an item where the chkbox is
 		# active !
 		if index <= len(rv.data) - 1:
-			# avoids IndexError exception happenning sometimes
+			# avoids IndexError exception happening sometimes
 			self.ids.download_chkbox.active = rv.data[index]['toDownload']
 			
 		self.audioDownloaderGUI.refocusOnFirstRequestInput()
@@ -259,7 +256,8 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		#
 		# if not recycleView.data[selectableMultiFieldsItem.index]['selectable']:
 		# 	# useful when the request list contains downloaded files histo.
-		# 	# The playlist list items 'selectable' element is set to False.
+		# 	# The playlist list items 'selectable' element is set to False (True again
+		#   in order to enable opening browser !)	.
 		# 	# So, checking the checkbox for a playlist name does not set
 		# 	# the chkbox to active.
 		# 	chkbox.active = False
@@ -697,19 +695,28 @@ class AudioDownloaderGUI(AudioGUI):
 			self.stopDownloadButton.text = 'Half'
 	
 	def applyDeleteRequest(self):
-		if self.isDownHistoDropDownMenuItemDisplayed:
-			# Download histo files are displayed
-			selItemDownloadData = self.requestListRV.data[self.recycleViewCurrentSelIndex]['data']
-			fullDownloadedFileName = selItemDownloadData.audioFileName
-			playlistName = selItemDownloadData.playlistName
-			downloadVideoInfoDic = self.audioController.getDownloadVideoInfoDic(playlistName=playlistName)
-			url = downloadVideoInfoDic.getVideoUrlForVideoFileName(fullDownloadedFileName)
+		selItemData = self.requestListRV.data[self.recycleViewCurrentSelIndex]['data']
 
-			# url = "https://www.youtube.com/watch?v=ZKv6hpddWYc"
-			# url = "https://youtube.com/playlist?list=PLzwWSJNcZTMRKdsBnVLvj-0P2GlKJi6Pd"
+		if isinstance(selItemData, DownloadHistoryData):
+			# Download histo files are displayed
+			playlistName = selItemData.playlistName
+			downloadVideoInfoDic = self.audioController.getDownloadPlaylistInfoDic(playlistName=playlistName)
+			
+			if downloadVideoInfoDic is None:
+				# currently the case if we try to open a browser on an audio file
+				# located in the audio\Various dir in which no video info dic
+				# exist
+				return
+			
+			if selItemData.type == DHD_TYPE_AUDIO_FILE:
+				fullDownloadedFileName = selItemData.audioFileName
+				url = downloadVideoInfoDic.getVideoUrlForVideoFileName(fullDownloadedFileName)
+			else:
+				url = downloadVideoInfoDic.getPlaylistUrl()
+				
 			webbrowser.open(url, new=1)
 		
-		else:
+		elif isinstance(selItemData, UrlDownloadData):
 			# URL are displayed
 			self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 	
@@ -912,10 +919,7 @@ class AudioDownloaderGUI(AudioGUI):
 	
 		for listEntry in selectedAudioDownloadedFileLst:
 			downloadHistoryData = listEntry['data']
-			if isinstance(downloadHistoryData, str):
-				# list item is a playlist, not a downloaded file
-				continue
-			else:
+			if downloadHistoryData.type == DHD_TYPE_AUDIO_FILE:
 				playlistName = downloadHistoryData.playlistName
 				audioFileName = downloadHistoryData.audioFileName
 				
@@ -923,11 +927,14 @@ class AudioDownloaderGUI(AudioGUI):
 					delFileDic[playlistName].append(audioFileName)
 				else:
 					delFileDic[playlistName] = [audioFileName]
-		
+			else:
+				# list item is a playlist, not a downloaded file
+				continue
+
 		deletedFileNameLst = self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
 
 		# removing deleted files from the download histo list
-		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if isinstance(x['data'], str) or x['data'].audioFileName not in deletedFileNameLst]
+		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['data'].type == DHD_TYPE_PLAYLIST or x['data'].audioFileName not in deletedFileNameLst]
 		self.requestListRV.data = remainingAudioDownloadedFileLst
 		
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
@@ -1586,18 +1593,23 @@ class AudioDownloaderGUI(AudioGUI):
 		for audioSubDirDataLst in audioFileHistoryLst:
 			playlistName = audioSubDirDataLst[0]
 			formattedPlaylistName = '[b]' + playlistName + '[/b]'
+			playlistDownloadHistoryData = DownloadHistoryData(type=DHD_TYPE_PLAYLIST,
+											                  playlistName=playlistName)
 			histoLines.append(
-				{'text': formattedPlaylistName, 'data': playlistName, 'toDownload': False,
-				 'selectable': False})
+				{'text': formattedPlaylistName, 'data': playlistDownloadHistoryData, 'toDownload': False,
+				 'selectable': True}) # resetting 'selectable' to True so that the
+									  # growse button can be activated for playlist
+									  # items as well
 			for audioFileDataLst in audioSubDirDataLst[1]:
 				audioFileName = audioFileDataLst[0]
 				audioFileDownladDate_yymmdd = audioFileDataLst[1]
-				downloadHistoryData = DownloadHistoryData(playlistName=playlistName,
-				                                          audioFileName=audioFileName,
-				                                          audioFileDownladDate=audioFileDownladDate_yymmdd)
-				shortenedAudioFileName = downloadHistoryData.getAudioFileNameShortened(fileNameMaxLength)
+				audioFileDownloadHistoryData = DownloadHistoryData(type=DHD_TYPE_AUDIO_FILE,
+				                                                   playlistName=playlistName,
+				                                                   audioFileName=audioFileName,
+				                                                   audioFileDownloadDate=audioFileDownladDate_yymmdd)
+				shortenedAudioFileName = audioFileDownloadHistoryData.getAudioFileNameShortened(fileNameMaxLength)
 				histoLines.append(
-					{'text': shortenedAudioFileName, 'data': downloadHistoryData, 'toDownload': False,
+					{'text': shortenedAudioFileName, 'data': audioFileDownloadHistoryData, 'toDownload': False,
 					 'selectable': True})
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()

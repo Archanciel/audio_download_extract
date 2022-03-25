@@ -834,7 +834,7 @@ class TestAudioController(unittest.TestCase):
 		for f in files:
 			os.remove(f)
 
-	def testGetDownloadVideoInfoDic(self):
+	def testGetDownloadPlaylistInfoDic(self):
 		# implements the tst !
 		self.assertTrue(False);
 

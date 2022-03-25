@@ -514,17 +514,25 @@ class AudioController:
 	
 			downloadVideoInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath)
 
-	def getDownloadVideoInfoDic(self,
-	                            playlistName):
+	def getDownloadPlaylistInfoDic(self,
+	                               playlistName):
 		'''
 		Load the existing download video info dic for the passed playlist name.
 		
 		:param playlistName:
-		:return:
+		
+		:return: None if no DownloadPlaylistInfoDic exist in the passed playlistName
+				 dir (currently the case for the audio\Various dir)
 		'''
 		dicFilePathName = self.configMgr.dataPath + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
 		
-		return DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		if downloadPlaylistInfoDic.dic is None:
+			# currently the case if we try to load a DownloadPlaylistInfoDic located
+			# in the audio\Various dir
+			downloadPlaylistInfoDic = None
+		
+		return downloadPlaylistInfoDic
 	
 	def deleteAudioFilesFromDirOnly(self, delFileDic):
 		"""
