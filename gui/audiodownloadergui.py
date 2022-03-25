@@ -164,7 +164,7 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
 
 		# appGUI.recycleViewCurrentSelIndex is used by the
-		# deleteRequest() and updateRequest() appGUI methods
+		# deleteOrBrowseItem() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 
 
@@ -200,7 +200,7 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 			self.audioDownloaderGUI.requestInput.text = ''
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() appGUI methods
+			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = -1
 
 		if super(SelectableMultiFieldsItem, self).on_touch_down(touch):
@@ -231,12 +231,12 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 				selItemUrl = selItemDownloadData.url
 				Clipboard.copy(selItemUrl)
 				self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
-			else:
-				print(selItemDownloadData)
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() appGUI methods
+			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
+			
+			self.audioDownloaderGUI.clearStatusBar()
 			
 		# next instruction fixes incomprehensible problem of setting chkbox
 		# to active on other items when moving an item where the chkbox is
@@ -459,7 +459,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
 			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
-			self.deleteButton.text = TOGGLE_DELETE_BUTTON_DELETE
+			self.deleteBrowseButton.text = TOGGLE_DELETE_BUTTON_DELETE
 
 			if self.showRequestList:
 				self.adjustRequestListSize()
@@ -694,7 +694,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.pos_hint = {'x': 0, 'y': 0}
 			self.stopDownloadButton.text = 'Half'
 	
-	def applyDeleteRequest(self):
+	def applyDeleteOrBrowseItem(self):
 		selItemData = self.requestListRV.data[self.recycleViewCurrentSelIndex]['data']
 
 		if isinstance(selItemData, DownloadHistoryData):
@@ -706,6 +706,7 @@ class AudioDownloaderGUI(AudioGUI):
 				# currently the case if we try to open a browser on an audio file
 				# located in the audio\Various dir in which no video info dic
 				# exist
+				self.updateStatusBar('Not possible to open browser since {} playlist dic not exist'.format(playlistName))
 				return
 			
 			if selItemData.type == DHD_TYPE_AUDIO_FILE:
@@ -713,8 +714,14 @@ class AudioDownloaderGUI(AudioGUI):
 				url = downloadVideoInfoDic.getVideoUrlForVideoFileName(fullDownloadedFileName)
 			else:
 				url = downloadVideoInfoDic.getPlaylistUrl()
-				
+			
+			if url is None:
+				# the case if the file is not in the playlist dic
+				self.updateStatusBar('Not possible to open browser since the audio file is not in {} playlist dic'.format(playlistName))
+				return
+			
 			webbrowser.open(url, new=1)
+			self.clearStatusBar()
 		
 		elif isinstance(selItemData, UrlDownloadData):
 			# URL are displayed
@@ -834,9 +841,8 @@ class AudioDownloaderGUI(AudioGUI):
 		# scrolling to top of output text. Doing that avoids that the next
 		# output label text addition is done at the bottom of the label
 		self.outputScrollView.scroll_y = 1
-
-		if 'History' not in self.statusBarTextInput.text:
-			self.statusBarTextInput.text = ''
+		
+		self.clearStatusBar()
 
 		self.clearResultOutputButton.disabled = True
 		self.refocusOnFirstRequestInput()
@@ -846,9 +852,13 @@ class AudioDownloaderGUI(AudioGUI):
 			# case, the history list must be refilled with Url's data contained
 			# in urlListDic_dic.txt
 			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
-			self.deleteButton.text = TOGGLE_DELETE_BUTTON_DELETE
+			self.deleteBrowseButton.text = TOGGLE_DELETE_BUTTON_DELETE
 			self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL
 			self.loadHistoryDataIfSet() # reload urlListDic_dic.txt
+	
+	def clearStatusBar(self):
+		if 'URL' not in self.statusBarTextInput.text:
+			self.updateStatusBar('')
 	
 	def emptyRequestFields(self):
 		self.requestInput.text = ''
@@ -1616,7 +1626,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		# Reset the ListView
 		self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_DOWN_HIST
-		self.deleteButton.text = TOGGLE_DELETE_BUTTON_BROWSER
+		self.deleteBrowseButton.text = TOGGLE_DELETE_BUTTON_BROWSER
 		self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_DEL
 		self.resetListViewScrollToEnd()
 		self.manageStateOfGlobalRequestListButtons()

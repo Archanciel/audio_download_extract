@@ -14,7 +14,7 @@
 	outputScrollView: scrlv_out
 	outputLabel: ro_output_Label
 	toggleHistoButton: toggle_history_list_Button
-	deleteButton: delete_Button
+	deleteBrowseButton: delete_browse_Button
 	replaceButton: replace_Button
 	downloadAllButton: download_all_Button
 	moveUpButton: moveUp_Button
@@ -59,7 +59,6 @@
 					id: request_TextInput
 					background_color: 0,0,0,0
 					foreground_color: 1,1,1,1
-					focus: True
 					multiline: False
 					#ENTER triggers root.submitRequest()
 					on_text_validate: root.submitRequest()
@@ -98,11 +97,12 @@
 				disabled:True
 				on_press: root.toggleRequestList()
 			Button:
-				id: delete_Button
+				id: delete_browse_Button # depending on the list content, delete
+				                         # the list item or open a browser on it
 				text: "Delete"
 				size_hint_x: 15
 				disabled: True
-				on_press: root.deleteRequest()
+				on_press: root.deleteOrBrowseItem()
 			Button:
 				id: replace_Button
 				text: "Replace"
@@ -205,6 +205,7 @@
 				foreground_color: 1,1,1,1
 				valign: "top"
 				markup: True
+
 
 		BoxLayout:
 			id: boxlayout_statusbar

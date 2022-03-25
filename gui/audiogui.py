@@ -305,7 +305,7 @@ class AudioGUI(Screen):
 					self.manageStateOfGlobalRequestListButtons()
 	
 	def disableStateOfRequestListSingleItemButtons(self):
-		self.deleteButton.disabled = True
+		self.deleteBrowseButton.disabled = True
 		self.replaceButton.disabled = True
 		self.moveUpButton.disabled = True
 		self.moveDownButton.disabled = True
@@ -318,13 +318,13 @@ class AudioGUI(Screen):
 		if len(self.requestListRVSelBoxLayout.selected_nodes):
 			if self.isDownloadHistoDisplayed:
 				# Download histo list is displayed
-				self.deleteButton.disabled = False
+				self.deleteBrowseButton.disabled = False
 			else:
 				# URL list is displayed
 				# here, a request list item is selected and the
 				# requestListRVSelBoxLayout.selected_nodes list has one
 				# element !
-				self.deleteButton.disabled = False
+				self.deleteBrowseButton.disabled = False
 				self.replaceButton.disabled = False
 				self.moveUpButton.disabled = False
 				self.moveDownButton.disabled = False
@@ -382,9 +382,14 @@ class AudioGUI(Screen):
 		# sufficient for item move ...)
 		Clock.schedule_once(self._refocusOnFirstTextInput, 0.5)
 	
-	def deleteRequest(self, *args):
-		# deleting selected item from RecycleView list
-		self.applyDeleteRequest()
+	def deleteOrBrowseItem(self, *args):
+		'''
+		Called from the
+		:param args:
+		:return:
+		'''
+		# deleting selected item from RecycleView
+		self.applyDeleteOrBrowseItem()
 		
 		remainingItemNb = len(self.requestListRV.data)
 		
@@ -410,7 +415,7 @@ class AudioGUI(Screen):
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
 	
-	def applyDeleteRequest(self):
+	def applyDeleteOrBrowseItem(self):
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 	
 	def emptyRequestFields(self):

@@ -85,7 +85,7 @@ class AudioShareSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				self.parent.data.insert(movedItemNewSeIndex, {NAME_LABEL_KEY: movedName, EMAIL_LABEL_KEY: movedEmail, PHONE_NUMBER_LABEL_KEY: movedPhoneNumber, 'selectable': True})
 		
 		# appGUI.recycleViewCurrentSelIndex is used by the
-		# deleteRequest() and updateRequest() appGUI methods
+		# deleteOrBrowseItem() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
 		
 	def getSelectedContactValues(self, movedItemSelIndex):
@@ -139,7 +139,7 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			self.audioShareGUI.phoneNumberTextInputField.text = ''
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() appGUI methods
+			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = -1
 		
 		if super(MultiFieldSelectableBoxLayout, self).on_touch_down(touch):
@@ -158,7 +158,7 @@ class MultiFieldSelectableBoxLayout(RecycleDataViewBehavior, BoxLayout):
 			selPhoneNumber = rv.data[index][PHONE_NUMBER_LABEL_KEY]
 
 			# appGUI.recycleViewCurrentSelIndex is used by the
-			# deleteRequest() and updateRequest() appGUI methods
+			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioShareGUI.recycleViewCurrentSelIndex = index
 			self.audioShareGUI.nameTextInputField.text = selName
 			self.audioShareGUI.emailTextInputField.text = selEmail
@@ -213,7 +213,7 @@ class AudioShareGUI(AudioPositionGUI):
 		'''
 		self.nameTextInputField.focus = True
 	
-	def deleteRequest(self, *args):
+	def deleteOrBrowseItem(self, *args):
 		# deleting selected item from RecycleView list
 		self.requestListRV.data.pop(self.recycleViewCurrentSelIndex)
 		
