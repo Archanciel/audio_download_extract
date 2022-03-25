@@ -836,8 +836,12 @@ class TestAudioController(unittest.TestCase):
 
 	def testGetDownloadPlaylistInfoDic(self):
 		# implements the tst !
-		self.assertTrue(False);
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 
+		playlistName = 'testGetDownloadPlaylistInfoDic'
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
