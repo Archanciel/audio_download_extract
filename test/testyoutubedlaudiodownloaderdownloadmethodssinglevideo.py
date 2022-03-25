@@ -11,6 +11,8 @@ sys.path.insert(0, parentDir)
 from guioutputstub import GuiOutputStub
 from youtubedlaudiodownloader import YoutubeDlAudioDownloader
 from dirutil import DirUtil
+from audiocontroller import AudioController
+from configmanagerstub import ConfigManagerStub
 
 class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 	
@@ -29,7 +31,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -61,7 +66,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual(['downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading \"{}Funny suspicious looking dog 13-11-05.mp3\" audio ...'.format(downloadDatePrefix),
  '',
  '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
  'testData\\Various_test directory.'.format(downloadDatePrefix),
@@ -89,7 +94,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			shutil.rmtree(downloadDir)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/vU1NEZ9sTOM"
 		
 		stdout = sys.stdout
@@ -129,7 +137,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
  'testData\\Various_test_new',
  'was created.',
  '',
- 'downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
+ 'downloading \"{}Funny suspicious looking dog 13-11-05.mp3\" audio ...'.format(downloadDatePrefix),
  '',
  '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
  'testData\\Various_test_new directory.'.format(downloadDatePrefix),
@@ -160,7 +168,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		videoUrl = 'https://youtu.be/vU1NEZ9sTOM'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
@@ -203,7 +214,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, downloadDir)
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, downloadDir)
 		videoUrl = 'https://youtu.be/tT032M6mSGQ'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
@@ -236,7 +250,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 		downloadDir = DirUtil.getTestAudioRootPath() + sep + audioSubDirName
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, downloadDir)
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, downloadDir)
 		videoUrl = 'https://youtu.be/EHsi_KPKFqU'
 		
 		playlistObject, playlistTitle, videoTitle, accessError = \
@@ -282,7 +299,10 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			os.remove(f)
 		
 		guiOutput = GuiOutputStub()
-		youtubeAccess = YoutubeDlAudioDownloader(guiOutput, DirUtil.getTestAudioRootPath())
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini'))
+		youtubeAccess = YoutubeDlAudioDownloader(audioController, DirUtil.getTestAudioRootPath())
 		videoUrl = "https://youtu.be/LhH9uX3kgTI"
 		
 		stdout = sys.stdout
@@ -313,8 +333,8 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading {}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
- '20-09-26.mp3 audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading "{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
+ '20-09-26.mp3\" audio ...'.format(downloadDatePrefix),
  '',
  '{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3 audio '
  'downloaded in testData\\Various_test directory.'.format(downloadDatePrefix),
@@ -342,4 +362,4 @@ if __name__ == '__main__':
 	# unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo()
 	tst.setUp()
-	tst.testDownloadSingleVideoForUrl_redownloading_video_title_containing_slash()
+	tst.testDownloadSingleVideoForUrl_succeed_on_Windows_only()

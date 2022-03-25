@@ -233,7 +233,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
 
-				self.audioController.displayMessage(msgText)
+				self.audioController.displayVideoDownloadStartMessage(msgText)
 
 				try:
 					ydl.download([videoUrl])
@@ -562,7 +562,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			# now downloading the single video ...
 			
 			msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3)
-			self.audioController.displayMessage(msgText)
+			self.audioController.displayVideoDownloadStartMessage(msgText)
+#			self.audioController.displayMessage(msgText)
 
 			try:
 				ydl.download([singleVideoUrl])

@@ -388,6 +388,9 @@ class AudioController:
 	def displayMessage(self, msgText):
 		self.audioGUI.outputResult(msgText)
 	
+	def displayVideoDownloadStartMessage(self, msgText):
+		self.audioGUI.displayVideoDownloadStartMessage(msgText)
+	
 	def displayError(self, msg):
 		self.audioGUI.outputResult(msg)
 

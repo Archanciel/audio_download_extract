@@ -12,6 +12,11 @@ class GuiOutputStub:
 	def getPlaylistUrlFromClipboard(self):
 		pass
 	
+	def displayVideoDownloadStartMessage(self, msgText):
+		self.outputResult(msgText) # this avoid to modify unit tst results
+								   # due to using now the
+								   # displayVideoDownloadStartMessage() method
+	
 	def displayMessage(self, msgText):
 		"""
 		This method removes the msg color setting.

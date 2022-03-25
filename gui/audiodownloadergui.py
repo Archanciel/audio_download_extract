@@ -862,7 +862,11 @@ class AudioDownloaderGUI(AudioGUI):
 			self.loadHistoryDataIfSet() # reload urlListDic_dic.txt
 	
 	def clearStatusBar(self):
-		if 'URL' not in self.statusBarTextInput.text:
+		'''
+		Clear the status bar, except if it displays either the playlist	URL
+		at app start loaded file or the currently downloading video.
+		'''
+		if 'URL' not in self.statusBarTextInput.text and 'downloading' not in self.statusBarTextInput.text:
 			self.updateStatusBar('')
 	
 	def emptyRequestFields(self):
@@ -1456,6 +1460,10 @@ class AudioDownloaderGUI(AudioGUI):
 			# not downloading (clip or share file ...)
 			return self.audiobookPath
 
+	def displayVideoDownloadStartMessage(self, msg):
+		self.updateStatusBar(msg)
+		self.outputResult(msg)
+		
 	def outputResult(self, resultStr, scrollToEnd=True):
 		super(AudioDownloaderGUI, self).outputResult(resultStr, scrollToEnd=scrollToEnd)
 		
@@ -1664,6 +1672,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
+		self.updateStatusBar('')
 	
 	def displayVideoDownloadEndMessage(self, msgText):
 		"""
@@ -1758,6 +1767,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.totalDownloadVideoSkippedNb += 1
 
 		self.outputResult(msgText)
+		self.updateStatusBar('')
 	
 	def displayUrlDownloadLstEndDownloadInfo(self):
 		"""
