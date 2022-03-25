@@ -842,7 +842,21 @@ class TestAudioController(unittest.TestCase):
 			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
 
 		playlistName = 'testGetDownloadPlaylistInfoDic'
+		downloadPlaylistInfoDic = audioController.getDownloadPlaylistInfoDic(playlistName)
+		self.assertIsNotNone(downloadPlaylistInfoDic)
+
+	def testGetDownloadPlaylistInfoDic_not_exist(self):
+		# implements the tst !
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManagerStub(
+			                                  DirUtil.getDefaultAudioRootPathForTest() + sep + 'audiodownloader.ini'))
+
+		playlistName = 'testGetDownloadPlaylistInfoDicNotExist'
+		downloadPlaylistInfoDic = audioController.getDownloadPlaylistInfoDic(playlistName)
+		self.assertIsNone(downloadPlaylistInfoDic)
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDeleteAudioFilesFromDirAndFromDic_all()
+	tst.testGetDownloadPlaylistInfoDic_not_exist()
