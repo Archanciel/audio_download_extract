@@ -1477,10 +1477,13 @@ class AudioDownloaderGUI(AudioGUI):
 		:param currentDownloadInfoTuple:    3 elements tuple containing current
 											download size in bytes, download size
 											percent string and current download
-											speed string (in KiB/s)
+											speed string (in KB/s)
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
-		currentDownloadInfoStr = '{} bytes, {}, {}\n'.format(currentDownloadInfoTuple[0],
+		
+		currentDownloadSize = currentDownloadInfoTuple[0]
+		currentDownloadSizeFormatted = (f"{currentDownloadSize:,}")
+		currentDownloadInfoStr = '{} bytes, {}, {}\n'.format(currentDownloadSizeFormatted,
 															 currentDownloadInfoTuple[1],
 															 currentDownloadInfoTuple[2])
 
@@ -1665,7 +1668,9 @@ class AudioDownloaderGUI(AudioGUI):
 									seconds
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
-		endDownloadInfoStr = '{} bytes, {}\n'.format(endDownloadInfoLst[0],
+		videoDownloadSize = endDownloadInfoLst[0]
+		videoDownloadSizeFormatted = (f"{videoDownloadSize:,}")
+		endDownloadInfoStr = '{} bytes, {}\n'.format(videoDownloadSizeFormatted,
 													 endDownloadInfoLst[1])
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
