@@ -56,7 +56,10 @@ class ConfigManager:
 	APP_SIZE_FULL = 'Full'
 	
 	def __init__(self, configFilePathName):
-		self.config = ConfigObj(configFilePathName)
+		self.config = ConfigObj(infile=configFilePathName,
+		                        encoding='utf8')    # avoids app crash when saving the
+													# the .ini file if it contains
+													# an invalid char like 'ç' !
 		self._updated = False
 		
 		if len(self.config) == 0:
