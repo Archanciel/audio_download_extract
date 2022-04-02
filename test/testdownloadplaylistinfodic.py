@@ -1090,6 +1090,15 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
 		self.assertEqual("https://www.youtube.com/watch?v=XbqFZMIidZI", dvi.getVideoUrlForVideoFileName("95-Shmeksss Short Video.mp3"))
 
+	def testGetVideoDownloadExceptionForVideoFileName(self):
+		# implement tst !
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
+		playlistName = 'testGetDownloadPlaylistInfoDic'
+		dicFilePathName = audioDirTestRoot + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		self.assertEqual("https://www.youtube.com/watch?v=XbqFZMIidZI", dvi.getVideoUrlForVideoFileName("95-Shmeksss Short Video.mp3"))
+		self.assertFalse(dvi.getVideoDownloadExceptionForVideoFileName("95-Shmeksss Short Video.mp3"))
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()

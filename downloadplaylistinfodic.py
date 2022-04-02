@@ -273,6 +273,29 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			return self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME]
 		else:
 			return None
+
+	def getVideoDownloadExceptionForVideoFileName(self, videoFileName):
+		"""
+		Returns True if the video download caused an exception, False
+		otherwise
+
+		:param videoFileName:
+
+		:return:    True if the video download caused an exception,
+					False otherwise
+		"""
+		videoIndex = self.getVideoIndexForVideoFileName(videoFileName)
+		
+		if videoIndex:
+			videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
+			if KEY_VIDEO_DOWNLOAD_EXCEPTION in videoInfoDic.keys():
+				return videoInfoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION]
+			else:
+				# the case if the DownloadVideoInfoDic is old and does not
+				# contain this information
+				return False
+		else:
+			return None
 	
 	def getVideoDownloadExceptionForVideoTitle(self, videoTitle):
 		"""
