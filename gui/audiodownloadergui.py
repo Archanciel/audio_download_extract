@@ -220,11 +220,7 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 				# here, the list contains download history information
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = True
 				if selItemDownloadData.type == DHD_TYPE_AUDIO_FILE:
-					fullDownloadedFileName = selItemDownloadData.audioFileName
-					downloadedDate = selItemDownloadData.audioFileDownloadDate
-					if downloadedDate not in fullDownloadedFileName:
-						fullDownloadedFileName = downloadedDate + ' ' + fullDownloadedFileName
-					self.audioDownloaderGUI.displayDownloadedFileName(fullDownloadedFileName)
+					self.audioDownloaderGUI.displayDownloadedFileName(selItemDownloadData)
 			elif isinstance(selItemDownloadData, UrlDownloadData):
 				# here, selItemDownloadData is an instance of UrlDownLoadData
 				self.audioDownloaderGUI.isDownloadHistoDisplayed = False
@@ -1561,15 +1557,39 @@ class AudioDownloaderGUI(AudioGUI):
 		for audioFilePath in deletedFilePathNameLst:
 			self.outputResult(audioFilePath + '\n')
 
-	def displayDownloadedFileName(self, fileName):
+	def displayDownloadedFileName(self, selectedAudioItemDownloadData):
 		"""
 		Called by SelectableMultiFieldsItem.apply_selection(). When selecting
 		a downloaded file displayed in the download histo list, displays the
 		full name of the selected file.
-		:param fileName:
-		:return:
+		
+		:param selectedAudioItemDownloadData:
 		"""
-		self.outputResult('\n' + fileName)
+		downloadedFileName = selectedAudioItemDownloadData.audioFileName
+		downloadedDate = selectedAudioItemDownloadData.audioFileDownloadDate
+		
+		if downloadedDate not in downloadedFileName:
+			fullDownloadedFileName = downloadedDate + ' ' + downloadedFileName
+		else:
+			fullDownloadedFileName = downloadedFileName
+
+		playlistName = selectedAudioItemDownloadData.playlistName
+		downloadVideoInfoDic = self.audioController.getDownloadPlaylistInfoDic(playlistName=playlistName)
+		
+		additionalDisplayedInfo = ''
+		didDownloadFail = False
+		
+		if downloadVideoInfoDic is None:
+			# the case if the selected audio file is currently in
+			# Various dir or in an audio sub sub dir
+			additionalDisplayedInfo = '. {} playlist info dic [b][color=FF0000]could not be found[/color][/b]'.format(playlistName)
+		else:
+			didDownloadFail = downloadVideoInfoDic.getVideoDownloadExceptionForVideoFileName(downloadedFileName)
+
+		if didDownloadFail:
+			additionalDisplayedInfo = ' download failed'
+
+		self.outputResult('\n' + fullDownloadedFileName + additionalDisplayedInfo)
 	
 	def displayDownloadedFilesHistory(self, audioFileHistoryLst):
 		"""
