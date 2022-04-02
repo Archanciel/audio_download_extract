@@ -384,11 +384,12 @@ class AudioGUI(Screen):
 	
 	def deleteOrBrowseItem(self, *args):
 		'''
-		Called from the
+		Called after pressing the delete or browse button.
+		
 		:param args:
-		:return:
 		'''
-		# deleting selected item from RecycleView
+		# deleting selected item from RecycleView or opening its URL it in the
+		# browser
 		self.applyDeleteOrBrowseItem()
 		
 		remainingItemNb = len(self.requestListRV.data)
