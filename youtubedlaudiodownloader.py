@@ -1,3 +1,4 @@
+import logging
 import time, os
 import datetime
 from os.path import sep
@@ -151,6 +152,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					return downloadVideoInfoDic, None
 				
 				formattedUploadDateSuffix = ''
+				isCurrentVideoDowloadProblem = False
 				
 				try:
 					meta = ydl.extract_info(videoUrl, download=False)
@@ -240,6 +242,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				except AttributeError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this Attribute exception: {}. [b][color=FF0000]WARNING[/color][/b]: bookmarks will be ignored !\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+					isCurrentVideoDowloadProblem = True
 					self.convertingVideoToMp3 = False   # avoiding that the display
 														# conversion info spread
 														# pollutes the GUI
@@ -249,21 +252,22 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						                            videoIndex,
 						                            videoTitle,
 						                            videoUrl,
+						                            isDownloadSuccess=False,
 						                            downloadedFileName=finalPurgedVideoTitleMp3,
-						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed,
-						                            isDownloadSuccess=False)
+						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed)
 
-					continue    # this avoids that the video is fully downloaded
+					#continue    # this avoids that the video is fully downloaded
 								# and so facilitates the video redownload.
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
 					playlistDownloadedVideoNb_failed += 1
+					isCurrentVideoDowloadProblem = True
 					self.convertingVideoToMp3 = False   # avoiding that the display
 														# conversion info spread
 														# pollutes the GUI
 
-					continue
+					#continue
 				
 				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
@@ -284,21 +288,25 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						continue
 				
 				if self.isAudioFileDownloadOk(targetAudioDir, purgedVideoTitle + '.mp3'):
-					videoIndex, playlistDownloadedVideoNb_succeed, msgText = \
-						self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
-						                            videoIndex,
-						                            videoTitle,
-						                            videoUrl,
-						                            downloadedFileName=finalPurgedVideoTitleMp3,
-						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_succeed)
+					if not isCurrentVideoDowloadProblem:
+						videoIndex, playlistDownloadedVideoNb_succeed, msgText = \
+							self.addVideoInfoAndSaveDic(downloadVideoInfoDic,
+							                            videoIndex,
+							                            videoTitle,
+							                            videoUrl,
+														isDownloadSuccess=True,
+							                            downloadedFileName=finalPurgedVideoTitleMp3,
+							                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_succeed)
 				else:
 					playlistDownloadedVideoNb_failed += 1
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
+				
+				if not isCurrentVideoDowloadProblem:
+					self.audioController.displayVideoDownloadEndMessage(msgText)
 
-				self.audioController.displayVideoDownloadEndMessage(msgText)
 				self.convertingVideoToMp3 = False   # causes the YoutubeDlDownloadInfoExtractor
 													# to stop displaying the downloaded file
-													# conversion to mp3 status mesg every second
+													# conversion to mp3 status msg every second
 			
 			# here, all playlist videos have been downloaded
 			
@@ -328,9 +336,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 	                           videoIndex,
 	                           videoTitle,
 	                           videoUrl,
+	                           isDownloadSuccess,
 	                           downloadedFileName,
-	                           playlistDownloadedVideoNb,
-	                           isDownloadSuccess=True):
+	                           playlistDownloadedVideoNb):
 		"""
 		This method adds the current downloading video info to the passed
 		downloadVideoInfoDic and saves the downloadVideoInfoDic.
@@ -358,7 +366,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		downloadVideoInfoDic.saveDic(self.audioDirRoot)
 		videoIndex += 1
 		playlistDownloadedVideoNb += 1
-		msgText = 'video download [b][color=00FF00]complete[/color][/b].\n'
+		if isDownloadSuccess:
+			msgText = 'video download [b][color=00FF00]complete[/color][/b].\n'
+		else:
+			msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 		
 		return videoIndex, playlistDownloadedVideoNb, msgText
 	
