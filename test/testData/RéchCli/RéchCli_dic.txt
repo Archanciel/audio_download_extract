@@ -1,0 +1,666 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "R\u00e9chCli",
+        "pl_name_modified": "R\u00e9chCli",
+        "pl_name_original": "R\u00e9chCli",
+        "pl_nextVideoIndex": 138,
+        "pl_title_modified": "R\u00e9chCli",
+        "pl_title_original": "R\u00e9chCli",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRO639FR7isLVHYhCFEM3Og"
+    },
+    "videos": {
+        "1": {
+            "vd_downlFileName": "99-Croissance sans \u00e9nergie n'est que ruine pour la soci\u00e9t\u00e9  [Didier Darcet] 2021-11-10.mp3",
+            "vd_downlTime": "18/11/2021 22:19:54",
+            "vd_title": "Croissance sans \u00e9nergie n'est que ruine pour la soci\u00e9t\u00e9 ? [Didier Darcet]",
+            "vd_url": "https://www.youtube.com/watch?v=yriyoY8Zt0Y"
+        },
+        "10": {
+            "vd_downlException": false,
+            "vd_downlFileName": "90-Le questions_r\u00e9ponses du jeudi 2021-12-09.mp3",
+            "vd_downlTime": "10/12/2021 14:01:58",
+            "vd_title": "Le questions/r\u00e9ponses du jeudi",
+            "vd_url": "https://www.youtube.com/watch?v=sV92IBSNZyQ"
+        },
+        "101": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3",
+            "vd_downlTime": "03/04/2022 12:58:34",
+            "vd_title": "HYDROGENE : Le GRAND MENSONGE",
+            "vd_url": "https://www.youtube.com/watch?v=CQ10IM-qRj4"
+        },
+        "102": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220403-Energie solaire thermique, low-tech, et 'collapso-entrepreneuriat' - Maxence Fournaux 22-04-02.mp3",
+            "vd_downlTime": "03/04/2022 13:15:33",
+            "vd_title": "Energie solaire thermique, low-tech, et \"collapso-entrepreneuriat\" - Maxence Fournaux",
+            "vd_url": "https://www.youtube.com/watch?v=gb0_WADGg4c"
+        },
+        "106": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220407-Conf\u00e9rence Idriss Aberkane & Gunter Pauli _ l'\u00c9conomie Bleue en action! 22-02-09.mp3",
+            "vd_downlTime": "07/04/2022 01:56:47",
+            "vd_title": "Conf\u00e9rence Idriss Aberkane & Gunter Pauli | l'\u00c9conomie Bleue en action!",
+            "vd_url": "https://www.youtube.com/watch?v=dUHAYdBKV2Q"
+        },
+        "107": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220407-La R\u00eavolution de Time for the Planet 22-04-05.mp3",
+            "vd_downlTime": "07/04/2022 02:06:13",
+            "vd_title": "La R\u00eavolution de Time for the Planet",
+            "vd_url": "https://www.youtube.com/watch?v=AfzlBm8sAmI"
+        },
+        "108": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220407-L'\u00e9volution INCROYABLE de nos SOLS en 10 ans ! Avec Fran\u00e7ois Hirissou (Bonus Documentaire) 22-03-20.mp3",
+            "vd_downlTime": "07/04/2022 02:11:24",
+            "vd_title": "L'\u00e9volution INCROYABLE de nos SOLS en 10 ans ! Avec Fran\u00e7ois Hirissou (Bonus Documentaire)",
+            "vd_url": "https://www.youtube.com/watch?v=_l3tEPRuCUE"
+        },
+        "109": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220407-Idriss Aberkane et Gunter Pauli - Echanges avec RUPTUR 20-07-05.mp3",
+            "vd_downlTime": "07/04/2022 02:15:23",
+            "vd_title": "Idriss Aberkane et Gunter Pauli - Echanges avec RUPTUR",
+            "vd_url": "https://www.youtube.com/watch?v=mMLhtbQ3quA"
+        },
+        "11": {
+            "vd_downlException": false,
+            "vd_downlFileName": "89-Rapport RTE sur l\u2019avenir \u00e9nerg\u00e9tique de la France  - quels enseignements majeurs  2021-11-27.mp3",
+            "vd_downlTime": "10/12/2021 14:10:32",
+            "vd_title": "Rapport RTE sur l\u2019avenir \u00e9nerg\u00e9tique de la France : quels enseignements majeurs ?",
+            "vd_url": "https://www.youtube.com/watch?v=Pz9F7o3kMTc"
+        },
+        "110": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220407-CONF\u00c9RENCE Le vivant de l'oc\u00e9an \u00e0 la cit\u00e9 de Gilles B\u0153uf _ madd-bordeaux 21-12-10.mp3",
+            "vd_downlTime": "07/04/2022 02:20:45",
+            "vd_title": "CONF\u00c9RENCE Le vivant de l'oc\u00e9an \u00e0 la cit\u00e9 de Gilles B\u0153uf / madd-bordeaux",
+            "vd_url": "https://www.youtube.com/watch?v=CKUL4rwuc7c"
+        },
+        "113": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220408-LA P\u00c9NURIE ALIMENTAIRE ARRIVE CHEZ NOUS 22-04-03.mp3",
+            "vd_downlTime": "08/04/2022 05:11:41",
+            "vd_title": "LA P\u00c9NURIE ALIMENTAIRE ARRIVE CHEZ NOUS",
+            "vd_url": "https://www.youtube.com/watch?v=pkVYeh2HUwc"
+        },
+        "115": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220408-#65 - Climat  - les politiques ignorent-ils la science  C\u00e9dric Villani 22-03-21.mp3",
+            "vd_downlTime": "08/04/2022 05:26:51",
+            "vd_title": "#65 - Climat : les politiques ignorent-ils la science ? C\u00e9dric Villani",
+            "vd_url": "https://www.youtube.com/watch?v=z5LfFtO9xQc"
+        },
+        "116": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220408-Blue Campus  - se former aux technologies du futur _ Idriss Aberkane & Gunter Pauli 22-03-12.mp3",
+            "vd_downlTime": "08/04/2022 05:27:24",
+            "vd_title": "Blue Campus : se former aux technologies du futur | Idriss Aberkane & Gunter Pauli",
+            "vd_url": "https://www.youtube.com/watch?v=mpXF8vy1jEk"
+        },
+        "118": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220408-Nouveau direct suite a censure ! Conf\u00e9rence sur l'eau - Science interdite 22-03-20.mp3",
+            "vd_downlTime": "08/04/2022 19:02:10",
+            "vd_title": "Nouveau direct suite a censure ! Conf\u00e9rence sur l'eau - Science interdite",
+            "vd_url": "https://www.youtube.com/watch?v=-DjnHpYDz9g"
+        },
+        "12": {
+            "vd_downlException": false,
+            "vd_downlFileName": "88-Macron va-t-il vraiment \u00ab pr\u00e9sider l'Europe \u00bb  2021-12-10.mp3",
+            "vd_downlTime": "11/12/2021 16:45:37",
+            "vd_title": "Macron va-t-il vraiment \u00ab pr\u00e9sider l'Europe \u00bb ?",
+            "vd_url": "https://www.youtube.com/watch?v=cGxIigQSNR8"
+        },
+        "121": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220409-NOIR P\u00c9TROLE  - MASSACRE, TERRORISME ET CORRUPTION 22-03-22.mp3",
+            "vd_downlTime": "09/04/2022 04:09:51",
+            "vd_title": "NOIR P\u00c9TROLE : MASSACRE, TERRORISME ET CORRUPTION",
+            "vd_url": "https://www.youtube.com/watch?v=xinmD6WY2Yc"
+        },
+        "122": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220409-REN\u00c9 DUMONT  - L'\u00c9COLOGISTE VRAIMENT RADICAL 22-04-06.mp3",
+            "vd_downlTime": "09/04/2022 04:13:47",
+            "vd_title": "REN\u00c9 DUMONT : L'\u00c9COLOGISTE VRAIMENT RADICAL",
+            "vd_url": "https://www.youtube.com/watch?v=OzhIf7z3jG8"
+        },
+        "126": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220409-#20 - G\u00e9opolitique  - vers des guerres climatiques  Jean-Michel Valantin 21-01-05.mp3",
+            "vd_downlTime": "09/04/2022 21:31:21",
+            "vd_title": "#20 - G\u00e9opolitique : vers des guerres climatiques ? Jean-Michel Valantin",
+            "vd_url": "https://www.youtube.com/watch?v=xb7nXxSHKHg"
+        },
+        "128": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220412-Ce que dit le dernier rapport du GIEC 22-04-05.mp3",
+            "vd_downlTime": "12/04/2022 03:40:36",
+            "vd_title": "Ce que dit le dernier rapport du GIEC",
+            "vd_url": "https://www.youtube.com/watch?v=0D_lRyuprE8"
+        },
+        "129": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220412-De quels humains la nature a-t-elle besoin  - Isabelle Delannoy 21-04-18.mp3",
+            "vd_downlTime": "12/04/2022 03:46:36",
+            "vd_title": "De quels humains la nature a-t-elle besoin ? - Isabelle Delannoy",
+            "vd_url": "https://www.youtube.com/watch?v=SBPF6eizRyE"
+        },
+        "130": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220412-'CE NE SONT PAS LES BEAUX JOURS QUI VIENNENT, C'EST L'ENFER.' 21-09-09.mp3",
+            "vd_downlTime": "12/04/2022 03:48:47",
+            "vd_title": "\"CE NE SONT PAS LES BEAUX JOURS QUI VIENNENT, C'EST L'ENFER.\"",
+            "vd_url": "https://www.youtube.com/watch?v=6xQpeFE_6tk"
+        },
+        "131": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220412-Que r\u00e9v\u00e8lent les ENREGISTREMENTS du PENTAGONE  - Le Saviez Vous #28 - Le Journal de l'Espace 22-04-05.mp3",
+            "vd_downlTime": "12/04/2022 03:50:48",
+            "vd_title": "Que r\u00e9v\u00e8lent les ENREGISTREMENTS du PENTAGONE ? - Le Saviez Vous #28 - Le Journal de l'Espace",
+            "vd_url": "https://www.youtube.com/watch?v=s2ni4HZuSNw"
+        },
+        "135": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220413-La d\u00e9croissance c'est quoi, concr\u00e8tement  Timoth\u00e9e Parrique 22-04-12.mp3",
+            "vd_downlTime": "13/04/2022 04:49:16",
+            "vd_title": "La d\u00e9croissance c'est quoi, concr\u00e8tement ? Timoth\u00e9e Parrique",
+            "vd_url": "https://www.youtube.com/watch?v=B77STGVOZcg"
+        },
+        "136": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220413-Le nucl\u00e9aire du futur  - les r\u00e9acteurs \u00e0 fission de 4\u00e8me  g\u00e9n\u00e9ration 22-02-27.mp3",
+            "vd_downlTime": "13/04/2022 04:51:43",
+            "vd_title": "Le nucl\u00e9aire du futur : les r\u00e9acteurs \u00e0 fission de 4\u00e8me  g\u00e9n\u00e9ration",
+            "vd_url": "https://www.youtube.com/watch?v=5EVfeanPy6U"
+        },
+        "137": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220413-D\u00e9jeuner-d\u00e9bat avec Gunter PAULI 20-09-14.mp3",
+            "vd_downlTime": "13/04/2022 04:54:42",
+            "vd_title": "D\u00e9jeuner-d\u00e9bat avec Gunter PAULI",
+            "vd_url": "https://www.youtube.com/watch?v=IL1gMjsuMk8"
+        },
+        "14": {
+            "vd_downlException": false,
+            "vd_downlFileName": "86-100 000\u20ac par hectare en permaculture  _ IDRISS ABERKANE 2021-10-15.mp3",
+            "vd_downlTime": "15/12/2021 23:02:48",
+            "vd_title": "100 000\u20ac par hectare en permaculture ? | IDRISS ABERKANE",
+            "vd_url": "https://www.youtube.com/watch?v=6t_aZbKh3Bg"
+        },
+        "15": {
+            "vd_downlException": false,
+            "vd_downlFileName": "85-Idriss Aberkane  - \u00e9conomie bleue, \u00e9conomie circulaire, \u00e9conomie sociale et solidaire ! 2020-07-09.mp3",
+            "vd_downlTime": "15/12/2021 23:05:05",
+            "vd_title": "Idriss Aberkane : \u00e9conomie bleue, \u00e9conomie circulaire, \u00e9conomie sociale et solidaire !",
+            "vd_url": "https://www.youtube.com/watch?v=tbr0K7B2FP4"
+        },
+        "16": {
+            "vd_downlException": false,
+            "vd_downlFileName": "84-Etienne Klein et Aurelien Barrau  - Science, y croire encore  2021-12-09.mp3",
+            "vd_downlTime": "18/12/2021 21:54:10",
+            "vd_title": "Etienne Klein et Aurelien Barrau : Science, y croire encore ?",
+            "vd_url": "https://www.youtube.com/watch?v=T16oFZnpPeE"
+        },
+        "17": {
+            "vd_downlException": false,
+            "vd_downlFileName": "83-Nucl\u00e9aire VS 100% renouvelable  - ce qu'il faut savoir pour choisir 2021-12-20.mp3",
+            "vd_downlTime": "20/12/2021 19:56:46",
+            "vd_title": "Nucl\u00e9aire VS 100% renouvelable : ce qu'il faut savoir pour choisir",
+            "vd_url": "https://www.youtube.com/watch?v=FFkSWgiGyyo"
+        },
+        "18": {
+            "vd_downlException": false,
+            "vd_downlFileName": "82-GRAND LIVE  - les 3 premi\u00e8res entreprises Time for the Planet ! 2021-12-20.mp3",
+            "vd_downlTime": "22/12/2021 19:43:15",
+            "vd_title": "GRAND LIVE : les 3 premi\u00e8res entreprises Time for the Planet !",
+            "vd_url": "https://www.youtube.com/watch?v=KpwpJYD9vtU"
+        },
+        "19": {
+            "vd_downlException": false,
+            "vd_downlFileName": "211223-3 innovations majeures pour la plan\u00e8te ! 21-12-23.mp3",
+            "vd_downlTime": "23/12/2021 20:33:59",
+            "vd_title": "3 innovations majeures pour la plan\u00e8te !",
+            "vd_url": "https://www.youtube.com/watch?v=_RNYUwmTj5w"
+        },
+        "2": {
+            "vd_downlFileName": "98-PEUT-ON FAIRE LA TRANSITION \u00c9COLOGIQUE SANS NUCL\u00c9AIRE  2021-11-05.mp3",
+            "vd_downlTime": "19/11/2021 12:42:34",
+            "vd_title": "PEUT-ON FAIRE LA TRANSITION \u00c9COLOGIQUE SANS NUCL\u00c9AIRE ?",
+            "vd_url": "https://www.youtube.com/watch?v=tXnnjAu0L9I"
+        },
+        "20": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220101-[version longue] Idriss ABERKANE & Gunter PAULI  - 'Economie circulaire  - vers une autre croissance' 20-07-05.mp3",
+            "vd_downlTime": "01/01/2022 20:58:32",
+            "vd_title": "[version longue] Idriss ABERKANE & Gunter PAULI : \"Economie circulaire : vers une autre croissance\"",
+            "vd_url": "https://www.youtube.com/watch?v=cqoD8cUYDng"
+        },
+        "21": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220102-'LES LENDEMAINS CHANTERONT-ILS ENCORE ' 21-12-25.mp3",
+            "vd_downlTime": "02/01/2022 13:38:34",
+            "vd_title": "\"LES LENDEMAINS CHANTERONT-ILS ENCORE ?\"",
+            "vd_url": "https://www.youtube.com/watch?v=vEXoMpJ20BU"
+        },
+        "22": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220104-Stockage de l'\u00e9nergie sous forme m\u00e9canique - STEP, volant d'inertie et air comprim\u00e9. 19-01-08.mp3",
+            "vd_downlTime": "04/01/2022 14:08:46",
+            "vd_title": "Stockage de l'\u00e9nergie sous forme m\u00e9canique: STEP, volant d'inertie et air comprim\u00e9.",
+            "vd_url": "https://www.youtube.com/watch?v=ECXJ5rTNi74"
+        },
+        "23": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220107-Le Questions_R\u00e9ponses du jeudi (posez vos questions dans le tchat) 22-01-06.mp3",
+            "vd_downlTime": "07/01/2022 14:08:06",
+            "vd_title": "Le Questions/R\u00e9ponses du jeudi (posez vos questions dans le tchat)",
+            "vd_url": "https://www.youtube.com/watch?v=twVSIJW3vaE"
+        },
+        "24": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220112-Quel avenir pour nos m\u00e9tropoles  22-01-06.mp3",
+            "vd_downlTime": "12/01/2022 13:45:47",
+            "vd_title": "Quel avenir pour nos m\u00e9tropoles ?",
+            "vd_url": "https://www.youtube.com/watch?v=Hw51CvRiTog"
+        },
+        "25": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220112-Consommer MOINS mais MIEUX  - vers la soci\u00e9t\u00e9 de DECONSOMMATION  22-01-12.mp3",
+            "vd_downlTime": "12/01/2022 22:26:28",
+            "vd_title": "Consommer MOINS mais MIEUX : vers la soci\u00e9t\u00e9 de DECONSOMMATION ?",
+            "vd_url": "https://www.youtube.com/watch?v=pnepLCk-tfI"
+        },
+        "26": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220113-Ecole des Mines  - interview d'Aur\u00e9lien Barrau _ \u00e9cologie et astrophysique. 22-01-10.mp3",
+            "vd_downlTime": "13/01/2022 16:59:22",
+            "vd_title": "Ecole des Mines : interview d'Aur\u00e9lien Barrau / \u00e9cologie et astrophysique.",
+            "vd_url": "https://www.youtube.com/watch?v=cO8ePHsLgvA"
+        },
+        "27": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220117-\u00c9olien en mer 22-01-14.mp3",
+            "vd_downlTime": "17/01/2022 13:41:58",
+            "vd_title": "\u00c9olien en mer",
+            "vd_url": "https://www.youtube.com/watch?v=xbdUlfYCRwc"
+        },
+        "28": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220117-L'ENQU\u00caTE GLA\u00c7ANTE SUR LES MULTINATIONALES QUI D\u00c9TRUISENT LA PLAN\u00c8TE 22-01-14.mp3",
+            "vd_downlTime": "17/01/2022 13:48:17",
+            "vd_title": "L'ENQU\u00caTE GLA\u00c7ANTE SUR LES MULTINATIONALES QUI D\u00c9TRUISENT LA PLAN\u00c8TE",
+            "vd_url": "https://www.youtube.com/watch?v=o7QM8cSr_yg"
+        },
+        "29": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220121-Questions_r\u00e9ponses du jeudi 22-01-20.mp3",
+            "vd_downlTime": "21/01/2022 16:01:38",
+            "vd_title": "Questions/r\u00e9ponses du jeudi",
+            "vd_url": "https://www.youtube.com/watch?v=D5kTKpYiKGA"
+        },
+        "3": {
+            "vd_downlFileName": "97-Pisser sous la douche ne suffira pas ! L'entreprise au service de l'urgence climatique. 2020-10-05.mp3",
+            "vd_downlTime": "21/11/2021 13:17:15",
+            "vd_title": "Pisser sous la douche ne suffira pas ! L'entreprise au service de l'urgence climatique.",
+            "vd_url": "https://www.youtube.com/watch?v=DZnWYPM8dzg"
+        },
+        "30": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220122-'GLACIER DE L'APOCALYPSE'  - LE D\u00c9SASTRE \u00c9COLOGIQUE QUI NOUS MENACE 22-01-21.mp3",
+            "vd_downlTime": "22/01/2022 14:41:11",
+            "vd_title": "\"GLACIER DE L'APOCALYPSE\" : LE D\u00c9SASTRE \u00c9COLOGIQUE QUI NOUS MENACE",
+            "vd_url": "https://www.youtube.com/watch?v=1zdWYaFbBt4"
+        },
+        "31": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220122-R\u00e9concilier \u00e9cologie et \u00e9conomie  avec Bertrand Piccard 22-01-21.mp3",
+            "vd_downlTime": "22/01/2022 14:46:59",
+            "vd_title": "R\u00e9concilier \u00e9cologie et \u00e9conomie ? avec Bertrand Piccard",
+            "vd_url": "https://www.youtube.com/watch?v=NUGosHlUEPE"
+        },
+        "32": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220125-Changement climatique  - d\u00e9croissance, g\u00e9oing\u00e9nierie, rationnement et autres avenirs possibles 22-01-22.mp3",
+            "vd_downlTime": "25/01/2022 13:51:29",
+            "vd_title": "Changement climatique : d\u00e9croissance, g\u00e9oing\u00e9nierie, rationnement et autres avenirs possibles",
+            "vd_url": "https://www.youtube.com/watch?v=SJwitD1XR2Q"
+        },
+        "33": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220127-MYTHES ET R\u00c9ALIT\u00c9S SUR LA POLLUTION DES D\u00c9CHETS PLASTIQUES 22-01-25.mp3",
+            "vd_downlTime": "27/01/2022 15:45:22",
+            "vd_title": "MYTHES ET R\u00c9ALIT\u00c9S SUR LA POLLUTION DES D\u00c9CHETS PLASTIQUES",
+            "vd_url": "https://www.youtube.com/watch?v=JwxIxNPWTdE"
+        },
+        "34": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220128-Voiture \u00e9lectrique - un probl\u00e8me de batterie  21-04-26.mp3",
+            "vd_downlTime": "28/01/2022 15:05:34",
+            "vd_title": "Voiture \u00e9lectrique: un probl\u00e8me de batterie ?",
+            "vd_url": "https://www.youtube.com/watch?v=xVroWRO0duI"
+        },
+        "36": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220201-Homo sapiens, une esp\u00e8ce invasive - Jean-Jacques Hublin 22-01-17.mp3",
+            "vd_downlTime": "01/02/2022 14:18:14",
+            "vd_title": "Homo sapiens, une esp\u00e8ce invasive - Jean-Jacques Hublin",
+            "vd_url": "https://www.youtube.com/watch?v=lrnF9b_MTiQ"
+        },
+        "37": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220202-COMMENT LES LOBBIES DE LA VIANDE NOUS MANIPULENT 22-02-02.mp3",
+            "vd_downlTime": "02/02/2022 17:36:24",
+            "vd_title": "COMMENT LES LOBBIES DE LA VIANDE NOUS MANIPULENT",
+            "vd_url": "https://www.youtube.com/watch?v=cv1-t43jAzs"
+        },
+        "38": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220205-QUELLES SOLUTIONS POUR CONSTRUIRE UN MONDE MEILLEUR ET DURABLE  22-02-04.mp3",
+            "vd_downlTime": "05/02/2022 14:48:23",
+            "vd_title": "QUELLES SOLUTIONS POUR CONSTRUIRE UN MONDE MEILLEUR ET DURABLE ?",
+            "vd_url": "https://www.youtube.com/watch?v=OPn_9EM4UQs"
+        },
+        "39": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220205-Arthur Keller \u2013 Les d\u00e9fis de notre temps  - caract\u00e9risation syst\u00e9mique et strat\u00e9gie syst\u00e9mique 22-01-06.mp3",
+            "vd_downlTime": "05/02/2022 15:06:19",
+            "vd_title": "Arthur Keller \u2013 Les d\u00e9fis de notre temps : caract\u00e9risation syst\u00e9mique et strat\u00e9gie syst\u00e9mique",
+            "vd_url": "https://www.youtube.com/watch?v=FoCN8vFPMz4"
+        },
+        "4": {
+            "vd_downlFileName": "96-LA SOLUTION D\u00c9FINITIVE AUX D\u00c9CHETS NUCL\u00c9AIRES  CIG\u00c9O A BURE 2021-11-07.mp3",
+            "vd_downlTime": "21/11/2021 13:20:47",
+            "vd_title": "LA SOLUTION D\u00c9FINITIVE AUX D\u00c9CHETS NUCL\u00c9AIRES ? CIG\u00c9O A BURE",
+            "vd_url": "https://www.youtube.com/watch?v=6UlDUe4CfvA"
+        },
+        "40": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220206-L'\u00e9nergie du d\u00e9ni  - la transition \u00e9nerg\u00e9tique vers un fiasco  Avec Vincent Mignerot 22-02-05.mp3",
+            "vd_downlTime": "06/02/2022 15:36:34",
+            "vd_title": "L'\u00e9nergie du d\u00e9ni : la transition \u00e9nerg\u00e9tique vers un fiasco ? Avec Vincent Mignerot",
+            "vd_url": "https://www.youtube.com/watch?v=aup9uz8g2Ac"
+        },
+        "42": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220206-Building scrolling experiences in Flutter _ Workshop 21-05-21.mp3",
+            "vd_downlTime": "06/02/2022 16:09:52",
+            "vd_title": "Building scrolling experiences in Flutter | Workshop",
+            "vd_url": "https://www.youtube.com/watch?v=YY-_yrZdjGc"
+        },
+        "43": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220209-Les banques face au d\u00e9fi climatique 21-05-24.mp3",
+            "vd_downlTime": "09/02/2022 16:29:13",
+            "vd_title": "Les banques face au d\u00e9fi climatique",
+            "vd_url": "https://www.youtube.com/watch?v=ZdmJqvYsAFY"
+        },
+        "44": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220220-Gaz, p\u00e9trole, \u00e9lectricit\u00e9  - comprendre les tensions actuelles (et futures ), avec Maxence Cordiez 22-02-20.mp3",
+            "vd_downlTime": "20/02/2022 20:55:54",
+            "vd_title": "Gaz, p\u00e9trole, \u00e9lectricit\u00e9 : comprendre les tensions actuelles (et futures ?), avec Maxence Cordiez",
+            "vd_url": "https://www.youtube.com/watch?v=zshI2D61eGA"
+        },
+        "45": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220220-Neutralit\u00e9 carbone  - l\u2019avenir est-il dans le nucl\u00e9aire  - 28 Minutes - ARTE 22-02-10.mp3",
+            "vd_downlTime": "20/02/2022 20:58:02",
+            "vd_title": "Neutralit\u00e9 carbone : l\u2019avenir est-il dans le nucl\u00e9aire ? - 28 Minutes - ARTE",
+            "vd_url": "https://www.youtube.com/watch?v=70FAzIkJ-SE"
+        },
+        "46": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220220-Les m\u00e9dias et le d\u00e9r\u00e8glement climatique - Jonas Schneiter 22-02-09.mp3",
+            "vd_downlTime": "20/02/2022 20:58:51",
+            "vd_title": "Les m\u00e9dias et le d\u00e9r\u00e8glement climatique - Jonas Schneiter",
+            "vd_url": "https://www.youtube.com/watch?v=OMkGJtXkgEU"
+        },
+        "47": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220224-Peut-on encore sauver les glaciers du changement climatique  22-02-23.mp3",
+            "vd_downlTime": "24/02/2022 14:29:55",
+            "vd_title": "Peut-on encore sauver les glaciers du changement climatique ?",
+            "vd_url": "https://www.youtube.com/watch?v=rwjYCJJ-UDQ"
+        },
+        "49": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220224-UTBM Conf\u00e9rence LIVE - La face cach\u00e9e du d\u00e9veloppement durable - l'exploitation mini\u00e8re 20-10-22.mp3",
+            "vd_downlTime": "24/02/2022 14:41:23",
+            "vd_title": "UTBM Conf\u00e9rence LIVE - La face cach\u00e9e du d\u00e9veloppement durable: l'exploitation mini\u00e8re",
+            "vd_url": "https://www.youtube.com/watch?v=a_8SN3FTDfU"
+        },
+        "5": {
+            "vd_downlFileName": "95-COP26  - DANS LES COULISSES D'UNE TRAHISON 2021-11-16.mp3",
+            "vd_downlTime": "25/11/2021 20:20:44",
+            "vd_title": "COP26 : DANS LES COULISSES D'UNE TRAHISON",
+            "vd_url": "https://www.youtube.com/watch?v=WzcA2_yP9e4"
+        },
+        "50": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220225-Le Photovolta\u00efque. 18-07-26.mp3",
+            "vd_downlTime": "25/02/2022 21:23:01",
+            "vd_title": "Le Photovolta\u00efque.",
+            "vd_url": "https://www.youtube.com/watch?v=hESxYif5pdI"
+        },
+        "51": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220225-IL FAUT FAIRE PAYER LES MILLIARDAIRES FRAN\u00c7AIS QUI BR\u00dbLENT LA PLAN\u00c8TE 22-02-25.mp3",
+            "vd_downlTime": "25/02/2022 21:26:46",
+            "vd_title": "IL FAUT FAIRE PAYER LES MILLIARDAIRES FRAN\u00c7AIS QUI BR\u00dbLENT LA PLAN\u00c8TE",
+            "vd_url": "https://www.youtube.com/watch?v=NY8F_iCyCbM"
+        },
+        "53": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220225-Pic p\u00e9trolier  (ou pas pic p\u00e9trolier ) -  Pierre Hacquard 20-03-25.mp3",
+            "vd_downlTime": "25/02/2022 21:47:52",
+            "vd_title": "Pic p\u00e9trolier ? (ou pas pic p\u00e9trolier ?) -  Pierre Hacquard",
+            "vd_url": "https://www.youtube.com/watch?v=Er_sQoExmEA"
+        },
+        "54": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220227-La transition \u00e9nerg\u00e9tique est un leurre. [Didier DARCET] 22-02-23.mp3",
+            "vd_downlTime": "27/02/2022 07:26:31",
+            "vd_title": "La transition \u00e9nerg\u00e9tique est un leurre. [Didier DARCET]",
+            "vd_url": "https://www.youtube.com/watch?v=W1rzE4NK0Ys"
+        },
+        "56": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220228-G\u00e9o-ing\u00e9ni\u00e9rie, fusion, \u00e9olien, solaire, fausses solutions technologiques  22-02-24.mp3",
+            "vd_downlTime": "28/02/2022 00:44:47",
+            "vd_title": "G\u00e9o-ing\u00e9ni\u00e9rie, fusion, \u00e9olien, solaire, fausses solutions technologiques ?",
+            "vd_url": "https://www.youtube.com/watch?v=gUW75MjPKmU"
+        },
+        "58": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220305-L'Ukraine demande du Bitcoin, pourquoi  _ Hasheur Live 22-03-01.mp3",
+            "vd_downlTime": "05/03/2022 00:06:25",
+            "vd_title": "L'Ukraine demande du Bitcoin, pourquoi ? | Hasheur Live",
+            "vd_url": "https://www.youtube.com/watch?v=YhCUDW55KIs"
+        },
+        "59": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220305-RAPPORT DU GIEC  - CHANGER OU DISPARA\u00ceTRE 22-03-04.mp3",
+            "vd_downlTime": "05/03/2022 00:08:56",
+            "vd_title": "RAPPORT DU GIEC : CHANGER OU DISPARA\u00ceTRE",
+            "vd_url": "https://www.youtube.com/watch?v=LRpNlVZ-YOs"
+        },
+        "6": {
+            "vd_downlException": false,
+            "vd_downlFileName": "94-[LIVE] Webinar _ L'\u00c9conomie Bleue 2021-11-17.mp3",
+            "vd_downlTime": "02/12/2021 15:01:46",
+            "vd_title": "[LIVE] Webinar | L'\u00c9conomie Bleue",
+            "vd_url": "https://www.youtube.com/watch?v=8nF6kgL-OUU"
+        },
+        "61": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220305-GUERRE NUCL\u00c9AIRE  - POUTINE PEUT-IL PASSER \u00c0 L'ACTION  22-03-01.mp3",
+            "vd_downlTime": "05/03/2022 00:59:04",
+            "vd_title": "GUERRE NUCL\u00c9AIRE : POUTINE PEUT-IL PASSER \u00c0 L'ACTION ?",
+            "vd_url": "https://www.youtube.com/watch?v=N2jPMS3UiVA"
+        },
+        "62": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220305-G\u00e9o-ing\u00e9ni\u00e9rie, fusion, \u00e9olien, solaire, fausses solutions technologiques  Jancovici, Servigne.... 22-02-24.mp3",
+            "vd_downlTime": "05/03/2022 00:59:12",
+            "vd_title": "G\u00e9o-ing\u00e9ni\u00e9rie, fusion, \u00e9olien, solaire, fausses solutions technologiques ? Jancovici, Servigne....",
+            "vd_url": "https://www.youtube.com/watch?v=gUW75MjPKmU"
+        },
+        "66": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220306-'Dernier rapport du GIEC et impl\u00e9mentation de l'accord de Paris  - O\u00f9 en sommes-nous ' P. Dobrinski 22-02-28.mp3",
+            "vd_downlTime": "06/03/2022 03:18:00",
+            "vd_title": "\"Dernier rapport du GIEC et impl\u00e9mentation de l'accord de Paris : O\u00f9 en sommes-nous ?\" P. Dobrinski",
+            "vd_url": "https://www.youtube.com/watch?v=TmFpOg9Fxo0"
+        },
+        "67": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220309-Guerre Ukraine_Russie  - l'impossible casse-t\u00eate des mati\u00e8res premi\u00e8res 22-03-04.mp3",
+            "vd_downlTime": "09/03/2022 03:44:14",
+            "vd_title": "Guerre Ukraine/Russie : l'impossible casse-t\u00eate des mati\u00e8res premi\u00e8res",
+            "vd_url": "https://www.youtube.com/watch?v=qY8Yu9ImtYk"
+        },
+        "68": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220309-P\u00c9NURIES, MONT\u00c9E DES EAUX, CANICULES  - COMMENT S'ADAPTER  22-03-09.mp3",
+            "vd_downlTime": "09/03/2022 18:45:59",
+            "vd_title": "P\u00c9NURIES, MONT\u00c9E DES EAUX, CANICULES : COMMENT S'ADAPTER ?",
+            "vd_url": "https://www.youtube.com/watch?v=muZ0cbIjzoE"
+        },
+        "69": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220316-Rapport du GIEC  - s'adapter face au r\u00e9chauffement climatique 22-03-01.mp3",
+            "vd_downlTime": "16/03/2022 01:58:00",
+            "vd_title": "Rapport du GIEC : s'adapter face au r\u00e9chauffement climatique",
+            "vd_url": "https://www.youtube.com/watch?v=VLa0ny6HhQY"
+        },
+        "7": {
+            "vd_downlException": false,
+            "vd_downlFileName": "93-POURQUOI L'INACTION CLIMATIQUE NOUS CO\u00dbTE 'UN POGNON DE DINGUE'  2021-11-26.mp3",
+            "vd_downlTime": "02/12/2021 15:03:36",
+            "vd_title": "POURQUOI L'INACTION CLIMATIQUE NOUS CO\u00dbTE \"UN POGNON DE DINGUE\" ?",
+            "vd_url": "https://www.youtube.com/watch?v=OlmXLuz2_mc"
+        },
+        "71": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220316-Changement climatique  - quel avenir pour le SKI et la MONTAGNE  22-03-14.mp3",
+            "vd_downlTime": "16/03/2022 02:27:04",
+            "vd_title": "Changement climatique : quel avenir pour le SKI et la MONTAGNE ?",
+            "vd_url": "https://www.youtube.com/watch?v=eDgJgxI1XDs"
+        },
+        "72": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220317-VOUS ALLEZ TOUS CREVER 22-03-16.mp3",
+            "vd_downlTime": "17/03/2022 00:28:38",
+            "vd_title": "VOUS ALLEZ TOUS CREVER",
+            "vd_url": "https://www.youtube.com/watch?v=dRhOYX_vhhc"
+        },
+        "74": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220317-VOUS ALLEZ TOUS CREVER - LE JOURNAL 22-03-16.mp3",
+            "vd_downlTime": "17/03/2022 23:50:15",
+            "vd_title": "VOUS ALLEZ TOUS CREVER - LE JOURNAL",
+            "vd_url": "https://www.youtube.com/watch?v=dRhOYX_vhhc"
+        },
+        "75": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220325-Et si la glace disparaissait  _ 42, la r\u00e9ponse \u00e0 presque tout _ ARTE 21-11-06.mp3",
+            "vd_downlTime": "25/03/2022 14:21:31",
+            "vd_title": "Et si la glace disparaissait ? | 42, la r\u00e9ponse \u00e0 presque tout | ARTE",
+            "vd_url": "https://www.youtube.com/watch?v=ORdNPLjuJ7o"
+        },
+        "77": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220325-PR\u00c9SIDENTIELLE  - QUI A LE MEILLEUR PROGRAMME SUR L'\u00c9COLOGIE  22-03-25.mp3",
+            "vd_downlTime": "25/03/2022 19:51:43",
+            "vd_title": "PR\u00c9SIDENTIELLE : QUI A LE MEILLEUR PROGRAMME SUR L'\u00c9COLOGIE ?",
+            "vd_url": "https://www.youtube.com/watch?v=ewuWGW0xXIQ"
+        },
+        "8": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Sortir la France des \u00e9nergies fossiles, rapport RTE  - Robin Girard, chercheur, s'exprime.mp3",
+            "vd_downlTime": "06/12/2021 17:23:29",
+            "vd_title": "Sortir la France des \u00e9nergies fossiles, rapport RTE : Robin Girard, chercheur, s'exprime",
+            "vd_url": "https://www.youtube.com/watch?v=aTbGwcUvTBc"
+        },
+        "80": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220325-MOBE - CONFERENCE - Effondrement de la biodiversit\u00e9  - Pourquoi on a tout faux  22-02-09.mp3",
+            "vd_downlTime": "25/03/2022 20:07:15",
+            "vd_title": "MOBE - CONFERENCE - Effondrement de la biodiversit\u00e9 : Pourquoi on a tout faux ?",
+            "vd_url": "https://www.youtube.com/watch?v=IUK3JvSr1aQ"
+        },
+        "82": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220325-[DIRECT] D\u00e9passer la crise \u00e9nerg\u00e9tique mondiale _ Idriss ABERKANE ft. Gunter PAULI 22-03-17.mp3",
+            "vd_downlTime": "25/03/2022 20:22:09",
+            "vd_title": "[DIRECT] D\u00e9passer la crise \u00e9nerg\u00e9tique mondiale | Idriss ABERKANE ft. Gunter PAULI",
+            "vd_url": "https://www.youtube.com/watch?v=6zLJ7YWMwtc"
+        },
+        "84": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220328-Ga\u00ebl Giraud, O. Vidal & PY Longaretti  - Risques et enjeux syst\u00e9miques pour un monde en basculement 22-03-08.mp3",
+            "vd_downlTime": "28/03/2022 03:33:40",
+            "vd_title": "Ga\u00ebl Giraud, O. Vidal & PY Longaretti : Risques et enjeux syst\u00e9miques pour un monde en basculement",
+            "vd_url": "https://www.youtube.com/watch?v=guhNz08z_co"
+        },
+        "85": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220328-Sur l'exemplarit\u00e9 du monde acad\u00e9mique face \u00e0 la catastrophe \u00e9cologique. 22-03-10.mp3",
+            "vd_downlTime": "28/03/2022 03:39:02",
+            "vd_title": "Sur l'exemplarit\u00e9 du monde acad\u00e9mique face \u00e0 la catastrophe \u00e9cologique.",
+            "vd_url": "https://www.youtube.com/watch?v=5Wstm9iwkSA"
+        },
+        "9": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Documentaire-conf\u00e9rence  - climat, tous biais\u00e9s  Avec Albert Moukheiber.mp3",
+            "vd_downlTime": "08/12/2021 14:02:51",
+            "vd_title": "Documentaire-conf\u00e9rence : climat, tous biais\u00e9s ? Avec Albert Moukheiber",
+            "vd_url": "https://www.youtube.com/watch?v=wfiE1uj7Y6o"
+        },
+        "91": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220331-#64 - Sols  - un massacre silencieux  Marc-Andr\u00e9 Selosse 22-03-15.mp3",
+            "vd_downlTime": "01/04/2022 00:07:40",
+            "vd_title": "#64 - Sols : un massacre silencieux ? Marc-Andr\u00e9 Selosse",
+            "vd_url": "https://www.youtube.com/watch?v=jES0M60TWHY"
+        },
+        "93": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-L'Europe \u00e0 court d'\u00e9nergie  Nicolas Meilhan et Francis Perrin [EN DIRECT] 22-03-29.mp3",
+            "vd_downlTime": "01/04/2022 00:09:34",
+            "vd_title": "L'Europe \u00e0 court d'\u00e9nergie ? Nicolas Meilhan et Francis Perrin [EN DIRECT]",
+            "vd_url": "https://www.youtube.com/watch?v=nGpkykPCbVU"
+        },
+        "94": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-'On ne manque pas d'\u00e9nergie, mais d'intelligence' [Idriss Aberkane] 21-10-24.mp3",
+            "vd_downlTime": "01/04/2022 19:36:37",
+            "vd_title": "\"On ne manque pas d'\u00e9nergie, mais d'intelligence\" [Idriss Aberkane]",
+            "vd_url": "https://www.youtube.com/watch?v=MjlE5gNwOXE"
+        },
+        "95": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-Conf\u00e9rence 'Pesticides  - jusqu'o\u00f9 sont-ils coupables de l'effondrement de la biodiversit\u00e9 ' 21-09-07.mp3",
+            "vd_downlTime": "01/04/2022 19:37:02",
+            "vd_title": "Conf\u00e9rence \"Pesticides : jusqu'o\u00f9 sont-ils coupables de l'effondrement de la biodiversit\u00e9 ?\"",
+            "vd_url": "https://www.youtube.com/watch?v=88jEm3CD-rQ"
+        },
+        "96": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-Conf\u00e9rence SuperFrance - Gunter et Idriss 20-06-25.mp3",
+            "vd_downlTime": "01/04/2022 19:37:13",
+            "vd_title": "Conf\u00e9rence SuperFrance - Gunter et Idriss",
+            "vd_url": "https://www.youtube.com/watch?v=C1sAsaCaNw4"
+        },
+        "99": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220401-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3",
+            "vd_downlTime": "01/04/2022 20:24:59",
+            "vd_title": "#2 : Comment nourrir le monde | Marc Dufumier",
+            "vd_url": "https://www.youtube.com/watch?v=gQZVbSP2itU"
+        }
+    }
+}

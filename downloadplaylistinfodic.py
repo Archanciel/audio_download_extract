@@ -564,8 +564,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		return None
 	
 	def getVideoIndexForVideoFileName(self, videoFileName):
+		videoFileNameNoExt = videoFileName.replace('.mp3', '')
+
 		for key in self.dic[KEY_VIDEOS].keys():
-			if self.getVideoAudioFileNameForVideoIndex(key) == videoFileName:
+			videoFileNameForVideoIndex = self.getVideoAudioFileNameForVideoIndex(key)
+			if videoFileNameNoExt in videoFileNameForVideoIndex:
 				return key
 		
 		return None

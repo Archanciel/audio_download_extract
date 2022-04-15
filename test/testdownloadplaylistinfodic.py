@@ -1091,13 +1091,33 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual("https://www.youtube.com/watch?v=XbqFZMIidZI", dvi.getVideoUrlForVideoFileName("95-Shmeksss Short Video.mp3"))
 
 	def testGetVideoDownloadExceptionForVideoFileName(self):
-		# implement tst !
 		audioDirTestRoot = DirUtil.getTestAudioRootPath()
 		playlistName = 'testGetDownloadPlaylistInfoDic'
 		dicFilePathName = audioDirTestRoot + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
 		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
 		self.assertEqual("https://www.youtube.com/watch?v=XbqFZMIidZI", dvi.getVideoUrlForVideoFileName("95-Shmeksss Short Video.mp3"))
 		self.assertFalse(dvi.getVideoDownloadExceptionForVideoFileName("95-Shmeksss Short Video.mp3"))
+
+	def testGetVideoIndexForVideoFileName(self):
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
+		playlistName = 'RéchCli'
+		dicFilePathName = audioDirTestRoot + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		self.assertEqual("99", dvi.getVideoIndexForVideoFileName('#2  - Comment nourrir le monde _ Marc Dufumier.mp3'))
+
+	def testGetVideoDownloadExceptionForVideoFileName_noPrefixNoSuffix(self):
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
+		playlistName = 'RéchCli'
+		dicFilePathName = audioDirTestRoot + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		self.assertTrue(dvi.getVideoDownloadExceptionForVideoFileName('#2  - Comment nourrir le monde _ Marc Dufumier.mp3'))
+
+	def testGetVideoUrlForVideoFileName_noPrefixNoSuffix(self):
+		audioDirTestRoot = DirUtil.getTestAudioRootPath()
+		playlistName = 'RéchCli'
+		dicFilePathName = audioDirTestRoot + sep + playlistName + sep + playlistName + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		self.assertEqual('https://www.youtube.com/watch?v=gQZVbSP2itU', dvi.getVideoUrlForVideoFileName('#2  - Comment nourrir le monde _ Marc Dufumier.mp3'))
 
 if __name__ == '__main__':
 #	unittest.main()
