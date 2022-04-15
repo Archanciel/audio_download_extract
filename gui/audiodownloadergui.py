@@ -1586,7 +1586,6 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			didDownloadFail = downloadVideoInfoDic.getVideoDownloadExceptionForVideoFileName(downloadedFileName)
 
-		logging.info('didDownloadFail {}'.format(didDownloadFail))
 		if didDownloadFail:
 			additionalDisplayedInfo = ' [b][color=FF0000]download failed[/color][/b]'
 
