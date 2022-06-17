@@ -463,6 +463,7 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		type = None
 		title = None
 		url = None
+		downloadDir = ''
 		
 		if KEY_URL_TYPE in urlInfoDic.keys():
 			type = urlInfoDic[KEY_URL_TYPE]
@@ -472,10 +473,14 @@ class DownloadUrlInfoDic(BaseInfoDic):
 		
 		if KEY_URL_URL in urlInfoDic.keys():
 			url = urlInfoDic[KEY_URL_URL]
-		
+
+		if KEY_URL_DOWNLOAD_DIR in urlInfoDic.keys():
+			downloadDir = urlInfoDic[KEY_URL_DOWNLOAD_DIR]
+
 		return UrlDownloadData(type,
 		                       title,
-		                       url)
+		                       url,
+		                       downloadDir=downloadDir)
 	
 	def getAllUrlDownloadDataSortedList(self):
 		sortedIndexLst = self.getSortedUrlIndexLst()

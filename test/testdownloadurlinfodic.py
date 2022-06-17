@@ -48,13 +48,13 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_PLAYLIST,
 		               urlTitle=urlTitle_1,
 		               url=url_1,
-		               downloadDir='')
+		               downloadDir='C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A')
 		urlTitle_2 = 'Here to help: Give him what he wants'
 		url_2 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
 		dui.addUrlInfo(urlType=DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
 		               urlTitle=urlTitle_2,
 		               url=url_2,
-		               downloadDir='')
+		               downloadDir='C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir')
 
 		urlTitle_3 = 'Here to help: Give him what he wants_3'
 		url_3 = 'https://www.youtube.com/watch?v=Eqy6M6qLWGw'
@@ -146,10 +146,10 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 
 		self.assertEqual(urlTitle_1, dui.getUrlTitleForUrlIndex(1))
 
-		self.assertEqual('', dui.getUrlDownloadDirForUrlIndex(1))
-		self.assertEqual('', dui.getUrlDownloadDirForUrlTitle(urlTitle_1))
-		self.assertEqual('', dui.getUrlDownloadDirForUrlIndex(2))
-		self.assertEqual('', dui.getUrlDownloadDirForUrlTitle(urlTitle_2))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui.getUrlDownloadDirForUrlIndex(1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui.getUrlDownloadDirForUrlTitle(urlTitle_1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui.getUrlDownloadDirForUrlIndex(2))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui.getUrlDownloadDirForUrlTitle(urlTitle_2))
 		
 		self.assertEqual(12, dui.getNextUrlIndex())
 		
@@ -167,9 +167,9 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		sys.stdout = stdout
 
-		self.assertEqual(['playlist, test warning index date files_noIndexNoDate, '
+		self.assertEqual(['playlist, C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A\\test warning index date files_noIndexNoDate, '
  'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
- 'video, Here to help: Give him what he wants, '
+ 'video, C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir\\Here to help: Give him what he wants, '
  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
  'video, Here to help: Give him what he wants_3, '
  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
@@ -203,7 +203,12 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		self.assertEqual(url_10, dui_reloaded.getUrlForUrlIndex(10))
 		self.assertEqual(url_10, dui_reloaded.getUrlForUrlKey('10'))
 		self.assertEqual(urlTitle_10, dui_reloaded.getUrlTitleForUrlIndex(10))
-		
+
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui_reloaded.getUrlDownloadDirForUrlIndex(1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui_reloaded.getUrlDownloadDirForUrlIndex(2))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_2))
+
 		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_PLAYLIST, dui_reloaded.getUrlTypeForUrlIndex(1))
 		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, dui_reloaded.getUrlTypeForUrlIndex(2))
 
@@ -216,17 +221,24 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		self.assertEqual(urlTitle_1, dui_reloaded.getUrlTitleForUrlIndex(1))
 		
-		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlIndex(1))
-		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_1))
-		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlIndex(2))
-		self.assertEqual('', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_2))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui.getUrlDownloadDirForUrlIndex(1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_1))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui_reloaded.getUrlDownloadDirForUrlIndex(2))
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', dui_reloaded.getUrlDownloadDirForUrlTitle(urlTitle_2))
 		
 		self.assertEqual(12, dui_reloaded.getNextUrlIndex())
+		
+		udl = dui_reloaded.getUrlDownloadDataForUrlIndex(1)
+		
+		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_PLAYLIST, udl.type)
+		self.assertEqual(urlTitle_1, udl.title)
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A', udl.downloadDir)
 		
 		udl = dui_reloaded.getUrlDownloadDataForUrlIndex(2)
 		
 		self.assertEqual(DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO, udl.type)
 		self.assertEqual(urlTitle_2, udl.title)
+		self.assertEqual('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir', udl.downloadDir)
 		
 		stdout = sys.stdout
 		outputCapturingString = StringIO()
@@ -237,9 +249,9 @@ class TestDownloadUrlInfoDic(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['playlist, test warning index date files_noIndexNoDate, '
+		self.assertEqual(['playlist, C:\\Users\\Jean-Pierre\\Downloads\\Audio\\Christophe A\\test warning index date files_noIndexNoDate, '
 		                  'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc',
-		                  'video, Here to help: Give him what he wants, '
+		                  'video, C:\\Users\\Jean-Pierre\\Downloads\\Audio\\other dir\\Here to help: Give him what he wants, '
 		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',
 		                  'video, Here to help: Give him what he wants_3, '
 		                  'https://www.youtube.com/watch?v=Eqy6M6qLWGw',

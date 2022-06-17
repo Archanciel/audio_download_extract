@@ -238,10 +238,9 @@ class SaveFileChooserPopup(FileChooserPopup):
 		self.currentPathField.text = pathContainedInSelection
 		self.currentFileNameField.text = fileNameContainedInSelection
 
-	def save(self, pathOnly, pathName, fileName, isLoadAtStart):
+	def save(self, pathName, fileName, isLoadAtStart):
 		"""
 		
-		:param pathOnly:
 		:param pathName:
 		:param isLoadAtStart:
 		:return:
@@ -250,7 +249,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 			# no file selected or file name defined. Load dialog remains open ..
 			return
 			
-		self.rootGUI.saveHistoryToFile(pathOnly, pathName + sep + fileName, isLoadAtStart)
+		self.rootGUI.saveHistoryToFile(pathName + sep + fileName, isLoadAtStart)
 		self.rootGUI.dismissPopup()
 
 	def setCurrentLoadAtStartFile(self, loadAtStartFilePathName):
@@ -484,6 +483,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 		
 	def selOrCreateDir(self, specifiedSubDirPath, playlistTitleOrVideoName):
 		"""
+		Method called after the user selected an existing dir or specified a new
+		directory where to download the playlist or single video.
 		
 		:param  specifiedSubDirPath:        content of the currentPathField
 		:param  playlistTitleOrVideoName:   content of the currentFileNameField, i.e,
@@ -527,7 +528,12 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 				if dirCreationMessage:
 					# target dir was created
 					self.rootGUI.outputResult(dirCreationMessage)
-
+		
+		self.rootGUI.addDownloadUrl(downloadSubdir=downloadPath,
+					                playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
+		loadAtStartFilePathName, isLoadAtStart = self.rootGUI.getLoadAtStartFilePathName()
+		self.rootGUI.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
+		
 		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl)
 		self.rootGUI.dismissPopup()

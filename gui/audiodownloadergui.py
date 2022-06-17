@@ -415,12 +415,20 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.downloadFromClipboard()
 
-	def addDownloadUrl(self):
+	def addDownloadUrl(self,
+	                   downloadSubdir='',
+	                   playlistOrSingleVideoUrl=''):
 		"""
-		Method called when pressing the add download button defined in
-		the audiodownloadergui.kv file.
+		Method called
+		
+		1/ when pressing the add download button defined in the audiodownloadergui.kv file. In this case, the passed
+		   download sub dir as well as the passed playlistOrSingleVideoUrl are empty
+		2/ after setting the download dir of the playlist or single video. In this case, the download sub dir is not
+		   empty
 		"""
-		playlistOrSingleVideoUrl = Clipboard.paste()
+		if playlistOrSingleVideoUrl == '':
+			# method called after pressing on the 'Add' button
+			playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		if playlistOrSingleVideoUrl != '' and \
 				playlistOrSingleVideoUrl != ' ' and \
@@ -446,7 +454,8 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			uld = UrlDownloadData(type=type,
 								  title=title,
-								  url=playlistOrSingleVideoUrl)
+								  url=playlistOrSingleVideoUrl,
+			                      downloadDir=downloadSubdir)
 			
 			urlListEntry = {'text': title,
 							'data': uld,
@@ -507,6 +516,7 @@ class AudioDownloaderGUI(AudioGUI):
 		for listEntry in self.downloadUrlLst:
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
+			playlistOrSingleVideoDownloadDir = urlDownloadData.downloadDir
 			
 			self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
@@ -535,8 +545,15 @@ class AudioDownloaderGUI(AudioGUI):
 			# off the audio dir or the single video will be downloaded in the
 			# default single video dir as defined in the audiodownloader.ini
 			# file.
-			self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
-
+			if playlistOrSingleVideoDownloadDir == '':
+				# the case if adding the new URL to the URL's list was done by
+				# clicking on the 'Add' button
+				self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
+			else:
+				# the case if adding the new URL to the URL's list was done by
+				# by setting a download playlist or single video dir
+				self.playlistOrSingleVideoDownloadPath = playlistOrSingleVideoDownloadDir
+			
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 
 			while self.downloadThreadCreated:
@@ -1094,11 +1111,11 @@ class AudioDownloaderGUI(AudioGUI):
 			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
 			return SaveFileChooserPopup.SELECT_FILE_TO_SHARE
 
-		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
+		loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
 		
 		if loadAtStartFilePathName == self.currentLoadedPathFileName:
 			loadAtStartFileName = loadAtStartFilePathName.split(sep)[-1]
-			if loadAtStartFileName != '':
+			if isLoadAtStart:
 				popupTitle = "{} ({} loaded at start)".format(popupTitleAction, loadAtStartFileName)
 			else:
 				popupTitle = "{} (no file loaded)".format(popupTitleAction)
@@ -1107,6 +1124,17 @@ class AudioDownloaderGUI(AudioGUI):
 			popupTitle = "{} ({} loaded)".format(popupTitleAction, loadFileName)
 		
 		return popupTitle
+
+	def getLoadAtStartFilePathName(self):
+		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
+		isLoadAtStart = False
+		
+		if loadAtStartFilePathName == self.currentLoadedPathFileName:
+			loadAtStartFileName = loadAtStartFilePathName.split(sep)[-1]
+			if loadAtStartFileName != '':
+				isLoadAtStart = True
+				
+		return loadAtStartFilePathName, isLoadAtStart
 	
 	def load(self, path, filename):
 		if not filename:
@@ -1148,10 +1176,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
 
-	def saveHistoryToFile(self, existingPathOnly, savingPathFileName, isLoadAtStart):
+	def saveHistoryToFile(self, savingPathFileName, isLoadAtStart):
 		"""
 		
-		:param existingPathOnly: this is the current path in the FileChooser dialog
 		:param savingPathFileName: path + file name specified by the user in the
 			   path file name TextInput save dialog field
 		:param isLoadAtStart: value of the load at start CheckBox
