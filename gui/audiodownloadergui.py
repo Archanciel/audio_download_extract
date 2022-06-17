@@ -452,12 +452,14 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			self.enableButtons()
 			
+			playlistModifiedTitle = self.downloadVideoInfoDic.getPlaylistNameModified()
+			
 			uld = UrlDownloadData(type=type,
-								  title=title,
+								  title=playlistModifiedTitle,
 								  url=playlistOrSingleVideoUrl,
 			                      downloadDir=downloadSubdir)
 			
-			urlListEntry = {'text': title,
+			urlListEntry = {'text': playlistModifiedTitle,
 							'data': uld,
 							'toDownload': False,
 							'selectable': True}
