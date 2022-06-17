@@ -788,6 +788,19 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			return None
 	
+	def getPlaylistDownloadSubDir(self):
+		"""
+		Returns the playlist download sub dir name. This name does not contain
+		the	audio dir root dir (defined in the GUI settings) and does not contain
+		the playlist title.
+
+		:return: playlist download sub dir name
+		"""
+		playlistDownloadDir = self.getPlaylistDownloadDir()
+		
+		if playlistDownloadDir is not None:
+			return sep.join(playlistDownloadDir.split(sep)[0:-1])
+
 	def getPlaylistDownloadDir(self):
 		"""
 		Returns the playlist download dir name. This name does not contain the

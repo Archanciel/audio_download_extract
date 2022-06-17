@@ -944,6 +944,42 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 
 		self.assertEqual([], dvi.getFailedVideoIndexes())
 
+	def testGetPlaylistDownloadDir(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		playlistSubDir = 'playlist_sub_dir'
+		playlistDownloadRootPath = audioDirRoot + sep + playlistSubDir
+		dvi = DownloadPlaylistInfoDic(audioRootDir=audioDirRoot,
+		                              playlistDownloadRootPath=playlistDownloadRootPath,
+		                              modifiedPlaylistName=playListName,
+		                              loadDicIfDicFileExist=False)
+		
+		self.assertEqual(playlistSubDir + sep + playListName, dvi.getPlaylistDownloadDir())
+	
+	def testGetPlaylistDownloadSubDir(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		playlistSubDir = 'playlist_sub_dir'
+		playlistDownloadRootPath = audioDirRoot + sep + playlistSubDir
+		dvi = DownloadPlaylistInfoDic(audioRootDir=audioDirRoot,
+		                              playlistDownloadRootPath=playlistDownloadRootPath,
+		                              modifiedPlaylistName=playListName,
+		                              loadDicIfDicFileExist=False)
+		
+		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadSubDir())
+	
+	def testGetPlaylistDownloadSubDir_twoSubDir(self):
+		playListName = 'test_download_vid_info_dic'
+		audioDirRoot = DirUtil.getTestAudioRootPath()
+		playlistSubDir = 'playlist_sub_dir' + sep + 'sub_sub_dir'
+		playlistDownloadRootPath = audioDirRoot + sep + playlistSubDir
+		dvi = DownloadPlaylistInfoDic(audioRootDir=audioDirRoot,
+		                              playlistDownloadRootPath=playlistDownloadRootPath,
+		                              modifiedPlaylistName=playListName,
+		                              loadDicIfDicFileExist=False)
+		
+		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadSubDir())
+	
 	def testGetFailedVideoIndexes_2_indexes(self):
 		playListName = 'test_download_vid_info_dic'
 		audioDirRoot = DirUtil.getTestAudioRootPath()

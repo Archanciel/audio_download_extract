@@ -427,7 +427,7 @@ class AudioDownloaderGUI(AudioGUI):
 		   empty
 		"""
 		if playlistOrSingleVideoUrl == '':
-			# method called after pressing on the 'Add' button
+			# method called after pressing the 'Add' button
 			playlistOrSingleVideoUrl = Clipboard.paste()
 		
 		if playlistOrSingleVideoUrl != '' and \
@@ -551,8 +551,9 @@ class AudioDownloaderGUI(AudioGUI):
 				self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
 			else:
 				# the case if adding the new URL to the URL's list was done by
-				# by setting a download playlist or single video dir
-				self.playlistOrSingleVideoDownloadPath = playlistOrSingleVideoDownloadDir
+				# accepting the prefix/suffix added to the downloaded playlist
+				# videos after setting a download playlist or single video dir
+				self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath() + sep + playlistOrSingleVideoDownloadDir
 			
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 
@@ -1923,8 +1924,17 @@ class AudioDownloaderGUI(AudioGUI):
 		:param answer:
 		"""
 		if answer == 'yes':  # 'yes' is set in yesnopopup.kv file
-			# downloading the playlist or single video using a separate thread.
-			# So, the download information is displayed in real time on the outputLabel.
+			# downloading the playlist or single video using a separate
+			# thread. So, the download information is displayed in real
+			# time on the outputLabel.
+			
+			playlistDownloadSubDir = self.downloadVideoInfoDic.getPlaylistDownloadSubDir()
+			playlistUrl = self.downloadVideoInfoDic.getPlaylistUrl()
+			self.addDownloadUrlToUrlList(downloadSubdir=playlistDownloadSubDir,
+			                             playlistOrSingleVideoUrl=playlistUrl)
+			loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
+			self.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
+			
 			if not self.downloadThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
 											  func=self.downloadPlaylistAudioOnNewThread)
