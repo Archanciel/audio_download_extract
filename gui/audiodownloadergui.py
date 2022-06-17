@@ -415,9 +415,9 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.downloadFromClipboard()
 
-	def addDownloadUrl(self,
-	                   downloadSubdir='',
-	                   playlistOrSingleVideoUrl=''):
+	def addDownloadUrlToUrlList(self,
+	                            downloadSubdir='',
+	                            playlistOrSingleVideoUrl=''):
 		"""
 		Method called
 		
@@ -1126,6 +1126,12 @@ class AudioDownloaderGUI(AudioGUI):
 		return popupTitle
 
 	def getLoadAtStartFilePathName(self):
+		"""
+		Returns the load at start URL list dictionary file path name as
+		well as the isLoadAtStart boolean value.
+		
+		:return: loadAtStartFilePathName, isLoadAtStart
+		"""
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		isLoadAtStart = False
 		

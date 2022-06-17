@@ -529,8 +529,8 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 					# target dir was created
 					self.rootGUI.outputResult(dirCreationMessage)
 		
-		self.rootGUI.addDownloadUrl(downloadSubdir=downloadPath,
-					                playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
+		self.rootGUI.addDownloadUrlToUrlList(downloadSubdir=downloadPath,
+		                                     playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
 		loadAtStartFilePathName, isLoadAtStart = self.rootGUI.getLoadAtStartFilePathName()
 		self.rootGUI.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
 		
