@@ -523,25 +523,27 @@ class AudioDownloaderGUI(AudioGUI):
 			self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 				self.audioController.getPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
+			self.originalPlaylistTitle = urlDownloadData.title
+			
 			if self.accessError:
 				# the case if the video or playlist referenced by the playlistOrSingleVideoUrl
 				# no longer exist on Youtube
 				self.totalDownloadVideoFailedNb += 1
 				continue
 				
-			if self.originalSingleVideoTitle is None:
-				# url obtained from clipboard points to a playlist
-				downloadObjectTitle = self.originalPlaylistTitle
-				isPlayListDownloaded = True
-			else:
-				# url obtained from clipboard points to a single video
-				downloadObjectTitle = self.originalSingleVideoTitle
-				isPlayListDownloaded = False
+			# if self.originalSingleVideoTitle is None:
+			# 	# url obtained from clipboard points to a playlist
+			# 	downloadObjectTitle = self.originalPlaylistTitle
+			# 	isPlayListDownloaded = True
+			# else:
+			# 	# url obtained from clipboard points to a single video
+			# 	downloadObjectTitle = self.originalSingleVideoTitle
+			# 	isPlayListDownloaded = False
 			
 			# correcting a bug if you first downloaded a playlist after
 			# modifying the playlist name and then download a playlist
 			# without setting the dir ar modifying the playlist name
-			self.modifiedPlaylistTitle = None
+			self.modifiedPlaylistTitle = urlDownloadData.title
 			
 			# if answer is yes, the playlist dir will be created as sub dir
 			# off the audio dir or the single video will be downloaded in the
