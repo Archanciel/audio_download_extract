@@ -507,6 +507,22 @@ class TestDirUtil(unittest.TestCase):
 		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testPath)
 	
+	def testGetIndexAndDateUsageInDir_noPrefix_suffix(self):
+		testDirName = 'test warning index date files_noIndexDate'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInDir_noPrefix_noSuffix(self):
+		testDirName = 'test warning index date files_noIndexNoDate'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
 	def testGetIndexAndDateUsageInEmptyDir(self):
 		testDirName = 'test warning index date files'
 		

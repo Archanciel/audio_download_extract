@@ -545,15 +545,19 @@ class AudioDownloaderGUI(AudioGUI):
 			# off the audio dir or the single video will be downloaded in the
 			# default single video dir as defined in the audiodownloader.ini
 			# file.
+			audioRootPath = self.getRootAudiobookPath()
 			if playlistOrSingleVideoDownloadDir == '':
 				# the case if adding the new URL to the URL's list was done by
 				# clicking on the 'Add' button
-				self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath()
+				self.playlistOrSingleVideoDownloadPath = audioRootPath
 			else:
 				# the case if adding the new URL to the URL's list was done by
 				# accepting the prefix/suffix added to the downloaded playlist
 				# videos after setting a download playlist or single video dir
-				self.playlistOrSingleVideoDownloadPath = self.getRootAudiobookPath() + sep + playlistOrSingleVideoDownloadDir
+				if audioRootPath in playlistOrSingleVideoDownloadDir:
+					self.playlistOrSingleVideoDownloadPath = playlistOrSingleVideoDownloadDir
+				else:
+					self.playlistOrSingleVideoDownloadPath = audioRootPath + sep + playlistOrSingleVideoDownloadDir
 			
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
 
@@ -1304,13 +1308,8 @@ class AudioDownloaderGUI(AudioGUI):
 			# activated
 			self.stopDownloadButton.disabled = False
 			
-			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
-				playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-				playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
-				originalPlaylistTitle=self.originalPlaylistTitle,
-				modifiedPlaylistTitle=self.modifiedPlaylistTitle,
-				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			indexAndDateSettingWarningMsg = self.getVideoTitlePrefixSuffixWarningMsg(
+				playlistOrSingleVideoUrl, self.playlistOrSingleVideoDownloadPath)
 
 			if indexAndDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
@@ -1348,6 +1347,16 @@ class AudioDownloaderGUI(AudioGUI):
 												# button on the ConfirmPopup dialog
 	
 			self.stopDownloadButton.disabled = True
+	
+	def getVideoTitlePrefixSuffixWarningMsg(self, playlistOrSingleVideoUrl, playlistOrSingleVideoDownloadPath):
+		self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+			originalPlaylistTitle=self.originalPlaylistTitle,
+			modifiedPlaylistTitle=self.modifiedPlaylistTitle,
+			isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+			isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+		return indexAndDateSettingWarningMsg
 	
 	def downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread(self, playlistOrSingleVideoUrl):
 		"""

@@ -373,13 +373,15 @@ class DirUtil:
 		Returns a four boolean list which corresponds to the usage in the passed
 		audioFileNameLst of the index and the video upload date.
 		
-		If one of the passed audio file name starts with an index and ends
+		If one of the passed audio file name starts with an index or date and ends
 		with a date (for example
-		93-Here to help - Give him what he wants 2019-06-07.mp3, then the
+		93-Here to help - Give him what he wants 2019-06-07.mp3 or
+		220402-Here to help - Give him what he wants 2019-06-07.mp3, then the
 		first element of the returned audioFileNameLst is True.
 		
-		If one of the passed audio file name starts with an index and does not
-		end	with a date (for example 93-Here to help - Give him what he wants.mp3,
+		If one of the passed audio file name starts with an index or date and does not
+		end	with a date (for example 93-Here to help - Give him what he wants.mp3 or
+		220402-Here to help - Give him what he wants.mp3,
 		then the second element of the returned audioFileNameLst is True.
 		
 		If one of the passed audio file name does not start with an index and
@@ -430,7 +432,11 @@ class DirUtil:
 			else:
 				match = re.search(UPLOAD_DATE_PATTERN, fileName)
 				if match is not None:
-					indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS] = True
+					groupSize = len(match.groups())
+					if groupSize == 2 and match.group(2) != '':
+						indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS] = True
+					else:
+						indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS] = True
 				else:
 					indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS] = True
 			

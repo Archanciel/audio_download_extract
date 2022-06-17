@@ -529,10 +529,14 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 					# target dir was created
 					self.rootGUI.outputResult(dirCreationMessage)
 		
-		# self.rootGUI.addDownloadUrlToUrlList(downloadSubdir=downloadPath,
-		#                                      playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
-		# loadAtStartFilePathName, isLoadAtStart = self.rootGUI.getLoadAtStartFilePathName()
-		# self.rootGUI.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
+		indexAndDateSettingWarningMsg = self.rootGUI.getVideoTitlePrefixSuffixWarningMsg(
+			self.playlistOrSingleVideoUrl, downloadPath)
+
+		if indexAndDateSettingWarningMsg == '':
+			self.rootGUI.addDownloadUrlToUrlList(downloadSubdir=downloadPath,
+			                                     playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
+			loadAtStartFilePathName, isLoadAtStart = self.rootGUI.getLoadAtStartFilePathName()
+			self.rootGUI.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
 		
 		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl)
