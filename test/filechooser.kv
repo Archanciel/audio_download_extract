@@ -168,7 +168,7 @@
 					on_release: root.cancel()
 				Button:
 					text: "Save"
-					on_release: root.save(file_chooser.path, path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
+					on_release: root.save(path_name_text_input.text, file_name_text_input.text, load_at_start_chk_box.active)
 
 <DeleteFileChooserPopup>:   # sub-class of FileChooserPopup, which derives from
 							# AbstractPopup, which derives from Popup
