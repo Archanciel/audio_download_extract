@@ -515,6 +515,22 @@ class TestDirUtil(unittest.TestCase):
 		
 		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
 	
+	def testGetIndexAndDateUsageInDir_prefix_noSuffix_and_noPrefixNoSuffix(self):
+		testDirName = 'test warning index date files_indexNoDate'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
+	def testGetIndexAndDateUsageInDir_prefix_noSuffix_only(self):
+		testDirName = 'test warning index date files_indexNoDate_only'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		self.assertEqual([False, True, False, False], DirUtil.getIndexAndDateUsageInDir(testPath))
+	
 	def testGetIndexAndDateUsageInDir_noPrefix_noSuffix(self):
 		testDirName = 'test warning index date files_noIndexNoDate'
 		
