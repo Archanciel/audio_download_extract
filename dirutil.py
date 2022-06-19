@@ -425,7 +425,7 @@ class DirUtil:
 			
 			if match.group(1) != '':
 				match = re.search(UPLOAD_DATE_PATTERN, fileName)
-				if match is not None:
+				if match is not None and match.group(2) != '':
 					indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] = True
 				else:
 					indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS] = True
