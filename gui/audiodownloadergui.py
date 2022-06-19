@@ -921,11 +921,18 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def handleSelectedItems(self):
 		"""
-		Method linked to the Download All button in kv file.
+		Method linked to the Download All Or Delete ALL button in kv file.
 		"""
 		if self.toggleHistoButton.text == TOGGLE_HISTO_BUTTON_URL:
+			# here, we are in the state where the list displays URL's.
+			# The button's text is 'Down All'. Clicking on it does download
+			# the selected URL's, playlist URL's for the most part.
 			self.downloadSelectedItems()
 		else:
+			# here, we are in the state where the list displays the downloaded
+			# playlists or single videos. The button's text is 'Del All'.
+			# Clicking on it does delete the selected playlistsor single
+			# videos.
 			self.deleteSelectedAudioDownloadedFiles()
 			
 	def downloadSelectedItems(self):
@@ -948,9 +955,9 @@ class AudioDownloaderGUI(AudioGUI):
 											  func=self.downloadFromUrlDownloadLstOnNewThread)
 				
 				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
-				# 1 playlist or video is
-				# downloaded at the same
-				# time.
+				#                                                      1 playlist or video is
+				#                                                      downloaded at the same
+				#                                                      time.
 				
 				sepThreadExec.start()
 	
