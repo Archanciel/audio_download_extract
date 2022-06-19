@@ -346,10 +346,10 @@ class DirUtil:
 										exist or
 										[] if the passed audioDir is empty.
 
-										four elements list:  [DOWNLOAD_DATE_DATE boolean,
-															 DOWNLOAD_DATE_NO_DATE boolean,
-															 NO_DOWNLOAD_DATE_DATE boolean,
-															 NO_DOWNLOAD_DATE_NO_DATE boolean]
+										four elements list:  [DOWNLOAD_DATE_UPLOAD_DATE_POS boolean,
+															 DOWNLOAD_DATE_NO_UPLOAD_DATE_POS boolean,
+															 NO_DOWNLOAD_DATE_UPLOAD_DATE_POS boolean,
+															 NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS boolean]
 	
 										the list index are defined by those DirUtil
 										constants:
@@ -401,10 +401,10 @@ class DirUtil:
 		
 		:param audioFileNameLst:
 		
-		:return:indexAndDateUsageLst  four elements list:    [DOWNLOAD_DATE_DATE boolean,
-															 DOWNLOAD_DATE_NO_DATE boolean,
-															 NO_DOWNLOAD_DATE_DATE boolean,
-															 NO_DOWNLOAD_DATE_NO_DATE boolean]
+		:return:indexAndDateUsageLst  four elements list:    [DOWNLOAD_DATE_UPLOAD_DATE_POS boolean,
+															 DOWNLOAD_DATE_NO_UPLOAD_DATE_POS boolean,
+															 NO_DOWNLOAD_DATE_UPLOAD_DATE_POS boolean,
+															 NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS boolean]
 
 									  the list index are defined by those DirUtil
 									  constants:
@@ -415,10 +415,10 @@ class DirUtil:
 									  DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 
 		"""
-		indexAndDateUsageLst = [False,  # DOWNLOAD_DATE_DATE
-		                        False,  # DOWNLOAD_DATE_NO_DATE
-		                        False,  # NO_DOWNLOAD_DATE_DATE
-		                        False]  # NO_DOWNLOAD_DATE_NO_DATE
+		indexAndDateUsageLst = [False,  # DOWNLOAD_DATE_UPLOAD_DATE_POS
+		                        False,  # DOWNLOAD_DATE_NO_UPLOAD_DATE_POS
+		                        False,  # NO_DOWNLOAD_DATE_UPLOAD_DATE_POS
+		                        False]  # NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS
 
 		for fileName in audioFileNameLst:
 			match = re.search(DOWNLOAD_DATE_PATTERN, fileName)
