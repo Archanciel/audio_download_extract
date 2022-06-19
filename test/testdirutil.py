@@ -488,6 +488,12 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, False, False, False], DirUtil.getIndexAndDateUsageInFileNameLst(emptyFileNameLst))
 
 	def testGetIndexAndDateUsageInDir(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files'
 		testDirNameSaved = 'test warning index date files save dir'
 		
@@ -508,6 +514,12 @@ class TestDirUtil(unittest.TestCase):
 		DirUtil.deleteDirAndItsSubDirs(testPath)
 	
 	def testGetIndexAndDateUsageInDir_noPrefix_suffix(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files_noIndexDate'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
@@ -516,6 +528,12 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, False, True, True], DirUtil.getIndexAndDateUsageInDir(testPath))
 	
 	def testGetIndexAndDateUsageInDir_prefix_noSuffix_and_noPrefixNoSuffix(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files_indexNoDate'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
@@ -524,6 +542,12 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, True, False, True], DirUtil.getIndexAndDateUsageInDir(testPath))
 	
 	def testGetIndexAndDateUsageInDir_prefix_noSuffix_only(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files_indexNoDate_only'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
@@ -532,6 +556,12 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, True, False, False], DirUtil.getIndexAndDateUsageInDir(testPath))
 	
 	def testGetIndexAndDateUsageInDir_noPrefix_noSuffix(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files_noIndexNoDate'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
@@ -540,6 +570,12 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual([False, False, False, True], DirUtil.getIndexAndDateUsageInDir(testPath))
 	
 	def testGetIndexAndDateUsageInEmptyDir(self):
+		"""
+		DOWNLOAD_DATE_UPLOAD_DATE_POS = 0
+		DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 1
+		NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
+		NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
+		"""
 		testDirName = 'test warning index date files'
 		
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
@@ -771,4 +807,4 @@ class TestDirUtil(unittest.TestCase):
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testRenameFile_file_to_rename_not_exist()
+	tst.testGetIndexAndDateUsageInDir_prefix_noSuffix_only()
