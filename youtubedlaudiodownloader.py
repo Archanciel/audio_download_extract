@@ -65,8 +65,9 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		# 	self.ydlOutTmplFormat = '/%(title)s.mp3'
 		#
 		# 	self.ydl_opts = {
-		# 		#'format': 'bestaudio/best', # for unknown reason, not working on
-		# 									 # Android when used by AudioDownloaderGUI !
+		# 		#'format': 'bestaudio/best', # now working on Android when used by
+	    # 		                             # AudioDownloaderGUI, but slower and not
+		#                                    # solving any problem !
 		# 		'format': 'worstaudio/worst',# this fixes the error AttributeError:
 		# 									 # 'str' object has no attribute 'write'
 		# 		'quiet': YOUTUBE_DL_QUIET,
