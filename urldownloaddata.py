@@ -6,6 +6,14 @@ class UrlDownloadData():
 	             title,
 	             url,
 	             downloadDir=''):
+		"""
+		:param type:    DownloadUrlInfoDic.URL_TYPE_PLAYLIST = 'playlist' or
+						DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO = 'video'
+
+		:param title:
+		:param url:
+		:param downloadDir:
+		"""
 		self.type = type
 		self.title = title
 		self.url = url
