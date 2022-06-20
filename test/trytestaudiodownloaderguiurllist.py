@@ -50,6 +50,10 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.singleVideoUrl_1 = 'https://youtu.be/t2K4uM9ktsE'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_1)
 
+		self.singleVideoFileName_2 = '{}Short King Struggles 🥲 21-07-28.mp3'.format(downloadDatePrefix)
+		self.singleVideoUrl_2 = 'https://youtu.be/zUEmV7ubwyc'
+		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_2)
+
 		self.singleVideoFileName_3 = '{}Lama Tanz 15-06-11.mp3'.format(downloadDatePrefix)
 		self.singleVideoUrl_3 = 'https://youtu.be/FqC2lO3Yy_4'
 		self.singleVideoAudioFileNameLst.append(self.singleVideoFileName_3)
@@ -87,6 +91,11 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		                              urlTitle='test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)',
 		                              url=playlistUrl_4, downloadDir='')
 		
+		# adding second single video url
+		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO,
+		                              urlTitle='Try Not To Laugh | The most interesting funny short video tik tok',
+		                              url=self.singleVideoUrl_2, downloadDir='')
+
 		# now testing the index prefix and upload date suffix automatic
 		# setting for playlist url list downloading
 
