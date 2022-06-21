@@ -452,6 +452,7 @@ class AudioDownloaderGUI(AudioGUI):
 			
 				if title is None:
 					type = DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO
+					title = self.originalSingleVideoTitle
 				else:
 					type = DownloadUrlInfoDic.URL_TYPE_PLAYLIST
 
