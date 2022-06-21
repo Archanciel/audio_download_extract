@@ -416,6 +416,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.downloadFromClipboard()
 
 	def addDownloadUrlToUrlList(self,
+	                            playlistOrSingleVideoModifiedTitle='',
 	                            downloadSubdir='',
 	                            playlistOrSingleVideoUrl=''):
 		"""
@@ -425,6 +426,11 @@ class AudioDownloaderGUI(AudioGUI):
 		   download sub dir as well as the passed playlistOrSingleVideoUrl are empty
 		2/ after setting the download dir of the playlist or single video. In this case, the download sub dir is not
 		   empty
+		
+		:param playlistOrSingleVideoModifiedTitle: == '' if 'Add' button was pressed !
+		:param downloadSubdir:
+		:param playlistOrSingleVideoUrl:
+		:return:
 		"""
 		if playlistOrSingleVideoUrl == '':
 			# method called after pressing the 'Add' button
@@ -446,10 +452,12 @@ class AudioDownloaderGUI(AudioGUI):
 			
 				if title is None:
 					type = DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO
-					title = self.originalSingleVideoTitle
 				else:
 					type = DownloadUrlInfoDic.URL_TYPE_PLAYLIST
-			
+
+			if playlistOrSingleVideoModifiedTitle != '':
+				title = playlistOrSingleVideoModifiedTitle
+
 			self.enableButtons()
 			
 			uld = UrlDownloadData(type=type,
@@ -1950,7 +1958,9 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			playlistDownloadSubDir = self.downloadVideoInfoDic.getPlaylistDownloadSubDir()
 			playlistUrl = self.downloadVideoInfoDic.getPlaylistUrl()
-			self.addDownloadUrlToUrlList(downloadSubdir=playlistDownloadSubDir,
+			playlisiTitleModified = self.downloadVideoInfoDic.getPlaylistNameModified()
+			self.addDownloadUrlToUrlList(playlistOrSingleVideoModifiedTitle=playlisiTitleModified,
+										 downloadSubdir=playlistDownloadSubDir,
 			                             playlistOrSingleVideoUrl=playlistUrl)
 			loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
 			self.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
