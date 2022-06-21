@@ -245,7 +245,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			os.mkdir(downloadDir)
 		
 		# deleting files in downloadDir
-		files = glob.glob(downloadDir + sep + '*')
+		files = glob.glob(downloadDir + sep + '*.*')
 		
 		for f in files:
 			os.remove(f)
@@ -1936,4 +1936,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderDownloadMethods()
 
-	tst.testDownloaTooLongNamePlaylist_127_char_oneShortVideo_targetFolder_not_exist()
+	tst.testDownloadPlaylistVideosForUrlMultipleVideo_withTimeFrames()
