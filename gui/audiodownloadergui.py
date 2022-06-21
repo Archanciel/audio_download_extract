@@ -452,14 +452,12 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			self.enableButtons()
 			
-			playlistModifiedTitle = self.downloadVideoInfoDic.getPlaylistNameModified()
-			
 			uld = UrlDownloadData(type=type,
-								  title=playlistModifiedTitle,
+								  title=title,
 								  url=playlistOrSingleVideoUrl,
 			                      downloadDir=downloadSubdir)
 			
-			urlListEntry = {'text': playlistModifiedTitle,
+			urlListEntry = {'text': title,
 							'data': uld,
 							'toDownload': False,
 							'selectable': True}
@@ -519,12 +517,14 @@ class AudioDownloaderGUI(AudioGUI):
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
 			playlistOrSingleVideoDownloadDir = urlDownloadData.downloadDir
-			
-			self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
-				self.audioController.getPlaylistTitleOrVideoTitleForUrl(playlistOrSingleVideoUrl)
 
-			self.originalPlaylistTitle = urlDownloadData.title
-			
+			if urlDownloadData.type == DownloadUrlInfoDic.URL_TYPE_PLAYLIST:
+				self.originalPlaylistTitle = urlDownloadData.title
+				self.originalSingleVideoTitle = None
+			else:
+				self.originalPlaylistTitle = None
+				self.originalSingleVideoTitle = urlDownloadData.title
+
 			if self.accessError:
 				# the case if the video or playlist referenced by the playlistOrSingleVideoUrl
 				# no longer exist on Youtube
