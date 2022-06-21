@@ -103,6 +103,12 @@ class DirUtil:
 	@staticmethod
 	def createTargetDirIfNotExist(rootDir,
 								  targetAudioDir):
+		"""
+		
+		:param rootDir:         example: 'D:\\Development\\Python\\audiodownload\\test\\testData\\Audio'
+		:param targetAudioDir:  example: 'D:\\Development\\Python\\audiodownload\\test\\testData\\Audio\\France\\politique'
+		:return:
+		"""
 		targetAudioDirShort = DirUtil.getFullFilePathNameMinusRootDir(rootDir=rootDir,
 																	  fullFilePathName=targetAudioDir,
 																	  eliminatedRootLastSubDirsNumber=1)
