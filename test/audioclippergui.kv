@@ -1,0 +1,457 @@
+# ---------- audioclippergui.kv  ----------
+
+<AudioClipperGUI>: # sub-class of AudioPositionGUI
+	name: "audioClipperScreen"
+	nameTextInputField: name_TextInput
+	emailTextInputField: email_TextInput
+	phoneNumberTextInputField: phoneNumber_TextInput
+	requestListRV: request_RecycleView_list
+	requestListRVSelBoxLayout: selectable_recyclebox_layout
+	toggleHistoButton: toggle_history_list_Button
+	deleteBrowseButton: delete_Button
+	replaceButton: replace_Button
+	moveUpButton: moveUp_Button
+	moveDownButton: moveDown_Button
+	boxLayoutContainingRV: boxlayout_recycleview
+	sourceAudioFilePathName: source_file_path_name
+	audioSlider: slider
+	sourceFilePlayButton: button_play_source_file
+	startTextInput: text_input_start
+	currentTextInput: text_input_current
+	endTextInput: text_input_end
+	clipAudioFilePathName: clip_file_path_name
+	clipFilePlayButton: button_play_clip_file
+	clipFileStartButton: button_go_start_clip_file
+	clipFileBackwardButton: button_backward_clip_file
+	clipFileStopButton: button_stop_clip_file
+	clipFileForwardButton: button_forward_clip_file
+	clipFileEndButton: button_go_end_clip_file
+	outputScrollView: scrlv_out
+	outputLabel: label_output_clip
+	speedTextInput: text_input_speed
+	clipFileShareButton: button_share_clip_file
+	BoxLayout:
+		orientation: "vertical"
+
+		# adding main windows borders. Does not impact sub widgets !
+		padding: 5
+		spacing: 5
+
+		canvas.before:
+			Color:
+				rgb: [0.22,0.22,0.22]
+			Rectangle:
+				pos: self.pos
+				size: self.size
+
+		BoxLayout:
+			size_hint_y: None
+			height: "28dp"
+			canvas.before:
+				Color:
+					rgb: [0,0,0]
+				Rectangle:
+					pos: self.pos
+					size: self.size
+
+			GridLayout:
+				cols: 3
+				rows: 1
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: name_TextInput
+					size_hint_x: 0.35
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: True
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: email_TextInput
+					size_hint_x: 0.45
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: phoneNumber_TextInput
+					size_hint_x: 0.2
+					background_color: 0,0,0,0
+					foreground_color: 1,1,1,1
+					focus: False
+					multiline: False
+					halign: 'left'
+					#ENTER triggers root.setInputValues()
+					on_text_validate: root.setInputValues()
+
+		BoxLayout:
+			size_hint_y: None
+			height: "28dp"
+			ToggleButton:
+				id: toggle_history_list_Button
+				text: "History"
+				size_hint_x: 15
+				disabled:True
+				on_press: root.toggleRequestList()
+			Button:
+				id: delete_Button
+				text: "Delete"
+				size_hint_x: 15
+				disabled: True
+				on_press: root.deleteRequest()
+			Button:
+				id: replace_Button
+				text: "Replace"
+				size_hint_x: 15
+				disabled: True
+				on_press: root.replaceRequest()
+			Button:
+				id: moveUp_Button
+				size_hint_x: 8
+				disabled: True
+				on_press: selectable_recyclebox_layout.moveItemUp()
+				StackLayout:
+					pos: self.parent.pos
+					size: self.parent.size
+					orientation: 'lr-tb'
+					Image:
+						source: 'arrow-up-32-disabled.png' if self.parent.disabled else 'arrow-up-32.png'
+						size_hint_x: 1
+						width: 74
+			Button:
+				id: moveDown_Button
+				size_hint_x: 8
+				disabled: True
+				on_press: selectable_recyclebox_layout.moveItemDown()
+				StackLayout:
+					pos: self.parent.pos
+					size: self.parent.size
+					orientation: 'lr-tb'
+					Image:
+						source: 'arrow-down-32-disabled.png' if self.parent.disabled else 'arrow-down-32.png'
+						size_hint_x: 1
+						width: 74
+			Button:
+				id: menu_Button
+				text: "..."
+				size_hint_x: 13
+				on_release: root.openDropDownMenu(self)
+
+		BoxLayout:
+			id: boxlayout_recycleview
+			size_hint_y: None
+			height: "0dp"
+
+			RecycleViewKivyBugFix:  # sub-class of RecycleView. Fixes a Kivy bug which
+									# sometimes causes an app failure when the first
+									# selected item in a displayed list is the last item
+				id: request_RecycleView_list
+				rootGUI: root
+				scroll_y: 0 # forces scrolling to list bottom after adding an entry
+				effect_cls: "ScrollEffect" # prevents overscrolling
+				viewclass: 'MultiFieldSelectableBoxLayout'
+				scroll_type: ['bars', 'content']
+				scroll_wheel_distance: dp(114)
+				bar_width: dp(10)
+
+				AudioShareSelectableRecycleBoxLayout:
+					id: selectable_recyclebox_layout
+					appGUI: root
+					key_selection: 'selectable' # required so that 'selectable'
+												# key/value can be added to
+												# RecycleView data items
+					default_size: None, dp(15)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					spacing: 0.5
+					orientation: 'vertical'
+					multiselect: False
+					touch_multiselect: False
+
+
+		GridLayout:
+			cols: 1
+			rows: 6
+			size_hint_y: 0.94
+			GridLayout:
+				cols: 1
+				rows: 2
+				size_hint: (1, 0.19)
+				Label:
+					size_hint: (None, 0.03)
+					valign: 'bottom'
+					text: '  Source file name'
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: source_file_path_name
+					size_hint_y: 0.05
+					text: ''
+					halign: 'left'
+					multiline: False
+					readonly: False # necessary in order to be able to move into text
+					on_text: root.ensureTextNotChanged('source_file_path_name')
+			GridLayout:
+				cols: 3
+				size_hint: (1, 0.6)
+				GridLayout:
+					cols: 1
+					size_hint: (0.15, 0.4) # Windows and Android tablet values
+					#size_hint: (0.03, 0.4) Android smartphone values
+				GridLayout:
+					cols: 1
+					rows: 1
+					size_hint: (0.4, 0.4)
+					GridLayout: # labels and fields, pos buttons, slider and play/stop buttons
+						cols: 1
+						rows: 4
+						size_hint: (0.4, 0.4)
+						GridLayout: # labels and fields
+							cols: 5
+							rows: 2
+							size_hint: (0.4, 1)
+							GridLayout: # empty grid
+								cols: 2
+							Label:
+								size_hint_y: 0.01
+								valign: 'bottom'
+								text: 'Start'
+							Label:
+								size_hint_y: 0.01
+								valign: 'bottom'
+								text: 'Current'
+							Label:
+								size_hint_y: 0.01
+								valign: 'bottom'
+								text: 'End'
+							GridLayout: # empty grid
+								cols: 2
+							GridLayout: # left second pos buttons
+								cols: 2
+								Button:
+									text: '-'
+									on_press: root.reduceStartPos()
+								Button:
+									text: '+'
+									on_press: root.increaseStartPos()
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+								id: text_input_start
+								size_hint_y: 0.01
+								halign: 'right'
+								multiline: False
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+								id: text_input_current
+								size_hint_y: 0.01
+								halign: 'right'
+								multiline: False
+								on_text_validate: root.goToSourceFileCurrentPos()
+							FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+								id: text_input_end
+								size_hint_y: 0.01
+								halign: 'right'
+								multiline: False
+							GridLayout: # right second pos buttons
+								cols: 2
+								Button:
+									text: '-'
+									on_press: root.reduceEndPos()
+								Button:
+									text: '+'
+									on_press: root.increaseEndPos()
+						GridLayout: # pos buttons
+							cols: 2
+							rows: 1
+							size_hint: (0.6, 0.5)
+							GridLayout: # left pos buttons
+								size_hint_y: 0.15
+								cols: 3
+								Button:
+									text: '<|'
+									on_press: root.goToSourceFileStartPos()
+								Button:
+									text: '<<'
+									on_press: root.backwardSourceFileThirtySeconds()
+								GridLayout: # left second pos buttons
+									cols: 2
+									Button:
+										text: 'c'
+										on_press: root.copyCurrentToStart()
+									Button:
+										text: '<'
+										on_press: root.backwardSourceFileTenSeconds()
+							GridLayout: # right pos buttons
+								cols: 3
+								size_hint_y: 0.15
+								GridLayout: # left second pos buttons
+									cols: 2
+									Button:
+										text: '>'
+										on_press: root.forwardSourceFileTenSeconds()
+									Button:
+										text: 'c'
+										on_press: root.copyCurrentToEnd()
+								Button:
+									text: '>>'
+									on_press: root.forwardSourceFileThirtySeconds()
+								Button:
+									text: '|>'
+									on_press: root.goToSourceFileEndPos()
+						GridLayout: # slider and play/stop buttons
+							cols: 1
+							rows: 2
+							size_hint_y: 1.2
+							Slider:
+								id: slider
+								min: 0
+								max: 1
+								step: 1
+								value: 0
+								on_value: root.updateSourceFileSoundPos(self.value)
+							GridLayout:
+								cols: 4
+								rows: 1
+								GridLayout:
+									cols: 1
+								Button:
+									text: 'Stop'
+									on_press: root.stopSourceFile()
+								Button:
+									id: button_play_source_file
+									text: 'Play'
+									on_press: root.playSourceFile()
+								GridLayout:
+									cols: 1
+
+				GridLayout:
+					cols: 1
+					size_hint: (0.15, 0.4) # Windows and Android tablet values
+					#size_hint: (0.03, 0.4) Android smartphone values
+			GridLayout:
+				cols: 1
+				rows: 2
+				size_hint: (1, 0.17)
+				Label:
+					size_hint: (None, 0.03)
+					valign: 'bottom'
+					text: 'Clip file name'
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: clip_file_path_name
+					size_hint_y: 0.05
+					halign: 'left'
+					text: ''
+					multiline: False
+					readonly: True
+					readonly: False # necessary in order to be able to move into text
+					on_text: root.ensureTextNotChanged('clip_file_path_name')
+			GridLayout:
+				cols: 9
+				rows: 1
+				size_hint: (0.1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
+				Button:
+					id: button_go_start_clip_file
+					size_hint_x: 0.09
+					text: '<|'
+					disabled: True
+					on_press: root.goToClipFileStartPos()
+				Button:
+					id: button_backward_clip_file
+					size_hint_x: 0.09
+					text: '<'
+					disabled: True
+					on_press: root.backwardClipFileTenSeconds()
+				Button:
+					id: button_play_clip_file
+					size_hint_x: 0.09
+					text: 'Play'
+					disabled: True
+					on_press: root.playClipFile()
+				Button:
+					id: button_stop_clip_file
+					size_hint_x: 0.09
+					text: 'Stop'
+					disabled: True
+					on_press: root.stopClipFile()
+				Button:
+					id: button_forward_clip_file
+					size_hint_x: 0.09
+					text: '>'
+					disabled: True
+					on_press: root.forwardClipFileTenSeconds()
+				Button:
+					id: button_go_end_clip_file
+					size_hint_x: 0.09
+					text: '|>'
+					disabled: True
+					on_press: root.goToClipFileEndPos()
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.4
+			GridLayout:
+				cols: 1
+				rows: 1
+				size_hint_y: 0.55
+				ScrollView:
+					id: scrlv_out
+					canvas.before:
+						Color:
+							rgb: [0,0,0]
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					effect_cls: "ScrollEffect" #prevents overscrolling
+					#scroll_y: 0 # forces scrolling to bottom after adding text. Works only on TextInput, not on Label !!!
+					do_scroll_x: False # limiting to vertical scrolling
+					do_scroll_y: True
+
+					Label:
+						id: label_output_clip
+						size_hint_y: None
+						height: self.texture_size[1]
+						text_size: (self.width-20), None
+						line_height: 0.9
+						background_color: 0,0,0,0
+						foreground_color: 1,1,1,1
+						valign: "top"
+						markup: True
+			GridLayout:
+				cols: 7
+				rows: 1
+				size_hint: (1, 0.13)
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
+				Label:
+					size_hint_x: 0.1
+					valign: 'bottom'
+					text: 'Speed'
+				FocusTextInput: # required in order for TAB to focus to next FocusTextInput field
+					id: text_input_speed
+					size_hint_x: 0.07
+					halign: 'right'
+					text: '1.0'
+				Button:
+					size_hint_x: 0.1
+					text: 'Cancel'
+					on_release:
+						root.cancelClipFile()
+						app.root.current = "audioDownloaderScreen"
+						root.manager.transition.direction = "right"
+				Button:
+					size_hint_x: 0.1
+					text: 'Clip'
+					on_release: root.createClipFile()
+				Button:
+					id: button_share_clip_file
+					size_hint_x: 0.1
+					text: 'Share'
+					disabled: True # will be enabled after the clip file was created
+					on_release: root.shareClipFile()
+				GridLayout:
+					cols: 1
+					size_hint_x: 0.3
