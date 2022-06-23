@@ -249,7 +249,7 @@ class SaveFileChooserPopup(FileChooserPopup):
 			# no file selected or file name defined. Load dialog remains open ..
 			return
 			
-		self.rootGUI.saveHistoryToFile(pathName + sep + fileName, isLoadAtStart)
+		self.rootGUI.saveUrlListToDownloadUrlInfoDicFile(pathName + sep + fileName, isLoadAtStart)
 		self.rootGUI.dismissPopup()
 
 	def setCurrentLoadAtStartFile(self, loadAtStartFilePathName):
@@ -536,7 +536,7 @@ class SelectOrCreateDirFileChooserPopup(FileChooserPopup):
 			self.rootGUI.addDownloadUrlToUrlList(downloadSubdir=downloadPath,
 			                                     playlistOrSingleVideoUrl=self.playlistOrSingleVideoUrl)
 			loadAtStartFilePathName, isLoadAtStart = self.rootGUI.getLoadAtStartFilePathName()
-			self.rootGUI.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
+			self.rootGUI.saveUrlListToDownloadUrlInfoDicFile(loadAtStartFilePathName, isLoadAtStart)
 		
 		self.rootGUI.playlistOrSingleVideoDownloadPath = downloadPath
 		self.rootGUI.downloadPlaylistOrSingleVideoAudio(self.playlistOrSingleVideoUrl)

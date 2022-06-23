@@ -16,6 +16,10 @@ class YesNoPopup(GridLayout):
 	cols = ObjectProperty
 	
 	def __init__(self, **kwargs):
+		"""
+		
+		:param kwargs: kwargs['isPlaylist'] currently not used !
+		"""
 		text = kwargs['text']
 		# removing new line char which may cause an exception in Kivy
 		self.textStr = kwargs['text']

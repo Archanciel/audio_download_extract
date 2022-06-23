@@ -540,15 +540,6 @@ class AudioDownloaderGUI(AudioGUI):
 				self.totalDownloadVideoFailedNb += 1
 				continue
 				
-			# if self.originalSingleVideoTitle is None:
-			# 	# url obtained from clipboard points to a playlist
-			# 	downloadObjectTitle = self.originalPlaylistTitle
-			# 	isPlayListDownloaded = True
-			# else:
-			# 	# url obtained from clipboard points to a single video
-			# 	downloadObjectTitle = self.originalSingleVideoTitle
-			# 	isPlayListDownloaded = False
-			
 			# correcting a bug if you first downloaded a playlist after
 			# modifying the playlist name and then download a playlist
 			# without setting the dir ar modifying the playlist name
@@ -945,6 +936,10 @@ class AudioDownloaderGUI(AudioGUI):
 			self.deleteSelectedAudioDownloadedFiles()
 			
 	def downloadSelectedItems(self):
+		"""
+		Method called by method handleSelectedItems if the Download All button
+		in kv file was pressed.
+		"""
 		self.totalDownloadVideoSuccessNb = 0
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
@@ -1207,9 +1202,14 @@ class AudioDownloaderGUI(AudioGUI):
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
 
-	def saveHistoryToFile(self, savingPathFileName, isLoadAtStart):
+	def saveUrlListToDownloadUrlInfoDicFile(self, savingPathFileName, isLoadAtStart):
 		"""
-		
+		Method called in two cases:
+			1/ Save menu selected
+			2/ Yes button on yesNoPopup dialog displayed to obtain user
+			   confirmation on adding download date prefix or/and upload date
+			   suffix to the to download playlist videos.
+			   
 		:param savingPathFileName: path + file name specified by the user in the
 			   path file name TextInput save dialog field
 		:param isLoadAtStart: value of the load at start CheckBox
@@ -1328,15 +1328,15 @@ class AudioDownloaderGUI(AudioGUI):
 			# activated
 			self.stopDownloadButton.disabled = False
 			
-			indexAndDateSettingWarningMsg = self.getVideoTitlePrefixSuffixWarningMsg(
+			downloadAndUploadDateSettingWarningMsg = self.getVideoTitlePrefixSuffixWarningMsg(
 				playlistOrSingleVideoUrl, self.playlistOrSingleVideoDownloadPath)
 
-			if indexAndDateSettingWarningMsg != '':
+			if downloadAndUploadDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
-				popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
-											  indexAndDateSettingWarningMsg,
-											  self.onYesNoPopupAnswer,
-											  True)
+				popup = self.createPrefixSuffixFileNameConfirmYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
+				                                                         downloadAndUploadDateSettingWarningMsg,
+				                                                         self.onPrefixSuffixFileNameConfirmYesNoPopupAnswer,
+				                                                         True)
 				popup.open()
 			else:
 				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
@@ -1900,13 +1900,16 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
 	
-	def createYesNoPopup(self,
-						 yesNoPopupTitle,
-						 yesNoPopupMsg,
-						 yesNoPopupCallbackFunction,
-						 isPlayListDownloaded):
+	def createPrefixSuffixFileNameConfirmYesNoPopup(self,
+	                                                yesNoPopupTitle,
+	                                                yesNoPopupMsg,
+	                                                yesNoPopupCallbackFunction,
+	                                                isPlayListDownloaded):
 		"""
-
+		Called in order to obtain confirmation from user on the way the downloaded
+		audio files will be renamed using the video download date prefix and/or the
+		video upload date suffix.
+		
 		:param yesNoPopupTitle:
 		:param yesNoPopupMsg:
 		:param yesNoPopupCallbackFunction:  function called when the user click on
@@ -1932,7 +1935,7 @@ class AudioDownloaderGUI(AudioGUI):
 		yesNoPopupFormattedMsg = GuiUtil.reformatString(yesNoPopupMsg, msgWidth)
 		
 		self.yesNoPopup = YesNoPopup(text=yesNoPopupFormattedMsg,
-												 isPlaylist=isPlayListDownloaded)
+									 isPlaylist=isPlayListDownloaded)
 		
 		self.yesNoPopup.bind(on_answer=yesNoPopupCallbackFunction)
 		
@@ -1945,9 +1948,12 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		return popup
 	
-	def onYesNoPopupAnswer(self, yesNoPopupInstance, answer):
+	def onPrefixSuffixFileNameConfirmYesNoPopupAnswer(self, yesNoPopupInstance, answer):
 		"""
-		Method called when one of the YesNoPopup button is pushed.
+		Method called when one of the YesNoPopup button is pushed. The
+		YesNoPopup is displayed when it is necessary to get user
+		confirmation of the way the downloaded files will be renamed
+		using video download date prefix or/and video upload date suffix.
 
 		:param yesNoPopupInstance:
 		:param answer:
@@ -1964,7 +1970,7 @@ class AudioDownloaderGUI(AudioGUI):
 										 downloadSubdir=playlistDownloadSubDir,
 			                             playlistOrSingleVideoUrl=playlistUrl)
 			loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
-			self.saveHistoryToFile(loadAtStartFilePathName, isLoadAtStart)
+			self.saveUrlListToDownloadUrlInfoDicFile(loadAtStartFilePathName, isLoadAtStart)
 			
 			if not self.downloadThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
@@ -1983,9 +1989,9 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadPlaylistAudioOnNewThread(self):
 		"""
 		This method is called if the user did confirm the playlist download
-		with or without the index and/or upload date settings. Since
-		specifying those settings is possible only for playlist download,
-		the method is called downloadPlaylistAudioOnNewThread and not
+		with or without the download date (prefix) and/or upload date (suffix)
+		settings. Since specifying those settings is possible only for playlist
+		download, the method is called downloadPlaylistAudioOnNewThread and not
 		downloadPlaylistOrSingleVideoAudioOnNewThread !
 		"""
 		self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
