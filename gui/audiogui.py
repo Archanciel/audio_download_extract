@@ -27,8 +27,6 @@ class AudioGUI(Screen):
 		super().__init__(**kw)
 		
 		self.showRequestList = False
-		self.isExtractFileDropDownMenuItemDisplayed = True
-		self.isShareFileDropDownMenuItemDisplayed = True
 		self.isSettingsDropDownMenuItemDisplayed = True
 		self.isDeleteDropDownMenuItemDisplayed = True
 		self.isDownHistoDropDownMenuItemDisplayed = True
@@ -51,8 +49,14 @@ class AudioGUI(Screen):
 		:param dt:
 		"""
 		if os.name == 'posix':
+			self.isExtractFileDropDownMenuItemDisplayed = False
+			self.isShareFileDropDownMenuItemDisplayed = False
+			self.isDownloadFailedVideosMenuItemDisplayed = False
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
+			self.isExtractFileDropDownMenuItemDisplayed = True
+			self.isShareFileDropDownMenuItemDisplayed = True
+			self.isDownloadFailedVideosMenuItemDisplayed = True
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 		
 		configFilePathName = DirUtil.getConfigFilePathName()
@@ -189,6 +193,13 @@ class AudioGUI(Screen):
 		else:
 			# hide drop down menu items
 			self.dropDownMenu.gridLayoutShare.height = 0
+		
+		if self.isDownloadFailedVideosMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridlayoutDownloadFailedVideos.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridlayoutDownloadFailedVideos.height = 0
 		
 		if self.isDownHistoDropDownMenuItemDisplayed:
 			# set drop down menu items visible
