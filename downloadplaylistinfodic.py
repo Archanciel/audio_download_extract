@@ -889,9 +889,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	@staticmethod
 	def getPlaylistDicsContainingFailedVideos(audioDirRoot):
 		"""
-		Returns a list of playlist info dic which contain at least one video
-		whose downloadException value is True.
-		:return:
+		Returns a dictionary whose keys are playlist info dics which contain at least
+		one video whose downloadException value is True and value are the list of
+		failed video indexes.
+		
+		:return: playlistWithFailedVideoIndexListDic
 		"""
 		playlistWithFailedVideoIndexListDic = {}
 		

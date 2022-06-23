@@ -60,6 +60,12 @@ class CustomDropDown(DropDown):
 		Show file open popup in order to select file opened in share audio file screen.
 		"""
 		self.rootGUI.openShareAudioPopup()
+		
+	def handleFailedVideosDownloading(self):
+		"""
+		Called by Down failed vids menu item defined in customdropdown.kv file.
+		"""
+		self.rootGUI.handleFailedVideosDownloading()
 	
 	def downloadHisto(self):
 		"""

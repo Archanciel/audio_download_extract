@@ -60,6 +60,7 @@ from gui.guiutil import GuiUtil
 from gui.selectablerecycleboxlayout import SelectableRecycleBoxLayout
 from dirutil import DirUtil
 from septhreadexec import SepThreadExec
+from downloadplaylistinfodic import DownloadPlaylistInfoDic
 from downloadUrlinfodic import DownloadUrlInfoDic
 from urldownloaddata import UrlDownloadData
 from downloadhistorydata import *
@@ -983,7 +984,12 @@ class AudioDownloaderGUI(AudioGUI):
 		the failed videos on the smartphone by the successfully downloaded
 		videos on the pc.
 		"""
-		pass
+		self.dropDownMenu.dismiss()
+
+		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getPlaylistDicsContainingFailedVideos(self.audiobookPath)
+		for key, value in playlistWithFailedVideoIndexListDic.items():
+			print(key.getPlaylistNameOriginal())
+			print(value)
 	
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
