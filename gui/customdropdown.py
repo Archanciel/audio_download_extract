@@ -13,12 +13,10 @@ class CustomDropDown(DropDown):
 	
 	def __init__(self, rootGUI):
 		super().__init__()
-		self.rootGUI = rootGUI
 
-		if os.name == 'posix':
-			if GuiUtil.onSmartPhone():
-				self.auto_width = False
-				self.width = dp(self.rootGUI.configMgr.dropDownMenuWidth)
+		self.rootGUI = rootGUI
+		self.auto_width = False
+		self.width = dp(self.rootGUI.configMgr.dropDownMenuWidth)
 
 	def showLoad(self):
 		"""

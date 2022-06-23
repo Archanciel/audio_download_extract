@@ -2219,13 +2219,11 @@ class AudioDownloaderGUIMainApp(App):
 				self.audioDownloaderGUI.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
 				self.audioDownloaderGUI.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH:
-				if os.name == 'posix':
-					if GuiUtil.onSmartPhone():
-						self.audioDownloaderGUI.dropDownMenu.auto_width = False
-						self.audioDownloaderGUI.dropDownMenu.width = \
-							dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
-													 ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH,
-													 ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
+				self.audioDownloaderGUI.dropDownMenu.auto_width = False
+				self.audioDownloaderGUI.dropDownMenu.width = \
+					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+											 ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH,
+											 ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
 			elif key == ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT:
 				self.audioDownloaderGUI.boxLayoutContainingStatusBar.height = \
 					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
