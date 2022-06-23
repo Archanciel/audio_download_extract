@@ -7,10 +7,8 @@ import shutil
 import re
 import datetime as dt
 
-
 DOWNLOAD_DATE_PATTERN = r'(^[\d-]*)(.*).mp3'
 UPLOAD_DATE_PATTERN = r'(.*) ([\d-]*).mp3'
-
 
 class DirUtil:
 	DOWNLOAD_DATE_UPLOAD_DATE_POS = 0

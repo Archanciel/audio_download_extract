@@ -54,7 +54,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	Stores the downloaded playlist information as well as the playlist videos
 	information.
 	"""
-
+	
 	def __init__(self,
 	             playlistUrl=None,
 	             audioRootDir=None,
@@ -885,6 +885,33 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		if urlTitleDic is not None:
 			urlTitleDic[playlistUrl] = playlistTitle
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
+
+	@staticmethod
+	def getPlaylistDicContainingFailedVideos(audioDirRoot):
+		"""
+		Returns a list of playlist info dic which contain at least one video
+		whose downloadException value is True.
+		:return:
+		"""
+		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
+		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
+		                                                                    inSubDirs=True):
+			try:
+				downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
+				
+				if downloadPlaylistInfoDic.getPlaylistUrl() == None:
+					# the case for download url info dic
+					continue
+				
+				urlTitleDic[
+					downloadPlaylistInfoDic.getPlaylistUrl()] = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
+			except Exception as e:
+				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
+				# we simply do not add this <urlStr>: <playlistTitleStr> entry to
+				# the dic.
+				pass
+		# print(playlistFilePathName)
+		# print(e)
 
 
 if __name__ == "__main__":

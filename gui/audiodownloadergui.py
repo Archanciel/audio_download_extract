@@ -524,7 +524,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadFromUrlDownloadLstOnNewThread(self):
 		"""
 		Called by downloadSelectedItems() method which is called by
-		the handleSelectedItems() method which is executed when the
+		the downloadSelectedUrlItems() method which is executed when the
 		downloadALL button is pressed.
 
 		:return:
@@ -928,7 +928,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 		self.refocusOnFirstRequestInput()
 	
-	def handleSelectedItems(self):
+	def downloadSelectedUrlItems(self):
 		"""
 		Method linked to the Download All Or Delete ALL button in kv file.
 		"""
@@ -946,8 +946,8 @@ class AudioDownloaderGUI(AudioGUI):
 			
 	def downloadSelectedItems(self):
 		"""
-		Method called by method handleSelectedItems if the Download All button
-		in kv file was pressed.
+		Method called by method downloadSelectedUrlItems itself called when
+		the Download All button in kv file was pressed.
 		"""
 		self.totalDownloadVideoSuccessNb = 0
 		self.totalDownloadVideoFailedNb = 0
@@ -973,6 +973,17 @@ class AudioDownloaderGUI(AudioGUI):
 				#                                                      time.
 				
 				sepThreadExec.start()
+
+	def handleFailedVideosDownloading(self):
+		"""
+		Method called when choosing the 'Down failed vids' dropdown menu
+		item defined in the customdropdown.kv file. This method obtains
+		every video whose downloadException value is True in every
+		playlist dic file and then download them in order to then replace
+		the failed videos on the smartphone by the successfully downloaded
+		videos on the pc.
+		"""
+		pass
 	
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
