@@ -887,12 +887,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 
 	@staticmethod
-	def getPlaylistDicContainingFailedVideos(audioDirRoot):
+	def getPlaylistDicsContainingFailedVideos(audioDirRoot):
 		"""
 		Returns a list of playlist info dic which contain at least one video
 		whose downloadException value is True.
 		:return:
 		"""
+		playlistWithFailedVideoIndexListDic = {}
+		
 		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
 		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
 		                                                                    inSubDirs=True):
@@ -903,52 +905,26 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 					# the case for download url info dic
 					continue
 				
-				urlTitleDic[
-					downloadPlaylistInfoDic.getPlaylistUrl()] = downloadPlaylistInfoDic.getPlaylistTitleOriginal()
+				failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+				if failedVideoIndexList != []:
+					playlistWithFailedVideoIndexListDic[downloadPlaylistInfoDic] = failedVideoIndexList
 			except Exception as e:
 				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
 				# we simply do not add this <urlStr>: <playlistTitleStr> entry to
 				# the dic.
 				pass
-		# print(playlistFilePathName)
-		# print(e)
 
+		return playlistWithFailedVideoIndexListDic
 
 if __name__ == "__main__":
 	if os.name == 'posix':
-		audioDir = '/storage/emulated/0/Download/Audiobooks/various'
+		audioDir = '/storage/emulated/0/Download/Audio'
 	else:
-		audioDir = 'D:\\Users\\Jean-Pierre\\Downloads\\Audiobooks\\various'
-		
-	playlistUrl = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRxj8f47BrkV9S6WoxYWYDS'
-	playListName = 'test_download_vid_info_dic'
-	playlistTitle = playListName
+		audioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 	
-	audioDirRoot = DirUtil.getTestAudioRootPath()
-	downloadDir = audioDirRoot + sep + playListName
+	unitTestDataDir = audioDir + sep + 'test_getPlaylistDicContainingFailedVideos'
+	playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getPlaylistDicsContainingFailedVideos(audioDir)
 	
-	dvi = DownloadPlaylistInfoDic(playlistUrl,
-	                              audioDirRoot,
-	                              audioDirRoot,
-	                              playlistTitle,
-	                              playListName,
-	                              playlistTitle,
-	                              playListName)
-	
-	dvi.addVideoInfoForVideoIndex(1, 'Title_vid_1', 'https://youtube.com/watch?v=9iPvLx7gotk', 'Title_vid_1.mp4')
-	dvi.addVideoInfoForVideoIndex(2, 'title_vid_2', 'https://youtube.com/watch?v=9iPvL8880999', 'Title_vid_2.mp4')
-	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 56])
-	dvi.addExtractStartEndSecondsListForVideoIndex(1, [34, 65])
-	dvi.addSuppressStartEndSecondsListForVideoIndex(1, [[340, 560], [840, 960]])
-	dvi.addSuppressStartEndSecondsListForVideoIndex(3, [3400, 5600])
-	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 1, 'title_1_1.mp3', ['0:2:3', '0:4:56'])
-	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(1, 2, 'title_1_2.mp3', ['0:20:3', '0:40:56'])
-	dvi.addExtractedFileInfoForVideoIndexTimeFrameIndex(2, 1, 'title_2_1.mp3', ['0:2:3', '0:4:56'])
-	dvi.addSuppressedFileInfoForVideoIndex(1, 'title_1_s.mp3', ['0:23:45-0:24:54', '1:03:45-1:24:54'], ['0:0:0-0:23:45', '0:24:54-1:03:45', '1:24:54-1:55:12'])
-
-	print(dvi.getExtractedFilePathNameForVideoIndexTimeFrameIndex(videoIndex=1,timeFrameIndex=1))
-	
-	print(dvi.getSuppressStartEndSecondsListsForVideoIndex(1))
-	print(dvi.getSuppressedFileNameForVideoIndex(1))
-	print(dvi.getSuppressedStartEndHHMMSS_TimeFramesForVideoIndex(1))
-	print(dvi)
+	for key, value in playlistWithFailedVideoIndexListDic.items():
+		print(key)
+		print(value)

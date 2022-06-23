@@ -1,0 +1,90 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "Sols",
+        "pl_name_modified": "Sols",
+        "pl_name_original": "Sols",
+        "pl_nextVideoIndex": 25,
+        "pl_title_modified": "Sols",
+        "pl_title_original": "Sols",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMTGeF8niLsg90-gaZ-sv8xD"
+    },
+    "videos": {
+        "1": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-LE HASARD D\u00c9CRYPT\u00c9 PAR MARC-ANDR\u00c9 SELOSSE 21-03-04.mp3",
+            "vd_downlTime": "01/04/2022 19:57:25",
+            "vd_title": "LE HASARD D\u00c9CRYPT\u00c9 PAR MARC-ANDR\u00c9 SELOSSE",
+            "vd_url": "https://www.youtube.com/watch?v=PDOxKSmjaMw"
+        },
+        "11": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-Marc-Andr\u00e9 Selosse, biologiste  - 'Il y a un vrai probl\u00e8me par rapport au choix des options' au lyc\u00e9e 22-02-21.mp3",
+            "vd_downlTime": "01/04/2022 20:35:08",
+            "vd_title": "Marc-Andr\u00e9 Selosse, biologiste : \"Il y a un vrai probl\u00e8me par rapport au choix des options\" au lyc\u00e9e",
+            "vd_url": "https://www.youtube.com/watch?v=KY3eOAnMswQ"
+        },
+        "12": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-Conf\u00e9rence de Marc-Andr\u00e9 Selosse  'Le microbiote \u00e0 la crois\u00e9e de l\u2019humain et de la biodiversit\u00e9' 21-03-26.mp3",
+            "vd_downlTime": "01/04/2022 20:37:02",
+            "vd_title": "Conf\u00e9rence de Marc-Andr\u00e9 Selosse  \"Le microbiote \u00e0 la crois\u00e9e de l\u2019humain et de la biodiversit\u00e9\"",
+            "vd_url": "https://www.youtube.com/watch?v=wJn05dqgES4"
+        },
+        "17": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-CONF\u00c9RENCE Le sol, la plus riche construction du monde vivant de Marc-Andr\u00e9 Selosse _ madd-bordeaux 21-11-26.mp3",
+            "vd_downlTime": "01/04/2022 21:21:00",
+            "vd_title": "CONF\u00c9RENCE Le sol, la plus riche construction du monde vivant de Marc-Andr\u00e9 Selosse / madd-bordeaux",
+            "vd_url": "https://www.youtube.com/watch?v=JcGPPsuk7U0"
+        },
+        "19": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-Tchatche 2.0  - Parlons virus et \u00e9pid\u00e9mies avec Marc-Andr\u00e9 Selosse 20-11-12.mp3",
+            "vd_downlTime": "02/04/2022 03:03:06",
+            "vd_title": "Tchatche 2.0 : Parlons virus et \u00e9pid\u00e9mies avec Marc-Andr\u00e9 Selosse",
+            "vd_url": "https://www.youtube.com/watch?v=MeJ5T2GuhgA"
+        },
+        "20": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-Marc-Andr\u00e9 Selosse  - Il est urgent que la recherche sorte du labo ! 20-12-15.mp3",
+            "vd_downlTime": "02/04/2022 03:03:09",
+            "vd_title": "Marc-Andr\u00e9 Selosse : Il est urgent que la recherche sorte du labo !",
+            "vd_url": "https://www.youtube.com/watch?v=D3RaqWDLvSI"
+        },
+        "21": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-Un monde sans abeilles est-il possible   (Marc-Andr\u00e9 Selosse, Michel Gauthier-Clerc) 18-09-19.mp3",
+            "vd_downlTime": "02/04/2022 03:03:12",
+            "vd_title": "Un monde sans abeilles est-il possible ?  (Marc-Andr\u00e9 Selosse, Michel Gauthier-Clerc)",
+            "vd_url": "https://www.youtube.com/watch?v=fmnKIkXeI0A"
+        },
+        "22": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220402-Quand l'intelligence cache la plante, avec Marc-Andr\u00e9 S\u00e9losse 20-04-15.mp3",
+            "vd_downlTime": "02/04/2022 03:07:00",
+            "vd_title": "Quand l'intelligence cache la plante, avec Marc-Andr\u00e9 S\u00e9losse",
+            "vd_url": "https://www.youtube.com/watch?v=EAtjCcNZafM"
+        },
+        "23": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-Des sols vivants  - conditions de r\u00e9ussite, par Marc-Andr\u00e9 Selosse 20-11-06.mp3",
+            "vd_downlTime": "02/04/2022 03:07:36",
+            "vd_title": "Des sols vivants : conditions de r\u00e9ussite, par Marc-Andr\u00e9 Selosse",
+            "vd_url": "https://www.youtube.com/watch?v=Sh7VYUCTjIQ"
+        },
+        "24": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-Demain la Terre - Marc-Andr\u00e9 SELOSSE  - 'Quelle agriculture pour demain ' 20-12-05.mp3",
+            "vd_downlTime": "02/04/2022 03:10:51",
+            "vd_title": "Demain la Terre - Marc-Andr\u00e9 SELOSSE : \"Quelle agriculture pour demain ?\"",
+            "vd_url": "https://www.youtube.com/watch?v=fO6pIZaxvxo"
+        },
+        "9": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220401-A la d\u00e9couverte des champignons en for\u00eat, par Marc-Andr\u00e9 Selosse 20-10-24.mp3",
+            "vd_downlTime": "01/04/2022 20:29:36",
+            "vd_title": "A la d\u00e9couverte des champignons en for\u00eat, par Marc-Andr\u00e9 Selosse",
+            "vd_url": "https://www.youtube.com/watch?v=KWYP8w4uVXY"
+        }
+    }
+}

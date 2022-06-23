@@ -1,0 +1,27 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "Sols",
+        "pl_name_modified": "Sols",
+        "pl_name_original": "Sols",
+        "pl_nextVideoIndex": 3,
+        "pl_title_modified": "Sols",
+        "pl_title_original": "Sols",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMTGeF8niLsg90-gaZ-sv8xD"
+    },
+    "videos": {
+        "1": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220402-LE HASARD D\u00c9CRYPT\u00c9 PAR MARC-ANDR\u00c9 SELOSSE 21-03-04.mp3",
+            "vd_downlTime": "02/04/2022 06:07:03",
+            "vd_title": "LE HASARD D\u00c9CRYPT\u00c9 PAR MARC-ANDR\u00c9 SELOSSE",
+            "vd_url": "https://www.youtube.com/watch?v=PDOxKSmjaMw"
+        },
+        "2": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220402-Tchatche 2.0  - Parlons virus et \u00e9pid\u00e9mies avec Marc-Andr\u00e9 Selosse 20-11-12.mp3",
+            "vd_downlTime": "02/04/2022 06:08:20",
+            "vd_title": "Tchatche 2.0 : Parlons virus et \u00e9pid\u00e9mies avec Marc-Andr\u00e9 Selosse",
+            "vd_url": "https://www.youtube.com/watch?v=MeJ5T2GuhgA"
+        }
+    }
+}
