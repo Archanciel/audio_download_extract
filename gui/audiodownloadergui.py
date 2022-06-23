@@ -522,6 +522,13 @@ class AudioDownloaderGUI(AudioGUI):
 			sepThreadExec.start()
 
 	def downloadFromUrlDownloadLstOnNewThread(self):
+		"""
+		Called by downloadSelectedItems() method which is called by
+		the handleSelectedItems() method which is executed when the
+		downloadALL button is pressed.
+
+		:return:
+		"""
 		for listEntry in self.downloadUrlLst:
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
@@ -624,8 +631,10 @@ class AudioDownloaderGUI(AudioGUI):
 	def onConfirmDownloadPopupAnswer(self, confirmPopupInstance, answer):
 		"""
 		Method called when one of the ConfirmPopup button is pushed. This method is
-		linkec to the ConfirmDownloadPopup 'on_answer' event in the
-		createDownloadConfirmPopup() mrthod called by executeDownload() method.
+		linked to the ConfirmDownloadPopup 'on_answer' event in the
+		createDownloadConfirmPopup() method called by executeDownload() method
+		which is called if the clipboard contains a playlist or single video
+		URL at the application start.
 		
 		:param confirmPopupInstance:
 		:param answer:
@@ -1381,7 +1390,9 @@ class AudioDownloaderGUI(AudioGUI):
 	def downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread(self, playlistOrSingleVideoUrl):
 		"""
 		This method executed on a separated thread launch downloading audios for
-		the videos referenced in a playlist or the audio of a single video.
+		the videos referenced in a playlist or the audio of a single video. The
+		method is indirectly executed if the clipboard contains a playlist or single
+		video URL at application start.
 		"""
 		self.isFirstCurrentDownloadInfo = True
 		
