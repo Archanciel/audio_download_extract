@@ -582,7 +582,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
-		self.assertEqual(expectedPlaylistDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(expectedPlaylistDirName, downloadedVideoInfoDic.getPlaylistDownloadSubDir())
 		
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_spaces_and_accented_letters_and_comma(
 			self):
@@ -667,7 +667,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
-		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadSubDir())
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_point_with_time_info(
 			self):
@@ -701,7 +701,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
-		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadSubDir())
 		
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)
@@ -738,7 +738,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
-		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadSubDir())
 	
 	def testCreateDownloadVideoInfoDic_playlistTitle_with_a_two_point_with_time_info(
 			self):
@@ -772,7 +772,7 @@ class TestPlaylistTitleParser(unittest.TestCase):
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameOriginal())
 		self.assertEqual(originalPlaylistTitle, downloadedVideoInfoDic.getPlaylistTitleModified())
 		self.assertEqual(expectedOriginalPlayListName, downloadedVideoInfoDic.getPlaylistNameModified())
-		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadDir())
+		self.assertEqual(playListNameForDirName, downloadedVideoInfoDic.getPlaylistDownloadSubDir())
 		
 		self.assertEqual(downloadedVideoInfoDic.getExtractStartEndSecondsListsForVideoIndex(1),
 		                 expectedVideo1ExtractTimeFramesList)

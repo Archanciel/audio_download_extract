@@ -117,7 +117,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -259,7 +259,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -396,7 +396,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 		
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -484,7 +484,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		youtubeAccess.redownloadFailedVideosInDownloadVideoInfoDic(downloadVideoInfoDic=downloadVideoInfoDic)
 		
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		

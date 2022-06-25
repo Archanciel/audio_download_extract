@@ -126,7 +126,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			self.audioController.displayError(accessError.errorMsg)
 			return None, accessError
 
-		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		targetAudioDirShort = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.audioDirRoot,
 		                                                              fullFilePathName=targetAudioDir,
 		                                                              eliminatedRootLastSubDirsNumber=1)
@@ -683,7 +683,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:return:
 		"""
 		videoToRedownloadIndexLst = downloadVideoInfoDic.getFailedVideoIndexes()
-		playlistDownloadDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+		playlistDownloadDir = self.audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		playlistDownloadDirShort = DirUtil.getFullFilePathNameMinusRootDir(rootDir=self.audioDirRoot,
 		                                                              fullFilePathName=playlistDownloadDir,
 		                                                              eliminatedRootLastSubDirsNumber=1)

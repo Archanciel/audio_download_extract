@@ -88,7 +88,7 @@ class AudioController:
 				if not self.stopDownloading:
 					# extraction/suppression possible only on Windows !
 					audioDirRoot = self.configMgr.dataPath
-					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadDir()
+					targetAudioDir = audioDirRoot + sep + downloadVideoInfoDic.getPlaylistDownloadSubDir()
 					audioExtractor = AudioExtractor(self, targetAudioDir, downloadVideoInfoDic)
 					audioExtractor.extractPlaylistAudio(downloadVideoInfoDic)
 					
@@ -671,7 +671,7 @@ class AudioController:
 										DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS = 2
 										DirUtil.NO_DOWNLOAD_DATE_NO_UPLOAD_DATE_POS = 3
 		"""
-		playlistDownloadDir = self.configMgr.dataPath + sep + playlistDownloadVideoInfoDic.getPlaylistDownloadDir()
+		playlistDownloadDir = self.configMgr.dataPath + sep + playlistDownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		indexAndDateUsageLst = DirUtil.getIndexAndDateUsageInDir(playlistDownloadDir)
 		
 		return indexAndDateUsageLst

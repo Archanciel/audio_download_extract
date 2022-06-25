@@ -954,7 +954,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		                              modifiedPlaylistName=playListName,
 		                              loadDicIfDicFileExist=False)
 		
-		self.assertEqual(playlistSubDir + sep + playListName, dvi.getPlaylistDownloadDir())
+		self.assertEqual(playlistSubDir + sep + playListName, dvi.getPlaylistDownloadSubDir())
 	
 	def testGetPlaylistDownloadSubDir(self):
 		playListName = 'test_download_vid_info_dic'
@@ -966,9 +966,9 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		                              modifiedPlaylistName=playListName,
 		                              loadDicIfDicFileExist=False)
 		
-		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadSubDir())
+		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadBaseSubDir())
 	
-	def testGetPlaylistDownloadSubDir_twoSubDir(self):
+	def testGetPlaylistDownloadBaseSubDir_twoSubDir(self):
 		playListName = 'test_download_vid_info_dic'
 		audioDirRoot = DirUtil.getTestAudioRootPath()
 		playlistSubDir = 'playlist_sub_dir' + sep + 'sub_sub_dir'
@@ -978,7 +978,7 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		                              modifiedPlaylistName=playListName,
 		                              loadDicIfDicFileExist=False)
 		
-		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadSubDir())
+		self.assertEqual(playlistSubDir, dvi.getPlaylistDownloadBaseSubDir())
 	
 	def testGetFailedVideoIndexes_2_indexes(self):
 		playListName = 'test_download_vid_info_dic'
@@ -1155,30 +1155,36 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
 		self.assertEqual('https://www.youtube.com/watch?v=gQZVbSP2itU', dvi.getVideoUrlForVideoFileName('#2  - Comment nourrir le monde _ Marc Dufumier.mp3'))
 
-	def testGetPlaylistDicsContainingFailedVideos(self):
+	def testGetDicContainingPlaylistsWithFailedDownloadedVideos(self):
 		testDirName = 'test_getPlaylistDicContainingFailedVideos'
-
-		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		DirUtil.getTestAudioRootPath()
+		testAudioDirRoot =
 		testPath = testAudioDirRoot + sep + testDirName
 
-		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getPlaylistDicsContainingFailedVideos(audioDirRoot=testPath)
+		DicContainingPlaylistsWithFailedDownloadedVideos = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(audioDirRoot=testPath)
 
-		keyLst = list(playlistWithFailedVideoIndexListDic.keys())
+		keyLst = list(DicContainingPlaylistsWithFailedDownloadedVideos.keys())
 		self.assertEqual(2, len(keyLst))
 
 		keyOne = keyLst[0]
-		self.assertEqual('Sols', keyOne.getPlaylistNameOriginal())
-		failedVideoIndexLstOne = playlistWithFailedVideoIndexListDic[keyOne]
+		self.assertEqual('Sols', keyOne)
+		playlistWithFailedVideoDicOne = DicContainingPlaylistsWithFailedDownloadedVideos[keyOne][0]
+		self.assertEqual('Sols', playlistWithFailedVideoDicOne.getPlaylistDownloadSubDir())
+		self.assertEqual('', playlistWithFailedVideoDicOne.getPlaylistDownloadBaseSubDir())
+		failedVideoIndexLstOne = DicContainingPlaylistsWithFailedDownloadedVideos[keyOne][1]
 		self.assertEqual(5, len(failedVideoIndexLstOne))
 		self.assertEqual([19, 20, 21, 23, 24], failedVideoIndexLstOne)
 
 		keyTwo = keyLst[1]
-		self.assertEqual('Conférences et Web-conférences', keyTwo.getPlaylistNameOriginal())
-		failedVideoIndexLstTwo = playlistWithFailedVideoIndexListDic[keyTwo]
+		self.assertEqual('Conférences et Web-conférences', keyTwo)
+		playlistWithFailedVideoDicTwo = DicContainingPlaylistsWithFailedDownloadedVideos[keyTwo][0]
+		self.assertEqual('Stéphane Brisset/Conférences et Web-conférences', playlistWithFailedVideoDicTwo.getPlaylistDownloadSubDir())
+		self.assertEqual('Stéphane Brisset', playlistWithFailedVideoDicTwo.getPlaylistDownloadBaseSubDir())
+		failedVideoIndexLstTwo = DicContainingPlaylistsWithFailedDownloadedVideos[keyTwo][1]
 		self.assertEqual(1, len(failedVideoIndexLstTwo))
 		self.assertEqual([15], failedVideoIndexLstTwo)
 		
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testGetPlaylistUrlTitleCachedDic()
+	tst.testGetDicContainingPlaylistsWithFailedDownloadedVideos()

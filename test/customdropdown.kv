@@ -1,10 +1,11 @@
 <CustomDropDown>
-	gridLayoutClip: gridlayout_clipButton
-	gridLayoutShare: gridlayout_shareButton
-	gridLayoutSettings: gridlayout_settingsButton
-	gridLayoutDelete: gridlayout_deleteButton
-	gridLayoutDownHisto: gridlayout_downHistoButton
-	gridLayoutChangePlaylist: gridlayout_changePlaylistButton
+	gridLayoutClip: gridlayout_clip
+	gridlayoutDownloadFailedVideos: gridlayout_downloadFailedVideos
+	gridLayoutShare: gridlayout_share
+	gridLayoutSettings: gridlayout_settings
+	gridLayoutDelete: gridlayout_delete
+	gridLayoutDownHisto: gridlayout_downloadHisto
+	gridLayoutChangePlaylist: gridlayout_changePlaylist
 	saveButton: save_Button
 
     # defining canvas causes disabled drop down menu items to be
@@ -29,7 +30,7 @@
 		disabled: True
 		on_release: root.showSave()
     GridLayout: # enable to hide or display 'Delete' menu item
-        id: gridlayout_deleteButton
+        id: gridlayout_delete
 		cols: 1
         size_hint_y: None
         height: "0dp"
@@ -40,7 +41,7 @@
             height: '28dp'
             on_release: root.showDelete()
     GridLayout: # enable to hide or display 'Clip audio' menu item
-        id: gridlayout_clipButton
+        id: gridlayout_clip
 		cols: 1
         size_hint_y: None
         height: "0dp"
@@ -51,7 +52,7 @@
             disabled: False
             on_release: root.showClipAudioFile()
     GridLayout: # enable to hide or display 'Share audio' menu item
-        id: gridlayout_shareButton
+        id: gridlayout_share
 		cols: 1
         size_hint_y: None
         height: "0dp"
@@ -62,9 +63,21 @@
             height: '28dp'
             disabled: False
             on_release: root.shareAudio()
-    GridLayout: # enable to hide or display 'Down histo' menu item
-        id: gridlayout_downHistoButton
+    GridLayout: # enable to hide or display 'Download failed videos' menu item
+        id: gridlayout_downloadFailedVideos
 		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            id: downloadFailedVideos_Button
+            text: 'Down failed vids'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.handleFailedVideosDownloading()
+    GridLayout: # enable to hide or display 'Down histo' menu item
+        id: gridlayout_downloadHisto
+		cols: 1 
         size_hint_y: None
         height: "0dp"
         Button:
@@ -74,7 +87,7 @@
             disabled: False
             on_release: root.downloadHisto()
     GridLayout: # enable to hide or display 'Del histo' menu item
-        id: gridlayout_changePlaylistButton
+        id: gridlayout_changePlaylist
 		cols: 1
         size_hint_y: None
         height: "0dp"
@@ -85,7 +98,7 @@
             disabled: False
             on_release: root.moveAudioFileToOtherPlaylist()
     GridLayout: # enable to hide or display 'Settings' menu item
-        id: gridlayout_settingsButton
+        id: gridlayout_settings
 		cols: 1
         size_hint_y: None
         height: "0dp"

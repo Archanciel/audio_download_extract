@@ -55,7 +55,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 
 		sys.stdout = stdout
 
@@ -193,7 +193,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
@@ -272,7 +272,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 
 		sys.stdout = stdout
 		
@@ -416,7 +416,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 
 		sys.stdout = stdout
 
@@ -497,7 +497,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 
 		sys.stdout = stdout
 
@@ -570,7 +570,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 
 		sys.stdout = stdout
 
@@ -654,7 +654,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -967,7 +967,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			downloadVideoInfoDic=redownloadVideoInfoDic,
 			isUploadDateSuffixAddedToPlaylistVideo=False,
 			isDownloadDatePrefixAddedToPlaylistVideo=False)
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -1635,7 +1635,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                           isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                           isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = downloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		
@@ -1711,7 +1711,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		                                                      isUploadDateSuffixAddedToPlaylistVideo=False,
 		                                                      isDownloadDatePrefixAddedToPlaylistVideo=False)
 
-		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadDir()
+		targetAudioDir = redownloadVideoInfoDic.getPlaylistDownloadSubDir()
 		
 		sys.stdout = stdout
 		

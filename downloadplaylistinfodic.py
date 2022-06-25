@@ -1,4 +1,5 @@
 import os
+import posixpath
 from datetime import datetime
 from os.path import sep
 
@@ -181,7 +182,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	def getPlaylistTitleModified(self):
 		"""
 		Return the modified play list title, which is the modified playlist name +
-		the optional extract or suppress time frames definitions.
+		the optional extract or suppress time frames definitions. Note that
+		if the original playlist name or title were not modified, the modified playlist
+		name or title value are set to the original name or title value !
+		Ex:
+		original playlist name = test_audio_downloader_two_files_with_time_frames
+		modified playlist name = test_audio_downloader_two_files_with_time_frames
+		original playlist title = test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		modified playlist title = test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 
 		:return:
 		"""
@@ -661,7 +669,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			extractedFilesSubDic = videoInfoDic[KEY_VIDEO_EXTRACTED_FILES]
 			timeFrameIndexExtractedFileInfo = extractedFilesSubDic[str(timeFrameIndex)]
 			
-			return self.getPlaylistDownloadDir() + sep + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
+			return self.getPlaylistDownloadSubDir() + sep + timeFrameIndexExtractedFileInfo[KEY_FILENAME]
 	
 	def addSuppressedFileInfoForVideoIndex(self,
 										   videoIndex,
@@ -774,12 +782,19 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		return self.getPlaylistNameModified()
 
 	def getDicDirSubDir(self):
-		return self.getPlaylistDownloadDir()
+		return self.getPlaylistDownloadSubDir()
 
 	def getPlaylistNameModified(self):
 		"""
 		Return the modified play list name, which is the modified playlist title
-		without the optional extract or suppress time frames definitions.
+		without the optional extract or suppress time frames definitions. Note that
+		if the original playlist name or title were not modified, the modified playlist
+		name or title value are set to the original name or title value !
+		Ex:
+		original playlist name = test_audio_downloader_two_files_with_time_frames
+		modified playlist name = test_audio_downloader_two_files_with_time_frames
+		original playlist title = test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
+		modified playlist title = test_audio_downloader_two_files_with_time_frames (e0:0:2-0:0:8) (s0:0:2-0:0:5 s0:0:7-0:0:10)
 
 		:return:
 		"""
@@ -788,25 +803,39 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			return None
 	
-	def getPlaylistDownloadSubDir(self):
+	def getPlaylistDownloadBaseSubDir(self):
 		"""
-		Returns the playlist download sub dir name. This name does not contain
+		Returns the playlist download base sub dir name. This name does not contain
 		the	audio dir root dir (defined in the GUI settings) and does not contain
-		the playlist title.
+		the playlist name.
+		
+		Ex: if you did download a playlist with original name 'Analyse économique'
+		and modified name 'Analyse économique moified' specifying its dir as
+		'Crypto\essai', then the playlist videos are downloaded in audio dir root +
+		sep + 'Crypto\essai\Analyse économique moified.
+		
+		getPlaylistDownloadBaseSubDir() returns Crypto\essai\ and
 
 		:return: playlist download sub dir name
 		"""
-		playlistDownloadDir = self.getPlaylistDownloadDir()
+		playlistDownloadSubDir = self.getPlaylistDownloadSubDir()
 		
-		if playlistDownloadDir is not None:
-			return sep.join(playlistDownloadDir.split(sep)[0:-1])
+		if playlistDownloadSubDir is not None:
+			if sep in playlistDownloadSubDir:
+				return sep.join(playlistDownloadSubDir.split(sep)[0:-1])
+			elif posixpath.sep in playlistDownloadSubDir:
+				# the case if the playlist _dic.txt file was created on Android and
+				# is used on Windows, when downloading failed videos for example
+				return posixpath.sep.join(playlistDownloadSubDir.split(posixpath.sep)[0:-1])
+			else:
+				return ''
 
-	def getPlaylistDownloadDir(self):
+	def getPlaylistDownloadSubDir(self):
 		"""
 		Returns the playlist download dir name. This name does not contain the
 		audio dir root dir (defined in the GUI settings).
 
-		:return: playlist download dir name
+		:return: playlist download sub dir path
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
 			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_DOWNLOAD_SUB_DIR]
@@ -887,11 +916,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 
 	@staticmethod
-	def getPlaylistDicsContainingFailedVideos(audioDirRoot):
+	def getDicContainingPlaylistsWithFailedDownloadedVideos(audioDirRoot):
 		"""
-		Returns a dictionary whose keys are playlist info dics which contain at least
-		one video whose downloadException value is True and value are the list of
-		failed video indexes.
+		Returns a dictionary whose key is the playlist modified name and value is a two
+		elements list whose first elem is the playlist info dic and second elem is the
+		list of	failed video indexes.
+		
+		The dictionary only contains references to playlists which have at least one
+		failed downloaded video.
 		
 		:return: playlistWithFailedVideoIndexListDic
 		"""
@@ -904,12 +936,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
 				
 				if downloadPlaylistInfoDic.getPlaylistUrl() == None:
-					# the case for download url info dic
+					# the case for the download url info dic used to fill the
+					# AudioDownloaderGUI URL's list
 					continue
 				
 				failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+				
 				if failedVideoIndexList != []:
-					playlistWithFailedVideoIndexListDic[downloadPlaylistInfoDic] = failedVideoIndexList
+					playlistWithFailedVideoIndexListDic[downloadPlaylistInfoDic.getPlaylistNameModified()] = [downloadPlaylistInfoDic, failedVideoIndexList]
 			except Exception as e:
 				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
 				# we simply do not add this <urlStr>: <playlistTitleStr> entry to
@@ -924,9 +958,11 @@ if __name__ == "__main__":
 	else:
 		audioDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio'
 	
-	unitTestDataDir = audioDir + sep + 'test_getPlaylistDicContainingFailedVideos'
-	playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getPlaylistDicsContainingFailedVideos(audioDir)
+	unitTestDataDir = 'Crypto' + sep + 'essai'
+	playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic(audioRootDir=audioDir,
+	                                                              playlistDownloadRootPath=unitTestDataDir,
+	                                                              originalPlaylistName='Analyse économique',
+	                                                              modifiedPlaylistName='Analyse économique modified')
 	
-	for key, value in playlistWithFailedVideoIndexListDic.items():
-		print(key)
-		print(value)
+	print(playlistWithFailedVideoIndexListDic.getPlaylistDownloadSubDir())
+	print(playlistWithFailedVideoIndexListDic.getPlaylistDownloadBaseSubDir())

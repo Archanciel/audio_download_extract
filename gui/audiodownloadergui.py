@@ -986,11 +986,12 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.dropDownMenu.dismiss()
 
-		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getPlaylistDicsContainingFailedVideos(self.audiobookPath)
+		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(self.audiobookPath)
 		for key, value in playlistWithFailedVideoIndexListDic.items():
-			print(key.getPlaylistNameOriginal())
-			print(value)
-	
+			print(key)
+			print(value[0])
+			print(value[1])
+
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
 		delFileDic = {}
@@ -1991,7 +1992,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# thread. So, the download information is displayed in real
 			# time on the outputLabel.
 			
-			playlistDownloadSubDir = self.downloadVideoInfoDic.getPlaylistDownloadSubDir()
+			playlistDownloadSubDir = self.downloadVideoInfoDic.getPlaylistDownloadBaseSubDir()
 			playlistUrl = self.downloadVideoInfoDic.getPlaylistUrl()
 			playlisiTitleModified = self.downloadVideoInfoDic.getPlaylistNameModified()
 			self.addDownloadUrlToUrlList(playlistOrSingleVideoModifiedTitle=playlisiTitleModified,
