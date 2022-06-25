@@ -995,6 +995,13 @@ class AudioDownloaderGUI(AudioGUI):
 			print(playlistName)
 			print(failedVideoIndexLst)
 			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
+			self.playlistOrSingleVideoDownloadPath = self.configMgr.dataPath + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			for failedVideoIndex in failedVideoIndexLst:
+				failedVideoUrl = downloadPlaylistInfoDic.getVideoUrlForVideoIndex((failedVideoIndex))
+				self.originalSingleVideoTitle = downloadPlaylistInfoDic.getVideoTitleForVideoIndex(failedVideoIndex)
+				self.modifiedSingleVideoTitle = self.originalSingleVideoTitle
+				self.downloadPlaylistOrSingleVideoAudio(failedVideoUrl)
+				
 
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
@@ -1349,8 +1356,9 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def downloadPlaylistOrSingleVideoAudioOnNewThread(self, playlistOrSingleVideoUrl):
 		"""
-		This method executed on a separated thread launch downloading audios for
-		the videos referenced in a playlist or the audio of a single video.
+		This method executed on a separated thread downloads audios for
+		the videos referenced in a playlist or downloads the audio of a
+		single video.
 		"""
 		self.isFirstCurrentDownloadInfo = True
 		
@@ -1413,8 +1421,8 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		This method executed on a separated thread launch downloading audios for
 		the videos referenced in a playlist or the audio of a single video. The
-		method is indirectly executed if the clipboard contains a playlist or single
-		video URL at application start.
+		method is indirectly executed if the clipboard contains a playlist URL or
+		a single video URL at application start.
 		"""
 		self.isFirstCurrentDownloadInfo = True
 		
