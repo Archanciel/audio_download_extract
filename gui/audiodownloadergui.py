@@ -581,7 +581,48 @@ class AudioDownloaderGUI(AudioGUI):
 											# created after clicking on 'Yes'
 											# button on the ConfirmPopup dialog
 		self.displayUrlDownloadLstEndDownloadInfo()
+	
+	def downloadFromFailedVideoListOnNewThread(self):
+		"""
+		Called by downloadSelectedItems() method which is called by
+		the downloadSelectedUrlItems() method which is executed when the
+		downloadALL button is pressed.
+
+		:return:
+		"""
+		for singleVideoSubList in self.downloadFailedVideoUrlLst:
+			playlistOrSingleVideoUrl = singleVideoSubList[0]
+			self.originalPlaylistTitle = None
+			self.originalSingleVideoTitle = singleVideoSubList[1]
+			
+			if self.accessError:
+				# the case if the video or playlist referenced by the playlistOrSingleVideoUrl
+				# no longer exist on Youtube
+				self.totalDownloadVideoFailedNb += 1
+				continue
+			
+			# correcting a bug if you first downloaded a playlist after
+			# modifying the playlist name and then download a playlist
+			# without setting the dir ar modifying the playlist name
+			self.modifiedPlaylistTitle = singleVideoSubList[1]
+			
+			# if answer is yes, the playlist dir will be created as sub dir
+			# off the audio dir or the single video will be downloaded in the
+			# default single video dir as defined in the audiodownloader.ini
+			# file.
+			self.playlistOrSingleVideoDownloadPath = self.playlistDownloadDirForFailedVideos
+			
+			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
+			
+			while self.downloadThreadCreated:
+				time.sleep(TIME_SLEEP_SECONDS)
 		
+		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
+		# where two download threads are
+		# created after clicking on 'Yes'
+		# button on the ConfirmPopup dialog
+		self.displayUrlDownloadLstEndDownloadInfo()
+	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
 		
@@ -974,7 +1015,38 @@ class AudioDownloaderGUI(AudioGUI):
 				#                                                      time.
 				
 				sepThreadExec.start()
-
+	
+	def downloadPlaylistFailedVideos(self, downloadPlaylistInfoDic, playlistDownloadDir, failedVideoIndexLst):
+		"""
+		Method called by method downloadSelectedUrlItems itself called when
+		the Download All button in kv file was pressed.
+		"""
+		self.totalDownloadVideoSuccessNb = 0
+		self.totalDownloadVideoFailedNb = 0
+		self.totalDownloadVideoSkippedNb = 0
+		
+		self.playlistDownloadDirForFailedVideos = playlistDownloadDir
+		self.downloadFailedVideoUrlLst = [[downloadPlaylistInfoDic.getVideoUrlForVideoIndex(x), downloadPlaylistInfoDic.getVideoTitleForVideoIndex(x)] for x in failedVideoIndexLst]
+		
+		if len(self.downloadFailedVideoUrlLst) > 0:
+			# the case if the Add button was pressed in order to add the
+			# playlist or single video url contained in the clipboard
+			# to the self.playlistOrSingleVideoUrlDownloadLst
+			
+			# downloading the playlists or single videos contained in
+			# the self.downloadFromUrlDownloadLst using a separate thread.
+			# So, the download information is displayed on the outputLabel.
+			if not self.downloadFromUrlDownloadLstThreadCreated:
+				sepThreadExec = SepThreadExec(callerGUI=self,
+				                              func=self.downloadFromFailedVideoListOnNewThread)
+				
+				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
+				#                                                      1 playlist or video is
+				#                                                      downloaded at the same
+				#                                                      time.
+				
+				sepThreadExec.start()
+	
 	def handleFailedVideosDownloading(self):
 		"""
 		Method called when choosing the 'Down failed vids' dropdown menu
@@ -995,12 +1067,13 @@ class AudioDownloaderGUI(AudioGUI):
 			print(playlistName)
 			print(failedVideoIndexLst)
 			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
-			self.playlistOrSingleVideoDownloadPath = self.configMgr.dataPath + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
-			for failedVideoIndex in failedVideoIndexLst:
-				failedVideoUrl = downloadPlaylistInfoDic.getVideoUrlForVideoIndex((failedVideoIndex))
-				self.originalSingleVideoTitle = downloadPlaylistInfoDic.getVideoTitleForVideoIndex(failedVideoIndex)
-				self.modifiedSingleVideoTitle = self.originalSingleVideoTitle
-				self.downloadPlaylistOrSingleVideoAudio(failedVideoUrl)
+			playlistDownloadDir = self.configMgr.dataPath + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			self.downloadPlaylistFailedVideos(downloadPlaylistInfoDic, playlistDownloadDir, failedVideoIndexLst)
+			# for failedVideoIndex in failedVideoIndexLst:
+			# 	failedVideoUrl = downloadPlaylistInfoDic.getVideoUrlForVideoIndex((failedVideoIndex))
+			# 	self.originalSingleVideoTitle = downloadPlaylistInfoDic.getVideoTitleForVideoIndex(failedVideoIndex)
+			# 	self.modifiedSingleVideoTitle = self.originalSingleVideoTitle
+			# 	self.downloadPlaylistOrSingleVideoAudio(failedVideoUrl)
 				
 
 	def deleteSelectedAudioDownloadedFiles(self):
