@@ -67,7 +67,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 			existingDicFilePathName=None)
 
 		# the three videos in the playlist have been partially downloaded
-		playlistSaveDirName_3 = self.playlistDirName_3 + sep + "sav"
+		playlistSaveDirName_3 = self.playlistDirName_3 + sep + "80%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_3)
 		playlistUrl_3 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRx16thPZ3i4u3ZJthdifqo'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_3,
@@ -93,7 +93,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# from the save dir. Since all the files in the playlist dir are named
 		# without index and without date, the downloaded file name must also be
 		# without index and without date.
-		playlistSaveDirName_5 = self.playlistDirName_5 + sep + "sav"
+		playlistSaveDirName_5 = self.playlistDirName_5 + sep + "80%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_5)
 		playlistUrl_5 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_5,
@@ -104,7 +104,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# date suffix. Since one file in the playlist dir is named
 		# with index prefix, the downloaded file name must also be
 		# named with index prefix and without date suffix.
-		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "sav"
+		playlistSaveDirName_6 = self.playlistDirName_6 + sep + "80%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_6)
 		playlistUrl_6 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRqeXBddcErPTC__A2KHjFd'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_6,
@@ -130,7 +130,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		# from the save dir. One file in the playlist dir is named with index
 		# prefix and upload date suffix. For this reason, the downloaded file name
 		# must also be named with index prefix and with upload date suffix.
-		playlistSaveDirName_8 = self.playlistDirName_8 + sep + "sav"
+		playlistSaveDirName_8 = self.playlistDirName_8 + sep + "80%"
 		self.playlistSaveDirNameLst.append(playlistSaveDirName_8)
 		playlistUrl_8 = 'https://youtube.com/playlist?list=PLzwWSJNcZTMRMhkp5nzUm_h02fKsiy1se'
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_8,
@@ -179,13 +179,14 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 	                                singleVideoSaveDirName,
 	                                singleVideoAudioFileNameLst):
 		downloadDirLst = []
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
 		
 		for playlistDirName, playlistSaveDirName in zip(playlistDirNameLst, playlistSaveDirNameLst):
 			downloadDir = self.configMgr.dataPath + sep + playlistDirName
 			DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
 			
 			if playlistSaveDirName:
-				savedDownloadDir = self.configMgr.dataPath + sep + playlistSaveDirName
+				savedDownloadDir = testAudioRootPath + sep + playlistSaveDirName
 				DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
 				                                      targetDir=downloadDir,
 				                                      fileNamePattern='*')

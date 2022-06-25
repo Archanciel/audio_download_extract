@@ -1,0 +1,20 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "test warning index date files_IndexDate",
+        "pl_name_modified": "test warning index date files_IndexDate",
+        "pl_name_original": "test warning index date files_IndexDate",
+        "pl_nextVideoIndex": 4,
+        "pl_title_modified": "test warning index date files_IndexDate",
+        "pl_title_original": "test warning index date files_IndexDate",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRMhkp5nzUm_h02fKsiy1se"
+    },
+    "videos": {
+        "3": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220625-Funny suspicious looking dog 13-11-05.mp3",
+            "vd_downlTime": "25/06/2022 06:33:49",
+            "vd_title": "Funny suspicious looking dog",
+            "vd_url": "https://www.youtube.com/watch?v=vU1NEZ9sTOM"
+        }
+    }
+}

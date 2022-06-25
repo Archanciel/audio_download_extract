@@ -1,0 +1,27 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "test warning index date files_noIndexNoDate",
+        "pl_name_modified": "test warning index date files_noIndexNoDate",
+        "pl_name_original": "test warning index date files_noIndexNoDate",
+        "pl_nextVideoIndex": 4,
+        "pl_title_modified": "test warning index date files_noIndexNoDate",
+        "pl_title_original": "test warning index date files_noIndexNoDate",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRVKblKqskAyseCgsUmhlSc"
+    },
+    "videos": {
+        "1": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220625-Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3",
+            "vd_downlTime": "25/06/2022 06:15:49",
+            "vd_title": "Wear a mask. Help slow the spread of Covid-19.",
+            "vd_url": "https://www.youtube.com/watch?v=9iPvLx7gotk"
+        },
+        "3": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220625-Funny suspicious looking dog 13-11-05.mp3",
+            "vd_downlTime": "25/06/2022 06:15:52",
+            "vd_title": "Funny suspicious looking dog",
+            "vd_url": "https://www.youtube.com/watch?v=vU1NEZ9sTOM"
+        }
+    }
+}
