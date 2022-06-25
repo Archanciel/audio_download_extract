@@ -1157,8 +1157,8 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 
 	def testGetDicContainingPlaylistsWithFailedDownloadedVideos(self):
 		testDirName = 'test_getPlaylistDicContainingFailedVideos'
-		DirUtil.getTestAudioRootPath()
-		testAudioDirRoot =
+
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 
 		DicContainingPlaylistsWithFailedDownloadedVideos = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(audioDirRoot=testPath)
