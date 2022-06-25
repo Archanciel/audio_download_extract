@@ -1,5 +1,6 @@
+import time
 import unittest
-import os, sys, inspect, shutil
+import os, sys, inspect, shutil, datetime
 from os.path import sep
 
 currentDir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -802,9 +803,54 @@ class TestDirUtil(unittest.TestCase):
 		
 		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testRootDir)
+	
+	def testGetListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(self):
+		playlistDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate'
 
+		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate"  # Windows audio dir
+		testRootDirSaved = testRootDir + '_saved'
+		
+		# restoring dic text files
+		
+		if os.path.exists(playlistDir):
+			shutil.rmtree(playlistDir)
+		
+		shutil.copytree(testRootDirSaved, playlistDir)
+		
+		time.sleep(1.0)
+		
+		playlistDicFileName = 'test_small_videos_3_dic.txt'
+		
+		with open(playlistDir + sep + playlistDicFileName, 'a') as f:
+			f.write('\n')
+
+		time.sleep(1.0)
+
+		shutil.copy2('C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Lama Tanz 15-06-11.mp3',
+		             'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Lama Tanz 15-06-11_copy.mp3')
+		
+		expectedAllFileNameLstBefore = [
+			'220625-Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3',
+			'220625-Innovation (Short Film) 20-01-07.mp3',
+			'220625-Lama Tanz 15-06-11.mp3']
+
+		expectedAllFilePathNameLstBefore = [
+			'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3',
+			'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Innovation (Short Film) 20-01-07.mp3',
+			'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Lama Tanz 15-06-11.mp3']
+		
+		expectedAllFileNameLstAfter = ['220625-Lama Tanz 15-06-11_copy.mp3']
+
+		expectedAllFilePathNameLstAfter = [
+			'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate\\220625-Lama Tanz 15-06-11_copy.mp3']
+
+		fileNameLstBefore, filePathNameLstBefore, fileNameLstAfter, filePathNameLstAfter = DirUtil.getListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(playlistDir, playlistDicFileName)
+		self.assertEqual(sorted(expectedAllFileNameLstBefore), sorted(fileNameLstBefore))
+		self.assertEqual(sorted(expectedAllFilePathNameLstBefore), sorted(filePathNameLstBefore))
+		self.assertEqual(sorted(expectedAllFileNameLstAfter), sorted(fileNameLstAfter))
+		self.assertEqual(sorted(expectedAllFilePathNameLstAfter), sorted(filePathNameLstAfter))
 
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testGetIndexAndDateUsageInDir_prefix_noSuffix_only()
+	tst.testGetListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate()

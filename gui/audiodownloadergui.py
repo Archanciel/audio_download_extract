@@ -985,12 +985,16 @@ class AudioDownloaderGUI(AudioGUI):
 		videos on the pc.
 		"""
 		self.dropDownMenu.dismiss()
-
-		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(self.audiobookPath)
-		for key, value in playlistWithFailedVideoIndexListDic.items():
-			print(key)
-			print(value[0])
-			print(value[1])
+		
+		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(
+			self.audiobookPath)
+		
+		for playlistName, value in playlistWithFailedVideoIndexListDic.items():
+			downloadPlaylistInfoDic = value[0]
+			failedVideoIndexLst = value[1]
+			print(playlistName)
+			print(failedVideoIndexLst)
+			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
 
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]

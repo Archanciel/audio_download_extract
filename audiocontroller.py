@@ -716,5 +716,25 @@ class AudioController:
 		return DirUtil.getAudioFilesSortedByDateInfoList(targetDir=self.configMgr.dataPath,
 		                                                 excludedSubDirNameLst=excludedSubDirNameLst)
 
+	def deleteAudioFilesOlderThanPlaylistDicFile(self,
+	                                             downloadPlaylistInfoDic):
+		
+		playlistDir = self.configMgr.dataPath + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+		playlistDicFileName = self._getPlaylistDicFileName(playlistDir)
+		
+		if playlistDicFileName:
+			fileNameLstBefore, filePathNameLstBefore, _, _ = DirUtil.getListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(
+				playlistDir, playlistDicFileName)
+			DirUtil.deleteFiles(filePathNameLstBefore)
+	
+	def _getPlaylistDicFileName(self, playlistDir):
+		playlistDicFileNameLst = DirUtil.getFileNamesInDirForPattern(playlistDir, '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
+		
+		if len(playlistDicFileNameLst) == 1:
+			return playlistDicFileNameLst[0]
+		else:
+			return None
+
+
 if __name__ == "__main__":
-	downloader = AudioController()
+	controller = AudioController()

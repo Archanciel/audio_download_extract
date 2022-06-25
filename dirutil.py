@@ -559,6 +559,56 @@ class DirUtil:
 					                                                                      fullFilePathName=filePathName))
 						
 		return deletedFileNameLst, deletedFilePathNameLst
+	
+	@staticmethod
+	def getListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(containingDir, refFileName):
+		"""
+		Returns two lists, one containing file names only, the other containing
+		corresponding file path names. The returned files satisfy three
+		constraints:
+
+			1/ they are not in any of the passed excluded dir list
+			2/ their name does not match the passed excluded file name pattern
+			   list
+			3/ their modification time is after the passed last synch time
+
+		@param containingDir: local project dir containing the modified files
+		@param lastSyncTime: obtained as string from the local config file
+		@param excludedDirLst: obtained from the local config file
+		@param excludedFileNamePatternLst: obtained from the local config file
+
+		@return: list of modified and not excluded file names
+				 list of modified and not excluded file path names
+		"""
+		fileNameLstBefore = []
+		filePathNameLstBefore = []
+		fileNameLstAfter = []
+		filePathNameLstAfter = []
+
+		refFilePathName = containingDir + sep + refFileName
+		refFileCreationDate, refFileModificationDate = DirUtil.getCreationAndModificationDate(refFilePathName)
+		refFileDate = refFileCreationDate if refFileCreationDate > refFileModificationDate else refFileModificationDate
+		
+		for root, dirs, files in os.walk(containingDir):
+			for fileName in files:
+				filePathName = os.path.join(root, fileName)
+				fileCreationDate, fileModificationDate = DirUtil.getCreationAndModificationDate(filePathName)
+				fileDate = fileCreationDate if fileCreationDate > fileModificationDate else fileModificationDate
+				if fileDate < refFileDate:
+					fileNameLstBefore.append(fileName)
+					filePathNameLstBefore.append(filePathName)
+				elif fileDate > refFileDate:
+					fileNameLstAfter.append(fileName)
+					filePathNameLstAfter.append(filePathName)
+
+		return fileNameLstBefore, filePathNameLstBefore, fileNameLstAfter, filePathNameLstAfter
+	
+	@staticmethod
+	def getCreationAndModificationDate(pathfileName):
+		os_stat = os.stat(pathfileName)
+		file_creat_time = dt.datetime.fromtimestamp(os_stat.st_ctime)
+		file_modif_time = dt.datetime.fromtimestamp(os_stat.st_mtime)
+		return file_creat_time, file_modif_time
 
 
 if __name__ == '__main__':

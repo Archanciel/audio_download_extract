@@ -11,6 +11,7 @@ sys.path.insert(0, parentDir)
 from guioutputstub import GuiOutputStub
 from audiocontroller import AudioController
 from configmanagerstub import ConfigManagerStub
+from configmanager import ConfigManager
 from dirutil import DirUtil
 from downloadplaylistinfodic import DownloadPlaylistInfoDic
 			
@@ -344,7 +345,60 @@ class TestAudioController(unittest.TestCase):
 		#  deleting test result files in order to avoid uploading it on GitHub
 		if os.path.exists(testPath):
 			shutil.rmtree(testPath)
+	
+	def testDeleteAudioFilesOlderThanPlaylistDicFile(self):
+		testDirName = 'test_small_videos_3'
+		testDirNameSaved = testDirName + '_saved'
+		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		defaultAudioRootPath = DirUtil.getDefaultAudioRootPath()
+		testPath = defaultAudioRootPath + sep + testDirName
+		testPathSep = testPath + sep
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
 
+		# updating the playlist dic file so that its modification date is bigger than
+		# the mp3 files creation or modification dates
+		time.sleep(1)
+		playlistDicFileName = 'test_small_videos_3_dic.txt'
+		
+		dicFilePathName = testPath + sep + playlistDicFileName
+		with open(dicFilePathName, 'a') as f:
+			f.write('\n')
+		
+		dvi = DownloadPlaylistInfoDic(playlistUrl=None,
+		                              audioRootDir=None,
+		                              playlistDownloadRootPath=None,
+		                              originalPaylistTitle=None,
+		                              originalPlaylistName=None,
+		                              modifiedPlaylistTitle=None,
+		                              modifiedPlaylistName=None,
+		                              loadDicIfDicFileExist=True,
+		                              existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual([testPathSep + '220625-Indian 🇮🇳_American🇺🇸_ Japanese🇯🇵_Students #youtubeshorts #shorts _Samayra Narula_ Subscribe  21-09-17.mp3', testPathSep + '220625-Innovation (Short Film) 20-01-07.mp3', testPathSep + '220625-Lama Tanz 15-06-11.mp3'], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+
+		guiOutput = GuiOutputStub()
+		audioController = AudioController(guiOutput,
+		                                  ConfigManager(
+			                                  DirUtil.getConfigFilePathName()))
+		
+		audioController.deleteAudioFilesOlderThanPlaylistDicFile(dvi)
+		
+		self.assertEqual([], DirUtil.getFilePathNamesInDirForPattern(testPath, '*.mp3'))
+		
+		#  deleting test result files in order to avoid uploading it on GitHub
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+	
 	def testDeleteAudioFilesFromDirAndFromDic_all_noDownloadInfoDicFile(self):
 		testDirName = 'test delete files noDownloadInfoDic'
 		testDirNameSaved = 'test delete files save dir'
@@ -871,4 +925,4 @@ class TestAudioController(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDownloadVideosReferencedInPlaylist_noTimeFrame()
+	tst.testDeleteAudioFilesOlderThanPlaylistDicFile()
