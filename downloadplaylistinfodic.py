@@ -6,6 +6,7 @@ from os.path import sep
 from constants import *
 from dirutil import DirUtil
 from baseinfodic import BaseInfoDic
+from failedvideoplaylistinfo import FailedVideoPlaylistInfo
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
@@ -916,41 +917,33 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 
 	@staticmethod
-	def getDicContainingPlaylistsWithFailedDownloadedVideos(audioDirRoot):
+	def getFailedVideoPlaylistInfoLst(audioDirRoot):
 		"""
-		Returns a dictionary whose key is the playlist modified name and value is a two
-		elements list whose first elem is the playlist info dic and second elem is the
-		list of	failed video indexes.
+		Returns a list of FailedVideoPlaylistInfo. The FailedVideoPlaylistInfo's are
+		instantiated only for playlist info dic containing at least one failed
+		downloaded video.
 		
-		The dictionary only contains references to playlists which have at least one
-		failed downloaded video.
-		
-		:return: playlistWithFailedVideoIndexListDic
+		:return: failedVideoPlaylistInfoLst
 		"""
-		playlistWithFailedVideoIndexListDic = {}
+		failedVideoPlaylistInfoLst = []
 		
 		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
 		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
 		                                                                    inSubDirs=True):
-			try:
-				downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
-				
-				if downloadPlaylistInfoDic.getPlaylistUrl() == None:
-					# the case for the download url info dic used to fill the
-					# AudioDownloaderGUI URL's list
-					continue
-				
-				failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
-				
-				if failedVideoIndexList != []:
-					playlistWithFailedVideoIndexListDic[downloadPlaylistInfoDic.getPlaylistNameModified()] = [downloadPlaylistInfoDic, failedVideoIndexList]
-			except Exception as e:
-				# if the download playlist info dic has no KEY_PLAYLIST_URL key,
-				# we simply do not add this <urlStr>: <playlistTitleStr> entry to
-				# the dic.
-				pass
+			downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
+			
+			if downloadPlaylistInfoDic.getPlaylistUrl() == None:
+				# the case for the download url info dic used to fill the
+				# AudioDownloaderGUI URL's list
+				continue
+			
+			failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+			
+			if failedVideoIndexList != []:
+				failedVideoPlaylistInfoLst.append(FailedVideoPlaylistInfo(playlistInfoDic=downloadPlaylistInfoDic,
+				                                                          failedVideoIndexLst=failedVideoIndexList))
 
-		return playlistWithFailedVideoIndexListDic
+		return failedVideoPlaylistInfoLst
 
 if __name__ == "__main__":
 	if os.name == 'posix':

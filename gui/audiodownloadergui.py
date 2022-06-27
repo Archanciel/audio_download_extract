@@ -1052,19 +1052,19 @@ class AudioDownloaderGUI(AudioGUI):
 		Method called when choosing the 'Down failed vids' dropdown menu
 		item defined in the customdropdown.kv file. This method obtains
 		every video whose downloadException value is True in every
-		playlist dic file and then download them in order to then replace
+		playlist dic file and then downloads them in order to then replace
 		the failed videos on the smartphone by the successfully downloaded
 		videos on the pc.
 		"""
 		self.dropDownMenu.dismiss()
 		
-		playlistWithFailedVideoIndexListDic = DownloadPlaylistInfoDic.getDicContainingPlaylistsWithFailedDownloadedVideos(
+		failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoPlaylistInfoLst(
 			self.audiobookPath)
 		
-		for playlistName, value in playlistWithFailedVideoIndexListDic.items():
-			downloadPlaylistInfoDic = value[0]
-			failedVideoIndexLst = value[1]
-			print(playlistName)
+		for failedVideoPlaylistInfo in failedVideoPlaylistInfoLst:
+			downloadPlaylistInfoDic = failedVideoPlaylistInfo.playlistInfoDic
+			failedVideoIndexLst = failedVideoPlaylistInfo.failedVideoIndexLst
+			print(downloadPlaylistInfoDic.getPlaylistNameModified())
 			print(failedVideoIndexLst)
 			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
 			playlistDownloadDir = self.configMgr.dataPath + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
