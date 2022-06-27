@@ -559,13 +559,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 			downloadDatePrefix = self.buildDownloadDatePrefix()
-			purgedOriginalOrModifiedVideoTitleWithDateMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
+			purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 			
 			# testing if the single video has already been downloaded in the
 			# target audio dir. If yes, we do not re download it.
 			
-			if purgedOriginalOrModifiedVideoTitleWithDateMp3 in targetAudioDirFileNameList:
-				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Single video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
+			if purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 in targetAudioDirFileNameList:
+				msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir. Single video skipped.\n'.format(purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, targetAudioDirShort)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED)
 				
@@ -573,7 +573,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 			# now downloading the single video ...
 			
-			msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedOriginalOrModifiedVideoTitleWithDateMp3)
+			msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3)
 			self.audioController.displayVideoDownloadStartMessage(msgText)
 #			self.audioController.displayMessage(msgText)
 
@@ -581,7 +581,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				ydl.download([singleVideoUrl])
 			except AttributeError as e:
 				msgText = "downloading single video [b]{}[/b] caused this Attribute exception: {}. [b][color=FF0000]WARNING[/color][/b]: bookmarks will be ignored !\n".format(
-					purgedOriginalOrModifiedVideoTitleWithDateMp3, e)
+					purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, e)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)
 				return  # this avoids that the video which was partially downloaded
@@ -597,17 +597,20 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		ydlDownloadedAudioFilePathName = targetAudioDir + sep + purgedVideoTitle + '.mp3'
 
 		fileNotFoundErrorInfo = DirUtil.renameFile(originalFilePathName=ydlDownloadedAudioFilePathName,
-		                                           newFileName=purgedOriginalOrModifiedVideoTitleWithDateMp3)
-
+		                                           newFileName=purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3)
+		originalYdlDownloadedAudioFileName = DirUtil.extractFileNameFromFilePathName(ydlDownloadedAudioFilePathName)
+		
 		if fileNotFoundErrorInfo is None:
 			msgText = '[b]{}[/b] audio downloaded in [b]{}[/b] directory.\n'.format(
-				purgedOriginalOrModifiedVideoTitleWithDateMp3, targetAudioDirShort)
+				purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, targetAudioDirShort)
 			self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 			                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SUCCESS)
+			return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, True
 		else:
 			self.audioController.displayError(
-				fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method[/b]\n')
-	
+				fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method or in case of downloading a failed video on Windows, the fact that the video title defined on Youtube has been updated and so no longer corresponds to the video title stored in the playlist info dic[/b]\n')
+			return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, False
+
 	def redownloadPlaylistVideoForVideoUrl(self,
 	                                       videoUrl,
 	                                       videoAudioFileName,

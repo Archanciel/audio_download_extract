@@ -357,6 +357,21 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		"""
 		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 	
+	def setVideoAudioFileNameForVideoIndex(self,
+	                                           videoIndex,
+	                                           audioFileName):
+		"""
+		Sets the video download exception value for the passed video
+		index to True if the passed isDownloadSuccess is False, and to
+		False otherwise.
+
+		:param videoIndex:
+		"""
+		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_FILENAME] = audioFileName
+	
+	def setVideoDownloadTimeForVideoIndex(self, videoIndex, videoDownloadTimeStr):
+		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME] = videoDownloadTimeStr
+
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
@@ -490,7 +505,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			videoIndexDic = self.dic[KEY_VIDEOS][videoIndexKey]
 			
-		additionTimeStr = datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
+		additionTimeStr = DownloadPlaylistInfoDic.getNowDownloadDateTimeStr()
 
 		videoIndexDic[KEY_VIDEO_TITLE] = videoTitle
 		videoIndexDic[KEY_VIDEO_URL] = videoUrl
@@ -499,7 +514,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		videoIndexDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 
 		self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NEXT_VIDEO_INDEX] = videoIndex + 1
-
+	
+	@staticmethod
+	def getNowDownloadDateTimeStr():
+		return datetime.now().strftime(DATE_TIME_FORMAT_DOWNLOAD_DIC_FILE)
+	
 	def removeVideoDicForVideoTitleIfExist(self, videoTitle):
 		"""
 		If we are re-downloading a video whose previous download
@@ -559,9 +578,13 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		failedVideoIndexLst = []
 
 		for indexKey, videoDic in self.dic[KEY_VIDEOS].items():
-			
-			if videoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] is True:
-				failedVideoIndexLst.append(int(indexKey))
+			try:
+				if videoDic[KEY_VIDEO_DOWNLOAD_EXCEPTION] is True:
+					failedVideoIndexLst.append(int(indexKey))
+			except KeyError:
+				# old playlist entries have no KEY_VIDEO_DOWNLOAD_EXCEPTION field.
+				# So, trying to redownload them due to download failure has no sense !
+				pass
 				
 		return failedVideoIndexLst
 	

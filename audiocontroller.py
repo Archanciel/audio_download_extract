@@ -46,11 +46,12 @@ class AudioController:
 		:param modifiedVideoTitle:          None if the video title was not modified
 		"""
 		self.stopDownloading = False
-
-		self.audioDownloader.downloadSingleVideoForUrl(singleVideoUrl=singleVideoUrl,
-		                                               originalVideoTitle=originalSingleVideoTitle,
-		                                               modifiedVideoTitle=modifiedVideoTitle,
-		                                               targetAudioDir=singleVideoDownloadPath)
+		
+		return self.audioDownloader.downloadSingleVideoForUrl(
+			singleVideoUrl=singleVideoUrl,
+			originalVideoTitle=originalSingleVideoTitle,
+			modifiedVideoTitle=modifiedVideoTitle,
+			targetAudioDir=singleVideoDownloadPath)
 	
 	def downloadVideosReferencedInPlaylist(self,
 	                                       downloadVideoInfoDic,
