@@ -1,4 +1,5 @@
 import shutil
+import time
 import unittest
 import os, sys, inspect
 from os.path import sep
@@ -36,13 +37,17 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		self.playlistDirNameLst.append(self.playlistDirName_6)
 		self.playlistDirName_7 = "test warning index date files_noIndexDate"
 		self.playlistDirNameLst.append(self.playlistDirName_7)
+		self.playlistDirName_11 = "EMI"
+		self.playlistDirNameLst.append(self.playlistDirName_11)
+		self.playlistDirName_12 = "RéchCli"
+		self.playlistDirNameLst.append(self.playlistDirName_12)
 		self.playlistDirName_8 = "test warning index date files_IndexDate"
 		self.playlistDirNameLst.append(self.playlistDirName_8)
 		self.playlistDirName_9 = "test warning index date files_downloadDirNotExist"
 		self.playlistDirNameLst.append(self.playlistDirName_9)
 		self.playlistDirName_10 = "test warning index date files_downloadDirEmpty"
 		self.playlistDirNameLst.append(self.playlistDirName_10)
-		
+
 		downloadDatePrefix = datetime.datetime.today().strftime("%y%m%d") + '-'
 		
 		self.singleVideoFileName_1 = '{}Short King Struggles 🥲 21-07-28.mp3'.format(downloadDatePrefix)
@@ -126,6 +131,13 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		downloadUrlInfoDic.addUrlInfo(urlType=downloadUrlInfoDic.URL_TYPE_PLAYLIST, urlTitle=self.playlistDirName_7,
 		                              url=playlistUrl_7, downloadDir='')
 
+
+		playlistSaveDirName_11 = 'test_download_failed_videos' + sep + 'EMI_saved'
+		self.playlistSaveDirNameLst.append(playlistSaveDirName_11)
+
+		playlistSaveDirName_12 = 'test_download_failed_videos' + sep + 'RéchCli_saved'
+		self.playlistSaveDirNameLst.append(playlistSaveDirName_12)
+
 		# playlist where only one file is to be downloaded since it was deleted
 		# from the save dir. One file in the playlist dir is named with index
 		# prefix and upload date suffix. For this reason, the downloaded file name
@@ -158,7 +170,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
 		
 		singleVideoSaveDirName = 'single80%'
-		
+
 		self.restorePlaylistDownloadDirs(self.playlistDirNameLst,
 		                                 self.playlistSaveDirNameLst,
 		                                 singleVideoSaveDirName,
@@ -186,10 +198,29 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 			DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
 			
 			if playlistSaveDirName:
-				savedDownloadDir = testAudioRootPath + sep + playlistSaveDirName
-				DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
-				                                      targetDir=downloadDir,
-				                                      fileNamePattern='*')
+				if playlistDirName == 'RéchCli' or playlistDirName == 'EMI':
+					# copying playlist info dic file before the other files ensures that
+					# those files won't be deleted because they have been created/modified
+					# before the playlist info dic (by executing
+					# audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
+					# in AudioDownloaderGUI.handleFailedVideosDownloading()
+					savedDownloadDir = testAudioRootPath + sep + playlistSaveDirName
+					DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+					                                      targetDir=downloadDir,
+					                                      fileNamePattern='*_dic.txt')
+					time.sleep(0.2)
+					DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+					                                      targetDir=downloadDir,
+					                                      fileNamePattern='*.part')
+					DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+					                                      targetDir=downloadDir,
+					                                      fileNamePattern='*.ytdl')
+				else:
+					savedDownloadDir = testAudioRootPath + sep + playlistSaveDirName
+					DirUtil.copyFilesInDirToDirForPattern(sourceDir=savedDownloadDir,
+					                                      targetDir=downloadDir,
+					                                      fileNamePattern='*')
+			
 			downloadDirLst.append(downloadDir)
 
 		for singleVideoAudioFileName in singleVideoAudioFileNameLst:
