@@ -610,6 +610,10 @@ class DirUtil:
 		file_modif_time = dt.datetime.fromtimestamp(os_stat.st_mtime)
 		return file_creat_time, file_modif_time
 
+	@staticmethod
+	def createDirIfNotExist(path):
+		if not os.path.exists(path):
+			os.mkdir(path)
 
 if __name__ == '__main__':
 	# PUT THAT IN UNIT TESTS !

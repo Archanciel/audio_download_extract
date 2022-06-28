@@ -195,10 +195,7 @@ class TryTestAudioDownloaderGUIUrlList(unittest.TestCase):
 		
 		for playlistDirName, playlistSaveDirName in zip(playlistDirNameLst, playlistSaveDirNameLst):
 			downloadDir = self.configMgr.dataPath + sep + playlistDirName
-
-			if not os.path.exists(downloadDir):
-				os.mkdir(downloadDir)
-
+			DirUtil.createDirIfNotExist(downloadDir)
 			DirUtil.deleteFilesInDirForPattern(downloadDir, '*')
 			
 			if playlistSaveDirName:
