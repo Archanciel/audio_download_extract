@@ -198,10 +198,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded and so will be skipped
-					if not downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
-						# the video was downloaded with no exception. Otherwise,
-						# trying to re-download it will be done
-						audioFileNameInDic = downloadVideoInfoDic.getVideoAudioFileNameForVideoTitle(videoTitle)
+					audioFileNameInDic = downloadVideoInfoDic.getVideoAudioFileNameForVideoTitle(videoTitle)
+					if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(
+							videoTitle) and audioFileNameInDic in targetAudioDirFileNameList:
+						# the video was previously fully downloaded with an exception. It is not
+						# re-downloaded on the smartphone, but will be later downloaded on the
+						# pc in order to be then copied on the smartphone
+						continue
+					else:
 						if audioFileNameInDic in targetAudioDirFileNameList:
 							# the video was already downloaded and converted to audio file
 							if audioFileNameInDic == finalPurgedVideoTitleMp3:
@@ -211,7 +215,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir as [b]{}[/b]. Video skipped.\n'.format(
 									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 						else:
-							# the video audio file was already downloaded and was deleted
+							# the video audio file was already downloaded and was later deleted after having
+							# been listened
 							if audioFileNameInDic == finalPurgedVideoTitleMp3:
 								msgText = '[b]{}[/b] audio already downloaded in [b]{}[/b] dir but was deleted. Video skipped.\n'.format(
 									finalPurgedVideoTitleMp3, targetAudioDirShort)
@@ -225,16 +230,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						
 						continue
 				
-				if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
-					# the video was previously downloaded with an exception ...
-					msgStartStr = 're-downloading'
-				else:
-					msgStartStr = 'downloading'
-					
 				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
-					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
+					msgText = 'downloading [b]{}[/b] audio ...\n'.format(finalPurgedVideoTitleMp3)
 				else:
-					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
+					msgText = 'downloading [b]{}[/b] audio ...\n'.format(videoTitle)
 
 				self.audioController.displayVideoDownloadStartMessage(msgText)
 
@@ -256,9 +255,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						                            isDownloadSuccess=False,
 						                            downloadedFileName=finalPurgedVideoTitleMp3,
 						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed)
-
-					#continue    # this avoids that the video is fully downloaded
-								# and so facilitates the video redownload.
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
@@ -267,8 +263,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					self.convertingVideoToMp3 = False   # avoiding that the display
 														# conversion info spread
 														# pollutes the GUI
-
-					#continue
 				
 				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which

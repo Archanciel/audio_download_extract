@@ -588,12 +588,9 @@ class AudioDownloaderGUI(AudioGUI):
 		Called by downloadPlaylistFailedVideos() method which is called by
 		the handleFailedVideosDownloading itself called when choosing the
 		'Down failed vids' dropdown menu item
-
-		:return:
 		"""
 		for failedVideoPlaylistInfo in self.failedVideoPlaylistInfoLst:
 			failedVideoPlaylistDic = failedVideoPlaylistInfo.playlistInfoDic
-			self.failedVideoPlaylistDic = failedVideoPlaylistDic
 			playListDownloadSubDir = failedVideoPlaylistDic.getPlaylistDownloadSubDir()
 			failedVideoIndexLst = failedVideoPlaylistInfo.failedVideoIndexLst
 			message = "downloading {} failed video(s) of playlist [b]{}[/b] in playlist dir [b]{}[/b] ...\n".format(
