@@ -1556,13 +1556,17 @@ class AudioDownloaderGUI(AudioGUI):
 			# disabled since interrupting a single video download is not
 			# possible
 			self.stopDownloadButton.disabled = True
-			
+			failedVideoFileName = None
+			if self.failedVideoPlaylistDic:
+				# not None when re-downloading a failed video on pc
+				failedVideoFileName = self.failedVideoPlaylistDic.getVideoAudioFileNameForVideoTitle(self.originalSingleVideoTitle)
 			try:
 				originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, isDownloadedFileRenamingSuccessful = self.audioController.downloadSingleVideo(
 					singleVideoUrl=playlistOrSingleVideoUrl,
 					singleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 					originalSingleVideoTitle=self.originalSingleVideoTitle,
-					modifiedVideoTitle=self.modifiedSingleVideoTitle)
+					modifiedVideoTitle=self.modifiedSingleVideoTitle,
+					failedVideoFileName=failedVideoFileName)
 			except TypeError as e:
 				print(e)
 			

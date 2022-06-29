@@ -196,12 +196,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					else:
 						finalPurgedVideoTitleMp3 = purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 
+				audioFileNameInDic = downloadVideoInfoDic.getVideoAudioFileNameForVideoTitle(videoTitle)
+
 				if downloadVideoInfoDic.existVideoInfoForVideoTitle(videoTitle):
 					# the video was already downloaded and so will be skipped
 					if not downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
 						# the video was downloaded with no exception. Otherwise,
 						# trying to re-download it will be done
-						audioFileNameInDic = downloadVideoInfoDic.getVideoAudioFileNameForVideoTitle(videoTitle)
 						if audioFileNameInDic in targetAudioDirFileNameList:
 							# the video was already downloaded and converted to audio file
 							if audioFileNameInDic == finalPurgedVideoTitleMp3:
@@ -223,6 +224,12 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						
 						self.audioController.displayMessage(msgText)
 						
+						continue
+				else:
+					# the video download done previously failed ...
+					if audioFileNameInDic in targetAudioDirFileNameList:
+						# if the failed video mp3 file exist in dir, it is not
+						# re-downloaded. It will be later downloaded on the pc
 						continue
 				
 				if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
@@ -511,7 +518,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 								  singleVideoUrl,
 								  originalVideoTitle,
 								  modifiedVideoTitle,
-								  targetAudioDir):
+								  targetAudioDir,
+	                              failedVideoFileName=None):
 		"""
 		Downloads in the passed targetAudioDir the single video referenced in the passed
 		singleVideoUrl.
@@ -520,6 +528,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param originalVideoTitle:  always passed
 		:param modifiedVideoTitle:  None if the video title was not modified
 		:param targetAudioDir:      path where the single video will be downloaded
+		:param failedVideoFileName  not None when re-downloading a failed video on pc
 		"""
 		targetAudioDirShort, dirCreationMessage = \
 			DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
@@ -556,10 +565,15 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				videoTitle = originalVideoTitle
 			else:
 				videoTitle = modifiedVideoTitle
-			
+
 			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
-			downloadDatePrefix = self.buildDownloadDatePrefix()
-			purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
+
+			if failedVideoFileName:
+				# case when re-downloading a failed video on pc
+				purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 = failedVideoFileName
+			else:
+				downloadDatePrefix = self.buildDownloadDatePrefix()
+				purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 = downloadDatePrefix + purgedVideoTitle + formattedUploadDateSuffix + '.mp3'
 			
 			# testing if the single video has already been downloaded in the
 			# target audio dir. If yes, we do not re download it.
@@ -575,7 +589,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			
 			msgText = 'downloading [b]{}[/b] audio ...\n'.format(purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3)
 			self.audioController.displayVideoDownloadStartMessage(msgText)
-#			self.audioController.displayMessage(msgText)
 
 			try:
 				ydl.download([singleVideoUrl])

@@ -35,7 +35,8 @@ class AudioController:
 	                        singleVideoUrl,
 	                        singleVideoDownloadPath,
 	                        originalSingleVideoTitle,
-	                        modifiedVideoTitle=None):
+	                        modifiedVideoTitle=None,
+	                        failedVideoFileName=None):
 		"""
 
 		:param singleVideoUrl:              single video url
@@ -44,6 +45,7 @@ class AudioController:
 		:param originalSingleVideoTitle:    if the playlistOrSingleVideoUrl points
 											to a single video
 		:param modifiedVideoTitle:          None if the video title was not modified
+		:param failedVideoFileName          not None when re-downloading a failed video on pc
 		"""
 		self.stopDownloading = False
 		
@@ -51,7 +53,8 @@ class AudioController:
 			singleVideoUrl=singleVideoUrl,
 			originalVideoTitle=originalSingleVideoTitle,
 			modifiedVideoTitle=modifiedVideoTitle,
-			targetAudioDir=singleVideoDownloadPath)
+			targetAudioDir=singleVideoDownloadPath,
+			failedVideoFileName=failedVideoFileName)
 	
 	def downloadVideosReferencedInPlaylist(self,
 	                                       downloadVideoInfoDic,
