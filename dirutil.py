@@ -279,9 +279,17 @@ class DirUtil:
 	
 	@staticmethod
 	def moveFilesToDir(filePathNameLst, destinationDir):
+		"""
+		If themoved file already exist in the destination dir, it is deleted before
+		moving the file.
+		
+		:param filePathNameLst:
+		:param destinationDir:
+		"""
 		DirUtil.createDirIfNotExist(destinationDir)
 		
 		for filePathName in filePathNameLst:
+			DirUtil.deleteFileIfExist(destinationDir + sep + DirUtil.extractFileNameFromFilePathName(filePathName))
 			shutil.move(filePathName, destinationDir)
 	
 	@staticmethod
