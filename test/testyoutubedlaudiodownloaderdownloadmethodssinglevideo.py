@@ -66,7 +66,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 			self.assertEqual('/storage/emulated/0/Download/Audiobooks/test/' + audioSubDirName,
 			                 downloadDir)
 		else:
-			self.assertEqual(['downloading \"{}Funny suspicious looking dog 13-11-05.mp3\" audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
  '',
  '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
  'testData\\Various_test directory.'.format(downloadDatePrefix),
@@ -137,7 +137,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
  'testData\\Various_test_new',
  'was created.',
  '',
- 'downloading \"{}Funny suspicious looking dog 13-11-05.mp3\" audio ...'.format(downloadDatePrefix),
+ 'downloading {}Funny suspicious looking dog 13-11-05.mp3 audio ...'.format(downloadDatePrefix),
  '',
  '{}Funny suspicious looking dog 13-11-05.mp3 audio downloaded in '
  'testData\\Various_test_new directory.'.format(downloadDatePrefix),
@@ -333,11 +333,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethodsSingleVideo(unittest.TestCase):
 							 '',
 							 ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
- '20-09-26.mp3\" audio ...'.format(downloadDatePrefix),
+			self.assertEqual(['downloading {}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 '
+ '20-09-26.mp3 audio ...'.format(downloadDatePrefix),
  '',
- '{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3 audio '
- 'downloaded in testData\\Various_test directory.'.format(downloadDatePrefix),
+ '{}Is NEO Worth Buying - Price Prediction 2020_2021 🚀🚀🚀 20-09-26.mp3 '
+ 'audio downloaded in testData\\Various_test directory.'.format(downloadDatePrefix),
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		

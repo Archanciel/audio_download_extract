@@ -41,8 +41,7 @@ class TestAudioController(unittest.TestCase):
 		audioController.extractAudioFromVideoFile(videoFilePathName)
 		
 		sys.stdout = stdout
-
-		self.assertTrue(r'extracted audio file "{}Short low video quality.mp3" from video file "{}Short low video quality.mp4"'.format(targetAudioDir, targetAudioDir) in outputCapturingString.getvalue())
+		self.assertTrue(r"extracted audio file {}Short low video quality.mp3 from video file {}Short low video quality.mp4".format(targetAudioDir, targetAudioDir) in outputCapturingString.getvalue())
 
 		videoAndAudioFileList = os.listdir(targetAudioDir)
 
@@ -564,20 +563,20 @@ class TestAudioController(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
- '20-07-31.mp3" audio ...',
+			self.assertEqual(['downloading ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
- 'audio ...',
+ 'downloading ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3 audio '
+ '...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
+ 'test_audio_downloader_two_files playlist audio(s) extraction/suppression '
  'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -648,20 +647,20 @@ class TestAudioController(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
- '20-07-31.mp3" audio ...',
+			self.assertEqual(['downloading ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
- 'audio ...',
+ 'downloading ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3 audio '
+ '...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) extraction/suppression '
+ 'test_audio_downloader_two_files playlist audio(s) extraction/suppression '
  'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -728,35 +727,35 @@ class TestAudioController(unittest.TestCase):
 		if os.name == 'posix':
 			pass
 		else:
-			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
- '20-07-31.mp3" audio ...',
+			self.assertEqual(['downloading ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
- 'audio ...',
+ 'downloading ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3 audio '
+ '...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
- 'download terminated.',
+ 'test_audio_downloader_two_files_with_time_frames playlist audio(s) download '
+ 'terminated.',
  '',
  '',
- 'extracting portions of "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of '
- 'Covid-19. 20-07-31.mp3" ...',
+ 'extracting portions of ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- '{}\\ctr1\\test_audio_downloader_two_files_with_time_frames\\'.format(testAudioRootPath) + downloadDateTodayPrefix + 'Wear '
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
  '\t\t0:0:02-0:0:08',
  '',
- 'suppressing portions of "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
- '19-06-07.mp3" ...',
+ 'suppressing portions of ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
+ '19-06-07.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- '{}\\ctr1\\test_audio_downloader_two_files_with_time_frames\\'.format(testAudioRootPath) + downloadDateTodayPrefix + 'Here '
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\ctr1\\test_audio_downloader_two_files_with_time_frames\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',
@@ -768,7 +767,7 @@ class TestAudioController(unittest.TestCase):
  '\t\t0:0:05-0:0:07',
  '\t\t0:0:10-0:0:15',
  '',
- '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'test_audio_downloader_two_files_with_time_frames playlist audio(s) '
  'extraction/suppression terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -839,35 +838,35 @@ class TestAudioController(unittest.TestCase):
 		if os.name == 'posix':
 			pass
 		else:
-			self.assertEqual(['downloading "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
- '20-07-31.mp3" audio ...',
+			self.assertEqual(['downloading ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3" '
- 'audio ...',
+ 'downloading ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants 19-06-07.mp3 audio '
+ '...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
- 'download terminated.',
+ 'test_audio_downloader_two_files_with_time_frames playlist audio(s) download '
+ 'terminated.',
  '',
  '',
- 'extracting portions of "' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of '
- 'Covid-19. 20-07-31.mp3" ...',
+ 'extracting portions of ' + downloadDateTodayPrefix + 'Wear a mask. Help slow the spread of Covid-19. '
+ '20-07-31.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- '{}\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\'.format(testAudioRootPath) + downloadDateTodayPrefix + 'Wear '
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Wear '
  'a mask. Help slow the spread of Covid-19. 20-07-31_1.mp3',
  'MoviePy - Done.',
  '\ttime frames extracted',
  '\t\t0:0:02-0:0:08',
  '',
- 'suppressing portions of "' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
- '19-06-07.mp3" ...',
+ 'suppressing portions of ' + downloadDateTodayPrefix + 'Here to help - Give him what he wants '
+ '19-06-07.mp3 ...',
  '',
  'MoviePy - Writing audio in '
- '{}\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\'.format(testAudioRootPath) + downloadDateTodayPrefix + 'Here '
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\ctr1\\test_audio_downloader_two_files_with_time_frames_renamed\\' + downloadDateTodayPrefix + 'Here '
  'to help - Give him what he wants 19-06-07_s.mp3',
  'MoviePy - Done.',
  '\ttime frames suppressed:',
@@ -879,7 +878,7 @@ class TestAudioController(unittest.TestCase):
  '\t\t0:0:05-0:0:07',
  '\t\t0:0:10-0:0:15',
  '',
- '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
+ 'test_audio_downloader_two_files_with_time_frames playlist audio(s) '
  'extraction/suppression terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -925,4 +924,4 @@ class TestAudioController(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestAudioController()
-	tst.testDeleteAudioFilesOlderThanPlaylistDicFile()
+	tst.testExtractAudioFromVideoFile()

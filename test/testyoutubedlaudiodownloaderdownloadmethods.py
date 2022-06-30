@@ -60,11 +60,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
+ 'test_audio_downloader_one_file playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -139,11 +139,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'testData\\test_audio_downloader_one_file',
  'was created.',
  '',
- 'downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+ 'downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_one_file" playlist audio(s) download terminated.',
+ 'test_audio_downloader_one_file playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -197,15 +197,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "Here to help: Give him what he wants" audio ...',
+ 'downloading Here to help: Give him what he wants audio ...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -278,15 +278,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Here to help: Give him what he wants" audio ...',
+			 'downloading Here to help: Give him what he wants audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
+			 'test_audio_downloader_two_files_with_time_frames playlist audio(s) download '
+			 'terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -421,11 +422,11 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
  '',
  'video download complete.',
  '',
- '"Test_title_one_time_frame_extract" playlist audio(s) download terminated.',
+ 'Test_title_one_time_frame_extract playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 
@@ -503,15 +504,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Here to help: Give him what he wants" audio ...',
+			 'downloading Here to help: Give him what he wants audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 'test_audio_downloader_two_files playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -575,13 +576,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "2\\test_audio_downloader_two_files" dir. Video skipped.',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio already downloaded '
+ 'in 2\\test_audio_downloader_two_files dir. Video skipped.',
  '',
- '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"2\\test_audio_downloader_two_files" dir. Video skipped.',
+ 'Here to help - Give him what he wants.mp3 audio already downloaded in '
+ '2\\test_audio_downloader_two_files dir. Video skipped.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -670,12 +671,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['"Comment Etudier Un Cours En Miracles .mp3" audio already downloaded in '
- '"testData\\Test playlist with one video whose title ends with  char" dir. Video '
- 'skipped.',
+			self.assertEqual(['Comment Etudier Un Cours En Miracles .mp3 audio already downloaded in '
+ 'testData\\Test playlist with one video whose title ends with  char dir. '
+ 'Video skipped.',
  '',
- '"Test playlist with one video whose title ends with ? char" playlist '
- 'audio(s) download terminated.',
+ 'Test playlist with one video whose title ends with ? char playlist audio(s) '
+ 'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -729,15 +730,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Here to help: Give him what he wants" audio ...',
+			 'downloading Here to help: Give him what he wants audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) download terminated.',
+			 'test_audio_downloader_two_files_with_time_frames playlist audio(s) download '
+			 'terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -817,15 +819,16 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "testData\\test_audio_downloader_two_files_with_time_frames" dir. '
- 'Video skipped.',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio already downloaded '
+ 'in testData\\test_audio_downloader_two_files_with_time_frames dir. Video '
+ 'skipped.',
  '',
- '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"testData\\test_audio_downloader_two_files_with_time_frames" dir. Video skipped.',
+ 'Here to help - Give him what he wants.mp3 audio already downloaded in '
+ 'testData\\test_audio_downloader_two_files_with_time_frames dir. Video '
+ 'skipped.',
  '',
- '"test_audio_downloader_two_files_with_time_frames" playlist audio(s) '
- 'download terminated.',
+ 'test_audio_downloader_two_files_with_time_frames playlist audio(s) download '
+ 'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -921,19 +924,19 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Here to help: Give him what he wants" audio ...',
+			 'downloading Here to help: Give him what he wants audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Funny suspicious looking dog" audio ...',
+			 'downloading Funny suspicious looking dog audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"Test download three short videos" playlist audio(s) download terminated.',
+			 'Test download three short videos playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -972,17 +975,17 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "testData\\Test download three short videos" dir. Video skipped.',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio already downloaded '
+ 'in testData\\Test download three short videos dir. Video skipped.',
  '',
- '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"testData\\Test download three short videos" dir. Video skipped.',
+ 'Here to help - Give him what he wants.mp3 audio already downloaded in '
+ 'testData\\Test download three short videos dir. Video skipped.',
  '',
- 'downloading "Funny suspicious looking dog" audio ...',
+ 'downloading Funny suspicious looking dog audio ...',
  '',
  'video download complete.',
  '',
- '"Test download three short videos" playlist audio(s) download terminated.',
+ 'Test download three short videos playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1112,21 +1115,20 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'commence à être fatigué de ce problème impossible à analyser',
  'was created.',
  '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
- 'route - Arthur Keller" audio ...',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
  '',
- 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
- 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:{}\\Je commence à être '
- 'fatigué de ce problème impossible à analyser Je commence à être fatigué de '
- 'ce problème impossible à analyser\\Les imaginaires effondristes sont les '
- 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or '
- 'directory.'.format(testAudioRootPath),
+ 'downloading video Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
+ 'file:{}\\Je commence à '
+ 'être fatigué de ce problème impossible à analyser Je commence à être fatigué '
+ 'de ce problème impossible à analyser\\Les imaginaires effondristes sont les '
+ 'seuls qui tiennent la route - Arthur Keller.mp3: No such file or directory.'.format(testAudioRootPath),
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
- '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
- 'à être fatigué de ce problème impossible à analyser" playlist audio(s) '
+ 'Je commence à être fatigué de ce problème impossible à analyser Je commence '
+ 'à être fatigué de ce problème impossible à analyser playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -1215,26 +1217,26 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'testData\\Il commence à être fatigué de ce problème impossible à analyser. Je '
- 'commence à être fatigué de ce problème impossible à',
+ 'testData\\Il commence à être fatigué de ce problème impossible à analyser. '
+ 'Je commence à être fatigué de ce problème impossible à',
  'was created.',
  '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
- 'route - Arthur Keller" audio ...',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
  '',
- 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
- 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:{}\\Il commence à être '
- 'fatigué de ce problème impossible à analyser. Je commence à être fatigué de '
- 'ce problème impossible à\\Les imaginaires effondristes sont les '
+ 'downloading video Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
+ 'file:{}\\Il commence à '
+ 'être fatigué de ce problème impossible à analyser. Je commence à être '
+ 'fatigué de ce problème impossible à\\Les imaginaires effondristes sont les '
  'seuls qui tiennent la route - Arthur Keller.temp.mp3: No such file or '
  'directory.'.format(testAudioRootPath),
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
- '"Il commence à être fatigué de ce problème impossible à analyser. Je '
- 'commence à être fatigué de ce problème impossible à" playlist '
- 'audio(s) download terminated.',
+ 'Il commence à être fatigué de ce problème impossible à analyser. Je commence '
+ 'à être fatigué de ce problème impossible à playlist audio(s) download '
+ 'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1325,20 +1327,20 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
-			                  'testData\\Je commence à être fatigué de ce problème impossible à analyser Je '
-			                  'commence à être fatigué de ce problème impossible à',
-			                  'was created.',
-			                  '',
-			                  'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
-			                  'route - Arthur Keller" audio ...',
-			                  '',
-			                  'video download complete.',
-'',
-			                  '"Je commence à être fatigué de ce problème impossible à analyser Je commence '
-			                  'à être fatigué de ce problème impossible à" playlist audio(s) '
-			                  'download terminated.',
-			                  '',
-			                  ''], outputCapturingString.getvalue().split('\n'))
+ 'testData\\Je commence à être fatigué de ce problème impossible à analyser Je '
+ 'commence à être fatigué de ce problème impossible à',
+ 'was created.',
+ '',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'Je commence à être fatigué de ce problème impossible à analyser Je commence '
+ 'à être fatigué de ce problème impossible à playlist audio(s) download '
+ 'terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Je commence à être fatigué de ce problème impossible à analyser Je commence '
@@ -1417,14 +1419,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  'commence à être fatigué de ce problème impossible à',
  'was created.',
  '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
- 'route - Arthur Keller" audio ...',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
  '',
  'video download complete.',
  '',
- '"Gcommence à être fatigué de ce problème impossible à analyser. Je commence '
- 'à être fatigué de ce problème impossible à" playlist audio(s) '
- 'download terminated.',
+ 'Gcommence à être fatigué de ce problème impossible à analyser. Je commence à '
+ 'être fatigué de ce problème impossible à playlist audio(s) download '
+ 'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1498,24 +1500,25 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  ''], outputCapturingString.getvalue().split('\n'))
 		else:
 			self.assertEqual(['directory',
- 'testData\\127 char_____playlist name is very long and will cause a problem if '
- 'the target dir name exceeds a maximum possible too big name.',
+ 'testData\\127 char_____playlist name is very long and will cause a problem '
+ 'if the target dir name exceeds a maximum possible too big name.',
  'was created.',
  '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
- 'route - Arthur Keller" audio ...',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
  '',
- 'downloading video "Les imaginaires effondristes sont les seuls qui tiennent '
- 'la route - Arthur Keller" caused this DownloadError exception: ERROR: '
- 'file:{}\\127 char_____playlist '
- 'name is very long and will cause a problem if the target dir name exceeds a '
- 'maximum possible too big name#\\Les imaginaires effondristes sont les seuls '
- 'qui tiennent la route - Arthur Keller.mp3: No such file or directory.'.format(testAudioRootPath),
+ 'downloading video Les imaginaires effondristes sont les seuls qui tiennent '
+ 'la route - Arthur Keller caused this DownloadError exception: ERROR: '
+ 'file:D:\\Development\\Python\\audiodownload\\test\\testData\\127 '
+ 'char_____playlist name is very long and will cause a problem if the target '
+ 'dir name exceeds a maximum possible too big name#\\Les imaginaires '
+ 'effondristes sont les seuls qui tiennent la route - Arthur Keller.mp3: No '
+ 'such file or directory.',
  '',
  'retry downloading the playlist later to download the failed audio only ...',
  '',
- '"127 char_____playlist name is very long and will cause a problem if the '
- 'target dir name exceeds a maximum possible too big name." playlist audio(s) '
+ '127 char_____playlist name is very long and will cause a problem if the '
+ 'target dir name exceeds a maximum possible too big name. playlist audio(s) '
  'download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -1575,12 +1578,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
  "testData\\test short_n'ame pl, aylist - avec deux points",
  'was created.',
  '',
- 'downloading "Les imaginaires effondristes sont les seuls qui tiennent la '
- 'route - Arthur Keller" audio ...',
+ 'downloading Les imaginaires effondristes sont les seuls qui tiennent la '
+ 'route - Arthur Keller audio ...',
  '',
  'video download complete.',
  '',
- '"test short_n\'ame pl, aylist: avec deux points" playlist audio(s) download '
+ "test short_n'ame pl, aylist: avec deux points playlist audio(s) download "
  'terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
@@ -1641,15 +1644,15 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		
 		self.assertIsNone(accessError)
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+			['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 'downloading "Here to help: Give him what he wants" audio ...',
+			 'downloading Here to help: Give him what he wants audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 'test_audio_downloader_two_files playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1716,13 +1719,13 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "3\\test_audio_downloader_two_files" dir. Video skipped.',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio already downloaded '
+ 'in 3\\test_audio_downloader_two_files dir. Video skipped.',
  '',
- '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"3\\test_audio_downloader_two_files" dir but was deleted. Video skipped.',
+ 'Here to help - Give him what he wants.mp3 audio already downloaded in '
+ '3\\test_audio_downloader_two_files dir but was deleted. Video skipped.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1822,7 +1825,7 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 		testAudioRootPathDoubleBackSlash = testAudioRootPath.replace('\\', '\\\\')
 
 		self.assertEqual(
-			['downloading "Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3" '
+			['downloading Wear a mask. Help slow the spread of Covid-19. 20-07-31.mp3 '
 			 'audio ...',
 			 '',
 			 '[WinError 183] Impossible de créer un fichier déjà existant: '
@@ -1830,14 +1833,14 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			 "a mask. Help slow the spread of Covid-19..mp3' -> "
 			 "'{}\\\\4\\\\test_audio_downloader_two_files\\\\Wear "
 			 "a mask. Help slow the spread of Covid-19. 20-07-31.mp3'.".format(testAudioRootPathDoubleBackSlash, testAudioRootPathDoubleBackSlash),
-			 '"Possible cause: a problem in '
-			 'DirUtil.replaceUnauthorizedDirOrFileNameChars() method"',
+			 'Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() '
+			 'method',
 			 '',
-			 'downloading "Here to help - Give him what he wants 19-06-07.mp3" audio ...',
+			 'downloading Here to help - Give him what he wants 19-06-07.mp3 audio ...',
 			 '',
 			 'video download complete.',
 			 '',
-			 '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+			 'test_audio_downloader_two_files playlist audio(s) download terminated.',
 			 '',
 			 ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -1895,12 +1898,12 @@ class TestYoutubeDlAudioDownloaderDownloadMethods(unittest.TestCase):
 			                  '',
 			                  ''], outputCapturingString.getvalue().split('\n'))
 		else:
-			self.assertEqual(['downloading "💥 EFFONDREMENT Imminent de l\'Euro ?! | 👉 Maintenant, La Fin de '
- 'l\'Euro Approche ?!" audio ...',
+			self.assertEqual(["downloading 💥 EFFONDREMENT Imminent de l'Euro ?! | 👉 Maintenant, La Fin de "
+ "l'Euro Approche ?! audio ...",
  '',
  'video download complete.',
  '',
- '"bugeco" playlist audio(s) download terminated.',
+ 'bugeco playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		

@@ -63,15 +63,15 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
  '',
  'video download complete.',
  '',
- 'downloading "Here to help: Give him what he wants" audio ...',
+ 'downloading Here to help: Give him what he wants audio ...',
  '',
  'video download complete.',
  '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -122,25 +122,25 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['re-downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio download done '
+ 'previously in 5\\test_audio_downloader_two_files dir FAILED. Try '
+ 're-downloading it on pc. Video skipped.',
  '',
- 'video download complete.',
+ 'Here to help - Give him what he wants.mp3 audio already downloaded in '
+ '5\\test_audio_downloader_two_files dir. Video skipped.',
  '',
- '"Here to help - Give him what he wants.mp3" audio already downloaded in '
- '"5\\test_audio_downloader_two_files" dir. Video skipped.',
- '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(validPlaylistDirName, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
+		self.assertEqual(None,
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
 		
 		self.assertEqual('Here to help: Give him what he wants',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(2))
 		
-		self.assertEqual(['2', '3'], redownloadVideoInfoDic.getVideoIndexStrings())
+		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -198,17 +198,17 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
-		                  '',
-		                  'video download complete.',
-		                  '',
-		                  'downloading "Here to help: Give him what he wants" audio ...',
-		                  '',
-		                  'video download complete.',
-		                  '',
-		                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
-		                  '',
-		                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'downloading Here to help: Give him what he wants audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
@@ -264,26 +264,26 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['re-downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio download done '
+ 'previously in 5\\test_audio_downloader_two_files dir FAILED. Try '
+ 're-downloading it on pc. Video skipped.',
  '',
- 'video download complete.',
+ 'Here to help - Give him what he wants.mp3 audio download done previously in '
+ '5\\test_audio_downloader_two_files dir FAILED. Try re-downloading it on pc. '
+ 'Video skipped.',
  '',
- 're-downloading "Here to help: Give him what he wants" audio ...',
- '',
- 'video download complete.',
- '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual(validPlaylistDirName, targetAudioDir)
-		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
+		self.assertEqual(None,
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
 		
-		self.assertEqual('Here to help: Give him what he wants',
+		self.assertEqual(None,
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(4))
 		
-		self.assertEqual(['3', '4'], redownloadVideoInfoDic.getVideoIndexStrings())
+		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -341,17 +341,17 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['downloading "Wear a mask. Help slow the spread of Covid-19." audio ...',
-		                  '',
-		                  'video download complete.',
-		                  '',
-		                  'downloading "Here to help: Give him what he wants" audio ...',
-		                  '',
-		                  'video download complete.',
-		                  '',
-		                  '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
-		                  '',
-		                  ''], outputCapturingString.getvalue().split('\n'))
+		self.assertEqual(['downloading Wear a mask. Help slow the spread of Covid-19. audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'downloading Here to help: Give him what he wants audio ...',
+ '',
+ 'video download complete.',
+ '',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
+ '',
+ ''], outputCapturingString.getvalue().split('\n'))
 		
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 downloadVideoInfoDic.getVideoTitleForVideoIndex(1))
@@ -401,14 +401,14 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		sys.stdout = stdout
 		
 		self.assertIsNone(accessError)
-		self.assertEqual(['"Wear a mask. Help slow the spread of Covid-19..mp3" audio already '
- 'downloaded in "5\\test_audio_downloader_two_files" dir. Video skipped.',
+		self.assertEqual(['Wear a mask. Help slow the spread of Covid-19..mp3 audio already downloaded '
+ 'in 5\\test_audio_downloader_two_files dir. Video skipped.',
  '',
- 're-downloading "Here to help: Give him what he wants" audio ...',
+ 'Here to help - Give him what he wants.mp3 audio download done previously in '
+ '5\\test_audio_downloader_two_files dir FAILED. Try re-downloading it on pc. '
+ 'Video skipped.',
  '',
- 'video download complete.',
- '',
- '"test_audio_downloader_two_files" playlist audio(s) download terminated.',
+ 'test_audio_downloader_two_files playlist audio(s) download terminated.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -416,10 +416,10 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		self.assertEqual('Wear a mask. Help slow the spread of Covid-19.',
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(1))
 		
-		self.assertEqual('Here to help: Give him what he wants',
+		self.assertEqual(None,
 		                 redownloadVideoInfoDic.getVideoTitleForVideoIndex(3))
 		
-		self.assertEqual(['1', '3'], redownloadVideoInfoDic.getVideoIndexStrings())
+		self.assertEqual(['1', '2'], redownloadVideoInfoDic.getVideoIndexStrings())
 		
 		fileNameLst = [x.split(sep)[-1] for x in glob.glob(downloadDir + sep + '*.*')]
 		self.assertEqual(sorted(['Here to help - Give him what he wants.mp3',
@@ -488,11 +488,11 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		
 		sys.stdout = stdout
 		
-		self.assertEqual(['re-downloading "99-Wear a mask. Help slow the spread of Covid-19. '
- '2020-07-31.mp3" audio ...',
+		self.assertEqual(['re-downloading 99-Wear a mask. Help slow the spread of Covid-19. '
+ '2020-07-31.mp3 audio ...',
  '',
- '"99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3" audio '
- 're-downloaded in "two_files_6\\test_audio_downloader_two_files" directory.',
+ '99-Wear a mask. Help slow the spread of Covid-19. 2020-07-31.mp3 audio '
+ 're-downloaded in two_files_6\\test_audio_downloader_two_files directory.',
  '',
  ''], outputCapturingString.getvalue().split('\n'))
 		
@@ -535,4 +535,4 @@ if __name__ == '__main__':
 #	unittest.main()
 	tst = TestYoutubeDlAudioDownloaderException()
 
-	tst.testRedownloadFailedVideosInDownloadVideoInfoDic()
+	tst.testRedownloadingTwoVideosPlaylist_after_2_videos_download_exception()

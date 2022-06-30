@@ -45,8 +45,12 @@ class GuiOutputStub:
 		self.displayMessage(msgText)
 
 	def outputResult(self, msgText):
-		msgText = msgText.replace('[b]', '"').replace('[/b]', '"')
-		
+		msgText = msgText.replace('[b]', ''). \
+			replace('[/b]', ''). \
+			replace('[color=FF0000]', '').\
+			replace('[color=00FF00]', '').\
+			replace('[/color]', '')
+
 		print(msgText)
 	
 	def displayError(self, msgText):
