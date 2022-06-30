@@ -148,6 +148,14 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
 						downloadVideoInfoDic.getPlaylistNameOriginal())
 					self.audioController.displayMessage(msgText)
+					playlistTotalDownloadTime = time.time() - playlistStartDownloadTime
+					playlistTotalDownloadSize = self.downloadInfoExtractor.getPlaylistDownloadInfo()[0]
+					self.audioController.displayPlaylistEndDownloadInfo([playlistDownloadedVideoNb_succeed,
+					                                                     playlistDownloadedVideoNb_failed,
+					                                                     playlistDownloadedVideoNb_skipped,
+					                                                     playlistTotalDownloadSize,
+					                                                     playlistTotalDownloadTime
+					                                                     ])
 					self.audioController.downloadStopped()
 					
 					return downloadVideoInfoDic, None
@@ -221,16 +229,21 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 									finalPurgedVideoTitleMp3, targetAudioDirShort, audioFileNameInDic)
 						
 						playlistDownloadedVideoNb_skipped += 1
-						
 						self.audioController.displayMessage(msgText)
 						
 						continue
-				else:
-					# the video download done previously failed ...
-					if audioFileNameInDic in targetAudioDirFileNameList:
-						# if the failed video mp3 file exist in dir, it is not
-						# re-downloaded. It will be later downloaded on the pc
-						continue
+					else:
+						if audioFileNameInDic in targetAudioDirFileNameList:
+							# if the failed video mp3 file exist in dir, it is not
+							# re-downloaded. It will be later downloaded on the pc.
+							# Otherwise, part and/or yltd files exist in playlist
+							# dir and finishing downloadig the video audio file on
+							# the smartphone makes sense !
+							msgText = '[b]{}[/b] audio download done previously in [b]{}[/b] dir [b][color=FF0000]FAILED[/color][/b]. Try re-downloading it on pc. Video skipped.\n'.format(
+								finalPurgedVideoTitleMp3, targetAudioDirShort)
+							playlistDownloadedVideoNb_skipped += 1
+							self.audioController.displayMessage(msgText)
+							continue
 				
 				if downloadVideoInfoDic.getVideoDownloadExceptionForVideoTitle(videoTitle):
 					# the video was previously downloaded with an exception ...
@@ -263,9 +276,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 						                            isDownloadSuccess=False,
 						                            downloadedFileName=finalPurgedVideoTitleMp3,
 						                            playlistDownloadedVideoNb=playlistDownloadedVideoNb_failed)
-
-					#continue    # this avoids that the video is fully downloaded
-								# and so facilitates the video redownload.
 				except DownloadError as e:
 					self.audioController.displayError("downloading video [b]{}[/b] caused this DownloadError exception: {}.\n".format(videoTitle, e))
 					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
@@ -529,7 +539,13 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		:param modifiedVideoTitle:  None if the video title was not modified
 		:param targetAudioDir:      path where the single video will be downloaded
 		:param failedVideoFileName  not None when re-downloading a failed video on pc
+
+		:return:    originalYdlDownloadedAudioFileName,
+					purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3,
+					True if video download was successful, False otherwise
 		"""
+		originalYdlDownloadedAudioFileName = None
+		purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3 = None
 		targetAudioDirShort, dirCreationMessage = \
 			DirUtil.createTargetDirIfNotExist(rootDir=self.audioDirRoot,
 			                                  targetAudioDir=targetAudioDir)
@@ -553,18 +569,18 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 
 			formattedUploadDateSuffix = ''
 			
+			if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
+				videoTitle = originalVideoTitle
+			else:
+				videoTitle = modifiedVideoTitle
+			
 			try:
 				meta = ydl.extract_info(singleVideoUrl, download=False)
 				uploadDate = meta['upload_date']
 				formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
 			except AttributeError as e:
-				msgText = 'obtaining single video upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
+				msgText = "obtaining upload date for single video [b]{}[/b] [b][color=FF0000]failed[/color][/b] with error {}.\n".format(videoTitle, e)
 				self.audioController.displayError(msgText)
-			
-			if modifiedVideoTitle is None or originalVideoTitle == modifiedVideoTitle:
-				videoTitle = originalVideoTitle
-			else:
-				videoTitle = modifiedVideoTitle
 
 			purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
 
@@ -583,7 +599,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED)
 				
-				return
+				return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, False
 		
 			# now downloading the single video ...
 			
@@ -597,9 +613,10 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, e)
 				self.audioController.displaySingleVideoEndDownloadInfo(msgText=msgText,
 				                                                       singleVideoDownloadStatus=self.audioController.SINGLE_VIDEO_DOWNLOAD_FAIL)
-				return  # this avoids that the video which was partially downloaded
-						# is renamed, which will display a file not found error since
-						# the downloaded file has a mp3.part extension.
+				# this avoids that the video which was partially downloaded
+				# is renamed, which will display a file not found error since
+				# the downloaded file has a mp3.part extension.
+				return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, False
 		
 		self.convertingVideoToMp3 = False
 		

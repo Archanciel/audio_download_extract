@@ -12,6 +12,7 @@ class YesNoPopup(GridLayout):
 	instantiated with binding 'on_answer' to different methods.
 	"""
 	POPUP_TITLE_PLAYLIST = 'Go on with processing playlist'
+	POPUP_TITLE_DELETE_PLAYLIST_FILES = 'Go on with deleting files older than playlist dic file'
 	text = StringProperty()
 	cols = ObjectProperty
 	

@@ -46,6 +46,10 @@ class AudioController:
 											to a single video
 		:param modifiedVideoTitle:          None if the video title was not modified
 		:param failedVideoFileName          not None when re-downloading a failed video on pc
+		
+		:return:    originalYdlDownloadedAudioFileName,
+					purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3,
+					True if video download was successful, False otherwise
 		"""
 		self.stopDownloading = False
 		
@@ -129,7 +133,8 @@ class AudioController:
 		:param modifiedPlaylistTitle:
 		:param isIndexAddedToPlaylistVideo:
 		:param isUploadDateAddedToPlaylistVideo:
-		:return:
+
+		:return: downloadVideoInfoDic, indexAndDateSettingWarningMsg
 		"""
 		
 		downloadVideoInfoDic = \
@@ -729,7 +734,13 @@ class AudioController:
 		if playlistDicFileName:
 			fileNameLstBefore, filePathNameLstBefore, _, _ = DirUtil.getListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(
 				playlistDir, playlistDicFileName)
-			DirUtil.deleteFiles(filePathNameLstBefore)
+			if len(filePathNameLstBefore) > 0:
+				savedDir = playlistDir + sep + 'saved'
+				DirUtil.moveFilesToDir(filePathNameLstBefore, savedDir)
+				self.displayMessage(
+					'files in [b]{}[/b] dir older than [b]{}[/b] were moved to [b]{}[/b]\n'.format(playlistDir,
+					                                                                               playlistDicFileName,
+					                                                                               savedDir))
 	
 	def _getPlaylistDicFileName(self, playlistDir):
 		playlistDicFileNameLst = DirUtil.getFileNamesInDirForPattern(playlistDir, '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
@@ -738,7 +749,7 @@ class AudioController:
 			return playlistDicFileNameLst[0]
 		else:
 			return None
-
+		
 
 if __name__ == "__main__":
 	controller = AudioController()

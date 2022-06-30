@@ -271,11 +271,18 @@ class DirUtil:
 			os.rename(originalFilePathName, newFilePathName)
 		except (FileNotFoundError, FileExistsError, OSError) as e:
 			return str(e)
-		
+	
 	@staticmethod
 	def deleteFiles(filePathNameLst):
 		for filePathName in filePathNameLst:
 			DirUtil.deleteFileIfExist(filePathName)
+	
+	@staticmethod
+	def moveFilesToDir(filePathNameLst, destinationDir):
+		DirUtil.createDirIfNotExist(destinationDir)
+		
+		for filePathName in filePathNameLst:
+			shutil.move(filePathName, destinationDir)
 	
 	@staticmethod
 	def deleteFilesInDirForPattern(targetDir,
@@ -600,6 +607,7 @@ class DirUtil:
 				elif fileDate > refFileDate:
 					fileNameLstAfter.append(fileName)
 					filePathNameLstAfter.append(filePathName)
+			break # prevent descending into subfolders
 
 		return fileNameLstBefore, filePathNameLstBefore, fileNameLstAfter, filePathNameLstAfter
 	

@@ -593,6 +593,13 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		for failedVideoPlaylistInfo in self.failedVideoPlaylistInfoLst:
 			failedVideoPlaylistDic = failedVideoPlaylistInfo.playlistInfoDic
+			
+			# ensuring that the playlist dirs where the failed videos will be downloaded
+			# does not contain video older than the playlist dic containing failed video
+			# references. The playlist dic were obtained from the smartphone using the
+			# transfer file utility program.
+			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(failedVideoPlaylistDic)
+
 			self.failedVideoPlaylistDic = failedVideoPlaylistDic
 			playListDownloadSubDir = failedVideoPlaylistDic.getPlaylistDownloadSubDir()
 			failedVideoIndexLst = failedVideoPlaylistInfo.failedVideoIndexLst
@@ -1030,6 +1037,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
 		
+		self.failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoPlaylistInfoLst(
+			self.audiobookPath)
+		
 		if len(self.failedVideoPlaylistInfoLst) > 0:
 			# the case if the Add button was pressed in order to add the
 			# playlist or single video url contained in the clipboard
@@ -1059,18 +1069,6 @@ class AudioDownloaderGUI(AudioGUI):
 		videos on the pc.
 		"""
 		self.dropDownMenu.dismiss()
-		
-		self.failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoPlaylistInfoLst(
-			self.audiobookPath)
-		
-		# ensuring that the playlist dir where the failed videos will be downloaded
-		# do not contain video older than the playlist dic containing failed video
-		# references. The playlist dic were obtained from the smartphone using the
-		# transfer file utility program.
-		for failedVideoPlaylistInfo in self.failedVideoPlaylistInfoLst:
-			downloadPlaylistInfoDic = failedVideoPlaylistInfo.playlistInfoDic
-			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(downloadPlaylistInfoDic)
-
 		self.downloadPlaylistFailedVideos()
 
 	def deleteSelectedAudioDownloadedFiles(self):
@@ -1450,10 +1448,12 @@ class AudioDownloaderGUI(AudioGUI):
 
 			if downloadAndUploadDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
-				popup = self.createPrefixSuffixFileNameConfirmYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
-				                                                         downloadAndUploadDateSettingWarningMsg,
-				                                                         self.onPrefixSuffixFileNameConfirmYesNoPopupAnswer,
-				                                                         True)
+				
+				# obtaining prefix suffix setting user confirmation
+				popup = self.createYesNoPopup(YesNoPopup.POPUP_TITLE_PLAYLIST,
+				                              downloadAndUploadDateSettingWarningMsg,
+				                              self.onPrefixSuffixFileNameConfirmYesNoPopupAnswer,
+				                              True)
 				popup.open()
 			else:
 				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
@@ -1561,7 +1561,7 @@ class AudioDownloaderGUI(AudioGUI):
 				# not None when re-downloading a failed video on pc
 				failedVideoFileName = self.failedVideoPlaylistDic.getVideoAudioFileNameForVideoTitle(self.originalSingleVideoTitle)
 			try:
-				originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, isDownloadedFileRenamingSuccessful = self.audioController.downloadSingleVideo(
+				originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, isVideoDownloadSuccessful = self.audioController.downloadSingleVideo(
 					singleVideoUrl=playlistOrSingleVideoUrl,
 					singleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 					originalSingleVideoTitle=self.originalSingleVideoTitle,
@@ -1571,20 +1571,14 @@ class AudioDownloaderGUI(AudioGUI):
 				print(e)
 			
 			if self.failedVideoPlaylistDic is not None:
-				if isDownloadedFileRenamingSuccessful:
+				if isVideoDownloadSuccessful:
 					self.failedVideoPlaylistDic.setVideoAudioFileNameForVideoIndex(videoIndex=failedVideoIndex,
 					                                                               audioFileName=purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3)
 					self.failedVideoPlaylistDic.setVideoDownloadTimeForVideoIndex(videoIndex=failedVideoIndex,
 					                                                              videoDownloadTimeStr=DownloadPlaylistInfoDic.getNowDownloadDateTimeStr())
-				else:
-					self.totalDownloadVideoFailedNb += 1
-					self.totalDownloadVideoSuccessNb -= 1
 					
-				# even if isDownloadedFileRenamingSuccessful is false, the isDownloadSuccess is set to True
-				# so that re-executing the download failed video functionality does not re-download the problematic
-				# video
 				self.failedVideoPlaylistDic.setVideoDownloadExceptionForVideoIndex(videoIndex=failedVideoIndex,
-				                                                                   isDownloadSuccess=True)
+				                                                                   isDownloadSuccess=isVideoDownloadSuccessful)
 				self.failedVideoPlaylistDic.saveDic(self.configMgr.dataPath)
 				self.failedVideoPlaylistDic = None
 		
@@ -2049,11 +2043,11 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
 	
-	def createPrefixSuffixFileNameConfirmYesNoPopup(self,
-	                                                yesNoPopupTitle,
-	                                                yesNoPopupMsg,
-	                                                yesNoPopupCallbackFunction,
-	                                                isPlayListDownloaded):
+	def createYesNoPopup(self,
+	                     yesNoPopupTitle,
+	                     yesNoPopupMsg,
+	                     yesNoPopupCallbackFunction,
+	                     isPlayListDownloaded):
 		"""
 		Called in order to obtain confirmation from user on the way the downloaded
 		audio files will be renamed using the video download date prefix and/or the
