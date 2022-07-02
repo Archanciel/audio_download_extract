@@ -1,6 +1,7 @@
 <CustomDropDown>
 	gridLayoutClip: gridlayout_clip
 	gridlayoutDownloadFailedVideos: gridlayout_downloadFailedVideos
+	gridlayoutRenameFailedVideos: gridlayout_renameFailedVideos
 	gridLayoutShare: gridlayout_share
 	gridLayoutSettings: gridlayout_settings
 	gridLayoutDelete: gridlayout_delete
@@ -75,6 +76,18 @@
             height: '28dp'
             disabled: False
             on_release: root.handleFailedVideosDownloading()
+    GridLayout: # enable to hide or display 'Rename failed videos' menu item
+        id: gridlayout_renameFailedVideos
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            id: renameFailedVideos_Button
+            text: 'Rename failed vids'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.renameFailedVideosUpdatedFromPC()
     GridLayout: # enable to hide or display 'Down histo' menu item
         id: gridlayout_downloadHisto
 		cols: 1 
