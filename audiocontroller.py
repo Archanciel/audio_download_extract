@@ -749,7 +749,9 @@ class AudioController:
 			return playlistDicFileNameLst[0]
 		else:
 			return None
-		
+
+	def getListOfDownloadedFailedVideos(self):
+		return ['one', 'two']
 
 if __name__ == "__main__":
 	controller = AudioController()

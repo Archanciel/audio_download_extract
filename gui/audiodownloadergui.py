@@ -630,10 +630,10 @@ class AudioDownloaderGUI(AudioGUI):
 					time.sleep(TIME_SLEEP_SECONDS)
 		
 		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
-		#                                                       where two download threads are
-		#                                                       created after clicking on 'Yes'
-		#                                                       button on the ConfirmPopup dialog
-		self.displayUrlDownloadLstEndDownloadInfo()
+													# where two download threads are
+													# created after clicking on 'Yes'
+													# button on the ConfirmPopup dialog
+		self.displayFailedVideoReDownloadLstEndDownloadInfo()
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
@@ -1998,6 +1998,19 @@ class AudioDownloaderGUI(AudioGUI):
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
+		
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
+	
+	def displayFailedVideoReDownloadLstEndDownloadInfo(self):
+		"""
+		Method called when the failed video re-download on PC is finished.
+		"""
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		
+		endDownloadInfoStr = self.buildEndDownloadInfoStr()
+		downloadedFailedVideoLst = self.audioController.getListOfDownloadedFailedVideos()
+		endDownloadInfoStr += '\n'
+		endDownloadInfoStr += '\n'.join(downloadedFailedVideoLst)
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	
