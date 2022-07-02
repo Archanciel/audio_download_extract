@@ -866,6 +866,15 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		else:
 			return None
 
+	def renameRedownloadedFailedVideos(self):
+		"""
+		This method updates the video audio file date prefix in case the date prefix
+		is smaller than the video download date. This is the case if downloading the
+		video audio on the smartphone failed and that the video audio was re-downloaded
+		on the PC and then manually copied on the smartphone.
+		"""
+		pass
+	
 	@staticmethod
 	def getPlaylistUrlTitleCachedDic(audioDirRoot):
 		"""
