@@ -638,7 +638,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 			return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, True
 		else:
 			self.audioController.displayError(
-				fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method or, in case of downloading a failed video on Windows, the fact that the video title defined in the playlist info dic does not correspond to the part or yltd or mp3 file name downloaded by youtube-dl. Correct the playlist video title to solve the problem[/b]\n')
+				fileNotFoundErrorInfo + '.\n' + '[b]Possible cause: a problem in DirUtil.replaceUnauthorizedDirOrFileNameChars() method or, in case of downloading a failed video on Windows, the fact that the video title defined in the playlist info dic does not correspond to the part or yltd or mp3 file name downloaded by youtube-dl. Correct the playlist video title to solve the problem as well as the downloaded mp3 file name ![/b]\n')
 			return originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, False
 
 	def redownloadPlaylistVideoForVideoUrl(self,
