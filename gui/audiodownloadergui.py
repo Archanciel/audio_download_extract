@@ -1908,11 +1908,7 @@ class AudioDownloaderGUI(AudioGUI):
 		videoDownloadSizeFormatted = (f"{videoDownloadSize:,}")
 		endDownloadInfoStr = '{} bytes, {}\n'.format(videoDownloadSizeFormatted,
 													 endDownloadInfoLst[1])
-		outputLabelLineLst = outputLabelLineLst[:-1]
-		outputLabelLineLst.append(endDownloadInfoStr)
-
-		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
-		self.isFirstCurrentDownloadInfo = True
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 		self.updateStatusBar('')
 	
 	def displayVideoDownloadEndMessage(self, msgText):
@@ -1962,31 +1958,16 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			videoSkippedStr = 'videos skipped'
 		
-		if videoFailedNb == 0:
-			endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
-																			  videoSuccessStr,
-																			  videoFailedNb,
-																			  videoFailStr,
-																			  videoSkippedNb,
-																			  videoSkippedStr,
-																			  endDownloadInfoLst[3],
-																			  endDownloadInfoLst[4])
-		else:
-			endDownloadInfoStr = '[b][color=00FF00]{} {}, [/color][color=FF0000]{} {}[/color][color=00FF00], {} {}, {} bytes, {}[/color][/b]\n'.format(
-																			videoSuccessNb,
-																			videoSuccessStr,
-																			videoFailedNb,
-																			videoFailStr,
-																			videoSkippedNb,
-																			videoSkippedStr,
-																			endDownloadInfoLst[3],
-																			endDownloadInfoLst[4])
-
-		outputLabelLineLst = outputLabelLineLst[:-1]
-		outputLabelLineLst.append(endDownloadInfoStr)
+		endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
+																		  videoSuccessStr,
+																		  videoFailedNb,
+																		  videoFailStr,
+																		  videoSkippedNb,
+																		  videoSkippedStr,
+																		  endDownloadInfoLst[3],
+																		  endDownloadInfoLst[4])
 		
-		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
-		self.isFirstCurrentDownloadInfo = True
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	
 	def displaySingleVideoEndDownloadInfo(self,
 										  msgText,
@@ -2015,43 +1996,38 @@ class AudioDownloaderGUI(AudioGUI):
 		Method called when the multi urls download is finished.
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
-
+		
+		endDownloadInfoStr = self.buildEndDownloadInfoStr()
+		
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
+	
+	def addToOutputLabelStr(self, endDownloadInfoStr, outputLabelLineLst):
+		outputLabelLineLst = outputLabelLineLst[:-1]
+		outputLabelLineLst.append(endDownloadInfoStr)
+		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
+		self.isFirstCurrentDownloadInfo = True
+	
+	def buildEndDownloadInfoStr(self):
 		if self.totalDownloadVideoSuccessNb < 2:
 			videoSuccessStr = 'video downloaded'
 		else:
 			videoSuccessStr = 'videos downloaded'
-		
 		if self.totalDownloadVideoFailedNb < 2:
 			videoFailStr = 'video failed'
 		else:
 			videoFailStr = 'videos failed'
-		
 		if self.totalDownloadVideoSkippedNb < 2:
 			videoSkippedStr = 'video skipped'
 		else:
 			videoSkippedStr = 'videos skipped'
-		
-		if self.totalDownloadVideoFailedNb == 0:
-			endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, {} {}, {} {}[/color][/b]\n'.format(self.totalDownloadVideoSuccessNb,
-																			  videoSuccessStr,
-																			  self.totalDownloadVideoFailedNb,
-																			  videoFailStr,
-																			  self.totalDownloadVideoSkippedNb,
-																			  videoSkippedStr)
-		else:
-			endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, [/color][color=FF0000]{} {}[/color][color=00FF00], {} {}[/color][/b]\n'.format(
-				self.totalDownloadVideoSuccessNb,
-				videoSuccessStr,
-				self.totalDownloadVideoFailedNb,
-				videoFailStr,
-				self.totalDownloadVideoSkippedNb,
-				videoSkippedStr)
-			
-		outputLabelLineLst = outputLabelLineLst[:-1]
-		outputLabelLineLst.append(endDownloadInfoStr)
-		
-		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
-		self.isFirstCurrentDownloadInfo = True
+		endDownloadInfoStr = '\n[b][color=00FF00]TOTAL {} {}, {} {}, {} {}[/color][/b]\n'.format(
+			self.totalDownloadVideoSuccessNb,
+			videoSuccessStr,
+			self.totalDownloadVideoFailedNb,
+			videoFailStr,
+			self.totalDownloadVideoSkippedNb,
+			videoSkippedStr)
+		return endDownloadInfoStr
 	
 	def createYesNoPopup(self,
 	                     yesNoPopupTitle,
