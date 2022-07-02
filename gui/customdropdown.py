@@ -67,6 +67,12 @@ class CustomDropDown(DropDown):
 		"""
 		self.rootGUI.handleFailedVideosDownloading()
 	
+	def renameFailedVideosUpdatedFromPC(self):
+		"""
+		Called by Rename failed vids menu item defined in customdropdown.kv file.
+		"""
+		self.rootGUI.renameFailedVideosUpdatedFromPC()
+	
 	def downloadHisto(self):
 		"""
 		Called by Downl histo menu item defined in customdropdown.kv file.

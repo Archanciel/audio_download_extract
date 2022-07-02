@@ -52,11 +52,13 @@ class AudioGUI(Screen):
 			self.isExtractFileDropDownMenuItemDisplayed = False
 			self.isShareFileDropDownMenuItemDisplayed = False
 			self.isDownloadFailedVideosMenuItemDisplayed = False
+			self.isRenameFailedVideosMenuItemDisplayed = True
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
 			self.isExtractFileDropDownMenuItemDisplayed = True
 			self.isShareFileDropDownMenuItemDisplayed = True
 			self.isDownloadFailedVideosMenuItemDisplayed = True
+			self.isRenameFailedVideosMenuItemDisplayed = True
 			requestListRVSpacing = RV_LIST_ITEM_SPACING_WINDOWS
 		
 		configFilePathName = DirUtil.getConfigFilePathName()
@@ -200,6 +202,13 @@ class AudioGUI(Screen):
 		else:
 			# hide drop down menu items
 			self.dropDownMenu.gridlayoutDownloadFailedVideos.height = 0
+		
+		if self.isRenameFailedVideosMenuItemDisplayed:
+			# set drop down menu items visible
+			self.dropDownMenu.gridlayoutRenameFailedVideos.height = dropDownMenuItemheight
+		else:
+			# hide drop down menu items
+			self.dropDownMenu.gridlayoutRenameFailedVideos.height = 0
 		
 		if self.isDownHistoDropDownMenuItemDisplayed:
 			# set drop down menu items visible
