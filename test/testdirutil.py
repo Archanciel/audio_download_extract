@@ -718,16 +718,16 @@ class TestDirUtil(unittest.TestCase):
 		
 		shutil.copytree(testRootDirSaved, testRootDir)
 		
-		self.assertEqual(['D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
- 'document texte jjjhmhfhmgfj zkuztuz.mp3',
- 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
- 'document texte.mp3',
- 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
- 'document text_dic.txt',
- 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\220324-Nouveau '
- 'document texte.mp3',
- 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\Nouveau '
- 'document texte.mp3'],
+		self.assertEqual(['{}\\EMI\\211224-Nouveau '
+ 'document texte jjjhmhfhmgfj zkuztuz.mp3'.format(testRootDir),
+ '{}\\EMI\\211224-Nouveau '
+ 'document texte.mp3'.format(testRootDir),
+ '{}\\EMI\\Nouveau '
+ 'document text_dic.txt'.format(testRootDir),
+ '{}\\Politique\\220324-Nouveau '
+ 'document texte.mp3'.format(testRootDir),
+ '{}\\Politique\\Nouveau '
+ 'document texte.mp3'.format(testRootDir)],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
@@ -743,10 +743,10 @@ class TestDirUtil(unittest.TestCase):
 		self.assertEqual(['Politique\\220324-Nouveau document texte.mp3',
  'Politique\\Nouveau document texte.mp3',
  'EMI\\211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFilePathNameLst)
-		self.assertEqual(['D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
- 'document texte.mp3',
- 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
- 'document text_dic.txt'],
+		self.assertEqual(['{}\\EMI\\211224-Nouveau '
+ 'document texte.mp3'.format(testRootDir),
+ '{}\\EMI\\Nouveau '
+ 'document text_dic.txt'.format(testRootDir)],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 				                                                 inSubDirs=True))
@@ -766,16 +766,16 @@ class TestDirUtil(unittest.TestCase):
 		shutil.copytree(testRootDirSaved, testRootDir)
 		
 		self.assertEqual([
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
-			                 'document texte jjjhmhfhmgfj zkuztuz.mp3',
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
-			                 'document texte.mp3',
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
-			                 'document text_dic.txt',
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\220324-Nouveau '
-			                 'document texte.mp3',
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\Politique\\Nouveau '
-			                 'document texte.mp3'],
+			                 '{}\\EMI\\211224-Nouveau '
+			                 'document texte jjjhmhfhmgfj zkuztuz.mp3'.format(testRootDir),
+			                 '{}\\EMI\\211224-Nouveau '
+			                 'document texte.mp3'.format(testRootDir),
+			                 '{}\\EMI\\Nouveau '
+			                 'document text_dic.txt'.format(testRootDir),
+			                 '{}\\Politique\\220324-Nouveau '
+			                 'document texte.mp3'.format(testRootDir),
+			                 '{}\\Politique\\Nouveau '
+			                 'document texte.mp3'.format(testRootDir)],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 		                                                         inSubDirs=True))
@@ -793,10 +793,10 @@ class TestDirUtil(unittest.TestCase):
 		                  'Politique\\Nouveau document texte.mp3',
 		                  'EMI\\211224-Nouveau document texte jjjhmhfhmgfj zkuztuz.mp3'], deletedFilePathNameLst)
 		self.assertEqual([
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\211224-Nouveau '
-			                 'document texte.mp3',
-			                 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_deletePartialNameAudioFiles\\EMI\\Nouveau '
-			                 'document text_dic.txt'],
+			                 '{}\\EMI\\211224-Nouveau '
+			                 'document texte.mp3'.format(testRootDir),
+			                 '{}\\EMI\\Nouveau '
+			                 'document text_dic.txt'.format(testRootDir)],
 		                 DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
 		                                                         fileNamePattern='*.*',
 		                                                         inSubDirs=True))
