@@ -692,7 +692,7 @@ class TestDirUtil(unittest.TestCase):
 	def testGetAudioFilesSortedByDateInfoList(self):
 		testDirName = 'testDownloadFilesHisto'
 		
-		testAudioDirRoot = DirUtil.getTestDataPath()
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 		
 		audioFileHistoryLst = DirUtil.getAudioFilesSortedByDateInfoList(targetDir=testPath,
@@ -708,7 +708,7 @@ class TestDirUtil(unittest.TestCase):
 		'''
 		
 	def testDeleteAudioFiles(self):
-		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
+		testRootDir = DirUtil.getTestAudioRootPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
 		testRootDirSaved = testRootDir + '_saved'
 		
 		# restoring dic text files
@@ -755,7 +755,7 @@ class TestDirUtil(unittest.TestCase):
 		DirUtil.deleteDirAndItsSubDirs(testRootDir)
 	
 	def testDeleteAudioFiles_playlist_dir_not_exist(self):
-		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
+		testRootDir = DirUtil.getTestAudioRootPath() + sep + "test_DirUtil_deletePartialNameAudioFiles"  # Windows audio dir
 		testRootDirSaved = testRootDir + '_saved'
 		
 		# restoring dic text files
@@ -807,7 +807,7 @@ class TestDirUtil(unittest.TestCase):
 	def testGetListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate(self):
 		playlistDir = 'C:\\Users\\Jean-Pierre\\Downloads\\Audio\\test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate'
 
-		testRootDir = DirUtil.getTestDataPath() + sep + "test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate"  # Windows audio dir
+		testRootDir = DirUtil.getTestAudioRootPath() + sep + "test_DirUtil_getListOfFilesCreatedOrModifiedBeforeDate"  # Windows audio dir
 		testRootDirSaved = testRootDir + '_saved'
 		
 		# restoring dic text files

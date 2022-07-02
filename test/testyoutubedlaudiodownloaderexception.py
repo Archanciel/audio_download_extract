@@ -436,7 +436,7 @@ class TestYoutubeDlAudioDownloaderException(unittest.TestCase):
 		playlistName = 'test_audio_downloader_two_files'
 		subTestDirName = 'two_files_6'
 		validPlaylistDirName = DirUtil.replaceUnauthorizedDirOrFileNameChars(playlistName)
-		testAudioRootPath = DirUtil.getTestDataPath()
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
 		testAudioRootSubDirPath = testAudioRootPath + sep + subTestDirName
 		downloadDir = testAudioRootSubDirPath + sep + validPlaylistDirName
 		downloadDirSaved = downloadDir + '_saved'
