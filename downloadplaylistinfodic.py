@@ -1,5 +1,6 @@
 import os
 import posixpath
+import re
 from datetime import datetime
 from os.path import sep
 
@@ -7,6 +8,8 @@ from constants import *
 from dirutil import DirUtil
 from baseinfodic import BaseInfoDic
 from failedvideoplaylistinfo import FailedVideoPlaylistInfo
+
+DATE_PREFIX_PATTERN = r'(^[\d-]{6}).+.mp3'
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
@@ -551,7 +554,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		Returns the video info dic associated to the passed video index.
 		Protected method used internally only.
 
-		:param videoIndex:
+		:param videoIndex: int index
 		:return: dictionary containing video information or empty dictionary
 				 if no video info for the passed video index exist.
 		'''
@@ -874,6 +877,36 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		on the PC and then manually copied on the smartphone.
 		"""
 		pass
+	
+	def getRedownloadedFailedVideoIndexes(self):
+		"""
+		Returns a list of re-download failed video int indexes. Those videos
+		were re-downloaded on the PC and are manually copied on the smartphone. As
+		they have been re-downloaded, their download date time is after their
+		audio filename date prefix. The method returns a list of int video indexes
+		whose download date is after their audio file name date prefix.
+
+		:return: list of re-download failed video int indexes
+		"""
+		failedVideoIndexLst = []
+		
+		for videoIndexStr, videoDic in self.dic[KEY_VIDEOS].items():
+			videoAudioFileName = videoDic[KEY_VIDEO_DOWNLOAD_FILENAME]
+			match = re.search(DATE_PREFIX_PATTERN, videoAudioFileName)
+			
+			if match is None:
+				# the case if the video audio file name prefix is an old 2 digits prefix
+				continue
+			else:
+				datePrefixStr = match.group(1)
+				downloadDateTimeStr = videoDic[KEY_VIDEO_DOWNLOAD_TIME]
+				prefixDate = datetime.strptime(datePrefixStr,"%y%m%d")
+				downloadDate = datetime.strptime(downloadDateTimeStr.split(' ')[0], "%d/%m/%Y")
+				
+				if downloadDate > prefixDate:
+					failedVideoIndexLst.append(int(videoIndexStr))
+
+		return failedVideoIndexLst
 	
 	@staticmethod
 	def getPlaylistUrlTitleCachedDic(audioDirRoot):

@@ -1186,6 +1186,40 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# removing test path to avoid uploading it on GitHub
 		shutil.rmtree(testPath)
 	
+	def testGetRedownloadedFailedVideoIndexes(self):
+		testDirName = 'test_renameRedownloadedFailedVideos'
+		testDirNameSaved = testDirName + '_saved'
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		testPathSaved = testAudioDirRoot + sep + testDirNameSaved
+		
+		# restoring test dir
+		
+		if os.path.exists(testPath):
+			shutil.rmtree(testPath)
+		
+		shutil.copytree(testPathSaved, testPath)
+		
+		# obtaining the download video info dic file path name
+		dicFileNameLst = DirUtil.getFilePathNamesInDirForPattern(testPath,
+		                                                         '*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT)
+		dicFilePathName = dicFileNameLst[0]
+		
+		dvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName)
+		
+		self.assertIsNotNone(dvi)
+		
+		self.assertEqual("Jean Marc Jancovici : Ma France décarbonée ! | Ça vous regarde - 23/02/2022",
+		                 dvi.getVideoTitleForVideoIndex(39))
+		self.assertEqual(
+			"#25 : Le Plan de transformation de l'économie française du Shift Project, avec Jean-Marc Jancovici",
+			dvi.getVideoTitleForVideoIndex(52))
+		
+		self.assertEqual([39, 52], dvi.getRedownloadedFailedVideoIndexes())
+		
+		# removing test path to avoid uploading it on GitHub
+		shutil.rmtree(testPath)
+	
 	def testGetFailedVideoPlaylistInfoLst(self):
 		testDirName = 'test_getPlaylistDicContainingFailedVideos'
 
@@ -1213,4 +1247,4 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testRenameRedownloadedFailedVideos()
+	tst.testGetRedownloadedFailedVideoIndexes()
