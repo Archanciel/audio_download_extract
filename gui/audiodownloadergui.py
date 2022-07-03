@@ -1037,7 +1037,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
 		
-		self.failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoPlaylistInfoLst(
+		self.failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoOnSmartphonePlaylistInfoLst(
 			self.audiobookPath)
 		
 		if len(self.failedVideoPlaylistInfoLst) > 0:
