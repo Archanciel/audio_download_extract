@@ -7,7 +7,10 @@ from os.path import sep
 from constants import *
 from dirutil import DirUtil
 from baseinfodic import BaseInfoDic
-from failedvideoplaylistinfo import FailedVideoPlaylistInfo
+from playlistvideoindexinfo import PlaylistVideoIndexInfo
+
+METHOD_FAILED_VIDEO_INDEX = 0
+METHOD_REDOWNLOADED_VIDEO_INDEX = 1
 
 DATE_PREFIX_PATTERN = r'(^[\d-]{6}).+.mp3'
 
@@ -987,13 +990,19 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		Returns playlist's which contains at least one video with vd_downlException
 		= True, i.e. video whose audio download on smartphone failed.
 		
-		More precisely, returns a list of FailedVideoPlaylistInfo. The
-		FailedVideoPlaylistInfo's are instantiated only for playlist info dic
+		More precisely, returns a list of PlaylistVideoIndexInfo. The
+		PlaylistVideoIndexInfo's are instantiated only for playlist info dic
 		containing at least one failed video downloaded on smartphone.
 		
-		:return: failedVideoPlaylistInfoLst
+		:return: PlaylistVideoIndexInfoLst
 		"""
-		failedVideoPlaylistInfoLst = []
+		return DownloadPlaylistInfoDic.getPlaylistInfoList(audioDirRoot=audioDirRoot,
+		                                                   videoIndexMethodType=METHOD_FAILED_VIDEO_INDEX)
+	
+	@staticmethod
+	def getPlaylistInfoList(audioDirRoot,
+	                        videoIndexMethodType):
+		videoPlaylistInfoLst = []
 		
 		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
 		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
@@ -1005,13 +1014,17 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				# AudioDownloaderGUI URL's list
 				continue
 			
-			failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+			if videoIndexMethodType == METHOD_FAILED_VIDEO_INDEX:
+				videoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+			elif videoIndexMethodType == METHOD_REDOWNLOADED_VIDEO_INDEX:
+				videoIndexList = downloadPlaylistInfoDic.getRedownloadedFailedVideoIndexes()
+			else:
+				raise TypeError('Invalid  videoIndexMethodType {}'.format(videoIndexMethodType))
 			
-			if failedVideoIndexList != []:
-				failedVideoPlaylistInfoLst.append(FailedVideoPlaylistInfo(playlistInfoDic=downloadPlaylistInfoDic,
-				                                                          failedVideoIndexLst=failedVideoIndexList))
-
-		return failedVideoPlaylistInfoLst
+			if videoIndexList != []:
+				videoPlaylistInfoLst.append(PlaylistVideoIndexInfo(playlistInfoDic=downloadPlaylistInfoDic,
+				                                                   videoIndexLst=videoIndexList))
+		return videoPlaylistInfoLst
 	
 	@staticmethod
 	def getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot):
@@ -1020,31 +1033,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		on PC, i.e. a video whose download date is after the audio file name date
 		prefix.
 		
-		More precisely, returns a list of FailedVideoPlaylistInfo. The
-		FailedVideoPlaylistInfo's are instantiated only for playlist info dic
+		More precisely, returns a list of PlaylistVideoIndexInfo. The
+		PlaylistVideoIndexInfo's are instantiated only for playlist info dic
 		containing at least one video re-downloaded on PC.
 
-		:return: failedVideoPlaylistInfoLst
+		:return: PlaylistVideoIndexInfoLst
 		"""
-		failedVideoPlaylistInfoLst = []
-		
-		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
-		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
-		                                                                    inSubDirs=True):
-			downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
-			
-			if downloadPlaylistInfoDic.getPlaylistUrl() == None:
-				# the case for the download url info dic used to fill the
-				# AudioDownloaderGUI URL's list
-				continue
-			
-			failedVideoIndexList = downloadPlaylistInfoDic.getRedownloadedFailedVideoIndexes()
-			
-			if failedVideoIndexList != []:
-				failedVideoPlaylistInfoLst.append(FailedVideoPlaylistInfo(playlistInfoDic=downloadPlaylistInfoDic,
-				                                                          failedVideoIndexLst=failedVideoIndexList))
-		
-		return failedVideoPlaylistInfoLst
+		return DownloadPlaylistInfoDic.getPlaylistInfoList(audioDirRoot=audioDirRoot,
+		                                                   videoIndexMethodType=METHOD_REDOWNLOADED_VIDEO_INDEX)
 
 
 if __name__ == "__main__":
