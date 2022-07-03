@@ -984,9 +984,12 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	@staticmethod
 	def getFailedVideoOnSmartphonePlaylistInfoLst(audioDirRoot):
 		"""
-		Returns a list of FailedVideoPlaylistInfo. The FailedVideoPlaylistInfo's are
-		instantiated only for playlist info dic containing at least one failed
-		video downloaded on smartphone.
+		Returns playlist's which contains at least one video with vd_downlException
+		= True, i.e. video whose audio download on smartphone failed.
+		
+		More precisely, returns a list of FailedVideoPlaylistInfo. The
+		FailedVideoPlaylistInfo's are instantiated only for playlist info dic
+		containing at least one failed video downloaded on smartphone.
 		
 		:return: failedVideoPlaylistInfoLst
 		"""
@@ -1011,11 +1014,15 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		return failedVideoPlaylistInfoLst
 	
 	@staticmethod
-	def getDownloadedFailedVideoPlaylistInfoLst(audioDirRoot):
+	def getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot):
 		"""
-		Returns a list of FailedVideoPlaylistInfo. The FailedVideoPlaylistInfo's are
-		instantiated only for playlist info dic containing at least one failed
-		downloaded video.
+		Returns playlist's which contains at least one video which was re-downloaded
+		on PC, i.e. a video whose download date is after the audio file name date
+		prefix.
+		
+		More precisely, returns a list of FailedVideoPlaylistInfo. The
+		FailedVideoPlaylistInfo's are instantiated only for playlist info dic
+		containing at least one video re-downloaded on PC.
 
 		:return: failedVideoPlaylistInfoLst
 		"""
@@ -1031,7 +1038,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				# AudioDownloaderGUI URL's list
 				continue
 			
-			failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+			failedVideoIndexList = downloadPlaylistInfoDic.getRedownloadedFailedVideoIndexes()
 			
 			if failedVideoIndexList != []:
 				failedVideoPlaylistInfoLst.append(FailedVideoPlaylistInfo(playlistInfoDic=downloadPlaylistInfoDic,
