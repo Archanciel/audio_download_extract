@@ -982,11 +982,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 
 	@staticmethod
-	def getFailedVideoPlaylistInfoLst(audioDirRoot):
+	def getFailedVideoOnSmartphonePlaylistInfoLst(audioDirRoot):
 		"""
 		Returns a list of FailedVideoPlaylistInfo. The FailedVideoPlaylistInfo's are
 		instantiated only for playlist info dic containing at least one failed
-		downloaded video.
+		video downloaded on smartphone.
 		
 		:return: failedVideoPlaylistInfoLst
 		"""
@@ -1009,6 +1009,36 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				                                                          failedVideoIndexLst=failedVideoIndexList))
 
 		return failedVideoPlaylistInfoLst
+	
+	@staticmethod
+	def getDownloadedFailedVideoPlaylistInfoLst(audioDirRoot):
+		"""
+		Returns a list of FailedVideoPlaylistInfo. The FailedVideoPlaylistInfo's are
+		instantiated only for playlist info dic containing at least one failed
+		downloaded video.
+
+		:return: failedVideoPlaylistInfoLst
+		"""
+		failedVideoPlaylistInfoLst = []
+		
+		for playlistFilePathName in DirUtil.getFilePathNamesInDirForPattern(targetDir=audioDirRoot,
+		                                                                    fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
+		                                                                    inSubDirs=True):
+			downloadPlaylistInfoDic = DownloadPlaylistInfoDic(existingDicFilePathName=playlistFilePathName)
+			
+			if downloadPlaylistInfoDic.getPlaylistUrl() == None:
+				# the case for the download url info dic used to fill the
+				# AudioDownloaderGUI URL's list
+				continue
+			
+			failedVideoIndexList = downloadPlaylistInfoDic.getFailedVideoIndexes()
+			
+			if failedVideoIndexList != []:
+				failedVideoPlaylistInfoLst.append(FailedVideoPlaylistInfo(playlistInfoDic=downloadPlaylistInfoDic,
+				                                                          failedVideoIndexLst=failedVideoIndexList))
+		
+		return failedVideoPlaylistInfoLst
+
 
 if __name__ == "__main__":
 	if os.name == 'posix':
