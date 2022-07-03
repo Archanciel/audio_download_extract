@@ -1220,13 +1220,13 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		# removing test path to avoid uploading it on GitHub
 		shutil.rmtree(testPath)
 	
-	def testGetFailedVideoOnSmartphonePlaylistInfoLst(self):
-		testDirName = 'test_getFailedVideoOnSmartphonePlaylistInfoLst'
+	def testGetFailedVideoDownloadedOnSmartphonePlaylistInfoLst(self):
+		testDirName = 'test_getFailedVideoDownloadedOnSmartphonePlaylistInfoLst'
 
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 
-		failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoOnSmartphonePlaylistInfoLst(audioDirRoot=testPath)
+		failedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoDownloadedOnSmartphonePlaylistInfoLst(audioDirRoot=testPath)
 
 		self.assertEqual(2, len(failedVideoPlaylistInfoLst))
 		

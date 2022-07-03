@@ -985,7 +985,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			DownloadPlaylistInfoDic.jsonSaveDic(urlTitleDic, dicFilePathName)
 
 	@staticmethod
-	def getFailedVideoOnSmartphonePlaylistInfoLst(audioDirRoot):
+	def getFailedVideoDownloadedOnSmartphonePlaylistInfoLst(audioDirRoot):
 		"""
 		Returns playlist's which contains at least one video with vd_downlException
 		= True, i.e. video whose audio download on smartphone failed.
