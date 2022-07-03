@@ -1243,7 +1243,35 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual('Stéphane Brisset', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadBaseSubDir())
 		self.assertEqual(1, len(failedVideoPlaylistInfoTwo.failedVideoIndexLst))
 		self.assertEqual([15], failedVideoPlaylistInfoTwo.failedVideoIndexLst)
+	
+	def testGetFailedVideoRedownloadedOnPcPlaylistInfoLst(self):
+		testDirName = 'test_getFailedVideoRedownloadedOnPcPlaylistInfoLst'
 		
+		testAudioDirRoot = DirUtil.getTestAudioRootPath()
+		testPath = testAudioDirRoot + sep + testDirName
+		
+		redownloadedFailedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(
+			audioDirRoot=testPath)
+		
+		self.assertEqual(2, len(redownloadedFailedVideoPlaylistInfoLst))
+		
+		failedVideoPlaylistInfoOne = redownloadedFailedVideoPlaylistInfoLst[0]
+		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(3, len(failedVideoPlaylistInfoOne.failedVideoIndexLst))
+		self.assertEqual([19, 20, 24], failedVideoPlaylistInfoOne.failedVideoIndexLst)
+		
+		failedVideoPlaylistInfoTwo = redownloadedFailedVideoPlaylistInfoLst[1]
+		self.assertEqual('Conférences et Web-conférences',
+		                 failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('Stéphane Brisset/Conférences et Web-conférences',
+		                 failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('Stéphane Brisset', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(1, len(failedVideoPlaylistInfoTwo.failedVideoIndexLst))
+		self.assertEqual([15], failedVideoPlaylistInfoTwo.failedVideoIndexLst)
+
+
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()

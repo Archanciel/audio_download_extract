@@ -1000,6 +1000,22 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		                                                   videoIndexMethodType=METHOD_FAILED_VIDEO_INDEX)
 	
 	@staticmethod
+	def getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot):
+		"""
+		Returns playlist's which contains at least one video which was re-downloaded
+		on PC, i.e. a video whose download date is after the audio file name date
+		prefix.
+
+		More precisely, returns a list of PlaylistVideoIndexInfo. The
+		PlaylistVideoIndexInfo's are instantiated only for playlist info dic
+		containing at least one video re-downloaded on PC.
+
+		:return: PlaylistVideoIndexInfoLst
+		"""
+		return DownloadPlaylistInfoDic.getPlaylistInfoList(audioDirRoot=audioDirRoot,
+		                                                   videoIndexMethodType=METHOD_REDOWNLOADED_VIDEO_INDEX)
+	
+	@staticmethod
 	def getPlaylistInfoList(audioDirRoot,
 	                        videoIndexMethodType):
 		videoPlaylistInfoLst = []
@@ -1025,22 +1041,6 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				videoPlaylistInfoLst.append(PlaylistVideoIndexInfo(playlistInfoDic=downloadPlaylistInfoDic,
 				                                                   videoIndexLst=videoIndexList))
 		return videoPlaylistInfoLst
-	
-	@staticmethod
-	def getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot):
-		"""
-		Returns playlist's which contains at least one video which was re-downloaded
-		on PC, i.e. a video whose download date is after the audio file name date
-		prefix.
-		
-		More precisely, returns a list of PlaylistVideoIndexInfo. The
-		PlaylistVideoIndexInfo's are instantiated only for playlist info dic
-		containing at least one video re-downloaded on PC.
-
-		:return: PlaylistVideoIndexInfoLst
-		"""
-		return DownloadPlaylistInfoDic.getPlaylistInfoList(audioDirRoot=audioDirRoot,
-		                                                   videoIndexMethodType=METHOD_REDOWNLOADED_VIDEO_INDEX)
 
 
 if __name__ == "__main__":

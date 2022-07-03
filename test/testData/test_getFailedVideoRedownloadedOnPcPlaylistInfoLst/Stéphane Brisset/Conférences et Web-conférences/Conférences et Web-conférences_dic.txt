@@ -1,0 +1,69 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "St\u00e9phane Brisset/Conf\u00e9rences et Web-conf\u00e9rences",
+        "pl_name_modified": "Conf\u00e9rences et Web-conf\u00e9rences",
+        "pl_name_original": "Conf\u00e9rences et Web-conf\u00e9rences",
+        "pl_nextVideoIndex": 16,
+        "pl_title_modified": "Conf\u00e9rences et Web-conf\u00e9rences",
+        "pl_title_original": "Conf\u00e9rences et Web-conf\u00e9rences",
+        "pl_url": "https://youtube.com/playlist?list=PLoZqjnf45x7gczGHGz4qtNqrrCTd_MLNW"
+    },
+    "videos": {
+        "10": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-\ud83d\uded2. 05) A vendre DIT - St\u00e9phane Brisset (auteur) 19-12-13.mp3",
+            "vd_downlTime": "19/06/2022 07:46:44",
+            "vd_title": "\ud83d\uded2. 05) A vendre DIT - St\u00e9phane Brisset (auteur)",
+            "vd_url": "https://www.youtube.com/watch?v=McwGJFmJCGE"
+        },
+        "11": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-COMMENT ACC\u00c9DER A VOTRE PROPRE GUIDANCE SPIRITUELLE  - St\u00e9phane BRISSET 19-05-11.mp3",
+            "vd_downlTime": "19/06/2022 07:49:43",
+            "vd_title": "COMMENT ACC\u00c9DER A VOTRE PROPRE GUIDANCE SPIRITUELLE  - St\u00e9phane BRISSET",
+            "vd_url": "https://www.youtube.com/watch?v=pA3lopkJL84"
+        },
+        "13": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-COMMENT ACC\u00c9DER \u00c0 VOTRE PROPRE GUIDANCE SPIRITUELLE  - St\u00e9phane BRISSET 22-03-09.mp3",
+            "vd_downlTime": "19/06/2022 07:54:17",
+            "vd_title": "COMMENT ACC\u00c9DER \u00c0 VOTRE PROPRE GUIDANCE SPIRITUELLE ? - St\u00e9phane BRISSET",
+            "vd_url": "https://www.youtube.com/watch?v=ZrNxQ5wl0PQ"
+        },
+        "14": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-MARCHE TA VOIE, \u00c9CRIS TA VOIX  - L'UNIVERS EST EN TOI ! 22-03-21.mp3",
+            "vd_downlTime": "19/06/2022 07:55:40",
+            "vd_title": "MARCHE TA VOIE, \u00c9CRIS TA VOIX : L'UNIVERS EST EN TOI !",
+            "vd_url": "https://www.youtube.com/watch?v=1f6rmmw5zE4"
+        },
+        "15": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-LVA INTERVIEW avec Ste\u0301phane BRISSET 20-01-27.mp3",
+            "vd_downlTime": "30/06/2022 05:18:53",
+            "vd_title": "LVA INTERVIEW avec Ste\u0301phane BRISSET",
+            "vd_url": "https://www.youtube.com/watch?v=cMrb7SDDWms"
+        },
+        "3": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220614-Le 24_04_2019 \u00e0 20h 'D\u00e9couverte de sa Propre Guidance' avec St\u00e9phane BRISSET & Clumis V. 19-04-24.mp3",
+            "vd_downlTime": "14/06/2022 00:23:50",
+            "vd_title": "Le 24/04/2019 \u00e0 20h \"D\u00e9couverte de sa Propre Guidance\" avec St\u00e9phane BRISSET & Clumis V.",
+            "vd_url": "https://www.youtube.com/watch?v=-qvV7pNFLZU"
+        },
+        "4": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220614-Le 28_05_2019 \u00e0 20h30 'L'\u00e9go  - ennemi, illusion ou ami!' avec St\u00e9phane Brisset et Michel Morin 19-05-28.mp3",
+            "vd_downlTime": "14/06/2022 00:34:41",
+            "vd_title": "Le 28/05/2019 \u00e0 20h30 \"L'\u00e9go : ennemi, illusion ou ami?!\" avec St\u00e9phane Brisset et Michel Morin",
+            "vd_url": "https://www.youtube.com/watch?v=HW1KQLhve4c"
+        },
+        "6": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220614-26_06_2019 \u00e0 20h30 'Sommes-nous les cr\u00e9ateurs absolus de toute notre r\u00e9alit\u00e9 ' avec St\u00e9phane B. 19-06-26.mp3",
+            "vd_downlTime": "14/06/2022 00:52:19",
+            "vd_title": "26/06/2019 \u00e0 20h30 \"Sommes-nous les cr\u00e9ateurs absolus de toute notre r\u00e9alit\u00e9 ?\" avec St\u00e9phane B.",
+            "vd_url": "https://www.youtube.com/watch?v=U7_JT1BwtOk"
+        }
+    }
+}
