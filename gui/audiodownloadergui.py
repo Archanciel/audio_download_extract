@@ -2008,12 +2008,25 @@ class AudioDownloaderGUI(AudioGUI):
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
-		failedVideoRedownloadedDisplayMessage = self.audioController.createFailedVideoRedownloadedDisplayMessage(
+		redownloadedVideoMsgLst = self.audioController.createFailedVideoRedownloadedDisplayMsgLst(
 			audioDirRoot=self.audiobookPath)
-		endDownloadInfoStr += failedVideoRedownloadedDisplayMessage
+		endDownloadInfoStr += self.formatRedownloadedVideoMsgLst(redownloadedVideoMsgLst)
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
-	
+
+	def formatRedownloadedVideoMsgLst(self, msgLineLst):
+		formattedMsgStr = '\n\n[b][color=00FF00]REDOWNLOADED FAILED VIDEOS[/color][/b]'
+		
+		for line in msgLineLst:
+			if '\t' in line:
+				# video file name, not formatted
+				formattedMsgStr += line.replace('\t', '\n[b]    ') + '[/b]'
+			else:
+				# playlist dir
+				formattedMsgStr += '\n\n[b][color=00FF00]' + line.replace('/', sep) + '[/color][/b]'
+				
+		return formattedMsgStr
+		
 	def addToOutputLabelStr(self, endDownloadInfoStr, outputLabelLineLst):
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)

@@ -932,26 +932,31 @@ class TestAudioController(unittest.TestCase):
 		testAudioDirRoot = DirUtil.getTestAudioRootPath()
 		testPath = testAudioDirRoot + sep + testDirName
 		
-		msg = audioController.createFailedVideoRedownloadedDisplayMessage(audioDirRoot=testPath)
+		msg = audioController.createFailedVideoRedownloadedDisplayMsgLst(audioDirRoot=testPath)
 
-		self.assertEqual("""
-EMI
-	220623-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3
-JMJ
-	220312-Jean Marc Jancovici  - Ma France décarbonée ! _ Ça vous regarde - 23_02_2022 22-02-23.mp3
-	220421-#25  - Le Plan de transformation de l'économie française du Shift Project, avec Jean-Marc Jancovici 22-04-07.mp3
-RéchCli
-	220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3
-	220413-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3
-	220317-VOUS ALLEZ TOUS CREVER 22-03-16.mp3
-	220331-#64 - Sols  - un massacre silencieux  Marc-André Selosse 22-03-15.mp3
-	220401-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3
-Sols
-	220402-Tchatche 2.0  - Parlons virus et épidémies avec Marc-André Selosse 20-11-12.mp3
-	220402-Marc-André Selosse  - Il est urgent que la recherche sorte du labo ! 20-12-15.mp3
-	220402-Demain la Terre - Marc-André SELOSSE  - 'Quelle agriculture pour demain ' 20-12-05.mp3
-Stéphane Brisset/Conférences et Web-conférences
-	220619-LVA INTERVIEW avec Stéphane BRISSET 20-01-27.mp3""", msg)
+		self.assertEqual(['EMI',
+ "\t220623-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+ 'JMJ',
+ '\t220312-Jean Marc Jancovici  - Ma France décarbonée ! _ Ça vous regarde - '
+ '23_02_2022 22-02-23.mp3',
+ "\t220421-#25  - Le Plan de transformation de l'économie française du Shift "
+ 'Project, avec Jean-Marc Jancovici 22-04-07.mp3',
+ 'RéchCli',
+ '\t220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+ '\t220413-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3',
+ '\t220317-VOUS ALLEZ TOUS CREVER 22-03-16.mp3',
+ '\t220331-#64 - Sols  - un massacre silencieux  Marc-André Selosse '
+ '22-03-15.mp3',
+ '\t220401-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+ 'Sols',
+ '\t220402-Tchatche 2.0  - Parlons virus et épidémies avec Marc-André Selosse '
+ '20-11-12.mp3',
+ '\t220402-Marc-André Selosse  - Il est urgent que la recherche sorte du labo '
+ '! 20-12-15.mp3',
+ "\t220402-Demain la Terre - Marc-André SELOSSE  - 'Quelle agriculture pour "
+ "demain ' 20-12-05.mp3",
+ 'Stéphane Brisset/Conférences et Web-conférences',
+ '\t220619-LVA INTERVIEW avec Stéphane BRISSET 20-01-27.mp3'], msg)
 
 if __name__ == '__main__':
 #	unittest.main()

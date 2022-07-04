@@ -750,8 +750,8 @@ class AudioController:
 		else:
 			return None
 	
-	def createFailedVideoRedownloadedDisplayMessage(self, audioDirRoot):
-		message = ''
+	def createFailedVideoRedownloadedDisplayMsgLst(self, audioDirRoot):
+		msgLst = []
 		playlistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot=audioDirRoot)
 		sortedPlaylistInfoLst = sorted(playlistInfoLst,
 		                               key=lambda playlistInfo: playlistInfo.playlistInfoDic.getPlaylistDownloadSubDir())
@@ -759,11 +759,12 @@ class AudioController:
 		for playlistInfo in sortedPlaylistInfoLst:
 			downloadPlaylistInfoDic = playlistInfo.playlistInfoDic
 			redownloadedVideoIndexLst = playlistInfo.videoIndexLst
-			message += '\n' + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			msgLst.append(downloadPlaylistInfoDic.getPlaylistDownloadSubDir())
 			for redownloadedVideoIndex in redownloadedVideoIndexLst:
-				message += '\n\t' + downloadPlaylistInfoDic.getVideoAudioFileNameForVideoIndex(redownloadedVideoIndex)
+				msgLst.append(
+					'\t' + downloadPlaylistInfoDic.getVideoAudioFileNameForVideoIndex(redownloadedVideoIndex))
 
-		return message
+		return msgLst
 
 
 if __name__ == "__main__":
