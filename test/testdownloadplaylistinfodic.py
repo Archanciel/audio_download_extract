@@ -1316,7 +1316,16 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
  '220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
  '220413-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3'], filePathNameLst)
 		
-		DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=testRootDir)
+		renamedVideoAudioFileDic = DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=testRootDir)
+		self.assertEqual({'EMI': ["220704-Expérience de mort imminente, Je reviens de l'au-delà. "
+         '22-02-18.mp3'],
+ 'RéchCli': ['220704-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+             '220704-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3',
+             '220704-VOUS ALLEZ TOUS CREVER 22-03-16.mp3',
+             '220401-#64 - Sols  - un massacre silencieux  Marc-André Selosse '
+             '22-03-15.mp3',
+             '220704-#2  - Comment nourrir le monde _ Marc Dufumier '
+             '22-03-23.mp3']}, renamedVideoAudioFileDic)
 		filePathNameLst = DirUtil.getFileNamesInDirForPattern(targetDir=testRootDir,
 		                                                      fileNamePattern='*.mp3',
 		                                                      inSubDirs=True)

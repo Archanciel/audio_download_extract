@@ -1079,7 +1079,36 @@ class AudioDownloaderGUI(AudioGUI):
 		on the smartphone. The new file name is the old file name with its
 		date prefix replaced by the video download date value.
 		"""
-		DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=self.audiobookPath)
+		self.dropDownMenu.dismiss()
+		
+		renamedVideoAudioFileDic = DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=self.audiobookPath)
+		self.displayRenamedVideoAudioFiles(renamedVideoAudioFileDic)
+	
+	def displayRenamedVideoAudioFiles(self, renamedVideoAudioFileDic):
+		"""
+		Method called after renaming the video re-downloaded on PC is finished.
+		"""
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		
+		endDownloadInfoStr = self.buildEndDownloadInfoStr()
+		
+		if len(renamedVideoAudioFileDic) > 0:
+			endDownloadInfoStr += self.formatRenamedVideoDic(renamedVideoAudioFileDic)
+		
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
+	
+	def formatRenamedVideoDic(self, renamedVideoAudioFileDic):
+		formattedMsgStr = '\n\n[b][color=00FF00]REDOWNLOADED RENAMED VIDEOS[/color][/b]'
+		sortedDicTupleLst = sorted(renamedVideoAudioFileDic.items())
+		
+		for dicTuple in sortedDicTupleLst:
+			playlistSubDir = dicTuple[0]
+			formattedMsgStr += '\n\n[b][color=00FF00]' + playlistSubDir.replace('/', sep) + '[/color][/b]'
+			newAudioFileNameLst = dicTuple[1]
+			for newAudioFileName in newAudioFileNameLst:
+				formattedMsgStr += '\n    [b]' + newAudioFileName + '[/b]'
+		
+		return formattedMsgStr
 	
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
@@ -2010,7 +2039,9 @@ class AudioDownloaderGUI(AudioGUI):
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
 		redownloadedVideoMsgLst = self.audioController.createFailedVideoRedownloadedDisplayMsgLst(
 			audioDirRoot=self.audiobookPath)
-		endDownloadInfoStr += self.formatRedownloadedVideoMsgLst(redownloadedVideoMsgLst)
+	
+		if len(redownloadedVideoMsgLst) > 0:
+			endDownloadInfoStr += self.formatRedownloadedVideoMsgLst(redownloadedVideoMsgLst)
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 
@@ -2020,7 +2051,7 @@ class AudioDownloaderGUI(AudioGUI):
 		for line in msgLineLst:
 			if '\t' in line:
 				# video file name, not formatted
-				formattedMsgStr += line.replace('\t', '\n[b]    ') + '[/b]'
+				formattedMsgStr += line.replace('\t', '\n    [b]') + '[/b]'
 			else:
 				# playlist dir
 				formattedMsgStr += '\n\n[b][color=00FF00]' + line.replace('/', sep) + '[/color][/b]'

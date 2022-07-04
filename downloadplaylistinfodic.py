@@ -1041,11 +1041,14 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	def renameFailedVideosUpdatedFromPC(audioDirRoot):
 		playlistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(
 			audioDirRoot=audioDirRoot)
+		renamedVideoAudioFileDic = {}
 		
 		for playlistInfo in playlistInfoLst:
 			downloadPlaylistInfoDic = playlistInfo.playlistInfoDic
 			redownloadedVideoIndexLst = playlistInfo.videoIndexLst
-			playlistDirectory = audioDirRoot + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			playlistDownloadSubDir = downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			renamedVideoAudioFileDic[playlistDownloadSubDir] = []
+			playlistDirectory = audioDirRoot + sep + playlistDownloadSubDir
 			
 			for redownloadedVideoIndex in redownloadedVideoIndexLst:
 				videoAudioFileName = downloadPlaylistInfoDic.getVideoAudioFileNameForVideoIndex(redownloadedVideoIndex)
@@ -1054,12 +1057,15 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 					videoAudioFileName=videoAudioFileName)
 				newPrefixStr = downloadDate.strftime("%y%m%d")
 				newVideoAudioFileName = videoAudioFileName.replace(currentPrefixStr, newPrefixStr)
+				renamedVideoAudioFileDic[playlistDownloadSubDir].append(newVideoAudioFileName)
 				videoAudioFilePathName = playlistDirectory + sep + videoAudioFileName
 				DirUtil.renameFile(originalFilePathName=videoAudioFilePathName,
 				                   newFileName=newVideoAudioFileName)
 				downloadPlaylistInfoDic.setVideoAudioFileNameForVideoIndex(videoIndex=redownloadedVideoIndex,
 				                                                           audioFileName=newVideoAudioFileName)
 				downloadPlaylistInfoDic.saveDic(audioDirRoot=audioDirRoot)
+				
+		return renamedVideoAudioFileDic
 				
 	@staticmethod
 	def getDownloadDatePrefixDatePrefixStr(videoDic,
