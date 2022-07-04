@@ -1098,7 +1098,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	
 	def formatRenamedVideoDic(self, renamedVideoAudioFileDic):
-		formattedMsgStr = '\n\n[b][color=00FF00]REDOWNLOADED RENAMED VIDEOS[/color][/b]'
+		formattedMsgStr = '\n\n[b][color=00FF00]RENAMED REDOWNLOADED VIDEOS[/color][/b]'
 		sortedDicTupleLst = sorted(renamedVideoAudioFileDic.items())
 		
 		for dicTuple in sortedDicTupleLst:
