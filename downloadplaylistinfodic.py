@@ -12,7 +12,7 @@ from playlistvideoindexinfo import PlaylistVideoIndexInfo
 METHOD_FAILED_VIDEO_INDEX = 0
 METHOD_REDOWNLOADED_VIDEO_INDEX = 1
 
-DATE_PREFIX_PATTERN = r'(^[\d-]{6}).+.mp3'
+DATE_PREFIX_PATTERN = r'(^[\d]{6})-.+.mp3'
 
 KEY_PLAYLIST = 'playlist'
 KEY_PLAYLIST_URL = 'pl_url'
@@ -818,8 +818,9 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		"""
 		Return the modified play list name, which is the modified playlist title
 		without the optional extract or suppress time frames definitions. Note that
-		if the original playlist name or title were not modified, the modified playlist
-		name or title value are set to the original name or title value !
+		if the original playlist name or title were not modified, the modified
+		playlist name or title value are set to the original name or title value !
+		
 		Ex:
 		original playlist name = test_audio_downloader_two_files_with_time_frames
 		modified playlist name = test_audio_downloader_two_files_with_time_frames

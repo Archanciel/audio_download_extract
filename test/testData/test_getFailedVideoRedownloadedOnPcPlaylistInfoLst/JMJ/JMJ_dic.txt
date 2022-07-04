@@ -1,0 +1,264 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "JMJ",
+        "pl_name_modified": "JMJ",
+        "pl_name_original": "JMJ",
+        "pl_nextVideoIndex": 58,
+        "pl_title_modified": "JMJ",
+        "pl_title_original": "JMJ",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMRDQXmg-7zWx8b2Ww8fU25i"
+    },
+    "videos": {
+        "1": {
+            "vd_downlFileName": "99-Jean-Marc Jancovici  - La chute de Superman 2021-11-07.mp3",
+            "vd_downlTime": "26/11/2021 13:34:31",
+            "vd_title": "Jean-Marc Jancovici : La chute de Superman",
+            "vd_url": "https://www.youtube.com/watch?v=ta7HthFaHKE"
+        },
+        "10": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Jean-Marc Jancovici - 'Oui, c'est un peu la merde' _ LIMIT.mp3",
+            "vd_downlTime": "11/12/2021 14:38:53",
+            "vd_title": "Jean-Marc Jancovici - \"Oui, c'est un peu la merde\" | LIMIT",
+            "vd_url": "https://www.youtube.com/watch?v=AOJzHwhvWnQ"
+        },
+        "12": {
+            "vd_downlException": false,
+            "vd_downlFileName": "88-Jancovici  - +2 degr\u00e9s, les vaches sous les cocotiers  - Rodez - 02_12_2021 2021-12-12.mp3",
+            "vd_downlTime": "13/12/2021 20:37:36",
+            "vd_title": "Jancovici : +2 degr\u00e9s, les vaches sous les cocotiers ? - Rodez - 02/12/2021",
+            "vd_url": "https://www.youtube.com/watch?v=0KYIjNFo4kw"
+        },
+        "13": {
+            "vd_downlException": false,
+            "vd_downlFileName": "87-\ud83d\udca1 Transition \u00e9cologique, enjeux & d\u00e9fis pour le syst\u00e8me de sant\u00e9 avec JM Jancovici & Laurie Marrauld 2021-12-10.mp3",
+            "vd_downlTime": "16/12/2021 13:14:08",
+            "vd_title": "\ud83d\udca1 Transition \u00e9cologique, enjeux & d\u00e9fis pour le syst\u00e8me de sant\u00e9 avec JM Jancovici & Laurie Marrauld",
+            "vd_url": "https://www.youtube.com/watch?v=E9FlRbnyJrw"
+        },
+        "14": {
+            "vd_downlException": false,
+            "vd_downlFileName": "86-Les anti-nucl\u00e9aires sont-ils \u00e9cologistes  (JANCOVICI r\u00e9pond) 2021-12-17.mp3",
+            "vd_downlTime": "18/12/2021 02:03:25",
+            "vd_title": "Les anti-nucl\u00e9aires sont-ils \u00e9cologistes ? (JANCOVICI r\u00e9pond)",
+            "vd_url": "https://www.youtube.com/watch?v=KXjCW0NPptc"
+        },
+        "15": {
+            "vd_downlException": false,
+            "vd_downlFileName": "211231-Hors-s\u00e9rie Environnement avec Jean-Marc Jancovici - 28 Minutes - ARTE 21-12-28.mp3",
+            "vd_downlTime": "31/12/2021 21:42:49",
+            "vd_title": "Hors-s\u00e9rie Environnement avec Jean-Marc Jancovici - 28 Minutes - ARTE",
+            "vd_url": "https://www.youtube.com/watch?v=gIMTXrhj_EM"
+        },
+        "16": {
+            "vd_downlException": false,
+            "vd_downlFileName": "211231-The Shifters Switzerland - The Shift Day 2021 du 4 d\u00e9cembre Lausanne, allocution Jean-Marc Jancovici 21-12-12.mp3",
+            "vd_downlTime": "31/12/2021 21:45:12",
+            "vd_title": "The Shifters Switzerland - The Shift Day 2021 du 4 d\u00e9cembre Lausanne, allocution Jean-Marc Jancovici",
+            "vd_url": "https://www.youtube.com/watch?v=PJf7nNkWm90"
+        },
+        "17": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220128-muller Jancovici VDB contraintes, effondrement et SUV 22-01-13.mp3",
+            "vd_downlTime": "28/01/2022 14:59:51",
+            "vd_title": "muller Jancovici VDB contraintes, effondrement et SUV",
+            "vd_url": "https://www.youtube.com/watch?v=JXPq3UDpSg4"
+        },
+        "18": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220201-Jancovici  - D\u00e9carboner la France il nous faut un plan - 25_01_2022 22-01-27.mp3",
+            "vd_downlTime": "01/02/2022 14:03:32",
+            "vd_title": "Jancovici : D\u00e9carboner la France il nous faut un plan - 25/01/2022",
+            "vd_url": "https://www.youtube.com/watch?v=_UESRNRLfo4"
+        },
+        "19": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220201-Jancovici, G\u00e9m\u00e8ne, Bohler  - inaction climatique et effondrement, qui est responsable  22-01-24.mp3",
+            "vd_downlTime": "01/02/2022 14:05:26",
+            "vd_title": "Jancovici, G\u00e9m\u00e8ne, Bohler : inaction climatique et effondrement, qui est responsable ?",
+            "vd_url": "https://www.youtube.com/watch?v=82WEwF8Jtb8"
+        },
+        "2": {
+            "vd_downlException": false,
+            "vd_downlFileName": "98-Invit\u00e9s  - Jean-Marc Jancovici, Karine Le Marchand - C \u00e0 Vous - 05_11_2021 2021-11-05.mp3",
+            "vd_downlTime": "29/11/2021 23:26:58",
+            "vd_title": "Invit\u00e9s : Jean-Marc Jancovici, Karine Le Marchand - C \u00e0 Vous - 05/11/2021",
+            "vd_url": "https://www.youtube.com/watch?v=l34_1TlgeCU"
+        },
+        "20": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220204-Jancovici pr\u00e9sente le livre du Shift Project - Quotidien - 01_02_2022 22-02-03.mp3",
+            "vd_downlTime": "04/02/2022 17:52:33",
+            "vd_title": "Jancovici pr\u00e9sente le livre du Shift Project - Quotidien - 01/02/2022",
+            "vd_url": "https://www.youtube.com/watch?v=sQepYNt1nJQ"
+        },
+        "21": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220210-\u00c9viter l\u2019effondrement  Jean-Marc Jancovici et Laurent Morel   [EN DIRECT] 22-02-09.mp3",
+            "vd_downlTime": "10/02/2022 17:39:11",
+            "vd_title": "\u00c9viter l\u2019effondrement ? Jean-Marc Jancovici et Laurent Morel   [EN DIRECT]",
+            "vd_url": "https://www.youtube.com/watch?v=dmBRwFVQk_M"
+        },
+        "22": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220213-#10 Jancovici a r\u00e9pondu \u00e0 vos questions - 11_02_2022 22-02-12.mp3",
+            "vd_downlTime": "13/02/2022 14:07:34",
+            "vd_title": "#10 Jancovici a r\u00e9pondu \u00e0 vos questions - 11/02/2022",
+            "vd_url": "https://www.youtube.com/watch?v=A73muGZCooM"
+        },
+        "24": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220219-\u00c9viter l\u2019effondrement  Jean-Marc Jancovici - Laurent Morel [EN DIRECT] 22-02-09.mp3",
+            "vd_downlTime": "19/02/2022 15:24:30",
+            "vd_title": "\u00c9viter l\u2019effondrement ? Jean-Marc Jancovici - Laurent Morel [EN DIRECT]",
+            "vd_url": "https://www.youtube.com/watch?v=dmBRwFVQk_M"
+        },
+        "3": {
+            "vd_downlException": false,
+            "vd_downlFileName": "97-Jean-Marc Jancovici et Delphine Batho  - blocages et solutions de la transition \u00e9cologique 2021-11-24.mp3",
+            "vd_downlTime": "02/12/2021 15:45:07",
+            "vd_title": "Jean-Marc Jancovici et Delphine Batho : blocages et solutions de la transition \u00e9cologique",
+            "vd_url": "https://www.youtube.com/watch?v=k6tfK2SDcmI"
+        },
+        "31": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220219-Pr\u00e9sentation du Plan de transformation de l'\u00e9conomie fran\u00e7aise \u00e0 Sciences Po Paris (07_02_2022) 22-02-08.mp3",
+            "vd_downlTime": "19/02/2022 16:06:06",
+            "vd_title": "Pr\u00e9sentation du Plan de transformation de l'\u00e9conomie fran\u00e7aise \u00e0 Sciences Po Paris (07/02/2022)",
+            "vd_url": "https://www.youtube.com/watch?v=3AIZLrNGowg"
+        },
+        "34": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220227-'La neutralit\u00e9 carbone, ou tout d\u00e9construire pour tout reconstruire' J-M Jancovici - ENSTA Paris 22-02-11.mp3",
+            "vd_downlTime": "27/02/2022 07:23:35",
+            "vd_title": "\"La neutralit\u00e9 carbone, ou tout d\u00e9construire pour tout reconstruire\" J-M Jancovici - ENSTA Paris",
+            "vd_url": "https://www.youtube.com/watch?v=8_XEW6JKbSA"
+        },
+        "35": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220310-SMART IMPACT - L'invit\u00e9 de SMART IMPACT  - Jean-Marc Jancovici (The Shift Project) 22-02-18.mp3",
+            "vd_downlTime": "10/03/2022 03:05:31",
+            "vd_title": "SMART IMPACT - L'invit\u00e9 de SMART IMPACT : Jean-Marc Jancovici (The Shift Project)",
+            "vd_url": "https://www.youtube.com/watch?v=lUauIaotfPI"
+        },
+        "37": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220312-Jancovici  - Interview par Apolline de Malherbe - BFMTV -  10_03_2022 22-03-10.mp3",
+            "vd_downlTime": "12/03/2022 01:32:44",
+            "vd_title": "Jancovici : Interview par Apolline de Malherbe - BFMTV -  10/03/2022",
+            "vd_url": "https://www.youtube.com/watch?v=ak8Hn3d8DcQ"
+        },
+        "39": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220312-Jean Marc Jancovici  - Ma France d\u00e9carbon\u00e9e ! _ \u00c7a vous regarde - 23_02_2022 22-02-23.mp3",
+            "vd_downlTime": "30/06/2022 05:09:53",
+            "vd_title": "Jean Marc Jancovici : Ma France d\u00e9carbon\u00e9e ! | \u00c7a vous regarde - 23/02/2022",
+            "vd_url": "https://www.youtube.com/watch?v=hoi0AbOzN8M"
+        },
+        "4": {
+            "vd_downlException": false,
+            "vd_downlFileName": "96-Peut-on se passer du p\u00e9trole  avec Matthieu Auzanneau 2021-12-03.mp3",
+            "vd_downlTime": "05/12/2021 21:01:51",
+            "vd_title": "Peut-on se passer du p\u00e9trole ? avec Matthieu Auzanneau",
+            "vd_url": "https://www.youtube.com/watch?v=TObfFD_ac8Y"
+        },
+        "41": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220405-#02 - Un avenir sans p\u00e9trole  avec Matthieu Auzanneau (The Shift Project) 20-04-10.mp3",
+            "vd_downlTime": "05/04/2022 23:38:15",
+            "vd_title": "#02 - Un avenir sans p\u00e9trole ? avec Matthieu Auzanneau (The Shift Project)",
+            "vd_url": "https://www.youtube.com/watch?v=qtJYpKxjn-A"
+        },
+        "42": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220405-Jean-Marc Jancovici, pr\u00e9sident de The Shift Project, invit\u00e9 d'On n'arr\u00eate pas l'\u00e9co 22-03-26.mp3",
+            "vd_downlTime": "05/04/2022 23:40:40",
+            "vd_title": "Jean-Marc Jancovici, pr\u00e9sident de The Shift Project, invit\u00e9 d'On n'arr\u00eate pas l'\u00e9co",
+            "vd_url": "https://www.youtube.com/watch?v=J-DVS5az6jg"
+        },
+        "47": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220406-Jancovici  - Rencontre-d\u00e9bat avec les \u00e9tudiants de l 'Institut Agro Rennes-Angers - 01_04_2022 22-04-05.mp3",
+            "vd_downlTime": "06/04/2022 17:58:22",
+            "vd_title": "Jancovici : Rencontre-d\u00e9bat avec les \u00e9tudiants de l 'Institut Agro Rennes-Angers - 01/04/2022",
+            "vd_url": "https://www.youtube.com/watch?v=IJyOkT2wUjo"
+        },
+        "48": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220409-FORUM DES TP 2022 - Environnement et TP  - les perspectives 22-03-23.mp3",
+            "vd_downlTime": "09/04/2022 03:16:48",
+            "vd_title": "FORUM DES TP 2022 - Environnement et TP : les perspectives",
+            "vd_url": "https://www.youtube.com/watch?v=4QVQGD18RNc"
+        },
+        "50": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220419-Rencontre d\u00e9bat entre Jean-Marc Jancovici et les \u00e9tudiants de l'Institut Agro Rennes-Angers - LIVE \ud83d\udd34 22-03-31.mp3",
+            "vd_downlTime": "19/04/2022 04:58:00",
+            "vd_title": "Rencontre d\u00e9bat entre Jean-Marc Jancovici et les \u00e9tudiants de l'Institut Agro Rennes-Angers - LIVE \ud83d\udd34",
+            "vd_url": "https://www.youtube.com/watch?v=Tl8CuFr2sag"
+        },
+        "51": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220419-Conf\u00e9rence de Jancovici  - Un h\u00f4pital 'bien en dessous de 2\u00b0C', facile - facult\u00e9 de M\u00e9decine 22-04-02.mp3",
+            "vd_downlTime": "19/04/2022 05:07:01",
+            "vd_title": "Conf\u00e9rence de Jancovici : Un h\u00f4pital \"bien en dessous de 2\u00b0C\", facile? - facult\u00e9 de M\u00e9decine",
+            "vd_url": "https://www.youtube.com/watch?v=aTcRSOyqt0w"
+        },
+        "52": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220421-#25  - Le Plan de transformation de l'\u00e9conomie fran\u00e7aise du Shift Project, avec Jean-Marc Jancovici 22-04-07.mp3",
+            "vd_downlTime": "30/06/2022 05:20:26",
+            "vd_title": "#25 : Le Plan de transformation de l'\u00e9conomie fran\u00e7aise du Shift Project, avec Jean-Marc Jancovici",
+            "vd_url": "https://www.youtube.com/watch?v=RkmFiuglyjU"
+        },
+        "53": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220509-Le Gigantesque El Dorado du Bitcoin en ISLANDE _ Le HongKong des Cryptomonnaies et du Minage ! 22-05-08.mp3",
+            "vd_downlTime": "09/05/2022 01:50:46",
+            "vd_title": "Le Gigantesque El Dorado du Bitcoin en ISLANDE | Le HongKong des Cryptomonnaies et du Minage !",
+            "vd_url": "https://www.youtube.com/watch?v=WnjvqIWAWEo"
+        },
+        "54": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220509-Jancovici  - Comment rendre acceptable la sobri\u00e9t\u00e9 \u00e9nerg\u00e9tique - d\u00e9bat avec JF Mouhot - 02_05_2022 22-05-05.mp3",
+            "vd_downlTime": "09/05/2022 01:58:19",
+            "vd_title": "Jancovici : Comment rendre acceptable la sobri\u00e9t\u00e9 \u00e9nerg\u00e9tique - d\u00e9bat avec JF Mouhot - 02/05/2022",
+            "vd_url": "https://www.youtube.com/watch?v=OTfG8vmIf48"
+        },
+        "55": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220607-Jean-Marc Jancovici - Comment r\u00e9pondre aux enjeux climatiques  - Les Entretiens de Melchior 22-05-17.mp3",
+            "vd_downlTime": "07/06/2022 21:39:07",
+            "vd_title": "Jean-Marc Jancovici - Comment r\u00e9pondre aux enjeux climatiques ? - Les Entretiens de Melchior",
+            "vd_url": "https://www.youtube.com/watch?v=A-VYejgUCP4"
+        },
+        "56": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-Jancovici sur l\u2019importance des ordres de grandeur dans notre d\u00e9marche face au changement climatique 22-06-11.mp3",
+            "vd_downlTime": "19/06/2022 13:23:29",
+            "vd_title": "Jancovici sur l\u2019importance des ordres de grandeur dans notre d\u00e9marche face au changement climatique",
+            "vd_url": "https://www.youtube.com/watch?v=4wR9hWduhuQ"
+        },
+        "57": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220629-Jancovici  - Se nourrir et la neutralit\u00e9 carbone - Agrro croissance - 20_06_22 22-06-27.mp3",
+            "vd_downlTime": "29/06/2022 21:14:45",
+            "vd_title": "Jancovici : Se nourrir et la neutralit\u00e9 carbone - Agrro croissance - 20/06/22",
+            "vd_url": "https://www.youtube.com/watch?v=GBZPKuBFedw"
+        },
+        "8": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Jancovici  - Du business sans \u00e9nergie et sans climat  - ESCP - 06_09_2021.mp3",
+            "vd_downlTime": "06/12/2021 17:15:25",
+            "vd_title": "Jancovici : Du business sans \u00e9nergie et sans climat ? - ESCP - 06/09/2021",
+            "vd_url": "https://www.youtube.com/watch?v=LCZQZMpfAWE"
+        },
+        "9": {
+            "vd_downlException": false,
+            "vd_downlFileName": "Le p\u00e9trole, le sang de l'humanit\u00e9  avec Matthieu Auzanneau.mp3",
+            "vd_downlTime": "08/12/2021 14:22:34",
+            "vd_title": "Le p\u00e9trole, le sang de l'humanit\u00e9 ? avec Matthieu Auzanneau",
+            "vd_url": "https://www.youtube.com/watch?v=TObfFD_ac8Y"
+        }
+    }
+}

@@ -1,0 +1,657 @@
+{
+    "playlist": {
+        "pl_downlSubDir": "EMI",
+        "pl_name_modified": "EMI",
+        "pl_name_original": "EMI",
+        "pl_nextVideoIndex": 211,
+        "pl_title_modified": "EMI",
+        "pl_title_original": "EMI",
+        "pl_url": "https://youtube.com/playlist?list=PLzwWSJNcZTMT3NtegKpj-Q2FC4HDlIils"
+    },
+    "videos": {
+        "1": {
+            "vd_downlException": false,
+            "vd_downlFileName": "99-L'Exp\u00e9rience de Mort Imminente de Madame Anna Weidkuhn 2020-12-25.mp3",
+            "vd_downlTime": "19/12/2021 15:58:09",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Anna Weidkuhn",
+            "vd_url": "https://www.youtube.com/watch?v=zHY-OgvGbEk"
+        },
+        "10": {
+            "vd_downlException": false,
+            "vd_downlFileName": "90-L'Exp\u00e9rience de Mort Imminente de Mme Samira Henning 2020-05-29.mp3",
+            "vd_downlTime": "19/12/2021 16:43:28",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Samira Henning",
+            "vd_url": "https://www.youtube.com/watch?v=7R6t1YlIu0U"
+        },
+        "101": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220428-L'exp\u00e9rience du 'Retour \u00e0 soi', t\u00e9moignages ... ao\u00fbt 2020 20-10-07.mp3",
+            "vd_downlTime": "28/04/2022 07:47:10",
+            "vd_title": "L'exp\u00e9rience du \"Retour \u00e0 soi\", t\u00e9moignages ... ao\u00fbt 2020",
+            "vd_url": "https://www.youtube.com/watch?v=RTM6qpryXbE"
+        },
+        "109": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220428-Conf\u00e9rence EMI - NDE de Vincent HAMAIN - Asso Soleil de Toulon  le 19 sept 2020-Version Remast\u00e9ris\u00e9e 21-09-24.mp3",
+            "vd_downlTime": "28/04/2022 08:20:30",
+            "vd_title": "Conf\u00e9rence EMI - NDE de Vincent HAMAIN - Asso Soleil de Toulon  le 19 sept 2020-Version Remast\u00e9ris\u00e9e",
+            "vd_url": "https://www.youtube.com/watch?v=0rPb1my-ESc"
+        },
+        "11": {
+            "vd_downlException": false,
+            "vd_downlFileName": "89-L'Exp\u00e9rience de Mort Imminente de Madame Silvia Scherzinger 2021-02-12.mp3",
+            "vd_downlTime": "19/12/2021 17:10:04",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Silvia Scherzinger",
+            "vd_url": "https://www.youtube.com/watch?v=SyIPRcab6xw"
+        },
+        "111": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220428-web TV Etoiles du Coeur Dominique Vall\u00e9e et Vincent Hamain 6 14-09-06.mp3",
+            "vd_downlTime": "28/04/2022 08:34:11",
+            "vd_title": "web TV Etoiles du Coeur Dominique Vall\u00e9e et Vincent Hamain 6",
+            "vd_url": "https://www.youtube.com/watch?v=3pA_rZzZApg"
+        },
+        "121": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220428-EMI _ NDE Conf\u00e9rence de Vincent Hamain \u00e0 Plazac, Dordogne 13 mars 2016 20-08-06.mp3",
+            "vd_downlTime": "28/04/2022 12:10:01",
+            "vd_title": "EMI / NDE Conf\u00e9rence de Vincent Hamain \u00e0 Plazac, Dordogne 13 mars 2016",
+            "vd_url": "https://www.youtube.com/watch?v=Sw4Rndlh5h8"
+        },
+        "122": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220428-PASCALE LAFARGUE Enqu\u00eate sur une vie ant\u00e9rieure 21-10-15.mp3",
+            "vd_downlTime": "28/04/2022 12:15:55",
+            "vd_title": "PASCALE LAFARGUE Enqu\u00eate sur une vie ant\u00e9rieure",
+            "vd_url": "https://www.youtube.com/watch?v=TtJbdyna1Fc"
+        },
+        "128": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220501-VALERIE J'ESPERE Passeur d'\u00e2mes 21-11-25.mp3",
+            "vd_downlTime": "01/05/2022 20:21:09",
+            "vd_title": "VALERIE J'ESPERE Passeur d'\u00e2mes",
+            "vd_url": "https://www.youtube.com/watch?v=jx6FeZtRcq8"
+        },
+        "132": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220501-VIRGINIE BUCKLEY La vie apr\u00e8s la vie et s'y pr\u00e9parer 22-02-10.mp3",
+            "vd_downlTime": "01/05/2022 21:17:50",
+            "vd_title": "VIRGINIE BUCKLEY La vie apr\u00e8s la vie et s'y pr\u00e9parer",
+            "vd_url": "https://www.youtube.com/watch?v=7czgRE12GqA"
+        },
+        "133": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220501-EBEN ALEXANDER La NDE d'un neurochirurgien 22-03-14.mp3",
+            "vd_downlTime": "01/05/2022 21:22:21",
+            "vd_title": "EBEN ALEXANDER La NDE d'un neurochirurgien",
+            "vd_url": "https://www.youtube.com/watch?v=Pcy5ZFErZLI"
+        },
+        "14": {
+            "vd_downlException": false,
+            "vd_downlFileName": "86-Un pas dans l'\u00e9ternit\u00e9  - l'exp\u00e9rience de mort imminente de Vincent Hamain 2020-10-24.mp3",
+            "vd_downlTime": "19/12/2021 20:18:52",
+            "vd_title": "Un pas dans l'\u00e9ternit\u00e9 : l'exp\u00e9rience de mort imminente de Vincent Hamain",
+            "vd_url": "https://www.youtube.com/watch?v=0MChf9qypLM"
+        },
+        "140": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220502-L'Exp\u00e9rience de Mort Imminente du Dr Bernard Samson 22-04-29.mp3",
+            "vd_downlTime": "02/05/2022 00:20:06",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente du Dr Bernard Samson",
+            "vd_url": "https://www.youtube.com/watch?v=gib9IvIbjBM"
+        },
+        "147": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220509-Mes exp\u00e9riences de mort imminente - l\u2019histoire de Marianne Hubert 21-02-19.mp3",
+            "vd_downlTime": "09/05/2022 01:42:37",
+            "vd_title": "Mes exp\u00e9riences de mort imminente - l\u2019histoire de Marianne Hubert",
+            "vd_url": "https://www.youtube.com/watch?v=O8ppXX6NHKE"
+        },
+        "15": {
+            "vd_downlException": false,
+            "vd_downlFileName": "85-L'Exp\u00e9rience de Mort Imminente de Monsieur Fabian K\u00f6hler 2021-01-22.mp3",
+            "vd_downlTime": "19/12/2021 20:20:11",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Fabian K\u00f6hler",
+            "vd_url": "https://www.youtube.com/watch?v=sUv52uzQ2QI"
+        },
+        "151": {
+            "vd_downlException": true,
+            "vd_downlFileName": "220527-FRAN\u00c7OISE NALLET Experience de mort imminente 22-05-26.mp3",
+            "vd_downlTime": "27/05/2022 02:15:56",
+            "vd_title": "FRAN\u00c7OISE NALLET Experience de mort imminente",
+            "vd_url": "https://www.youtube.com/watch?v=TqWdCEV1-qs"
+        },
+        "152": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220527-Aux Fronti\u00e8res de la Mort, les EMI - Ep.2 21-05-10.mp3",
+            "vd_downlTime": "27/05/2022 02:16:42",
+            "vd_title": "Aux Fronti\u00e8res de la Mort, les EMI - Ep.2",
+            "vd_url": "https://www.youtube.com/watch?v=1RDte1BdH08"
+        },
+        "153": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220527-Aux Fronti\u00e8res de la Mort, les EMI - Ep. 3 21-05-11.mp3",
+            "vd_downlTime": "27/05/2022 02:17:33",
+            "vd_title": "Aux Fronti\u00e8res de la Mort, les EMI - Ep. 3",
+            "vd_url": "https://www.youtube.com/watch?v=B9hcvatVbWQ"
+        },
+        "157": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-BRUNO CHARVET Un nouveau message 21-06-11.mp3",
+            "vd_downlTime": "08/06/2022 05:08:35",
+            "vd_title": "BRUNO CHARVET Un nouveau message",
+            "vd_url": "https://www.youtube.com/watch?v=gtpzoX5lnHE"
+        },
+        "158": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-PHILIPPE FERRER Questions-R\u00e9ponses 20-10-10.mp3",
+            "vd_downlTime": "08/06/2022 05:22:22",
+            "vd_title": "PHILIPPE FERRER Questions-R\u00e9ponses",
+            "vd_url": "https://www.youtube.com/watch?v=oFBrk5bLA4A"
+        },
+        "159": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-INDRY LAPIERRE Vies Ant\u00e9rieures 19-12-20.mp3",
+            "vd_downlTime": "08/06/2022 05:27:11",
+            "vd_title": "INDRY LAPIERRE Vies Ant\u00e9rieures",
+            "vd_url": "https://www.youtube.com/watch?v=LmSa9b8CdeM"
+        },
+        "16": {
+            "vd_downlException": false,
+            "vd_downlFileName": "84-L'Exp\u00e9rience de Mort Imminente de Madame Erika Th\u00fcrig 2021-04-16.mp3",
+            "vd_downlTime": "19/12/2021 20:22:22",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Erika Th\u00fcrig",
+            "vd_url": "https://www.youtube.com/watch?v=py9NxDpwpLM"
+        },
+        "161": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-T\u00e9moignage d'une Exp\u00e9rience de Mort Imminente (EMI) - Karinne Roquet 19-10-17.mp3",
+            "vd_downlTime": "08/06/2022 05:48:47",
+            "vd_title": "T\u00e9moignage d'une Exp\u00e9rience de Mort Imminente (EMI) - Karinne Roquet",
+            "vd_url": "https://www.youtube.com/watch?v=w2vXBLzLmkc"
+        },
+        "163": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-VANNINA SCHIRINSKY Experienceuse NDE part1 19-02-17.mp3",
+            "vd_downlTime": "08/06/2022 05:52:01",
+            "vd_title": "VANNINA SCHIRINSKY Experienceuse NDE part1",
+            "vd_url": "https://www.youtube.com/watch?v=r15RJTV-ANM"
+        },
+        "164": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-VANNINA SCHIRINSKY Experienceuse NDE part2 19-02-17.mp3",
+            "vd_downlTime": "08/06/2022 05:53:12",
+            "vd_title": "VANNINA SCHIRINSKY Experienceuse NDE part2",
+            "vd_url": "https://www.youtube.com/watch?v=SJGXKGKUAhY"
+        },
+        "165": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-VANNINA SCHIRINSKI Re\u0301pond a\u0300 vos questions N D E 1ere part 19-11-25.mp3",
+            "vd_downlTime": "08/06/2022 05:56:01",
+            "vd_title": "VANNINA SCHIRINSKI Re\u0301pond a\u0300 vos questions N D E 1ere part",
+            "vd_url": "https://www.youtube.com/watch?v=4imAC3KryjU"
+        },
+        "17": {
+            "vd_downlException": false,
+            "vd_downlFileName": "83-Suicide & Exp\u00e9rience de Mort Imminente - T\u00e9moignage de Madame Hubschmied 2021-09-03.mp3",
+            "vd_downlTime": "19/12/2021 20:24:36",
+            "vd_title": "Suicide & Exp\u00e9rience de Mort Imminente - T\u00e9moignage de Madame Hubschmied",
+            "vd_url": "https://www.youtube.com/watch?v=Tf12xh8AGAo"
+        },
+        "170": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220608-MERCI... ON VOUS ECOUTE Episode 1 avec Vannina Schirinsky 21-12-31.mp3",
+            "vd_downlTime": "08/06/2022 06:21:08",
+            "vd_title": "MERCI... ON VOUS ECOUTE Episode 1 avec Vannina Schirinsky",
+            "vd_url": "https://www.youtube.com/watch?v=ywtVoEvEnCg"
+        },
+        "178": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220610-Vannina Schirinsky, T\u00e9moignage de NDE 19-11-01.mp3",
+            "vd_downlTime": "10/06/2022 07:55:46",
+            "vd_title": "Vannina Schirinsky, T\u00e9moignage de NDE",
+            "vd_url": "https://www.youtube.com/watch?v=yZaMcMy5ctU"
+        },
+        "18": {
+            "vd_downlException": false,
+            "vd_downlFileName": "82-L'Exp\u00e9rience de Mort Imminente de Mme Heidi Z. 2020-05-11.mp3",
+            "vd_downlTime": "19/12/2021 20:25:58",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Heidi Z.",
+            "vd_url": "https://www.youtube.com/watch?v=FkkAl6MoHQs"
+        },
+        "186": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-David Frecinaux - L entre 2 vies 22-06-08.mp3",
+            "vd_downlTime": "19/06/2022 12:40:51",
+            "vd_title": "David Frecinaux - L entre 2 vies",
+            "vd_url": "https://www.youtube.com/watch?v=_veFvw6KDM0"
+        },
+        "187": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-L'Exp\u00e9rience de Mort Imminente de Madame Gabriela M\u00fcller 22-06-10.mp3",
+            "vd_downlTime": "19/06/2022 12:42:20",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Gabriela M\u00fcller",
+            "vd_url": "https://www.youtube.com/watch?v=vMlE-EnkUvA"
+        },
+        "19": {
+            "vd_downlException": false,
+            "vd_downlFileName": "81-L'Exp\u00e9rience de Mort Imminente de Madame Sabine Scherzer 2021-06-25.mp3",
+            "vd_downlTime": "19/12/2021 20:27:41",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Sabine Scherzer",
+            "vd_url": "https://www.youtube.com/watch?v=9MPsIn_gCCo"
+        },
+        "191": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-Exp\u00e9rience de mort imminente, l\u2019\u00e9mission pr\u00e9sent\u00e9e par Sophie Vitali, invit\u00e9e Vannina Schirinsky 22-01-30.mp3",
+            "vd_downlTime": "19/06/2022 12:59:43",
+            "vd_title": "Exp\u00e9rience de mort imminente, l\u2019\u00e9mission pr\u00e9sent\u00e9e par Sophie Vitali, invit\u00e9e Vannina Schirinsky",
+            "vd_url": "https://www.youtube.com/watch?v=-y7WOWj5-Vk"
+        },
+        "192": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-FRAN\u00c7OISE NALLET EMI et th\u00e9rapie par la m\u00e9moire cellulaire 22-05-26.mp3",
+            "vd_downlTime": "19/06/2022 13:07:54",
+            "vd_title": "FRAN\u00c7OISE NALLET EMI et th\u00e9rapie par la m\u00e9moire cellulaire",
+            "vd_url": "https://www.youtube.com/watch?v=TqWdCEV1-qs"
+        },
+        "193": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220619-L'Exp\u00e9rience de Mort Imminente du Dr Bernard Samson (sous-titres all., angl.) 22-04-29.mp3",
+            "vd_downlTime": "19/06/2022 13:11:19",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente du Dr Bernard Samson (sous-titres all., angl.)",
+            "vd_url": "https://www.youtube.com/watch?v=gib9IvIbjBM"
+        },
+        "20": {
+            "vd_downlException": false,
+            "vd_downlFileName": "80-L'Exp\u00e9rience de Mort Imminente de Madame Mich\u00e8le B\u00f6gli-Mastria 2020-10-16.mp3",
+            "vd_downlTime": "19/12/2021 21:59:21",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Mich\u00e8le B\u00f6gli-Mastria",
+            "vd_url": "https://www.youtube.com/watch?v=a2FtgBpnm7I"
+        },
+        "204": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Mort violente et suicide avec Lorenzo 22-05-19.mp3",
+            "vd_downlTime": "23/06/2022 02:58:05",
+            "vd_title": "Mort violente et suicide avec Lorenzo",
+            "vd_url": "https://www.youtube.com/watch?v=5IKVPQu9EQs"
+        },
+        "205": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Exp\u00e9rience de mort imminente, Je reviens de l'au-del\u00e0. 22-02-18.mp3",
+            "vd_downlTime": "04/07/2022 02:50:51",
+            "vd_title": "Exp\u00e9rience de mort imminente, Je reviens de l'au-del\u00e0.",
+            "vd_url": "https://www.youtube.com/watch?v=jPPGWFahZMo"
+        },
+        "206": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Le rendez vous avec Vannina Schirinsky 21-07-21.mp3",
+            "vd_downlTime": "23/06/2022 03:04:57",
+            "vd_title": "Le rendez vous avec Vannina Schirinsky",
+            "vd_url": "https://www.youtube.com/watch?v=8dKq28w3tZI"
+        },
+        "207": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Lieux hant\u00e9s et esprits errants - avec Vannina Schirinsky 21-07-08.mp3",
+            "vd_downlTime": "23/06/2022 03:07:47",
+            "vd_title": "Lieux hant\u00e9s et esprits errants - avec Vannina Schirinsky",
+            "vd_url": "https://www.youtube.com/watch?v=MifQ_Uie52k"
+        },
+        "208": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Au-Del\u00e0 Congr\u00e8s SOURCE DE VIE TOULOUSE 2021 - Vincent HAMAIN t\u00e9moigne de sa NDE ou EMI 21-10-31.mp3",
+            "vd_downlTime": "23/06/2022 03:10:22",
+            "vd_title": "Au-Del\u00e0 Congr\u00e8s SOURCE DE VIE TOULOUSE 2021: Vincent HAMAIN t\u00e9moigne de sa NDE ou EMI",
+            "vd_url": "https://www.youtube.com/watch?v=EbWHd6m1Zjs"
+        },
+        "209": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-Mon exp\u00e9rience de mort imminente, t\u00e9moignage 20-03-09.mp3",
+            "vd_downlTime": "23/06/2022 03:10:52",
+            "vd_title": "Mon exp\u00e9rience de mort imminente, t\u00e9moignage",
+            "vd_url": "https://www.youtube.com/watch?v=xxAowIKMmXs"
+        },
+        "21": {
+            "vd_downlException": false,
+            "vd_downlFileName": "79-L'Exp\u00e9rience de Mort Imminente de Mme Isabel Waller-Rigo 2020-05-22.mp3",
+            "vd_downlTime": "19/12/2021 22:01:25",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Isabel Waller-Rigo",
+            "vd_url": "https://www.youtube.com/watch?v=DzzAhWFjdDw"
+        },
+        "210": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220623-L'au-del\u00e0 sans peur - Rencontre avec Denise Kikou Gilliand 17-11-30.mp3",
+            "vd_downlTime": "23/06/2022 03:12:50",
+            "vd_title": "L'au-del\u00e0 sans peur - Rencontre avec Denise Kikou Gilliand",
+            "vd_url": "https://www.youtube.com/watch?v=eUJcNS879sU"
+        },
+        "22": {
+            "vd_downlException": false,
+            "vd_downlFileName": "78-L'Exp\u00e9rience de Mort Imminente de Madame Claudia Sch\u00e4pper 2021-06-13.mp3",
+            "vd_downlTime": "19/12/2021 22:02:34",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Claudia Sch\u00e4pper",
+            "vd_url": "https://www.youtube.com/watch?v=JCKRf774gFk"
+        },
+        "23": {
+            "vd_downlException": false,
+            "vd_downlFileName": "77-L\u2019exp\u00e9rience de mort imminente de Mme Andrea Pfeifer 2020-05-02.mp3",
+            "vd_downlTime": "19/12/2021 22:04:06",
+            "vd_title": "L\u2019exp\u00e9rience de mort imminente de Mme Andrea Pfeifer",
+            "vd_url": "https://www.youtube.com/watch?v=GLzcOFJ3O1o"
+        },
+        "24": {
+            "vd_downlException": false,
+            "vd_downlFileName": "76-L'Exp\u00e9rience de Mort Imminente (EMI) de Mme Manuela Fazzi 2020-04-30.mp3",
+            "vd_downlTime": "19/12/2021 22:06:04",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente (EMI) de Mme Manuela Fazzi",
+            "vd_url": "https://www.youtube.com/watch?v=W-5ncHts89k"
+        },
+        "25": {
+            "vd_downlException": false,
+            "vd_downlFileName": "75-Le Suicide - Cons\u00e9quences dans l'Apr\u00e8s     Interview avec Monsieur Sam Hess 2021-02-27.mp3",
+            "vd_downlTime": "19/12/2021 22:07:15",
+            "vd_title": "Le Suicide: Cons\u00e9quences dans l'Apr\u00e8s     Interview avec Monsieur Sam Hess",
+            "vd_url": "https://www.youtube.com/watch?v=MhvybJMSheY"
+        },
+        "26": {
+            "vd_downlException": false,
+            "vd_downlFileName": "74-L'Exp\u00e9rience de Mort Imminente de Madame Noemi Schneeberger 2020-10-02.mp3",
+            "vd_downlTime": "19/12/2021 22:08:52",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Noemi Schneeberger",
+            "vd_url": "https://www.youtube.com/watch?v=fNTtE6ndGLM"
+        },
+        "27": {
+            "vd_downlException": false,
+            "vd_downlFileName": "73-L'Exp\u00e9rience de Mort Imminente de Mme Anna Maria Winkler 2020-08-21.mp3",
+            "vd_downlTime": "19/12/2021 22:09:55",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Anna Maria Winkler",
+            "vd_url": "https://www.youtube.com/watch?v=okuBCy3sce0"
+        },
+        "28": {
+            "vd_downlException": false,
+            "vd_downlFileName": "72-L'Exp\u00e9rience de Mort Imminente de Madame Andr\u00e9a S. 2020-09-18.mp3",
+            "vd_downlTime": "19/12/2021 22:12:03",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Andr\u00e9a S.",
+            "vd_url": "https://www.youtube.com/watch?v=EEDNngK72XY"
+        },
+        "29": {
+            "vd_downlException": false,
+            "vd_downlFileName": "71-L' Exp\u00e9rience de Mort Imminente de M. Schoss 2020-05-16.mp3",
+            "vd_downlTime": "19/12/2021 22:13:40",
+            "vd_title": "L' Exp\u00e9rience de Mort Imminente de M. Schoss",
+            "vd_url": "https://www.youtube.com/watch?v=iblMzc_zR3M"
+        },
+        "3": {
+            "vd_downlException": false,
+            "vd_downlFileName": "97-Elle meurt, va en enfer puis au paradis, se re\u0301veille .Te\u0301moignage de Paulina 2019-03-16.mp3",
+            "vd_downlTime": "19/12/2021 16:18:43",
+            "vd_title": "Elle meurt, va en enfer puis au paradis, se re\u0301veille .Te\u0301moignage de Paulina",
+            "vd_url": "https://www.youtube.com/watch?v=PhTeT75p15I"
+        },
+        "30": {
+            "vd_downlException": false,
+            "vd_downlFileName": "70-L'Exp\u00e9rience de Mort Imminente de M. Karl Gurtner 2020-07-10.mp3",
+            "vd_downlTime": "19/12/2021 22:14:50",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de M. Karl Gurtner",
+            "vd_url": "https://www.youtube.com/watch?v=SLogh-ftDpA"
+        },
+        "31": {
+            "vd_downlException": false,
+            "vd_downlFileName": "69-L'Exp\u00e9rience de Mort Imminente de M. Michael Rudigier 2020-07-17.mp3",
+            "vd_downlTime": "19/12/2021 22:16:17",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de M. Michael Rudigier",
+            "vd_url": "https://www.youtube.com/watch?v=6qkppb1dK2c"
+        },
+        "32": {
+            "vd_downlException": false,
+            "vd_downlFileName": "68-L'Exp\u00e9rience Hors du Corps de Mme Sarah Friederich 2020-07-03.mp3",
+            "vd_downlTime": "19/12/2021 22:18:06",
+            "vd_title": "L'Exp\u00e9rience Hors du Corps de Mme Sarah Friederich",
+            "vd_url": "https://www.youtube.com/watch?v=nqFNacCclho"
+        },
+        "33": {
+            "vd_downlException": false,
+            "vd_downlFileName": "67-L'Exp\u00e9rience de Mort Imminente de Mme Michaela Winkler 2020-06-12.mp3",
+            "vd_downlTime": "19/12/2021 22:20:52",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Michaela Winkler",
+            "vd_url": "https://www.youtube.com/watch?v=y70TdDuNygA"
+        },
+        "34": {
+            "vd_downlException": false,
+            "vd_downlFileName": "66-L'Exp\u00e9rience de Mort Imminente de Mme Alice T. 2020-06-26.mp3",
+            "vd_downlTime": "19/12/2021 22:22:41",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Mme Alice T.",
+            "vd_url": "https://www.youtube.com/watch?v=NOpM4nqGh-s"
+        },
+        "36": {
+            "vd_downlException": false,
+            "vd_downlFileName": "64-L'Exp\u00e9rience de Mort Imminente de Monsieur Werner Stark 2021-05-14.mp3",
+            "vd_downlTime": "19/12/2021 22:27:19",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Werner Stark",
+            "vd_url": "https://www.youtube.com/watch?v=r_rItPcdXJc"
+        },
+        "37": {
+            "vd_downlException": false,
+            "vd_downlFileName": "63-\u230aEntre La Vie et La Mort avec Anne\u2309 Exp\u00e9rience De Mort Imminente \u00c0 19 ans 2021-12-03.mp3",
+            "vd_downlTime": "20/12/2021 12:39:17",
+            "vd_title": "\u230aEntre La Vie et La Mort avec Anne\u2309 Exp\u00e9rience De Mort Imminente \u00c0 19 ans",
+            "vd_url": "https://www.youtube.com/watch?v=mDIVc_AuGX0"
+        },
+        "38": {
+            "vd_downlException": false,
+            "vd_downlFileName": "62-t\u00e9moignage de Jacqueline sur une exp\u00e9rience de mort imminente ou near death experience 2019-12-04.mp3",
+            "vd_downlTime": "20/12/2021 12:41:08",
+            "vd_title": "t\u00e9moignage de Jacqueline sur une exp\u00e9rience de mort imminente ou near death experience",
+            "vd_url": "https://www.youtube.com/watch?v=I0LtI6He76U"
+        },
+        "39": {
+            "vd_downlException": false,
+            "vd_downlFileName": "61-L'Exp\u00e9rience de Mort Imminente de Monsieur Rudolf Geiger 2020-10-31.mp3",
+            "vd_downlTime": "20/12/2021 18:38:39",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Rudolf Geiger",
+            "vd_url": "https://www.youtube.com/watch?v=-aIYos866lA"
+        },
+        "40": {
+            "vd_downlException": false,
+            "vd_downlFileName": "60-Je commente une exp\u00e9rience de mort imminente \ud83e\udd14\ud83e\udd14\ud83e\udd14 ( magdalen Bless) 2021-01-21.mp3",
+            "vd_downlTime": "20/12/2021 18:40:07",
+            "vd_title": "Je commente une exp\u00e9rience de mort imminente \ud83e\udd14\ud83e\udd14\ud83e\udd14 ( magdalen Bless)",
+            "vd_url": "https://www.youtube.com/watch?v=n3FEfR5fTeo"
+        },
+        "41": {
+            "vd_downlException": false,
+            "vd_downlFileName": "59-VINCENT HAMAIN L'experience de la mort 2021-10-22.mp3",
+            "vd_downlTime": "22/12/2021 19:56:59",
+            "vd_title": "VINCENT HAMAIN L'experience de la mort",
+            "vd_url": "https://www.youtube.com/watch?v=7GUzX0bUJOE"
+        },
+        "42": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220102-Elle a v\u00e9cu une exp\u00e9rience de mort imminente incroyable ! 21-02-04.mp3",
+            "vd_downlTime": "02/01/2022 13:31:51",
+            "vd_title": "Elle a v\u00e9cu une exp\u00e9rience de mort imminente incroyable !",
+            "vd_url": "https://www.youtube.com/watch?v=DbNjA7-qvXQ"
+        },
+        "43": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220102-T\u00e9moignage de Robine. EMI _ NDE. La nuit o\u00f9 je suis morte. The night that I died. VF 21-09-23.mp3",
+            "vd_downlTime": "02/01/2022 13:33:15",
+            "vd_title": "T\u00e9moignage de Robine. EMI / NDE. La nuit o\u00f9 je suis morte. The night that I died. VF",
+            "vd_url": "https://www.youtube.com/watch?v=xNqpe8EXy_8"
+        },
+        "44": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220105-Aux Fronti\u00e8res de la Mort, les EMI - Ep.1 21-05-10.mp3",
+            "vd_downlTime": "05/01/2022 14:37:57",
+            "vd_title": "Aux Fronti\u00e8res de la Mort, les EMI - Ep.1",
+            "vd_url": "https://www.youtube.com/watch?v=ciG8a0uviKM"
+        },
+        "45": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220106-Ils m\u00e9ritent d'\u00eatre connus #27 - Sandra et son exp\u00e9rience de mort imminente 20-02-03.mp3",
+            "vd_downlTime": "06/01/2022 15:25:12",
+            "vd_title": "Ils m\u00e9ritent d'\u00eatre connus #27 - Sandra et son exp\u00e9rience de mort imminente",
+            "vd_url": "https://www.youtube.com/watch?v=gn1AZuNOjkw"
+        },
+        "46": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220108-Mon EMI (exp\u00e9rience de mort imminente) 21-08-31.mp3",
+            "vd_downlTime": "08/01/2022 13:58:47",
+            "vd_title": "Mon EMI (exp\u00e9rience de mort imminente)",
+            "vd_url": "https://www.youtube.com/watch?v=P8GKxGo9y3o"
+        },
+        "47": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220111-Exp\u00e9riences de mort imminente - Conf\u00e9rences des Dr Sylvie Cafardy & Fran\u00e7ois Lallier 21-12-31.mp3",
+            "vd_downlTime": "11/01/2022 14:16:42",
+            "vd_title": "Exp\u00e9riences de mort imminente - Conf\u00e9rences des Dr Sylvie Cafardy & Fran\u00e7ois Lallier",
+            "vd_url": "https://www.youtube.com/watch?v=6Cj7MDgLmfo"
+        },
+        "49": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220116-Les Exp\u00e9riences de Mort Imminente de Mme Beatrix Keller 20-06-19.mp3",
+            "vd_downlTime": "16/01/2022 13:51:21",
+            "vd_title": "Les Exp\u00e9riences de Mort Imminente de Mme Beatrix Keller",
+            "vd_url": "https://www.youtube.com/watch?v=hY00HkfThJ8"
+        },
+        "5": {
+            "vd_downlException": false,
+            "vd_downlFileName": "95-L'Exp\u00e9rience de Mort Imminente de Madame Romy Kramell 2020-11-27.mp3",
+            "vd_downlTime": "19/12/2021 16:27:40",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Romy Kramell",
+            "vd_url": "https://www.youtube.com/watch?v=eBmiCCl5sUU"
+        },
+        "52": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220116-Vincent Lafargue, pr\u00eatre apr\u00e8s une exp\u00e9rience de mort imminente 21-06-22.mp3",
+            "vd_downlTime": "16/01/2022 20:53:27",
+            "vd_title": "Vincent Lafargue, pr\u00eatre apr\u00e8s une exp\u00e9rience de mort imminente",
+            "vd_url": "https://www.youtube.com/watch?v=c1TxswpsEcY"
+        },
+        "53": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220116-l\u2019EMI de Veronique. 20-08-02.mp3",
+            "vd_downlTime": "16/01/2022 20:56:19",
+            "vd_title": "l\u2019EMI de Veronique.",
+            "vd_url": "https://www.youtube.com/watch?v=DYw2koAncuQ"
+        },
+        "54": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220116-EMI  - Je reviens de l'au-del\u00e0 (1_2) _ Temps Pr\u00e9sent 21-02-26.mp3",
+            "vd_downlTime": "16/01/2022 21:02:04",
+            "vd_title": "EMI : Je reviens de l'au-del\u00e0 (1/2) | Temps Pr\u00e9sent",
+            "vd_url": "https://www.youtube.com/watch?v=ga09YgNEUOc"
+        },
+        "55": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220116-Exp\u00e9rience de mort imminente 21-04-18.mp3",
+            "vd_downlTime": "16/01/2022 21:03:40",
+            "vd_title": "Exp\u00e9rience de mort imminente",
+            "vd_url": "https://www.youtube.com/watch?v=5BVM-OeWlbs"
+        },
+        "57": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220117-L'exp\u00e9rience de mort imminente de Christine Cl\u00e9mino-Na\u00e9gl\u00e9 19-11-22.mp3",
+            "vd_downlTime": "17/01/2022 01:09:42",
+            "vd_title": "L'exp\u00e9rience de mort imminente de Christine Cl\u00e9mino-Na\u00e9gl\u00e9",
+            "vd_url": "https://www.youtube.com/watch?v=DFhUP6oE30Y"
+        },
+        "59": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220117-L'Exp\u00e9rience de Mort Imminente de Madame Julia Rettenberger 22-01-17.mp3",
+            "vd_downlTime": "17/01/2022 13:34:58",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Madame Julia Rettenberger",
+            "vd_url": "https://www.youtube.com/watch?v=s5762xZI_Dc"
+        },
+        "64": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220118-Exp\u00e9rience de Mort Imminente   1 20-01-05.mp3",
+            "vd_downlTime": "18/01/2022 21:15:30",
+            "vd_title": "Exp\u00e9rience de Mort Imminente   1",
+            "vd_url": "https://www.youtube.com/watch?v=U25-vrqRarI"
+        },
+        "66": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220124-R\u00e9cit de mon exp\u00e9rience de mort imminente 21-07-19.mp3",
+            "vd_downlTime": "24/01/2022 14:50:01",
+            "vd_title": "R\u00e9cit de mon exp\u00e9rience de mort imminente",
+            "vd_url": "https://www.youtube.com/watch?v=rxnBJkgd8D8"
+        },
+        "7": {
+            "vd_downlException": false,
+            "vd_downlFileName": "93-L'Exp\u00e9rience de Mort Imminente de Monsieur Livio K\u00e4gi 2021-03-12.mp3",
+            "vd_downlTime": "19/12/2021 16:28:45",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Livio K\u00e4gi",
+            "vd_url": "https://www.youtube.com/watch?v=FpWmKG2_7L0"
+        },
+        "70": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220218-Sauv\u00e9 par un \u00eatre de lumi\u00e8re - une interview de Charles Martin 22-02-11.mp3",
+            "vd_downlTime": "18/02/2022 17:00:35",
+            "vd_title": "Sauv\u00e9 par un \u00eatre de lumi\u00e8re - une interview de Charles Martin",
+            "vd_url": "https://www.youtube.com/watch?v=lFhOqUSklAM"
+        },
+        "72": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220223-L'exp\u00e9rience singuli\u00e8re de M. Philippe Marconnet 21-11-14.mp3",
+            "vd_downlTime": "23/02/2022 17:01:36",
+            "vd_title": "L'exp\u00e9rience singuli\u00e8re de M. Philippe Marconnet",
+            "vd_url": "https://www.youtube.com/watch?v=mOgcBQoT6CI"
+        },
+        "77": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220306-EMI (exp\u00e9rience de mort imminente) de mon amie H\u00e9l\u00e8ne Roy 22-02-16.mp3",
+            "vd_downlTime": "06/03/2022 23:45:02",
+            "vd_title": "EMI (exp\u00e9rience de mort imminente) de mon amie H\u00e9l\u00e8ne Roy",
+            "vd_url": "https://www.youtube.com/watch?v=DaC7mtMHyVk"
+        },
+        "83": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220321-L'Exp\u00e9rience de Mort Imminente de Monsieur Rudy Hoffmann 22-03-19.mp3",
+            "vd_downlTime": "21/03/2022 04:27:15",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Rudy Hoffmann",
+            "vd_url": "https://www.youtube.com/watch?v=L7DQ7_39pEc"
+        },
+        "88": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220410-L'Exp\u00e9rience de Mort Imminente de Monsieur Klaus de Winter 22-04-08.mp3",
+            "vd_downlTime": "10/04/2022 00:03:02",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Klaus de Winter",
+            "vd_url": "https://www.youtube.com/watch?v=M1fdqlYQPv8"
+        },
+        "9": {
+            "vd_downlException": false,
+            "vd_downlFileName": "91-L'Exp\u00e9rience de Mort Imminente de Monsieur Armin B\u00fctzberger 2021-12-17.mp3",
+            "vd_downlTime": "19/12/2021 16:43:01",
+            "vd_title": "L'Exp\u00e9rience de Mort Imminente de Monsieur Armin B\u00fctzberger",
+            "vd_url": "https://www.youtube.com/watch?v=GmtDIzHwqIw"
+        },
+        "94": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220426-VANNINA SCHIRINSKY Experience de Mort Imminente 21-07-07.mp3",
+            "vd_downlTime": "26/04/2022 06:45:35",
+            "vd_title": "VANNINA SCHIRINSKY Experience de Mort Imminente",
+            "vd_url": "https://www.youtube.com/watch?v=yIRZU_sHVio"
+        },
+        "95": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220426-FLORENCE HUBERT Quand l'au-del\u00e0 se dessine 21-07-30.mp3",
+            "vd_downlTime": "26/04/2022 06:51:51",
+            "vd_title": "FLORENCE HUBERT Quand l'au-del\u00e0 se dessine",
+            "vd_url": "https://www.youtube.com/watch?v=Bqp9Regtk_8"
+        },
+        "96": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220426-DOMINIQUE VALLEE La mort est elle une fin  21-08-05.mp3",
+            "vd_downlTime": "26/04/2022 07:02:15",
+            "vd_title": "DOMINIQUE VALLEE La mort est elle une fin ?",
+            "vd_url": "https://www.youtube.com/watch?v=xoUzlmNTnyY"
+        },
+        "97": {
+            "vd_downlException": false,
+            "vd_downlFileName": "220426-JEAN PIERRE PETIT La mort et l' \u00e2me 21-09-02.mp3",
+            "vd_downlTime": "26/04/2022 07:13:20",
+            "vd_title": "JEAN PIERRE PETIT La mort et l' \u00e2me",
+            "vd_url": "https://www.youtube.com/watch?v=4uZy13ihFpM"
+        }
+    }
+}

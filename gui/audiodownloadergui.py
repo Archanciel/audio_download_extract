@@ -602,7 +602,7 @@ class AudioDownloaderGUI(AudioGUI):
 
 			self.failedVideoPlaylistDic = failedVideoPlaylistDic
 			playListDownloadSubDir = failedVideoPlaylistDic.getPlaylistDownloadSubDir()
-			failedVideoIndexLst = failedVideoPlaylistInfo.failedVideoIndexLst
+			failedVideoIndexLst = failedVideoPlaylistInfo.videoIndexLst
 			message = "downloading {} failed video(s) of playlist [b]{}[/b] in playlist dir [b]{}[/b] ...\n".format(
 				len(failedVideoIndexLst),
 				failedVideoPlaylistDic.getPlaylistNameModified(),
@@ -633,7 +633,7 @@ class AudioDownloaderGUI(AudioGUI):
 													# where two download threads are
 													# created after clicking on 'Yes'
 													# button on the ConfirmPopup dialog
-		self.displayFailedVideoReDownloadLstEndDownloadInfo()
+		self.displayFailedVideoRedownloadLstEndDownloadInfo()
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
 		self.enableButtons()
@@ -2001,16 +2001,16 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	
-	def displayFailedVideoReDownloadLstEndDownloadInfo(self):
+	def displayFailedVideoRedownloadLstEndDownloadInfo(self):
 		"""
 		Method called when the failed video re-download on PC is finished.
 		"""
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
-		downloadedFailedVideoLst = self.audioController.getListOfDownloadedFailedVideos()
-		endDownloadInfoStr += '\n'
-		endDownloadInfoStr += '\n'.join(downloadedFailedVideoLst)
+		failedVideoRedownloadedDisplayMessage = self.audioController.createFailedVideoRedownloadedDisplayMessage(
+			audioDirRoot=self.audiobookPath)
+		endDownloadInfoStr += failedVideoRedownloadedDisplayMessage
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	

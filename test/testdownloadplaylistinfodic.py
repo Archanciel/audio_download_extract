@@ -1234,15 +1234,15 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistNameModified())
 		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadSubDir())
 		self.assertEqual('', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadBaseSubDir())
-		self.assertEqual(5, len(failedVideoPlaylistInfoOne.failedVideoIndexLst))
-		self.assertEqual([19, 20, 21, 23, 24], failedVideoPlaylistInfoOne.failedVideoIndexLst)
+		self.assertEqual(5, len(failedVideoPlaylistInfoOne.videoIndexLst))
+		self.assertEqual([19, 20, 21, 23, 24], failedVideoPlaylistInfoOne.videoIndexLst)
 
 		failedVideoPlaylistInfoTwo = failedVideoPlaylistInfoLst[1]
 		self.assertEqual('Conférences et Web-conférences', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistNameModified())
 		self.assertEqual('Stéphane Brisset/Conférences et Web-conférences', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadSubDir())
 		self.assertEqual('Stéphane Brisset', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadBaseSubDir())
-		self.assertEqual(1, len(failedVideoPlaylistInfoTwo.failedVideoIndexLst))
-		self.assertEqual([15], failedVideoPlaylistInfoTwo.failedVideoIndexLst)
+		self.assertEqual(1, len(failedVideoPlaylistInfoTwo.videoIndexLst))
+		self.assertEqual([15], failedVideoPlaylistInfoTwo.videoIndexLst)
 	
 	def testGetFailedVideoRedownloadedOnPcPlaylistInfoLst(self):
 		testDirName = 'test_getFailedVideoRedownloadedOnPcPlaylistInfoLst'
@@ -1253,26 +1253,51 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		redownloadedFailedVideoPlaylistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(
 			audioDirRoot=testPath)
 		
-		self.assertEqual(2, len(redownloadedFailedVideoPlaylistInfoLst))
+		self.assertEqual(5, len(redownloadedFailedVideoPlaylistInfoLst))
 		
 		failedVideoPlaylistInfoOne = redownloadedFailedVideoPlaylistInfoLst[0]
-		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistNameModified())
-		self.assertEqual('Sols', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('EMI', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('EMI', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadSubDir())
 		self.assertEqual('', failedVideoPlaylistInfoOne.playlistInfoDic.getPlaylistDownloadBaseSubDir())
-		self.assertEqual(3, len(failedVideoPlaylistInfoOne.failedVideoIndexLst))
-		self.assertEqual([19, 20, 24], failedVideoPlaylistInfoOne.failedVideoIndexLst)
+		self.assertEqual(1, len(failedVideoPlaylistInfoOne.videoIndexLst))
+		self.assertEqual([205], failedVideoPlaylistInfoOne.videoIndexLst)
 		
 		failedVideoPlaylistInfoTwo = redownloadedFailedVideoPlaylistInfoLst[1]
-		self.assertEqual('Conférences et Web-conférences',
+		self.assertEqual('JMJ',
 		                 failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistNameModified())
-		self.assertEqual('Stéphane Brisset/Conférences et Web-conférences',
+		self.assertEqual('JMJ',
 		                 failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadSubDir())
-		self.assertEqual('Stéphane Brisset', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadBaseSubDir())
-		self.assertEqual(1, len(failedVideoPlaylistInfoTwo.failedVideoIndexLst))
-		self.assertEqual([15], failedVideoPlaylistInfoTwo.failedVideoIndexLst)
+		self.assertEqual('', failedVideoPlaylistInfoTwo.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(2, len(failedVideoPlaylistInfoTwo.videoIndexLst))
+		self.assertEqual([39, 52], failedVideoPlaylistInfoTwo.videoIndexLst)
+		
+		failedVideoPlaylistInfoThree = redownloadedFailedVideoPlaylistInfoLst[2]
+		self.assertEqual('RéchCli',
+		                 failedVideoPlaylistInfoThree.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('RéchCli',
+		                 failedVideoPlaylistInfoThree.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('', failedVideoPlaylistInfoThree.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(5, len(failedVideoPlaylistInfoThree.videoIndexLst))
+		self.assertEqual([101, 137, 72, 91, 99], failedVideoPlaylistInfoThree.videoIndexLst)
+		
+		failedVideoPlaylistInfoFour = redownloadedFailedVideoPlaylistInfoLst[3]
+		self.assertEqual('Sols', failedVideoPlaylistInfoFour.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('Sols', failedVideoPlaylistInfoFour.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('', failedVideoPlaylistInfoFour.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(3, len(failedVideoPlaylistInfoFour.videoIndexLst))
+		self.assertEqual([19, 20, 24], failedVideoPlaylistInfoFour.videoIndexLst)
+		
+		failedVideoPlaylistInfoFive = redownloadedFailedVideoPlaylistInfoLst[4]
+		self.assertEqual('Conférences et Web-conférences',
+		                 failedVideoPlaylistInfoFive.playlistInfoDic.getPlaylistNameModified())
+		self.assertEqual('Stéphane Brisset/Conférences et Web-conférences',
+		                 failedVideoPlaylistInfoFive.playlistInfoDic.getPlaylistDownloadSubDir())
+		self.assertEqual('Stéphane Brisset', failedVideoPlaylistInfoFive.playlistInfoDic.getPlaylistDownloadBaseSubDir())
+		self.assertEqual(1, len(failedVideoPlaylistInfoFive.videoIndexLst))
+		self.assertEqual([15], failedVideoPlaylistInfoFive.videoIndexLst)
 
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testGetRedownloadedFailedVideoIndexes()
+	tst.testGetFailedVideoRedownloadedOnPcPlaylistInfoLst()

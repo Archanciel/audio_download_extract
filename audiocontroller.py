@@ -749,9 +749,22 @@ class AudioController:
 			return playlistDicFileNameLst[0]
 		else:
 			return None
+	
+	def createFailedVideoRedownloadedDisplayMessage(self, audioDirRoot):
+		message = ''
+		playlistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(audioDirRoot=audioDirRoot)
+		sortedPlaylistInfoLst = sorted(playlistInfoLst,
+		                               key=lambda playlistInfo: playlistInfo.playlistInfoDic.getPlaylistDownloadSubDir())
+		
+		for playlistInfo in sortedPlaylistInfoLst:
+			downloadPlaylistInfoDic = playlistInfo.playlistInfoDic
+			redownloadedVideoIndexLst = playlistInfo.videoIndexLst
+			message += '\n' + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			for redownloadedVideoIndex in redownloadedVideoIndexLst:
+				message += '\n\t' + downloadPlaylistInfoDic.getVideoAudioFileNameForVideoIndex(redownloadedVideoIndex)
 
-	def getListOfDownloadedFailedVideos(self):
-		return ['one', 'two']
+		return message
+
 
 if __name__ == "__main__":
-	controller = AudioController()
+	pass

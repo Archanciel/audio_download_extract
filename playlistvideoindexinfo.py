@@ -8,5 +8,5 @@ class PlaylistVideoIndexInfo:
 									video indexes contained in the playlistInfoDic
 		"""
 		self.playlistInfoDic = playlistInfoDic
-		self.failedVideoIndexLst = videoIndexLst
+		self.videoIndexLst = videoIndexLst
 	
