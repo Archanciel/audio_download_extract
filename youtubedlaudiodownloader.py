@@ -285,8 +285,6 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 														# conversion info spread
 														# pollutes the GUI
 
-					#continue
-				
 				if isUploadDateSuffixAddedToPlaylistVideo or isDownloadDatePrefixAddedToPlaylistVideo:
 					# finally, renaming the downloaded video to a name which
 					# includes the video upload date.

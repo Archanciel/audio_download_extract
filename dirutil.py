@@ -191,11 +191,32 @@ class DirUtil:
 		return glob.glob(targetDir + sep + fileNamePattern, recursive=inSubDirs)
 	
 	@staticmethod
-	def getFileNamesInDirForPattern(targetDir, fileNamePattern):
+	def getFileNamesInDirForPattern(targetDir,
+	                                fileNamePattern,
+	                                inSubDirs=False):
+		"""
+		Returns a list of file names satisfying the passed fileNamePattern.
+		If the inSubDirs parm is True, the returned file names are located
+		in the passed targetDir and in its sub dirs.
+
+		:param targetDir:       example: c:\\temp\\testing\\audiobooks or
+										 /storage/9016-4EF8/Audio
+		:param fileNamePattern: example: *.mp3 or *_dic.txt
+		:param inSubDirs:       if False, search passed targetDir only.
+								if True,  search passed targetDir and its
+								sub dirs
+
+		:return: None if the passed targetDir does not exist, [...] otherwise
+		"""
 		if not os.path.isdir(targetDir):
 			return None
 		
-		filePathNameLst = glob.glob(targetDir + sep + fileNamePattern)
+		if inSubDirs:
+			# adding /**/ is required by glob.glob() in order to search in sub dirs
+			# as well
+			fileNamePattern = '/**/' + fileNamePattern
+
+		filePathNameLst = glob.glob(targetDir + sep + fileNamePattern, recursive=inSubDirs)
 		
 		return [DirUtil.extractFileNameFromFilePathName(f) for f in filePathNameLst]
 	

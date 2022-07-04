@@ -1073,13 +1073,13 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def renameFailedVideosUpdatedFromPC(self):
 		"""
-		Method called when choosing the 'Rename failed vids' dropdown menu
+		Method called when choosing the 'Renam rdown vids' dropdown menu
 		item defined in the customdropdown.kv file. This method renames the
-		failed video audio files downloaded on Windows and manually copied
+		failed video audio files re-downloaded on Windows and manually copied
 		on the smartphone. The new file name is the old file name with its
 		date prefix replaced by the video download date value.
 		"""
-		print('called renameFailedVideosUpdatedFromPC()')
+		DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=self.audiobookPath)
 	
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]

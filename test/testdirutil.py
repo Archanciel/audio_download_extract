@@ -364,7 +364,27 @@ class TestDirUtil(unittest.TestCase):
 		
 		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
-	
+		
+	def testGetFilePathNamesInDirForPattern_inDirAndSubDir(self):
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testRootDir = testAudioRootPath + sep + "test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir"
+		
+		filePathNameLst = DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
+		                                                          fileNamePattern='*.mp3',
+		                                                          inSubDirs=True)
+		self.assertEqual(['D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\220123-Le '
+ 'pardon 21-02-18.mp3',
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\EMI\\220623-Expérience '
+ "de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\RéchCli\\220317-VOUS '
+ 'ALLEZ TOUS CREVER 22-03-16.mp3',
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\RéchCli\\220401-#2  '
+ '- Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\RéchCli\\220403-HYDROGENE  '
+ '- Le GRAND MENSONGE 21-04-18.mp3',
+ 'D:\\Development\\Python\\audiodownload\\test\\testData\\test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir\\RéchCli\\220413-Déjeuner-débat '
+ 'avec Gunter PAULI 20-09-14.mp3'], filePathNameLst)
+
 	def testGetFileNamesInDirForPattern(self):
 		fileName_1 = 'file_one.mp3'
 		fileName_2 = 'file_two.mp3'
@@ -397,6 +417,20 @@ class TestDirUtil(unittest.TestCase):
 		
 		# removing test dir so that it is not uploaded on GitHub
 		DirUtil.deleteDirAndItsSubDirs(testBaseRootPath)
+		
+	def testGetFileNamesInDirForPattern_inDirAndSubDir(self):
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testRootDir = testAudioRootPath + sep + "test_DirUtil_getFileNamesInDirForPattern_inDirAndSubDir"
+
+		filePathNameLst = DirUtil.getFileNamesInDirForPattern(targetDir=testRootDir,
+		                                                      fileNamePattern='*.mp3',
+		                                                      inSubDirs=True)
+		self.assertEqual(['220123-Le pardon 21-02-18.mp3',
+ "220623-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+ '220317-VOUS ALLEZ TOUS CREVER 22-03-16.mp3',
+ '220401-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+ '220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+ '220413-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3'], filePathNameLst)
 	
 	def testDeleteFiles(self):
 		deletedFileName_1 = 'file_one.mp3'
@@ -605,10 +639,8 @@ class TestDirUtil(unittest.TestCase):
 
 	def testReplaceStringsInFiles(self):
 		testAudioRootPath = DirUtil.getTestAudioRootPath()
-		searchRootDir = testAudioRootPath + sep + "test_DirUtil_replace"  # Windows audio dir
-		searchRootDirSaved = searchRootDir + '_saved'
-		#	searchRootDir = '/storage/9016-4EF8/Audio'  # smartphone audio dir
-		#	searchRootDir = '/storage/emulated/0/Music' # tablet audio dir
+		testRootDir = testAudioRootPath + sep + "test_DirUtil_replace"  # Windows audio dir
+		testRootDirSaved = testRootDir + '_saved'
 		fileNamePattern = '*_dic.txt'
 		inSubDirs = True
 		text_to_searchLst = ['pl_downloadSubDir', 'downl', 'vd_downlFileName']
@@ -616,15 +648,15 @@ class TestDirUtil(unittest.TestCase):
 
 		# restoring dic text files
 		
-		if os.path.exists(searchRootDir):
-			shutil.rmtree(searchRootDir)
+		if os.path.exists(testRootDir):
+			shutil.rmtree(testRootDir)
 
-		shutil.copytree(searchRootDirSaved, searchRootDir)
+		shutil.copytree(testRootDirSaved, testRootDir)
 		
 		modifiedPlaylistName_1 = 'test warning index date files'
-		downloadplaylistinfodicFilePathName_1 = searchRootDir + sep + 'test warning index false date false files' + sep + modifiedPlaylistName_1 + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		downloadplaylistinfodicFilePathName_1 = testRootDir + sep + 'test warning index false date false files' + sep + modifiedPlaylistName_1 + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
 		modifiedPlaylistName_2 = 'test warning index date files'
-		downloadplaylistinfodicFilePathName_2 = searchRootDir + sep + 'test warning index false date true files' + sep + modifiedPlaylistName_2 + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
+		downloadplaylistinfodicFilePathName_2 = testRootDir + sep + 'test warning index false date true files' + sep + modifiedPlaylistName_2 + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT
 		
 		downloadPlaylistInfoDic_1 = DownloadPlaylistInfoDic(modifiedPlaylistName=modifiedPlaylistName_1,
 		                                                    existingDicFilePathName=downloadplaylistinfodicFilePathName_1)
@@ -638,7 +670,7 @@ class TestDirUtil(unittest.TestCase):
 
 		self.assertEqual(modifiedPlaylistName_2, downloadPlaylistInfoDic_2.getDicDirSubDir())
 
-		DirUtil.replaceStringsInFiles(searchRootDir,
+		DirUtil.replaceStringsInFiles(testRootDir,
 									  fileNamePattern,
 									  inSubDirs,
 									  text_to_searchLst,
@@ -650,7 +682,7 @@ class TestDirUtil(unittest.TestCase):
 		self.assertRaises(KeyError, downloadPlaylistInfoDic_reloaded_2.getDicDirSubDir)
 		
 		# removing test dir so that it is not uploaded on GitHub
-		DirUtil.deleteDirAndItsSubDirs(searchRootDir)
+		DirUtil.deleteDirAndItsSubDirs(testRootDir)
 	
 	def testDeleteFilesInDirForPattern(self):
 		testAudioRootPath = DirUtil.getTestAudioRootPath()
@@ -853,4 +885,4 @@ class TestDirUtil(unittest.TestCase):
 if __name__ == '__main__':
 	# unittest.main()
 	tst = TestDirUtil()
-	tst.testGetListOfFilesCreatedOrModifiedBeforeOrAfterRefFileDate()
+	tst.testGetFileNamesInDirForPattern_inDirAndSubDir()

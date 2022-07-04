@@ -364,8 +364,8 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_EXCEPTION] = not isDownloadSuccess
 	
 	def setVideoAudioFileNameForVideoIndex(self,
-	                                           videoIndex,
-	                                           audioFileName):
+	                                       videoIndex,
+	                                       audioFileName):
 		"""
 		Sets the video download exception value for the passed video
 		index to True if the passed isDownloadSuccess is False, and to
@@ -377,7 +377,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	
 	def setVideoDownloadTimeForVideoIndex(self, videoIndex, videoDownloadTimeStr):
 		self._getVideoInfoForVideoIndex(videoIndex)[KEY_VIDEO_DOWNLOAD_TIME] = videoDownloadTimeStr
-
+	
 	def getVideoDownloadTimeForVideoIndex(self, videoIndex):
 		videoInfoDic = self._getVideoInfoForVideoIndex(videoIndex)
 		
@@ -896,19 +896,13 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		
 		for videoIndexStr, videoDic in self.dic[KEY_VIDEOS].items():
 			videoAudioFileName = videoDic[KEY_VIDEO_DOWNLOAD_FILENAME]
-			match = re.search(DATE_PREFIX_PATTERN, videoAudioFileName)
-			
-			if match is None:
-				# the case if the video audio file name prefix is an old 2 digits prefix
+			prefixDate, downloadDate, _ = DownloadPlaylistInfoDic.getDownloadDatePrefixDatePrefixStr(videoDic=videoDic,
+			                                                                                         videoAudioFileName=videoAudioFileName)
+			if prefixDate is None:
 				continue
-			else:
-				datePrefixStr = match.group(1)
-				downloadDateTimeStr = videoDic[KEY_VIDEO_DOWNLOAD_TIME]
-				prefixDate = datetime.strptime(datePrefixStr,"%y%m%d")
-				downloadDate = datetime.strptime(downloadDateTimeStr.split(' ')[0], "%d/%m/%Y")
 				
-				if downloadDate > prefixDate:
-					failedVideoIndexLst.append(int(videoIndexStr))
+			if downloadDate > prefixDate:
+				failedVideoIndexLst.append(int(videoIndexStr))
 
 		return failedVideoIndexLst
 	
@@ -1042,6 +1036,46 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 				videoPlaylistInfoLst.append(PlaylistVideoIndexInfo(playlistInfoDic=downloadPlaylistInfoDic,
 				                                                   videoIndexLst=videoIndexList))
 		return videoPlaylistInfoLst
+	
+	@staticmethod
+	def renameFailedVideosUpdatedFromPC(audioDirRoot):
+		playlistInfoLst = DownloadPlaylistInfoDic.getFailedVideoRedownloadedOnPcPlaylistInfoLst(
+			audioDirRoot=audioDirRoot)
+		
+		for playlistInfo in playlistInfoLst:
+			downloadPlaylistInfoDic = playlistInfo.playlistInfoDic
+			redownloadedVideoIndexLst = playlistInfo.videoIndexLst
+			playlistDirectory = audioDirRoot + sep + downloadPlaylistInfoDic.getPlaylistDownloadSubDir()
+			
+			for redownloadedVideoIndex in redownloadedVideoIndexLst:
+				videoAudioFileName = downloadPlaylistInfoDic.getVideoAudioFileNameForVideoIndex(redownloadedVideoIndex)
+				currentPrefixDate, downloadDate, currentPrefixStr = DownloadPlaylistInfoDic.getDownloadDatePrefixDatePrefixStr(
+					videoDic=downloadPlaylistInfoDic._getVideoInfoForVideoIndex(redownloadedVideoIndex),
+					videoAudioFileName=videoAudioFileName)
+				newPrefixStr = downloadDate.strftime("%y%m%d")
+				newVideoAudioFileName = videoAudioFileName.replace(currentPrefixStr, newPrefixStr)
+				videoAudioFilePathName = playlistDirectory + sep + videoAudioFileName
+				DirUtil.renameFile(originalFilePathName=videoAudioFilePathName,
+				                   newFileName=newVideoAudioFileName)
+				downloadPlaylistInfoDic.setVideoAudioFileNameForVideoIndex(videoIndex=redownloadedVideoIndex,
+				                                                           audioFileName=newVideoAudioFileName)
+				downloadPlaylistInfoDic.saveDic(audioDirRoot=audioDirRoot)
+				
+	@staticmethod
+	def getDownloadDatePrefixDatePrefixStr(videoDic,
+	                                       videoAudioFileName):
+		match = re.search(DATE_PREFIX_PATTERN, videoAudioFileName)
+		
+		if match is None:
+			# the case if the video audio file name prefix is an old 2 digits prefix
+			return None, None, None
+		else:
+			datePrefixStr = match.group(1)
+			downloadDateTimeStr = videoDic[KEY_VIDEO_DOWNLOAD_TIME]
+			prefixDate = datetime.strptime(datePrefixStr, "%y%m%d")
+			downloadDate = datetime.strptime(downloadDateTimeStr.split(' ')[0], "%d/%m/%Y")
+			
+			return prefixDate, downloadDate, datePrefixStr
 
 
 if __name__ == "__main__":

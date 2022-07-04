@@ -1296,8 +1296,61 @@ class TestDownloadPlaylistInfoDic(unittest.TestCase):
 		self.assertEqual(1, len(failedVideoPlaylistInfoFive.videoIndexLst))
 		self.assertEqual([15], failedVideoPlaylistInfoFive.videoIndexLst)
 
+	def testRenameFailedVideosUpdatedFromPC(self):
+		testAudioRootPath = DirUtil.getTestAudioRootPath()
+		testRootDir = testAudioRootPath + sep + "test_DownloadPlaylistInfoDic_renameFailedVideosUpdatedFromPC"
+		testRootDirSaved = testRootDir + '_saved'
+		
+		# restoring dic text files
+		
+		if os.path.exists(testRootDir):
+			shutil.rmtree(testRootDir)
+		
+		shutil.copytree(testRootDirSaved, testRootDir)
+		filePathNameLst = DirUtil.getFileNamesInDirForPattern(targetDir=testRootDir,
+		                                                      fileNamePattern='*.mp3',
+		                                                      inSubDirs=True)
+		self.assertEqual(["220623-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+ '220317-VOUS ALLEZ TOUS CREVER 22-03-16.mp3',
+ '220401-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+ '220403-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+ '220413-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3'], filePathNameLst)
+		
+		DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=testRootDir)
+		filePathNameLst = DirUtil.getFileNamesInDirForPattern(targetDir=testRootDir,
+		                                                      fileNamePattern='*.mp3',
+		                                                      inSubDirs=True)
+		self.assertEqual(["220704-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+ '220704-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+ '220704-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3',
+ '220704-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+ '220704-VOUS ALLEZ TOUS CREVER 22-03-16.mp3'], filePathNameLst)
+		
+		# obtaining the download video info dic file path name
+		dicFileNameLst = DirUtil.getFilePathNamesInDirForPattern(targetDir=testRootDir,
+		                                                         fileNamePattern='*' + DownloadPlaylistInfoDic.DIC_FILE_NAME_EXTENT,
+		                                                         inSubDirs=True)
+		dicFilePathName_EMI = dicFileNameLst[0]
+		emiDvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName_EMI)
+		self.assertEqual("220704-Expérience de mort imminente, Je reviens de l'au-delà. 22-02-18.mp3",
+		                 emiDvi.getVideoAudioFileNameForVideoIndex(205))
+
+		dicFilePathName_rechCli = dicFileNameLst[1]
+		rechCliDvi = DownloadPlaylistInfoDic(existingDicFilePathName=dicFilePathName_rechCli)
+		self.assertEqual('220704-#2  - Comment nourrir le monde _ Marc Dufumier 22-03-23.mp3',
+		                 rechCliDvi.getVideoAudioFileNameForVideoIndex(99))
+		self.assertEqual('220704-HYDROGENE  - Le GRAND MENSONGE 21-04-18.mp3',
+		                 rechCliDvi.getVideoAudioFileNameForVideoIndex(101))
+		self.assertEqual('220704-Déjeuner-débat avec Gunter PAULI 20-09-14.mp3',
+		                 rechCliDvi.getVideoAudioFileNameForVideoIndex(137))
+		self.assertEqual('220704-VOUS ALLEZ TOUS CREVER 22-03-16.mp3',
+		                 rechCliDvi.getVideoAudioFileNameForVideoIndex(72))
+
+		# removing test path to avoid uploading it on GitHub
+		shutil.rmtree(testRootDir)
+
 
 if __name__ == '__main__':
 #	unittest.main()
 	tst = TestDownloadPlaylistInfoDic()
-	tst.testGetFailedVideoRedownloadedOnPcPlaylistInfoLst()
+	tst.testRenameFailedVideosUpdatedFromPC()

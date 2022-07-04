@@ -69,7 +69,7 @@ class CustomDropDown(DropDown):
 	
 	def renameFailedVideosUpdatedFromPC(self):
 		"""
-		Called by Rename failed vids menu item defined in customdropdown.kv file.
+		Called by Renam rdown vids menu item defined in customdropdown.kv file.
 		"""
 		self.rootGUI.renameFailedVideosUpdatedFromPC()
 	
