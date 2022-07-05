@@ -3,6 +3,7 @@ import posixpath
 import re
 from datetime import datetime
 from os.path import sep
+import logging
 
 from constants import *
 from dirutil import DirUtil
@@ -224,7 +225,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		:return: playlist url
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL]
+			if KEY_PLAYLIST_URL in self.dic[KEY_PLAYLIST].keys():
+				return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL]
+			else:
+				logging.info('key {} not found in {} dic file !'.format(KEY_PLAYLIST_URL, self.getPlaylistNameModified()))
+				return None
 		else:
 			return None
 	
@@ -830,7 +835,11 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 		:return:
 		"""
 		if KEY_PLAYLIST in self.dic.keys():
-			return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
+			if KEY_PLAYLIST_NAME_MODIFIED in self.dic[KEY_PLAYLIST].keys():
+				return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
+			else:
+				logging.info('key {} not found in {} dic file !'.format(KEY_PLAYLIST_NAME_MODIFIED, self.dic[KEY_PLAYLIST]))
+				return None
 		else:
 			return None
 	
