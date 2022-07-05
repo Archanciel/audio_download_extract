@@ -1852,8 +1852,13 @@ class AudioDownloaderGUI(AudioGUI):
 					break
 				downloadDate = audioFileInfoLst[1]
 				downloadFileFullName = audioFileInfoLst[0]
-				self.outputResult('    [b]{}[/b] {}'.format(downloadDate, downloadFileFullName),
-				                  scrollToEnd=False)
+				if DownloadPlaylistInfoDic.isAudioFileNamePrefixedWithDate(downloadFileFullName):
+					self.outputResult('    [b]{}[/b]'.format(downloadFileFullName),
+					                  scrollToEnd=False)
+				else:
+					self.outputResult('    [i]{}[/i] [b]{}[/b]'.format(downloadDate, downloadFileFullName),
+					                  scrollToEnd=False)
+				
 				outputLines += 1
 	
 	def fillHistoryListWithDownloadHistory(self, audioFileHistoryLst):

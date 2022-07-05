@@ -64,6 +64,17 @@
             height: '28dp'
             disabled: False
             on_release: root.shareAudio()
+    GridLayout: # enable to hide or display 'Down histo' menu item
+        id: gridlayout_downloadHisto
+		cols: 1
+        size_hint_y: None
+        height: "0dp"
+        Button:
+            text: 'Down histo'
+            size_hint_y: None
+            height: '28dp'
+            disabled: False
+            on_release: root.downloadHisto()
     GridLayout: # enable to hide or display 'Download failed videos' menu item
         id: gridlayout_downloadFailedVideos
 		cols: 1
@@ -88,17 +99,6 @@
             height: '28dp'
             disabled: False
             on_release: root.renameFailedVideosUpdatedFromPC()
-    GridLayout: # enable to hide or display 'Down histo' menu item
-        id: gridlayout_downloadHisto
-		cols: 1 
-        size_hint_y: None
-        height: "0dp"
-        Button:
-            text: 'Down histo'
-            size_hint_y: None
-            height: '28dp'
-            disabled: False
-            on_release: root.downloadHisto()
     GridLayout: # enable to hide or display 'Del histo' menu item
         id: gridlayout_changePlaylist
 		cols: 1

@@ -1079,7 +1079,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 	@staticmethod
 	def getDownloadDatePrefixDatePrefixStr(videoDic,
 	                                       videoAudioFileName):
-		match = re.search(DATE_PREFIX_PATTERN, videoAudioFileName)
+		match = DownloadPlaylistInfoDic.isAudioFileNamePrefixedWithDate(videoAudioFileName)
 		
 		if match is None:
 			# the case if the video audio file name prefix is an old 2 digits prefix
@@ -1091,6 +1091,18 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			downloadDate = datetime.strptime(downloadDateTimeStr.split(' ')[0], "%d/%m/%Y")
 			
 			return prefixDate, downloadDate, datePrefixStr
+	
+	@staticmethod
+	def isAudioFileNamePrefixedWithDate(videoAudioFileName):
+		"""
+		Returns None if the passed videoAudioFileName does not start with a 6 digit
+		date, match otherwise.
+		
+		:param videoAudioFileName:
+		:return:
+		"""
+		match = re.search(DATE_PREFIX_PATTERN, videoAudioFileName)
+		return match
 
 
 if __name__ == "__main__":
