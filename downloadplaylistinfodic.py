@@ -228,7 +228,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			if KEY_PLAYLIST_URL in self.dic[KEY_PLAYLIST].keys():
 				return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_URL]
 			else:
-				logging.info('key {} not found in {} dic file !'.format(KEY_PLAYLIST_URL, self.getPlaylistNameModified()))
+				logging.info('key {} not found in {} dic file located in {}!'.format(KEY_PLAYLIST_URL, self.getPlaylistNameModified(), self.getPlaylistDownloadSubDir()))
 				return None
 		else:
 			return None
@@ -838,7 +838,7 @@ class DownloadPlaylistInfoDic(BaseInfoDic):
 			if KEY_PLAYLIST_NAME_MODIFIED in self.dic[KEY_PLAYLIST].keys():
 				return self.dic[KEY_PLAYLIST][KEY_PLAYLIST_NAME_MODIFIED]
 			else:
-				logging.info('key {} not found in {} dic file !'.format(KEY_PLAYLIST_NAME_MODIFIED, self.dic[KEY_PLAYLIST]))
+				logging.info('key {} not found in {} dic file located in {}!'.format(KEY_PLAYLIST_NAME_MODIFIED, self.dic[KEY_PLAYLIST], self.getPlaylistDownloadBaseSubDir()))
 				return None
 		else:
 			return None
