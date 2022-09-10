@@ -353,20 +353,18 @@ if __name__ == '__main__':
 		from configmanager import ConfigManager
 		
 		configmanager = ConfigManager(DirUtil.getDefaultAudioRootPath() + sep + 'audiodownloader.ini')
-		playlistName = "Gary Renard en français"
-		targetAudioDir = configmanager.dataPath + sep + 'UCEM' + sep + 'Gary Renard' + sep + playlistName
+		playlistName = "EMI"
+		targetAudioDir = configmanager.dataPath + sep + playlistName
 
 		sourceFileNameLst = []
 
-		sourceFileNameLst.append("silence 9 sec.mp3")
-		sourceFileNameLst.append("Aimer sans peur 2_9 - Gary Renard - extrait UCEM.mp3")
-		sourceFileNameLst.append("silence 5 sec.mp3")
-		sourceFileNameLst.append("Aimer sans peur 2_9 - Gary Renard - explication extrait UCEM.mp3")
-		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 1.mp3")
-		sourceFileNameLst.append("silence 2 sec.mp3")
-		sourceFileNameLst.append("Aimer sans peur 3_9 - Gary Renard - méditation partie 2.mp3")
+		sourceFileNameLst.append("Consultation Annales Akashiques 19 nov 2020 Aime ta vie.mp3")
+		sourceFileNameLst.append("silence 3 sec.mp3")
+		sourceFileNameLst.append("220428-L'expérience du 'Retour à soi', témoignages ... août 2020 20-10-07_one.mp3")
+		sourceFileNameLst.append("silence 1 sec.mp3")
+		sourceFileNameLst.append("220428-L'expérience du 'Retour à soi', témoignages ... août 2020 20-10-07_two.mp3")
 
-		targetAudioFileName = 'Aimer sans peur 2_91 - Gary Renard.mp3'
+		targetAudioFileName = 'Aimer sa vie et tout accepter.mp3'
 		targetAudioFilePathName = targetAudioDir + sep + targetAudioFileName
 
 		class AudioControllertStub:
