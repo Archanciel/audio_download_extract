@@ -1525,14 +1525,18 @@ class AudioDownloaderGUI(AudioGUI):
 			self.stopDownloadButton.disabled = True
 	
 	def getVideoTitlePrefixSuffixWarningMsg(self, playlistOrSingleVideoUrl, playlistOrSingleVideoDownloadPath):
-		self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
-			playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-			playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
-			originalPlaylistTitle=self.originalPlaylistTitle,
-			modifiedPlaylistTitle=self.modifiedPlaylistTitle,
-			isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-			isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
-		return indexAndDateSettingWarningMsg
+		if self.originalPlaylistTitle is not None:
+			self.downloadVideoInfoDic, indexAndDateSettingWarningMsg = self.audioController.getDownloadVideoInfoDicAndIndexDateSettingWarningMsg(
+				playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+				playlistOrSingleVideoDownloadPath=playlistOrSingleVideoDownloadPath,
+				originalPlaylistTitle=self.originalPlaylistTitle,
+				modifiedPlaylistTitle=self.modifiedPlaylistTitle,
+				isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+				isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+			return indexAndDateSettingWarningMsg
+		else:
+			# the case when the url points to a single video, not to a playlist ...
+			return ''
 	
 	def downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread(self,
 	                                                            playlistOrSingleVideoUrl,
