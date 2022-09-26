@@ -88,8 +88,14 @@ class AudioGUI(Screen):
 		self.dropDownMenu = CustomDropDown(rootGUI=self)
 	
 	def outputResult(self, resultStr, scrollToEnd=True):
-		if len(self.outputLabel.text) == 0:
+		outputResultLength = len(self.outputLabel.text)
+		
+		if outputResultLength == 0:
 			self.outputLabel.text = resultStr
+		elif outputResultLength >= OUTPUT_LABEL_MAX_SIZE:
+			# avoids output label excess filling when downloading a very long playlist
+			# like EMI for example
+			self.outputLabel.text = self.outputLabel.text[int(OUTPUT_LABEL_MAX_SIZE / 2):]
 		else:
 			self.outputLabel.text = self.outputLabel.text + '\n' + resultStr
 		
