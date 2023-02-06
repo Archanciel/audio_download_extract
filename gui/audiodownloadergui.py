@@ -1756,7 +1756,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputResult(msgText)
 
 	def displayPlaylistReDownloadInfo(self, originalPlaylistTitle):
-		msgText = 're-downloading \n[b][color=FFD700]{}[/color][/b] playlist'.format(originalPlaylistTitle)
+		msgText = 're-downloading \n[b][color=0000FF]{}[/color][/b] playlist'.format(originalPlaylistTitle)
 		self.outputResult(msgText)
 
 	def increasePlaylistVideoDownloadNumber(self, originalPlaylistTitle):
