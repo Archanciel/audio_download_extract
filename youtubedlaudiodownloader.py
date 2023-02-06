@@ -93,6 +93,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		# 	self.convertingVideoToMp3 = False
 	
 	def downloadPlaylistVideosForUrl(self,
+	                                 originalPlaylistTitle,
 	                                 playlistUrl,
 	                                 downloadVideoInfoDic,
 	                                 isUploadDateSuffixAddedToPlaylistVideo,
@@ -256,7 +257,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				else:
 					msgText = msgStartStr + ' [b]{}[/b] audio ...\n'.format(videoTitle)
 
-				self.audioController.displayVideoDownloadStartMessage(msgText)
+				self.audioController.displayVideoDownloadStartMessage(msgText=msgText, originalPlaylistTitle=originalPlaylistTitle)
 
 				try:
 					ydl.download([videoUrl])
@@ -318,7 +319,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 					msgText = 'audio download failed. Retry downloading the playlist later to download the failed audio only.\n'
 				
 				if not isCurrentVideoDowloadProblem:
-					self.audioController.displayVideoDownloadEndMessage(msgText)
+					self.audioController.displayVideoDownloadEndMessage(msgText, originalPlaylistTitle)
 
 				self.convertingVideoToMp3 = False   # causes the YoutubeDlDownloadInfoExtractor
 													# to stop displaying the downloaded file

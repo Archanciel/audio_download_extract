@@ -1,5 +1,5 @@
 import logging
-import os,sys,inspect
+import os, sys, inspect
 import time
 from configparser import NoOptionError
 
@@ -16,7 +16,7 @@ TIME_SLEEP_SECONDS = 1
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir)
+sys.path.insert(0, parentdir)
 
 from os.path import sep
 
@@ -74,6 +74,7 @@ FILE_ACTION_DELETE = 5
 
 NO_INTERNET = False
 
+
 class WindowManager(ScreenManager):
 	pass
 
@@ -96,15 +97,15 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 			newSelIdx = -1
 		else:
 			newSelIdx = currentSelIdx - 1
-			
+		
 		self.updateLineValues(AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_UP, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
-
+		
 		# supplements the refocusOnRequestInput() called in the
 		# SelectableLabel.apply_selection() method, but is useful when
 		# the moved item is no longer visible !
 		self.appGUI.refocusOnFirstRequestInput()
-
+	
 	def moveItemDown(self):
 		currentSelIdx, nodes = self.get_nodes()
 		
@@ -116,7 +117,7 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 			newSelIdx = 0
 		else:
 			newSelIdx = currentSelIdx + 1
-			
+		
 		self.updateLineValues(AudioDownloadSelectableRecycleBoxLayout.MOVE_DIRECTION_DOWN, currentSelIdx, newSelIdx)
 		self.select_node(nodes[newSelIdx])
 		
@@ -134,17 +135,22 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				# of the list
 				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(0, {'text': movedValue, 'data':  movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
+				self.parent.data.insert(0, {'text': movedValue, 'data': movedUrlDownloadData,
+				                            'toDownload': movedItemToDownloadValue, 'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
 				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
 				replacedItemToDownloadValue = self.parent.data[movedItemNewSeIndex]['toDownload']
 				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'toDownload': replacedItemToDownloadValue, 'selectable': True})
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData,
+				                                            'toDownload': replacedItemToDownloadValue,
+				                                            'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData,
+				                                              'toDownload': movedItemToDownloadValue,
+				                                              'selectable': True})
 		else:
 			# handling moving up
 			if movedItemSelIndex == 0:
@@ -152,18 +158,24 @@ class AudioDownloadSelectableRecycleBoxLayout(SelectableRecycleBoxLayout):
 				# end of the list
 				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.append({'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
+				self.parent.data.append(
+					{'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue,
+					 'selectable': True})
 			else:
 				replacedValue = self.parent.data[movedItemNewSeIndex]['text']
 				replaceUrlDownloadData = self.parent.data[movedItemNewSeIndex]['data']
 				replacedItemToDownloadValue = self.parent.data[movedItemNewSeIndex]['toDownload']
 				movedItemToDownloadValue = self.parent.data[movedItemSelIndex]['toDownload']
 				movedUrlDownloadData = self.parent.data.pop(movedItemSelIndex)['data']
-				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData, 'toDownload': replacedItemToDownloadValue, 'selectable': True})
+				self.parent.data.insert(movedItemSelIndex, {'text': replacedValue, 'data': replaceUrlDownloadData,
+				                                            'toDownload': replacedItemToDownloadValue,
+				                                            'selectable': True})
 				
 				self.parent.data.pop(movedItemNewSeIndex)
-				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData, 'toDownload': movedItemToDownloadValue, 'selectable': True})
-
+				self.parent.data.insert(movedItemNewSeIndex, {'text': movedValue, 'data': movedUrlDownloadData,
+				                                              'toDownload': movedItemToDownloadValue,
+				                                              'selectable': True})
+		
 		# appGUI.recycleViewCurrentSelIndex is used by the
 		# deleteOrBrowseItem() and updateRequest() appGUI methods
 		self.appGUI.recycleViewCurrentSelIndex = movedItemNewSeIndex
@@ -199,11 +211,11 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 			# on_touch_down is called, if the item is selected, the
 			# requestListRVSelBoxLayout.selected_nodes list has one element !
 			self.audioDownloaderGUI.requestInput.text = ''
-
+			
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = -1
-
+		
 		if super(SelectableMultiFieldsItem, self).on_touch_down(touch):
 			return True
 		if self.collide_point(*touch.pos) and self.selectable:
@@ -228,27 +240,27 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 				selItemUrl = selItemDownloadData.url
 				Clipboard.copy(selItemUrl)
 				self.audioDownloaderGUI.requestInput.text = selItemUrlTitle
-
+			
 			# appGUI.recycleViewCurrentSelIndex is used by the
 			# deleteOrBrowseItem() and updateRequest() appGUI methods
 			self.audioDownloaderGUI.recycleViewCurrentSelIndex = index
 			
 			self.audioDownloaderGUI.clearStatusBar()
-			
+		
 		# next instruction fixes incomprehensible problem of setting chkbox
 		# to active on other items when moving an item where the chkbox is
 		# active !
 		if index <= len(rv.data) - 1:
 			# avoids IndexError exception happening sometimes
 			self.ids.download_chkbox.active = rv.data[index]['toDownload']
-			
+		
 		self.audioDownloaderGUI.refocusOnFirstRequestInput()
 		self.audioDownloaderGUI.enableStateOfRequestListSingleItemButtons()
 	
 	def toggleCheckbox(self, chkbox, isChecked):
 		selectableMultiFieldsItem = chkbox.parent
 		recycleView = selectableMultiFieldsItem.parent.parent
-
+		
 		# problem: after deleting a file, the playlist item chkbox is selected !!!
 		#
 		# if not recycleView.data[selectableMultiFieldsItem.index]['selectable']:
@@ -258,9 +270,10 @@ class SelectableMultiFieldsItem(RecycleDataViewBehavior, GridLayout):
 		# 	# So, checking the checkbox for a playlist name does not set
 		# 	# the chkbox to active.
 		# 	chkbox.active = False
-
-		recycleView.data[selectableMultiFieldsItem.index]['toDownload'] = isChecked
 		
+		recycleView.data[selectableMultiFieldsItem.index]['toDownload'] = isChecked
+
+
 #		logging.info('toggleCheckbox in item {}: {}'.format(selectableMultiFieldsItem.index, isChecked))
 
 
@@ -271,17 +284,17 @@ class SettingScrollOptions(SettingOptions):
 
 	Source URL: https://github.com/kivy/kivy/wiki/Scollable-Options-in-Settings-panel
 	'''
-
+	
 	def _create_popup(self, instance):
 		# global oORCA
 		# create the popup
-
+		
 		content = GridLayout(cols=1, spacing='5dp')
 		scrollview = ScrollView(do_scroll_x=False)
 		scrollcontent = GridLayout(cols=1, spacing='5dp', size_hint=(None, None))
 		scrollcontent.bind(minimum_height=scrollcontent.setter('height'))
 		popup = Popup(content=content, title=self.title, size_hint=(0.5, 0.9), auto_dismiss=False)
-
+		
 		# we need to open the popup first to get the metrics
 		popup.open()
 		# Add some space on top
@@ -294,7 +307,7 @@ class SettingScrollOptions(SettingOptions):
 			btn = ToggleButton(text=option, state=state, group=uid, size=(popup.width, dp(55)), size_hint=(None, None))
 			btn.bind(on_release=self._set_option)
 			scrollcontent.add_widget(btn)
-
+		
 		# finally, add a cancel button to return on the previous panel
 		scrollview.add_widget(scrollcontent)
 		content.add_widget(scrollview)
@@ -311,9 +324,11 @@ class AudioDownloaderGUI(AudioGUI):
 	statusBarScrollView = ObjectProperty()
 	statusBarTextInput = ObjectProperty()
 	recycleViewCurrentSelIndex = -1
-
+	
 	def __init__(self, **kwargs):
 		super(AudioDownloaderGUI, self).__init__(**kwargs)
+		
+		self.partiallyDownloadedPlaylistDic = {}
 	
 	def _finish_init(self, dt):
 		"""
@@ -325,7 +340,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param dt:
 		"""
 		super(AudioDownloaderGUI, self)._finish_init(dt)
-
+		
 		if self.error:
 			# Error set by base class.
 			# The case if the configuration manager could not load the config file
@@ -341,7 +356,7 @@ class AudioDownloaderGUI(AudioGUI):
 				self.downloadButton.width = 190
 				self.addDownloadButton.width = 80
 		else:
-			#self.stopDownloadButton.text = 'Half'  # correct on Windows !
+			# self.stopDownloadButton.text = 'Half'  # correct on Windows !
 			self.stopDownloadButton.width = 40
 			self.downloadButton.width = 80
 			self.addDownloadButton.width = 40
@@ -354,9 +369,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.boxLayoutContainingStatusBar.height = dp(self.configMgr.statusbarHeight)
 		self.clearResultOutputButton.width = dp(self.configMgr.clearButtonWidth)
 		# self.applyAppPosAndSize() # commenting it since it is currently not
-									# usefull in the AudioDownload app !
-									# Additionally, it avoids that the 'Stop'
-									# button is set to 'Half' or 'Full'
+		# usefull in the AudioDownload app !
+		# Additionally, it avoids that the 'Stop'
+		# button is set to 'Half' or 'Full'
 		self.movedRequestNewIndex = -1
 		self.movingRequest = False
 		self.currentLoadedPathFileName = ''
@@ -368,9 +383,9 @@ class AudioDownloaderGUI(AudioGUI):
 		self.modifiedSingleVideoTitle = None
 		self.originalSingleVideoTitle = None
 		self.downloadThreadCreated = False  # used to fix a problem on Android
-											# where two download threads are
-											# created after clicking on 'Yes'
-											# button on the ConfirmPopup dialog
+		# where two download threads are
+		# created after clicking on 'Yes'
+		# button on the ConfirmPopup dialog
 		self.downloadObjectTitleThreadCreated = False
 		self.playlistOrSingleVideoDownloadPath = None
 		self.accessError = None
@@ -416,7 +431,7 @@ class AudioDownloaderGUI(AudioGUI):
 			return
 		
 		self.downloadFromClipboard()
-
+	
 	def addDownloadUrlToUrlList(self,
 	                            playlistOrSingleVideoModifiedTitle='',
 	                            downloadSubdir='',
@@ -442,49 +457,49 @@ class AudioDownloaderGUI(AudioGUI):
 				playlistOrSingleVideoUrl != ' ' and \
 				len(playlistOrSingleVideoUrl.split('\n')) == 1 and \
 				playlistOrSingleVideoUrl.startswith('https://'):
-
+			
 			title = None
 			type = None
 			
 			while title is None:
 				self.downloadFromClipboard(onlyGetDownloadObjectTitle=True)
 				time.sleep(TIME_SLEEP_SECONDS)
-
+				
 				title = self.originalPlaylistTitle
-			
+				
 				if title is None:
 					type = DownloadUrlInfoDic.URL_TYPE_SINGLE_VIDEO
 					title = self.originalSingleVideoTitle
 				else:
 					type = DownloadUrlInfoDic.URL_TYPE_PLAYLIST
-
+			
 			if playlistOrSingleVideoModifiedTitle != '':
 				title = playlistOrSingleVideoModifiedTitle
-
+			
 			self.enableButtons()
 			
 			uld = UrlDownloadData(type=type,
-								  title=title,
-								  url=playlistOrSingleVideoUrl,
+			                      title=title,
+			                      url=playlistOrSingleVideoUrl,
 			                      downloadDir=downloadSubdir)
 			
 			urlListEntry = {'text': title,
-							'data': uld,
-							'toDownload': False,
-							'selectable': True}
+			                'data': uld,
+			                'toDownload': False,
+			                'selectable': True}
 			self.requestListRV.data.append(urlListEntry)
 			self.resetListViewScrollToEnd()
 			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
 			self.deleteBrowseButton.text = TOGGLE_DELETE_BUTTON_DELETE
-
+			
 			if self.showRequestList:
 				self.adjustRequestListSize()
 			
 			self.clearHistoryListSelection()
 			self.manageStateOfGlobalRequestListButtons()
 			self.emptyRequestFields()
-			Clipboard.copy(' ') # empty clipboard. Copying '' does not work !
-		
+			Clipboard.copy(' ')  # empty clipboard. Copying '' does not work !
+	
 	def downloadFromClipboard(self, onlyGetDownloadObjectTitle=False):
 		"""
 		Method called at application start or when pressing the
@@ -507,22 +522,22 @@ class AudioDownloaderGUI(AudioGUI):
 			endFunc = None
 		else:
 			endFunc = self.executeDownload
-			
+		
 		# obtaining the playlist or single video title using a separate thread
 		# for the playlist or single video referenced by the url obtained from
 		# the clipboard.
 		
 		if not self.downloadObjectTitleThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
-										  func=self.getDownloadObjectTitleOnNewThread,
-										  funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
-										  endFunc=endFunc,
-										  endFuncArgs=(playlistOrSingleVideoUrl, ))
+			                              func=self.getDownloadObjectTitleOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl},
+			                              endFunc=endFunc,
+			                              endFuncArgs=(playlistOrSingleVideoUrl,))
 			
 			self.downloadObjectTitleThreadCreated = True
-
+			
 			sepThreadExec.start()
-
+	
 	def downloadFromUrlDownloadLstOnNewThread(self):
 		"""
 		Called by downloadSelectedItems() method which is called by
@@ -535,20 +550,20 @@ class AudioDownloaderGUI(AudioGUI):
 			urlDownloadData = listEntry['data']
 			playlistOrSingleVideoUrl = urlDownloadData.url
 			playlistOrSingleVideoDownloadDir = urlDownloadData.downloadDir
-
+			
 			if urlDownloadData.type == DownloadUrlInfoDic.URL_TYPE_PLAYLIST:
 				self.originalPlaylistTitle = urlDownloadData.title
 				self.originalSingleVideoTitle = None
 			else:
 				self.originalPlaylistTitle = None
 				self.originalSingleVideoTitle = urlDownloadData.title
-
+			
 			if self.accessError:
 				# the case if the video or playlist referenced by the playlistOrSingleVideoUrl
 				# no longer exist on Youtube
 				self.totalDownloadVideoFailedNb += 1
 				continue
-				
+			
 			# correcting a bug if you first downloaded a playlist after
 			# modifying the playlist name and then download a playlist
 			# without setting the dir ar modifying the playlist name
@@ -573,14 +588,14 @@ class AudioDownloaderGUI(AudioGUI):
 					self.playlistOrSingleVideoDownloadPath = audioRootPath + sep + playlistOrSingleVideoDownloadDir
 			
 			self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistOrSingleVideoUrl)
-
+			
 			while self.downloadThreadCreated:
 				time.sleep(TIME_SLEEP_SECONDS)
-			
+		
 		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
-											# where two download threads are
-											# created after clicking on 'Yes'
-											# button on the ConfirmPopup dialog
+		# where two download threads are
+		# created after clicking on 'Yes'
+		# button on the ConfirmPopup dialog
 		self.displayUrlDownloadLstEndDownloadInfo()
 	
 	def downloadFromFailedVideoListOnNewThread(self):
@@ -599,7 +614,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# references. The playlist dic were obtained from the smartphone using the
 			# transfer file utility program.
 			self.audioController.deleteAudioFilesOlderThanPlaylistDicFile(failedVideoPlaylistDic)
-
+			
 			self.failedVideoPlaylistDic = failedVideoPlaylistDic
 			playListDownloadSubDir = failedVideoPlaylistDic.getPlaylistDownloadSubDir()
 			failedVideoIndexLst = failedVideoPlaylistInfo.videoIndexLst
@@ -608,11 +623,11 @@ class AudioDownloaderGUI(AudioGUI):
 				failedVideoPlaylistDic.getPlaylistNameModified(),
 				playListDownloadSubDir)
 			self.displayFailedVideoPlaylistDownloadStartMessage(message)
-
+			
 			self.playlistOrSingleVideoDownloadPath = self.configMgr.dataPath + sep + playListDownloadSubDir
 			for failedVideoIndex in failedVideoIndexLst:
 				playlistOrSingleVideoUrl = failedVideoPlaylistDic.getVideoUrlForVideoIndex(failedVideoIndex)
-				self.failedVideoPlaylistDic = failedVideoPlaylistDic #  must be set here and not in first for loop !
+				self.failedVideoPlaylistDic = failedVideoPlaylistDic  # must be set here and not in first for loop !
 				#                                                       since it is set to None after the dic is saved
 				#                                                       in downloadPlaylistOrSingleVideoAudioFromUrlLstOnNewThread()
 				self.originalPlaylistTitle = None
@@ -630,9 +645,9 @@ class AudioDownloaderGUI(AudioGUI):
 					time.sleep(TIME_SLEEP_SECONDS)
 		
 		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
-													# where two download threads are
-													# created after clicking on 'Yes'
-													# button on the ConfirmPopup dialog
+		# where two download threads are
+		# created after clicking on 'Yes'
+		# button on the ConfirmPopup dialog
 		self.displayFailedVideoRedownloadLstEndDownloadInfo()
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
@@ -653,14 +668,14 @@ class AudioDownloaderGUI(AudioGUI):
 				downloadObjectTitle = self.originalSingleVideoTitle
 				confirmPopupTitle = ConfirmDownloadPopup.POPUP_TITLE_VIDEO
 				isPlayListDownloaded = False
-
+			
 			confirmDownloadPopupCallbackFunction = self.onConfirmDownloadPopupAnswer
 			
 			popup = self.createDownloadConfirmPopup(confirmPopupTitle=confirmPopupTitle,
-													confirmPopupMsg=downloadObjectTitle,
-													confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
-													isPlayListDownloaded=isPlayListDownloaded,
-													playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
+			                                        confirmPopupMsg=downloadObjectTitle,
+			                                        confirmPopupCallbackFunction=confirmDownloadPopupCallbackFunction,
+			                                        isPlayListDownloaded=isPlayListDownloaded,
+			                                        playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
 			
 			popup.open()
 	
@@ -668,20 +683,20 @@ class AudioDownloaderGUI(AudioGUI):
 		self.originalPlaylistTitle, self.originalSingleVideoTitle, self.accessError = \
 			self.audioController.getPlaylistTitleOrVideoTitleForUrl(
 				playlistOrSingleVideoUrl)
-	
-		self.downloadObjectTitleThreadCreated = False
 		
+		self.downloadObjectTitleThreadCreated = False
+	
 	def enableButtons(self):
 		self.downloadButton.disabled = False
 		self.addDownloadButton.disabled = False
 		self.clearResultOutputButton.disabled = False
-
+	
 	def disableButtons(self):
 		self.downloadButton.disabled = True
 		self.addDownloadButton.disabled = True
 		self.stopDownloadButton.disabled = True
 		self.clearResultOutputButton.disabled = True
-
+	
 	def onConfirmDownloadPopupAnswer(self, confirmPopupInstance, answer):
 		"""
 		Method called when one of the ConfirmPopup button is pushed. This method is
@@ -714,18 +729,18 @@ class AudioDownloaderGUI(AudioGUI):
 			self.downloadPlaylistOrSingleVideoAudio(playlistOrSingleVideoUrl)
 		elif answer == 'setFolder':  # 'setFolder' is set in confirmdownloadpopup.kv file
 			self.openSelectOrCreateDirPopup(playlistOrSingleVideoUrl)
-
-		popup.dismiss()
 		
+		popup.dismiss()
+	
 	def rvListSizeSettingsChanged(self):
 		if os.name == 'posix':
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_ANDROID
 		else:
 			rvListItemSpacing = RV_LIST_ITEM_SPACING_WINDOWS
-			
+		
 		self.setRVListSizeParms(self.rvListItemHeight,
-								self.rvListMaxVisibleItems,
-								rvListItemSpacing)
+		                        self.rvListMaxVisibleItems,
+		                        rvListItemSpacing)
 		if self.showRequestList:
 			self.adjustRequestListSize()
 	
@@ -742,32 +757,32 @@ class AudioDownloaderGUI(AudioGUI):
 			self.originalPlaylistTitle)
 		self.updateStatusBar(msgText)
 		self.audioController.stopDownloading = True
-
+	
 	def downloadStopped(self):
 		self.stopDownloadButton.disabled = False
 		self.clearStatusBar()
-
+	
 	def toggleAppPosAndSize(self):
 		"""
 		No longer used, but ...
 		"""
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			self.appSize = self.configMgr.APP_SIZE_FULL
-
+			
 			if self.defaultAppPosAndSize == self.configMgr.APP_SIZE_FULL:
 				# on the smartphone, we do not want to reposition the cursor ob
 				# the input field since this would display the keyboard !
 				self.refocusOnFirstRequestInput()
 		else:
 			self.appSize = self.configMgr.APP_SIZE_HALF
-
+			
 			# the case on the smartphone. Here, positioning the cursor on
 			# the input field after having pressed the 'half' button
 			# automatically displays the keyboard
 			self.refocusOnFirstRequestInput()
-
+		
 		self.applyAppPosAndSize()
-
+	
 	def applyAppPosAndSize(self):
 		if self.appSize == self.configMgr.APP_SIZE_HALF:
 			sizeHintY = float(self.appSizeHalfProportion)
@@ -781,7 +796,7 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def applyDeleteOrBrowseItem(self):
 		selItemData = self.requestListRV.data[self.recycleViewCurrentSelIndex]['data']
-
+		
 		if isinstance(selItemData, DownloadHistoryData):
 			# Download histo files are displayed
 			playlistName = selItemData.playlistName
@@ -791,7 +806,8 @@ class AudioDownloaderGUI(AudioGUI):
 				# currently the case if we try to open a browser on an audio file
 				# located in the audio\Various dir in which no video info dic
 				# exist
-				self.updateStatusBar('Not possible to open browser since {} playlist dic not exist'.format(playlistName))
+				self.updateStatusBar(
+					'Not possible to open browser since {} playlist dic not exist'.format(playlistName))
 				return
 			
 			if selItemData.type == DHD_TYPE_AUDIO_FILE:
@@ -807,7 +823,8 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			if url is None:
 				# the case if the file is not in the playlist dic
-				self.updateStatusBar('Not possible to open browser since the audio file is not in {} playlist dic'.format(playlistName))
+				self.updateStatusBar(
+					'Not possible to open browser since the audio file is not in {} playlist dic'.format(playlistName))
 				return
 			
 			webbrowser.open(url, new=1)
@@ -824,7 +841,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:return:
 		'''
 		self.executeOnlineRequestOnNewThread(asyncOnlineRequestFunction=self.submitRequestOnNewThread, kwargs={})
-
+	
 	def submitRequestOnNewThread(self):
 		'''
 		Submit the request, output the result and add the request to the
@@ -853,45 +870,47 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputResult(outputResultStr)
 		
 		fullRequestListEntry = {'text': fullRequestStrNoOptions, 'selectable': True}
-
+		
 		if fullRequestStrWithSaveModeOptionsForHistoryList != None:
 			if fullRequestListEntry in self.requestListRV.data:
 				# if the full request string corresponding to the full request string with options is already
 				# in the history list, it is removed before the full request string with options is added
 				# to the list. Otherwise, this would create a duplicate !
 				self.requestListRV.data.remove(fullRequestListEntry)
-
-			fullRequestStrWithSaveModeOptionsListEntry = {'text': fullRequestStrWithSaveModeOptionsForHistoryList, 'selectable': True}
+			
+			fullRequestStrWithSaveModeOptionsListEntry = {'text': fullRequestStrWithSaveModeOptionsForHistoryList,
+			                                              'selectable': True}
 			
 			# used to avoid replacing btc usd 20/12/20 all -vs100usd by btc usd 20/12/20 00:00 all -vs100usd !
-			fullRequestStrWithSaveModeOptionsListEntryNoZeroTime = {'text': fullRequestStrWithSaveModeOptionsForHistoryList.replace(' 00:00', ''), 'selectable': True}
-
+			fullRequestStrWithSaveModeOptionsListEntryNoZeroTime = {
+				'text': fullRequestStrWithSaveModeOptionsForHistoryList.replace(' 00:00', ''), 'selectable': True}
+			
 			if not fullRequestStrWithSaveModeOptionsListEntry in self.requestListRV.data and \
-				not fullRequestStrWithSaveModeOptionsListEntryNoZeroTime in self.requestListRV.data:
+					not fullRequestStrWithSaveModeOptionsListEntryNoZeroTime in self.requestListRV.data:
 				self.requestListRV.data.append(fullRequestStrWithSaveModeOptionsListEntry)
-
+			
 			# Reset the ListView
 			self.resetListViewScrollToEnd()
 		elif fullRequestStrNoOptions != '' and not fullRequestListEntry in self.requestListRV.data:
 			# Add the full request to the ListView if not already in
-
+			
 			# if an identical full request string with options is in the history, it is not
 			# removed automatically. If the user wants to get rid of it, he must do it exolicitely
 			# using the delete button !
 			self.requestListRV.data.append(fullRequestListEntry)
-
+			
 			# Reset the ListView
 			self.resetListViewScrollToEnd()
-
+		
 		if self.showRequestList:
 			self.adjustRequestListSize()
-
+		
 		self.clearHistoryListSelection()
 		self.manageStateOfGlobalRequestListButtons()
 		self.emptyRequestFields()
-
+		
 		# displaying request in status bar
-
+		
 		if 'ERROR' in outputResultStr:
 			self.updateStatusBar(requestStr + STATUS_BAR_ERROR_SUFFIX)
 		else:
@@ -910,21 +929,20 @@ class AudioDownloaderGUI(AudioGUI):
 					# This happens either if a full request with no option was executed or if the isLoadAtStartChkboxActive
 					# option(s) were cancelled (-v0 or/and -f0)
 					fullCommandStrForStatusBar = fullRequestStrNoOptions
-
+				
 				if fullRequestStrWithNoSaveModeOptions and requestStr != fullRequestStrWithNoSaveModeOptions:
 					# the case when an option without save mode was added as a partial request !
 					self.updateStatusBar(requestStr + ' --> ' + fullCommandStrForStatusBar)
 				else:
 					# here, a full request with option without save mode was executed
 					self.updateStatusBar(fullCommandStrForStatusBar)
-
-
+		
 		self.downloadAllButton.disabled = False
 		self.clearResultOutputButton.disabled = False
-
+		
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
 		self.refocusOnFirstRequestInput()
-
+	
 	def clearOutput(self):
 		self.outputLabel.text = ''
 		
@@ -933,7 +951,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.outputScrollView.scroll_y = 1
 		
 		self.clearStatusBar()
-
+		
 		self.clearResultOutputButton.disabled = True
 		self.refocusOnFirstRequestInput()
 		
@@ -944,7 +962,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.toggleHistoButton.text = TOGGLE_HISTO_BUTTON_URL
 			self.deleteBrowseButton.text = TOGGLE_DELETE_BUTTON_DELETE
 			self.downloadAllButton.text = TOGGLE_DOWNLOAD_ALL_BUTTON_DOWN_ALL
-			self.loadHistoryDataIfSet() # reload urlListDic_dic.txt
+			self.loadHistoryDataIfSet()  # reload urlListDic_dic.txt
 	
 	def clearStatusBar(self):
 		'''
@@ -967,19 +985,20 @@ class AudioDownloaderGUI(AudioGUI):
 		replaceItemToDownloadValue = removedItem['toDownload']
 		replaceUrlType = replaceUrlDownloadData.type
 		replaceUrl = replaceUrlDownloadData.url
-
+		
 		# Get the request from the TextInputs
 		requestStr = self.requestInput.text
 		replaceUrlDownloadData.title = requestStr
 		
-		dataDic = {'text': requestStr, 'data': replaceUrlDownloadData, 'toDownload': replaceItemToDownloadValue, 'selectable': True}
-
+		dataDic = {'text': requestStr, 'data': replaceUrlDownloadData, 'toDownload': replaceItemToDownloadValue,
+		           'selectable': True}
+		
 		# Add the updated data to the list if not already in
 		requestListEntry = dataDic
-
+		
 		if not requestListEntry in self.requestListRV.data:
 			self.requestListRV.data.insert(self.recycleViewCurrentSelIndex, requestListEntry)
-
+		
 		self.refocusOnFirstRequestInput()
 	
 	def downloadSelectedUrlItems(self):
@@ -991,13 +1010,23 @@ class AudioDownloaderGUI(AudioGUI):
 			# The button's text is 'Down All'. Clicking on it does download
 			# the selected URL's, playlist URL's for the most part.
 			self.downloadSelectedItems()
+			
+			while len(self.partiallyDownloadedPlaylistDic) > 0:
+				# some playlist video were partially downloaded
+				for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
+					self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
+					playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
+					self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
+					
+					while self.downloadThreadCreated:
+						time.sleep(TIME_SLEEP_SECONDS)
 		else:
 			# here, we are in the state where the list displays the downloaded
 			# playlists or single videos. The button's text is 'Del All'.
 			# Clicking on it does delete the selected playlistsor single
 			# videos.
 			self.deleteSelectedAudioDownloadedFiles()
-			
+	
 	def downloadSelectedItems(self):
 		"""
 		Method called by method downloadSelectedUrlItems itself called when
@@ -1006,7 +1035,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.totalDownloadVideoSuccessNb = 0
 		self.totalDownloadVideoFailedNb = 0
 		self.totalDownloadVideoSkippedNb = 0
-
+		
 		self.downloadUrlLst = [x for x in self.requestListRV.data if x['toDownload']]
 		
 		if len(self.downloadUrlLst) > 0:
@@ -1019,7 +1048,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# So, the download information is displayed on the outputLabel.
 			if not self.downloadFromUrlDownloadLstThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
-											  func=self.downloadFromUrlDownloadLstOnNewThread)
+				                              func=self.downloadFromUrlDownloadLstOnNewThread)
 				
 				self.downloadFromUrlDownloadLstThreadCreated = True  # used to ensure that only
 				#                                                      1 playlist or video is
@@ -1081,7 +1110,8 @@ class AudioDownloaderGUI(AudioGUI):
 		"""
 		self.dropDownMenu.dismiss()
 		
-		renamedVideoAudioFileDic = DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(audioDirRoot=self.audiobookPath)
+		renamedVideoAudioFileDic = DownloadPlaylistInfoDic.renameFailedVideosUpdatedFromPC(
+			audioDirRoot=self.audiobookPath)
 		self.displayRenamedVideoAudioFiles(renamedVideoAudioFileDic)
 	
 	def displayRenamedVideoAudioFiles(self, renamedVideoAudioFileDic):
@@ -1113,7 +1143,7 @@ class AudioDownloaderGUI(AudioGUI):
 	def deleteSelectedAudioDownloadedFiles(self):
 		selectedAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['toDownload']]
 		delFileDic = {}
-	
+		
 		for listEntry in selectedAudioDownloadedFileLst:
 			downloadHistoryData = listEntry['data']
 			if downloadHistoryData.type == DHD_TYPE_AUDIO_FILE:
@@ -1127,13 +1157,15 @@ class AudioDownloaderGUI(AudioGUI):
 			else:
 				# list item is a playlist, not a downloaded file
 				continue
-
-		deletedFileNameLst = self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
-
-		# removing deleted files from the download histo list
-		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if x['data'].type == DHD_TYPE_PLAYLIST or x['data'].audioFileName not in deletedFileNameLst]
-		self.requestListRV.data = remainingAudioDownloadedFileLst
 		
+		deletedFileNameLst = self.audioController.deleteAudioFilesFromDirOnly(delFileDic)
+		
+		# removing deleted files from the download histo list
+		remainingAudioDownloadedFileLst = [x for x in self.requestListRV.data if
+		                                   x['data'].type == DHD_TYPE_PLAYLIST or x[
+			                                   'data'].audioFileName not in deletedFileNameLst]
+		self.requestListRV.data = remainingAudioDownloadedFileLst
+	
 	def executeOnlineRequestOnNewThread(self, asyncOnlineRequestFunction, kwargs):
 		"""
 		This generic method first disable the buttons whose usage could disturb
@@ -1147,7 +1179,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.clearResultOutputButton.disabled = True
 		
 		sepThreadExec = SepThreadExec(callerGUI=self,
-									  func=asyncOnlineRequestFunction)
+		                              func=asyncOnlineRequestFunction)
 		
 		sepThreadExec.start()
 	
@@ -1155,23 +1187,23 @@ class AudioDownloaderGUI(AudioGUI):
 		# output blank line
 		self.outputResult('')
 		self.outputLineBold = True
-
+		
 		for listEntry in self.requestListRV.data:
 			requestStr = listEntry['text']
-
+			
 			try:
 				outputResultStr, _, _, _, _ = self.audioController.getPrintableResultForInput(requestStr)
 			except Exception as e:
 				outputResultStr = "ERROR - request '{}' could not be executed. Error info: {}.".format(requestStr, e)
-
+			
 			self.outputResult(outputResultStr)
-
+		
 		self.downloadAllButton.disabled = False
 		self.clearResultOutputButton.disabled = False
-
+		
 		# self.resultOutput.do_cursor_movement('cursor_pgdown')
 		self.refocusOnFirstRequestInput()
-
+	
 	def isRequest(self, statusBarStr):
 		if STATUS_BAR_ERROR_SUFFIX in statusBarStr:
 			return True
@@ -1180,30 +1212,30 @@ class AudioDownloaderGUI(AudioGUI):
 	
 	def updateStatusBar(self, messageStr):
 		self.statusBarTextInput.text = messageStr
-
+	
 	# --- file chooser code ---
-
+	
 	def dismissPopup(self):
 		'''
 		Act as a call back function for the cancel button of the load and save dialog
 		'''
 		self.fileChooserPopup.dismiss()
-
+	
 	def openFileLoadPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_LOAD)
 		self.fileChooserPopup = LoadFileChooserPopup(title=popupTitle,
-													 rootGUI=self,
-													 load=self.load,
-													 cancel=self.dismissPopup)
+		                                             rootGUI=self,
+		                                             load=self.load,
+		                                             cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
 	
 	def openFileSavePopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SAVE)
 		self.fileChooserPopup = SaveFileChooserPopup(title=popupTitle,
-													 rootGUI=self,
-													 cancel=self.dismissPopup)
+		                                             rootGUI=self,
+		                                             cancel=self.dismissPopup)
 		loadAtStartFilePathName = self.configMgr.loadAtStartPathFilename
 		self.fileChooserPopup.setCurrentLoadAtStartFile(loadAtStartFilePathName)
 		self.fileChooserPopup.open()
@@ -1212,8 +1244,8 @@ class AudioDownloaderGUI(AudioGUI):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_DELETE)
 		self.fileChooserPopup = DeleteFileChooserPopup(title=popupTitle,
-													   rootGUI=self,
-													   cancel=self.dismissPopup)
+		                                               rootGUI=self,
+		                                               cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
 	
 	def openSelectOrCreateDirPopup(self, playlistOrSingleVideoUrl):
@@ -1221,32 +1253,32 @@ class AudioDownloaderGUI(AudioGUI):
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_OR_CREATE_DIR, self.originalSingleVideoTitle)
 		
 		self.fileChooserPopup = SelectOrCreateDirFileChooserPopup(title=popupTitle,
-																  rootGUI=self,
-																  playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
-																  originalPlaylistTitle=self.originalPlaylistTitle,
-																  originalSingleVideoTitle=self.originalSingleVideoTitle,
-																  load=self.load,
-																  cancel=self.dismissPopup)
+		                                                          rootGUI=self,
+		                                                          playlistOrSingleVideoUrl=playlistOrSingleVideoUrl,
+		                                                          originalPlaylistTitle=self.originalPlaylistTitle,
+		                                                          originalSingleVideoTitle=self.originalSingleVideoTitle,
+		                                                          load=self.load,
+		                                                          cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
-
+	
 	def openFileToClipLoadPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SPLIT)
 		self.fileChooserPopup = FileToClipLoadFileChooserPopup(title=popupTitle,
-															   rootGUI=self,
-															   load=self.load,
-															   cancel=self.dismissPopup)
+		                                                       rootGUI=self,
+		                                                       load=self.load,
+		                                                       cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
-
+	
 	def openShareAudioPopup(self):
 		self.dropDownMenu.dismiss()
 		popupTitle = self.buildFileChooserPopupTitle(FILE_ACTION_SELECT_FILE_TO_SHARE)
 		self.fileChooserPopup = FileToShareLoadFileChooserPopup(title=popupTitle,
-																rootGUI=self,
-																load=self.load,
-																cancel=self.dismissPopup)
+		                                                        rootGUI=self,
+		                                                        load=self.load,
+		                                                        cancel=self.dismissPopup)
 		self.fileChooserPopup.open()
-
+	
 	def buildFileChooserPopupTitle(self, fileAction, singleVideoTitle=None):
 		"""
 		In case of FILE_ACTION_SELECT_OR_CREATE_DIR, this means we are asking the user
@@ -1275,7 +1307,7 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			# fileAction == FILE_ACTION_SELECT_FILE_TO_SHARE
 			return SaveFileChooserPopup.SELECT_FILE_TO_SHARE
-
+		
 		loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
 		
 		if loadAtStartFilePathName == self.currentLoadedPathFileName:
@@ -1289,7 +1321,7 @@ class AudioDownloaderGUI(AudioGUI):
 			popupTitle = "{} ({} loaded)".format(popupTitleAction, loadFileName)
 		
 		return popupTitle
-
+	
 	def getLoadAtStartFilePathName(self):
 		"""
 		Returns the load at start URL list dictionary file path name as
@@ -1304,7 +1336,7 @@ class AudioDownloaderGUI(AudioGUI):
 			loadAtStartFileName = loadAtStartFilePathName.split(sep)[-1]
 			if loadAtStartFileName != '':
 				isLoadAtStart = True
-				
+		
 		return loadAtStartFilePathName, isLoadAtStart
 	
 	def load(self, path, filename):
@@ -1316,7 +1348,7 @@ class AudioDownloaderGUI(AudioGUI):
 		self.loadHistoryFromPathFilename(currentLoadedPathFileName)
 		self.dismissPopup()
 		self.displayFileActionOnStatusBar(currentLoadedPathFileName, FILE_ACTION_LOAD)
-
+	
 	def displayFileActionOnStatusBar(self, pathFileName, actionType, isLoadAtStart=None):
 		if actionType == FILE_ACTION_LOAD:
 			self.updateStatusBar("URL's file loaded:\n{}".format(pathFileName))
@@ -1325,28 +1357,28 @@ class AudioDownloaderGUI(AudioGUI):
 				self.updateStatusBar("URL's saved to file: {}.\nLoad at start activated.".format(pathFileName))
 			else:
 				self.updateStatusBar("URL's saved to file: {}".format(pathFileName))
-
+	
 	def loadHistoryFromPathFilename(self, pathFileName):
 		self.currentLoadedPathFileName = pathFileName
 		dataFileNotFoundMessage = self.buildFileNotFoundMessage(pathFileName)
 		
 		if not self.ensureDataPathFileNameExist(pathFileName, dataFileNotFoundMessage):
 			return
-
+		
 		self.downloadUrlInfoDic = DownloadUrlInfoDic(existingDicFilePathName=pathFileName)
-
+		
 		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
 		histoLines = [{'text': udl.title, 'data': udl, 'toDownload': False, 'selectable': True} for udl in udlLst]
-
+		
 		self.requestListRV.data = histoLines
 		self.requestListRVSelBoxLayout.clear_selection()
-
+		
 		# Reset the ListView
 		self.resetListViewScrollToEnd()
-
+		
 		self.manageStateOfGlobalRequestListButtons()
 		self.refocusOnFirstRequestInput()
-
+	
 	def saveUrlListToDownloadUrlInfoDicFile(self, savingPathFileName, isLoadAtStart):
 		"""
 		Method called in two cases:
@@ -1360,7 +1392,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param isLoadAtStart: value of the load at start CheckBox
 		"""
 		asciiOnlyPathFileName = savingPathFileName.encode("ascii", "ignore").decode()
-
+		
 		if asciiOnlyPathFileName != savingPathFileName:
 			message = self.buildNonAsciiFilePathNameMessage(savingPathFileName)
 			self.displayPopupWarning(message)
@@ -1368,24 +1400,25 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		self.currentLoadedPathFileName = savingPathFileName
 		pathContainedInFilePathName = DirUtil.extractPathFromPathFileName(savingPathFileName)
-		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(pathContainedInFilePathName)
+		savingPathNotExistMessage = self.buildDataPathContainedInFilePathNameNotExistMessage(
+			pathContainedInFilePathName)
 		
 		if not self.ensureDataPathExist(pathContainedInFilePathName, savingPathNotExistMessage):
 			# data path defined specified in saved file path name does not exist. Error popup is displayed.
 			return
-
+		
 		updatedDownloadUrlInfoDic = DownloadUrlInfoDic(
 			audioRootDir=None,
 			urlListDicFileName=self.downloadUrlInfoDic.getUrlListDicFileName(),
 			loadDicIfDicFileExist=False)
-
+		
 		for listEntry in self.requestListRV.data:
 			urlDownloadData = listEntry['data']
 			updatedDownloadUrlInfoDic.addUrlDownloadData(urlDownloadData)
 		
 		updatedDownloadUrlInfoDic.saveDic(audioDirRoot=self.configMgr.dataPath,
-										  dicFilePathName=savingPathFileName)
-
+		                                  dicFilePathName=savingPathFileName)
+		
 		# saving in config file if the saved file
 		# is to be loaded at application start
 		if isLoadAtStart:
@@ -1393,11 +1426,11 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			if self.configMgr.loadAtStartPathFilename == savingPathFileName:
 				self.configMgr.loadAtStartPathFilename = ''
-
+		
 		self.configMgr.saveConfig()
 		self.displayFileActionOnStatusBar(savingPathFileName, FILE_ACTION_SAVE, isLoadAtStart)
 		self.refocusOnFirstRequestInput()
-
+	
 	def deleteAudioFilesFromDirAndFromDic(self, filePathNameLst):
 		"""
 		Called by DeleteFileChooserPopup.delete().
@@ -1408,9 +1441,9 @@ class AudioDownloaderGUI(AudioGUI):
 		:param filePathNameLst:
 		"""
 		self.audioController.deleteAudioFilesFromDirAndFromDic(filePathNameLst=filePathNameLst)
-		
+	
 	# --- end file chooser code ---
-
+	
 	def buildDataPathContainedInFilePathNameNotExistMessage(self, path):
 		return 'Path ' + path + ' does not exist ! Either create the directory or modify the path.'
 	
@@ -1430,14 +1463,14 @@ class AudioDownloaderGUI(AudioGUI):
 		# So, the download information is displayed on the outputLabel.
 		if not self.downloadThreadCreated:
 			sepThreadExec = SepThreadExec(callerGUI=self,
-										  func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
-										  funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl})
-
-			self.downloadThreadCreated = True   # used to fix a problem on Android
-												# where two download threads are
-												# created after clicking on 'Yes'
-												# button on the ConfirmPopup dialog
-
+			                              func=self.downloadPlaylistOrSingleVideoAudioOnNewThread,
+			                              funcArgs={'playlistOrSingleVideoUrl': playlistOrSingleVideoUrl})
+			
+			self.downloadThreadCreated = True  # used to fix a problem on Android
+			# where two download threads are
+			# created after clicking on 'Yes'
+			# button on the ConfirmPopup dialog
+			
 			sepThreadExec.start()
 	
 	def downloadPlaylistOrSingleVideoAudioFromUrlLst(self,
@@ -1484,7 +1517,7 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			downloadAndUploadDateSettingWarningMsg = self.getVideoTitlePrefixSuffixWarningMsg(
 				playlistOrSingleVideoUrl, self.playlistOrSingleVideoDownloadPath)
-
+			
 			if downloadAndUploadDateSettingWarningMsg != '':
 				self.downloadThreadCreated = False
 				
@@ -1496,13 +1529,13 @@ class AudioDownloaderGUI(AudioGUI):
 				popup.open()
 			else:
 				self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
-																		isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-																		isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+				                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+				                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
 				
 				self.downloadThreadCreated = False  # used to fix a problem on Android
-													# where two download threads are
-													# created after clicking on 'Yes'
-													# button on the ConfirmPopup dialog
+				# where two download threads are
+				# created after clicking on 'Yes'
+				# button on the ConfirmPopup dialog
 				
 				self.stopDownloadButton.disabled = True
 		else:
@@ -1510,18 +1543,18 @@ class AudioDownloaderGUI(AudioGUI):
 			# disabled since interrupting a single video download is not
 			# possible
 			self.stopDownloadButton.disabled = True
-		
+			
 			self.audioController.downloadSingleVideo(
 				singleVideoUrl=playlistOrSingleVideoUrl,
 				singleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
 				originalSingleVideoTitle=self.originalSingleVideoTitle,
 				modifiedVideoTitle=self.modifiedSingleVideoTitle)
-		
+			
 			self.downloadThreadCreated = False  # used to fix a problem on Android
-												# where two download threads are
-												# created after clicking on 'Yes'
-												# button on the ConfirmPopup dialog
-	
+			# where two download threads are
+			# created after clicking on 'Yes'
+			# button on the ConfirmPopup dialog
+			
 			self.stopDownloadButton.disabled = True
 	
 	def getVideoTitlePrefixSuffixWarningMsg(self, playlistOrSingleVideoUrl, playlistOrSingleVideoDownloadPath):
@@ -1556,14 +1589,14 @@ class AudioDownloaderGUI(AudioGUI):
 			
 			downloadVideoInfoDic = \
 				self.audioController.getDownloadVideoInfoDicForPlaylistTitle(playlistUrl=playlistOrSingleVideoUrl,
-																			 playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
-																			 originalPlaylistTitle=self.originalPlaylistTitle,
-																			 modifiedPlaylistTitle=self.modifiedPlaylistTitle)
+				                                                             playlistOrSingleVideoDownloadPath=self.playlistOrSingleVideoDownloadPath,
+				                                                             originalPlaylistTitle=self.originalPlaylistTitle,
+				                                                             modifiedPlaylistTitle=self.modifiedPlaylistTitle)
 			
 			indexAndDateUsageLst = self.audioController.getIndexAndDateUsageLstForPlaylist(downloadVideoInfoDic)
 			
 			if indexAndDateUsageLst is None or \
-				indexAndDateUsageLst == []:
+					indexAndDateUsageLst == []:
 				# the case if the playlist download dir does not exist or is empty.
 				# In this situation, we choose to add the index prefix and the
 				# video upload date suffix to the downloaded audio files.
@@ -1579,14 +1612,19 @@ class AudioDownloaderGUI(AudioGUI):
 				isIndexAddedToAlreadyDownloadedPlaylistVideo = True
 				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = True
 			else:
-				isIndexAddedToAlreadyDownloadedPlaylistVideo = indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
-															   indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]
-				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = indexAndDateUsageLst[DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
-																	indexAndDateUsageLst[DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS]
-
-			self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=downloadVideoInfoDic,
-																	isIndexAddedToPlaylistVideo=isIndexAddedToAlreadyDownloadedPlaylistVideo,
-																	isUploadDateAddedToPlaylistVideo=isUploadDateAddedAlreadyDownloadedToPlaylistVideo)
+				isIndexAddedToAlreadyDownloadedPlaylistVideo = indexAndDateUsageLst[
+					                                               DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				                                               indexAndDateUsageLst[
+					                                               DirUtil.DOWNLOAD_DATE_NO_UPLOAD_DATE_POS]
+				isUploadDateAddedAlreadyDownloadedToPlaylistVideo = indexAndDateUsageLst[
+					                                                    DirUtil.DOWNLOAD_DATE_UPLOAD_DATE_POS] or \
+				                                                    indexAndDateUsageLst[
+					                                                    DirUtil.NO_DOWNLOAD_DATE_UPLOAD_DATE_POS]
+			
+			self.audioController.downloadVideosReferencedInPlaylist(originalPlaylistTitle=self.originalPlaylistTitle,
+			                                                        downloadVideoInfoDic=downloadVideoInfoDic,
+			                                                        isIndexAddedToPlaylistVideo=isIndexAddedToAlreadyDownloadedPlaylistVideo,
+			                                                        isUploadDateAddedToPlaylistVideo=isUploadDateAddedAlreadyDownloadedToPlaylistVideo)
 			
 			self.downloadThreadCreated = False  # used to fix a problem on Android
 			# where two download threads are
@@ -1602,7 +1640,8 @@ class AudioDownloaderGUI(AudioGUI):
 			failedVideoFileName = None
 			if self.failedVideoPlaylistDic:
 				# not None when re-downloading a failed video on pc
-				failedVideoFileName = self.failedVideoPlaylistDic.getVideoAudioFileNameForVideoTitle(self.originalSingleVideoTitle)
+				failedVideoFileName = self.failedVideoPlaylistDic.getVideoAudioFileNameForVideoTitle(
+					self.originalSingleVideoTitle)
 			try:
 				originalYdlDownloadedAudioFileName, purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3, isVideoDownloadSuccessful = self.audioController.downloadSingleVideo(
 					singleVideoUrl=playlistOrSingleVideoUrl,
@@ -1619,25 +1658,34 @@ class AudioDownloaderGUI(AudioGUI):
 					                                                               audioFileName=purgedOriginalOrModifiedVideoTitleWithPrefixSuffixDatesMp3)
 					self.failedVideoPlaylistDic.setVideoDownloadTimeForVideoIndex(videoIndex=failedVideoIndex,
 					                                                              videoDownloadTimeStr=DownloadPlaylistInfoDic.getNowDownloadDateTimeStr())
-					
+				
 				self.failedVideoPlaylistDic.setVideoDownloadExceptionForVideoIndex(videoIndex=failedVideoIndex,
 				                                                                   isDownloadSuccess=isVideoDownloadSuccessful)
 				self.failedVideoPlaylistDic.saveDic(self.configMgr.dataPath)
 				self.failedVideoPlaylistDic = None
-		
+			
 			self.downloadThreadCreated = False  # used to fix a problem on Android
 			# where two download threads are
 			# created after clicking on 'Yes'
 			# button on the ConfirmPopup dialog
 			
 			self.stopDownloadButton.disabled = True
+			#
+			# if len(self.partiallyDownloadedPlaylistDic) > 0:
+			# 	# some playlist video were partially downloaded
+			# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
+			# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
+			# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
+			#
+			# 		while self.downloadThreadCreated:
+			# 			time.sleep(TIME_SLEEP_SECONDS)
 	
 	def createDownloadConfirmPopup(self,
-								   confirmPopupTitle,
-								   confirmPopupMsg,
-								   confirmPopupCallbackFunction,
-								   isPlayListDownloaded,
-								   playlistOrSingleVideoUrl):
+	                               confirmPopupTitle,
+	                               confirmPopupMsg,
+	                               confirmPopupCallbackFunction,
+	                               isPlayListDownloaded,
+	                               playlistOrSingleVideoUrl):
 		"""
 
 		:param confirmPopupTitle:
@@ -1670,20 +1718,20 @@ class AudioDownloaderGUI(AudioGUI):
 		confirmPopupFormattedMsg = GuiUtil.reformatString(confirmPopupMsg, msgWidth)
 		
 		self.confirmPopup = ConfirmDownloadPopup(text=confirmPopupFormattedMsg,
-												 isPlaylist=isPlayListDownloaded,
-												 playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
-
+		                                         isPlaylist=isPlayListDownloaded,
+		                                         playlistOrSingleVideoUrl=playlistOrSingleVideoUrl)
+		
 		self.confirmPopup.bind(on_answer=confirmPopupCallbackFunction)
 		
 		popup = Popup(title=confirmPopupTitle,
-					  content=self.confirmPopup,
-					  size_hint=(None, None),
-					  pos_hint={'top': 0.8},
-					  size=popupSize,
-					  auto_dismiss=False)
+		              content=self.confirmPopup,
+		              size_hint=(None, None),
+		              pos_hint={'top': 0.8},
+		              size=popupSize,
+		              auto_dismiss=False)
 		
 		return popup
-
+	
 	def getRootAudiobookPath(self):
 		"""
 		Method called by FileChooserPopup.fillDriveOrMemoryList() in order to determine
@@ -1701,14 +1749,35 @@ class AudioDownloaderGUI(AudioGUI):
 		else:
 			# not downloading (clip or share file ...)
 			return self.audiobookPath
+	
+	def displayVideoDownloadStartMessage(self, msgText, originalPlaylistTitle):
+		self.increasePlaylistVideoDownloadNumber(originalPlaylistTitle=originalPlaylistTitle)
+		self.updateStatusBar(msgText)
+		self.outputResult(msgText)
 
-	def displayVideoDownloadStartMessage(self, msg):
-		self.updateStatusBar(msg)
-		self.outputResult(msg)
+	def displayPlaylistReDownloadInfo(self, originalPlaylistTitle):
+		msgText = 're-downloading [b]{}[/b] playlist'.format(originalPlaylistTitle)
+		self.outputResult(msgText)
 
+	def increasePlaylistVideoDownloadNumber(self, originalPlaylistTitle):
+		if originalPlaylistTitle in self.partiallyDownloadedPlaylistDic:
+			self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] += 1
+		else:
+			self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] = 1
+	
+	def decreasePlaylistVideoDownloadNumber(self, originalPlaylistTitle):
+		if originalPlaylistTitle in self.partiallyDownloadedPlaylistDic:
+			downloadingVideoNumber = self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] - 1;
+			if downloadingVideoNumber == 0:
+				del self.partiallyDownloadedPlaylistDic[originalPlaylistTitle]
+			else:
+				self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] = downloadingVideoNumber
+		else:
+			print('calling decreasePlaylistVideoDownloadNumber for ' + originalPlaylistTitle + ' error')
+	
 	def displayFailedVideoPlaylistDownloadStartMessage(self, msg):
 		self.outputResult(msg)
-
+	
 	def outputResult(self, resultStr, scrollToEnd=True):
 		super(AudioDownloaderGUI, self).outputResult(resultStr, scrollToEnd=scrollToEnd)
 		
@@ -1729,16 +1798,16 @@ class AudioDownloaderGUI(AudioGUI):
 		currentDownloadSize = currentDownloadInfoTuple[0]
 		currentDownloadSizeFormatted = (f"{currentDownloadSize:,}")
 		currentDownloadInfoStr = '{} bytes, {}, {}\n'.format(currentDownloadSizeFormatted,
-															 currentDownloadInfoTuple[1],
-															 currentDownloadInfoTuple[2])
-
+		                                                     currentDownloadInfoTuple[1],
+		                                                     currentDownloadInfoTuple[2])
+		
 		if self.isFirstCurrentDownloadInfo:
 			outputLabelLineLst.append(currentDownloadInfoStr)
 			self.isFirstCurrentDownloadInfo = False
 		else:
 			outputLabelLineLst = outputLabelLineLst[:-2]
 			outputLabelLineLst.append(currentDownloadInfoStr)
-
+		
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 	
 	def displayVideoMp3ConversionCurrentInfo(self, videoCurrentMp3ConversionInfoList):
@@ -1760,7 +1829,7 @@ class AudioDownloaderGUI(AudioGUI):
 			outputLabelLineLst.append(currentConversionInfoStr)
 		
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
-
+	
 	def handleDownloadHistory(self):
 		"""
 		Called by CustomDropDown.downloadHisto() which is called by Downl histo
@@ -1777,7 +1846,7 @@ class AudioDownloaderGUI(AudioGUI):
 			excludedSubDirNameLst=self.excludedSubDirNameLst)
 		
 		self.fillHistoryListWithDownloadHistory(audioFileHistoryLst)
-
+		
 		if os.name == 'posix':
 			if GuiUtil.onTablet():
 				# on smartphone, not enough room on output result label
@@ -1786,7 +1855,7 @@ class AudioDownloaderGUI(AudioGUI):
 				self.openDownloadHistoRequestList()
 		else:
 			self.displayDownloadedFilesHistory(audioFileHistoryLst)
-		
+	
 	def openDownloadHistoRequestList(self):
 		"""
 		Method called on smartphone only. On smartphone, the download history info
@@ -1794,7 +1863,7 @@ class AudioDownloaderGUI(AudioGUI):
 		containing the downloaded file names ordered by playlist and by download
 		time is opened.
 		"""
-		self.showRequestList = False # forces the list to be displayed
+		self.showRequestList = False  # forces the list to be displayed
 		self.toggleRequestList()
 	
 	def displayDeletedAudioFiles(self, deletedFilePathNameLst):
@@ -1805,7 +1874,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		for audioFilePath in deletedFilePathNameLst:
 			self.outputResult(audioFilePath + '\n')
-
+	
 	def displayDownloadedFileName(self, selectedAudioItemDownloadData):
 		"""
 		Called by SelectableMultiFieldsItem.apply_selection(). When selecting
@@ -1821,7 +1890,7 @@ class AudioDownloaderGUI(AudioGUI):
 			fullDownloadedFileName = downloadedDate + ' ' + downloadedFileName
 		else:
 			fullDownloadedFileName = downloadedFileName
-
+		
 		playlistName = selectedAudioItemDownloadData.playlistName
 		downloadVideoInfoDic = self.audioController.getDownloadPlaylistInfoDic(playlistName=playlistName)
 		
@@ -1831,13 +1900,14 @@ class AudioDownloaderGUI(AudioGUI):
 		if downloadVideoInfoDic is None:
 			# the case if the selected audio file is currently in
 			# Various dir or in an audio sub sub dir
-			additionalDisplayedInfo = '. {} playlist info dic [b][color=FF0000]could not be found[/color][/b]'.format(playlistName)
+			additionalDisplayedInfo = '. {} playlist info dic [b][color=FF0000]could not be found[/color][/b]'.format(
+				playlistName)
 		else:
 			didDownloadFail = downloadVideoInfoDic.getVideoDownloadExceptionForVideoFileName(downloadedFileName)
-
+		
 		if didDownloadFail:
 			additionalDisplayedInfo = ' [b][color=FF0000]download failed[/color][/b]'
-
+		
 		self.outputResult('\n' + fullDownloadedFileName + additionalDisplayedInfo)
 	
 	def displayDownloadedFilesHistory(self, audioFileHistoryLst):
@@ -1847,7 +1917,7 @@ class AudioDownloaderGUI(AudioGUI):
 		playlist dir ordered by date, most recent first.
 		"""
 		outputLines = 0
-
+		
 		for audioPlaylistDirLst in audioFileHistoryLst:
 			self.outputResult('\n[b][color=00FF00]{}[/color][/b]'.format(audioPlaylistDirLst[0]),
 			                  scrollToEnd=False)
@@ -1888,18 +1958,18 @@ class AudioDownloaderGUI(AudioGUI):
 
 		"""
 		histoLines = []
-		fileNameMaxLength = 42 # value ok for Android smartphone
+		fileNameMaxLength = 42  # value ok for Android smartphone
 		
 		for audioSubDirDataLst in audioFileHistoryLst:
 			playlistName = audioSubDirDataLst[0]
 			formattedPlaylistName = '[b]' + playlistName + '[/b]'
 			playlistDownloadHistoryData = DownloadHistoryData(type=DHD_TYPE_PLAYLIST,
-											                  playlistName=playlistName)
+			                                                  playlistName=playlistName)
 			histoLines.append(
 				{'text': formattedPlaylistName, 'data': playlistDownloadHistoryData, 'toDownload': False,
-				 'selectable': True}) # resetting 'selectable' to True so that the
-									  # growse button can be activated for playlist
-									  # items as well
+				 'selectable': True})  # resetting 'selectable' to True so that the
+			# growse button can be activated for playlist
+			# items as well
 			for audioFileDataLst in audioSubDirDataLst[1]:
 				audioFileName = audioFileDataLst[0]
 				audioFileDownladDate_yymmdd = audioFileDataLst[1]
@@ -1945,11 +2015,11 @@ class AudioDownloaderGUI(AudioGUI):
 		videoDownloadSize = endDownloadInfoLst[0]
 		videoDownloadSizeFormatted = (f"{videoDownloadSize:,}")
 		endDownloadInfoStr = '{} bytes, {}\n'.format(videoDownloadSizeFormatted,
-													 endDownloadInfoLst[1])
+		                                             endDownloadInfoLst[1])
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 		self.updateStatusBar('')
 	
-	def displayVideoDownloadEndMessage(self, msgText):
+	def displayVideoDownloadEndMessage(self, msgText, playListTitle):
 		"""
 		This method avoids that the current downloaded video title is
 		deleted by the self.displayVideoCurrentDownloadInfo() next
@@ -1957,9 +2027,10 @@ class AudioDownloaderGUI(AudioGUI):
 
 		:param msgText:
 		"""
+		self.decreasePlaylistVideoDownloadNumber(originalPlaylistTitle=playListTitle)
 		self.isFirstCurrentDownloadInfo = True
 		self.outputResult(msgText)
-		
+	
 	def displayPlaylistEndDownloadInfo(self, endDownloadInfoLst):
 		"""
 		Method called when the playlist videos download is finished by
@@ -1985,31 +2056,33 @@ class AudioDownloaderGUI(AudioGUI):
 			videoSuccessStr = 'video downloaded'
 		else:
 			videoSuccessStr = 'videos downloaded'
-
+		
 		if videoFailedNb < 2:
 			videoFailStr = 'video failed'
 		else:
 			videoFailStr = 'videos failed'
-
+		
 		if videoSkippedNb < 2:
 			videoSkippedStr = 'video skipped'
 		else:
 			videoSkippedStr = 'videos skipped'
 		
 		endDownloadInfoStr = '[b][color=00FF00]{} {}, {} {}, {} {}, {} bytes, {}[/color][/b]\n'.format(videoSuccessNb,
-																		  videoSuccessStr,
-																		  videoFailedNb,
-																		  videoFailStr,
-																		  videoSkippedNb,
-																		  videoSkippedStr,
-																		  endDownloadInfoLst[3],
-																		  endDownloadInfoLst[4])
+		                                                                                               videoSuccessStr,
+		                                                                                               videoFailedNb,
+		                                                                                               videoFailStr,
+		                                                                                               videoSkippedNb,
+		                                                                                               videoSkippedStr,
+		                                                                                               endDownloadInfoLst[
+			                                                                                               3],
+		                                                                                               endDownloadInfoLst[
+			                                                                                               4])
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 	
 	def displaySingleVideoEndDownloadInfo(self,
-										  msgText,
-										  singleVideoDownloadStatus):
+	                                      msgText,
+	                                      singleVideoDownloadStatus):
 		"""
 		Method called when the single video download is finished by
 		AudioController.displaySingleVideoEndDownloadInfo().
@@ -2025,7 +2098,7 @@ class AudioDownloaderGUI(AudioGUI):
 			self.totalDownloadVideoFailedNb += 1
 		elif singleVideoDownloadStatus == AudioController.SINGLE_VIDEO_DOWNLOAD_SKIPPED:
 			self.totalDownloadVideoSkippedNb += 1
-
+		
 		self.outputResult(msgText)
 		self.updateStatusBar('')
 	
@@ -2048,12 +2121,12 @@ class AudioDownloaderGUI(AudioGUI):
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
 		redownloadedVideoMsgLst = self.audioController.createFailedVideoRedownloadedDisplayMsgLst(
 			audioDirRoot=self.audiobookPath)
-	
+		
 		if len(redownloadedVideoMsgLst) > 0:
 			endDownloadInfoStr += self.formatRedownloadedVideoMsgLst(redownloadedVideoMsgLst)
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
-
+	
 	def formatRedownloadedVideoMsgLst(self, msgLineLst):
 		formattedMsgStr = '\n\n[b][color=00FF00]REDOWNLOADED FAILED VIDEOS[/color][/b]'
 		
@@ -2064,9 +2137,9 @@ class AudioDownloaderGUI(AudioGUI):
 			else:
 				# playlist dir
 				formattedMsgStr += '\n\n[b][color=00FF00]' + line.replace('/', sep) + '[/color][/b]'
-				
-		return formattedMsgStr
 		
+		return formattedMsgStr
+	
 	def addToOutputLabelStr(self, endDownloadInfoStr, outputLabelLineLst):
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
@@ -2093,6 +2166,10 @@ class AudioDownloaderGUI(AudioGUI):
 			videoFailStr,
 			self.totalDownloadVideoSkippedNb,
 			videoSkippedStr)
+		
+		if len(self.partiallyDownloadedPlaylistDic) > 0:
+			self.downloadFromUrlDownloadLstOnNewThread()
+		
 		return endDownloadInfoStr
 	
 	def createYesNoPopup(self,
@@ -2130,16 +2207,16 @@ class AudioDownloaderGUI(AudioGUI):
 		yesNoPopupFormattedMsg = GuiUtil.reformatString(yesNoPopupMsg, msgWidth)
 		
 		self.yesNoPopup = YesNoPopup(text=yesNoPopupFormattedMsg,
-									 isPlaylist=isPlayListDownloaded)
+		                             isPlaylist=isPlayListDownloaded)
 		
 		self.yesNoPopup.bind(on_answer=yesNoPopupCallbackFunction)
 		
 		popup = Popup(title=yesNoPopupTitle,
-					  content=self.yesNoPopup,
-					  size_hint=(None, None),
-					  pos_hint={'top': 0.8},
-					  size=popupSize,
-					  auto_dismiss=False)
+		              content=self.yesNoPopup,
+		              size_hint=(None, None),
+		              pos_hint={'top': 0.8},
+		              size=popupSize,
+		              auto_dismiss=False)
 		
 		return popup
 	
@@ -2162,19 +2239,19 @@ class AudioDownloaderGUI(AudioGUI):
 			playlistUrl = self.downloadVideoInfoDic.getPlaylistUrl()
 			playlisiTitleModified = self.downloadVideoInfoDic.getPlaylistNameModified()
 			self.addDownloadUrlToUrlList(playlistOrSingleVideoModifiedTitle=playlisiTitleModified,
-										 downloadSubdir=playlistDownloadSubDir,
+			                             downloadSubdir=playlistDownloadSubDir,
 			                             playlistOrSingleVideoUrl=playlistUrl)
 			loadAtStartFilePathName, isLoadAtStart = self.getLoadAtStartFilePathName()
 			self.saveUrlListToDownloadUrlInfoDicFile(loadAtStartFilePathName, isLoadAtStart)
 			
 			if not self.downloadThreadCreated:
 				sepThreadExec = SepThreadExec(callerGUI=self,
-											  func=self.downloadPlaylistAudioOnNewThread)
+				                              func=self.downloadPlaylistAudioOnNewThread)
 				
-				self.downloadThreadCreated = True   # used to fix a problem on Android
-													# where two download threads are
-													# created after clicking on 'Yes'
-													# button on the ConfirmPopup dialog
+				self.downloadThreadCreated = True  # used to fix a problem on Android
+				# where two download threads are
+				# created after clicking on 'Yes'
+				# button on the ConfirmPopup dialog
 				
 				sepThreadExec.start()
 		
@@ -2190,13 +2267,13 @@ class AudioDownloaderGUI(AudioGUI):
 		downloadPlaylistOrSingleVideoAudioOnNewThread !
 		"""
 		self.audioController.downloadVideosReferencedInPlaylist(downloadVideoInfoDic=self.downloadVideoInfoDic,
-																isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
-																isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
+		                                                        isIndexAddedToPlaylistVideo=self.isIndexAddedToPlaylistVideo,
+		                                                        isUploadDateAddedToPlaylistVideo=self.isUploadDateAddedToPlaylistVideo)
 		
 		self.downloadThreadCreated = False  # used to fix a problem on Android
-											# where two download threads are
-											# created after clicking on 'Yes'
-											# button on the ConfirmPopup dialog
+		# where two download threads are
+		# created after clicking on 'Yes'
+		# button on the ConfirmPopup dialog
 		
 		self.stopDownloadButton.disabled = True
 
@@ -2236,7 +2313,7 @@ class AudioDownloaderGUIMainApp(App):
 		Builder.load_file('audiosharegui.kv')
 		
 		windowManager = Builder.load_file('windowmanager.kv')
-	
+		
 		if os.name != 'posix':
 			# running app om Windows
 			Config.set('graphics', 'width', '600')
@@ -2248,20 +2325,20 @@ class AudioDownloaderGUIMainApp(App):
 			# list as well as causing a kvy.uix.WidgetEception when trying
 			# to open the CustomDropdown menu !
 			Config.set('input', 'mouse', 'mouse,disable_multitouch')
-	
+		
 		self.title = 'AudioDownloader GUI'
 		self.audioDownloaderGUI = windowManager.get_screen('audioDownloaderScreen')
-	
+		
 		return windowManager
-
+	
 	def on_pause(self):
 		# Here you can save data if needed
 		return True
-
+	
 	def on_resume(self):
 		# Here you can check if any data needs replacing (usually nothing)
 		pass
-
+	
 	def build_config(self, config):
 		'''
 		Defaults set in this method will be overwritten by the values obtained from the
@@ -2271,10 +2348,10 @@ class AudioDownloaderGUIMainApp(App):
 		:return:
 		'''
 		from kivy.utils import platform
-
+		
 		if platform == 'android':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
-							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
+			                   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_ANDROID})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
@@ -2287,7 +2364,7 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID})
 		elif platform == 'ios':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
-							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
+			                   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_HALF})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_IOS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
@@ -2298,7 +2375,7 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_IOS})
 		elif platform == 'win':
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT,
-							   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
+			                   {ConfigManager.CONFIG_KEY_APP_SIZE: ConfigManager.APP_SIZE_FULL})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
 				ConfigManager.CONFIG_KEY_DATA_PATH: ConfigManager.DEFAULT_DATA_PATH_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_GENERAL, {
@@ -2307,18 +2384,18 @@ class AudioDownloaderGUIMainApp(App):
 				ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT: ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_WINDOWS})
 			config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 				ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH: ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_WINDOWS})
-
+		
 		config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 			ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE: ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE})
 		config.setdefaults(ConfigManager.CONFIG_SECTION_LAYOUT, {
 			ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION: ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION})
-
+	
 	def build_settings(self, settings):
 		# removing kivy default settings page from the settings dialog
 		self.use_kivy_settings = False
-
+		
 		settings.register_type('scrolloptions', SettingScrollOptions)
-
+		
 		# add 'General' settings pannel
 		settings.add_json_panel("General", self.config, data=("""
 			[
@@ -2342,8 +2419,8 @@ class AudioDownloaderGUIMainApp(App):
 					"key": "excludedaudiosubdirnamelst"
 				}
 			]"""))  # "key": "dataPath" above is the key in the app config file. To use another
-					# drive, simply define it as datapath value in the app config file
-
+		# drive, simply define it as datapath value in the app config file
+		
 		# add 'Layout' settings panel
 		settings.add_json_panel("Layout", self.config, data=("""
 			[
@@ -2391,7 +2468,8 @@ class AudioDownloaderGUIMainApp(App):
 					"key": "appsizehalfproportion"
 				}
 			]""")
-								)
+		                        )
+	
 	def on_config_change(self, config, section, key, value):
 		"""
 		Event handler fired when a configuration token has been changed by the settings
@@ -2405,42 +2483,53 @@ class AudioDownloaderGUIMainApp(App):
 		"""
 		if config is self.config:
 			if key == ConfigManager.CONFIG_KEY_APP_SIZE:
-				appSize = config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE, "Half").upper()
-
+				appSize = config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE,
+				                            "Half").upper()
+				
 				if appSize == "HALF":
 					self.audioDownloaderGUI.appSize = ConfigManager.APP_SIZE_HALF
 				else:
 					self.audioDownloaderGUI.appSize = ConfigManager.APP_SIZE_FULL
-
+				
 				self.audioDownloaderGUI.applyAppPosAndSize()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT:
-				self.audioDownloaderGUI.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT, ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
+				self.audioDownloaderGUI.rvListItemHeight = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+				                                                                 ConfigManager.CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT,
+				                                                                 ConfigManager.DEFAULT_CONFIG_KEY_HISTO_LIST_ITEM_HEIGHT_ANDROID))
 				self.audioDownloaderGUI.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE:
-				self.audioDownloaderGUI.rvListMaxVisibleItems = int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE, ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
+				self.audioDownloaderGUI.rvListMaxVisibleItems = int(
+					config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+					                  ConfigManager.CONFIG_KEY_HISTO_LIST_VISIBLE_SIZE,
+					                  ConfigManager.DEFAULT_CONFIG_HISTO_LIST_VISIBLE_SIZE))
 				self.audioDownloaderGUI.rvListSizeSettingsChanged()
 			elif key == ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH:
 				self.audioDownloaderGUI.dropDownMenu.auto_width = False
 				self.audioDownloaderGUI.dropDownMenu.width = \
 					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
-											 ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH,
-											 ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
+					                         ConfigManager.CONFIG_KEY_DROP_DOWN_MENU_WIDTH,
+					                         ConfigManager.DEFAULT_CONFIG_KEY_DROP_DOWN_MENU_WIDTH_ANDROID)))
 			elif key == ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT:
 				self.audioDownloaderGUI.boxLayoutContainingStatusBar.height = \
 					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
-											 ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT,
-											 ConfigManager.DEFAULT_CONFIG_KEY_STATUS_BAR_HEIGHT_WINDOWS)))
+					                         ConfigManager.CONFIG_KEY_STATUS_BAR_HEIGHT,
+					                         ConfigManager.DEFAULT_CONFIG_KEY_STATUS_BAR_HEIGHT_WINDOWS)))
 			elif key == ConfigManager.CONFIG_KEY_CLEAR_BUTTON_WIDTH:
 				self.audioDownloaderGUI.clearResultOutputButton.width = \
 					dp(int(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
-											 ConfigManager.CONFIG_KEY_CLEAR_BUTTON_WIDTH,
-											 ConfigManager.DEFAULT_CONFIG_KEY_CLEAR_BUTTON_WIDTH_WINDOWS)))
+					                         ConfigManager.CONFIG_KEY_CLEAR_BUTTON_WIDTH,
+					                         ConfigManager.DEFAULT_CONFIG_KEY_CLEAR_BUTTON_WIDTH_WINDOWS)))
 			elif key == ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION:
-				self.audioDownloaderGUI.appSizeHalfProportion = float(config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT, ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION, ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
+				self.audioDownloaderGUI.appSizeHalfProportion = float(
+					config.getdefault(ConfigManager.CONFIG_SECTION_LAYOUT,
+					                  ConfigManager.CONFIG_KEY_APP_SIZE_HALF_PROPORTION,
+					                  ConfigManager.DEFAULT_CONFIG_KEY_APP_SIZE_HALF_PROPORTION))
 				self.audioDownloaderGUI.applyAppPosAndSize()
 			elif key == ConfigManager.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST:
-				self.audioDownloaderGUI.excludedSubDirNameLst = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL, ConfigManager.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST, ConfigManager.DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST)
-
+				self.audioDownloaderGUI.excludedSubDirNameLst = config.getdefault(ConfigManager.CONFIG_SECTION_GENERAL,
+				                                                                  ConfigManager.CONFIG_KEY_EXCLUDED_AUDIO_SUBDIR_NAME_LST,
+				                                                                  ConfigManager.DEFAULT_EXCLUDED_AUDIO_SUBDIR_NAME_LST)
+	
 	def get_application_config(self, **kwargs):
 		'''
 		Redefining super class method to control the name and location of the
@@ -2471,7 +2560,7 @@ class AudioDownloaderGUIMainApp(App):
 		# exception catch, the app is closed and when it is started again,
 		# no exception is thrown since the missing parms were added to the
 		# app ini file.
-
+		
 		try:
 			super().open_settings(*largs)
 		except NoOptionError as e:
@@ -2481,5 +2570,5 @@ class AudioDownloaderGUIMainApp(App):
 
 if __name__ == '__main__':
 	dbApp = AudioDownloaderGUIMainApp()
-
+	
 	dbApp.run()

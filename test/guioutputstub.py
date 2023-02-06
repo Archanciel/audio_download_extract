@@ -12,7 +12,7 @@ class GuiOutputStub:
 	def getPlaylistUrlFromClipboard(self):
 		pass
 	
-	def displayVideoDownloadStartMessage(self, msgText):
+	def displayVideoDownloadStartMessage(self, msgText, originalPlaylistTitle):
 		self.outputResult(msgText) # this avoid to modify unit tst results
 								   # due to using now the
 								   # displayVideoDownloadStartMessage() method
