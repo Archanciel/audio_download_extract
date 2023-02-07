@@ -1011,15 +1011,15 @@ class AudioDownloaderGUI(AudioGUI):
 			# the selected URL's, playlist URL's for the most part.
 			self.downloadSelectedItems()
 			
-			while len(self.partiallyDownloadedPlaylistDic) > 0:
-				# some playlist video were partially downloaded
-				for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
-					self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
-					playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
-					self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
-					
-					while self.downloadThreadCreated:
-						time.sleep(TIME_SLEEP_SECONDS)
+			# while len(self.partiallyDownloadedPlaylistDic) > 0:
+			# 	# some playlist video were partially downloaded
+			# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
+			# 		self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
+			# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
+			# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
+			#
+			# 		while self.downloadThreadCreated:
+			# 			time.sleep(TIME_SLEEP_SECONDS)
 		else:
 			# here, we are in the state where the list displays the downloaded
 			# playlists or single videos. The button's text is 'Del All'.
@@ -1679,6 +1679,16 @@ class AudioDownloaderGUI(AudioGUI):
 			#
 			# 		while self.downloadThreadCreated:
 			# 			time.sleep(TIME_SLEEP_SECONDS)
+			
+			while len(self.partiallyDownloadedPlaylistDic) > 0:
+				# some playlist video were partially downloaded
+				for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
+					self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
+					playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
+					self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
+					
+					while self.downloadThreadCreated:
+						time.sleep(TIME_SLEEP_SECONDS)
 	
 	def createDownloadConfirmPopup(self,
 	                               confirmPopupTitle,
