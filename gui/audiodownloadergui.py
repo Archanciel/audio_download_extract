@@ -592,12 +592,33 @@ class AudioDownloaderGUI(AudioGUI):
 			while self.downloadThreadCreated:
 				time.sleep(TIME_SLEEP_SECONDS)
 		
-		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
-		# where two download threads are
-		# created after clicking on 'Yes'
-		# button on the ConfirmPopup dialog
+		self.downloadFromUrlDownloadLstThreadCreated = False    # used to fix a problem on Android
+																# where two download threads are
+																# created after clicking on 'Yes'
+																# button on the ConfirmPopup dialog
 		self.displayUrlDownloadLstEndDownloadInfo()
+		
+		if len(self.partiallyDownloadedPlaylistDic) > 0:
+			endDownloadInfoStr = '\n[b][color=0000FF]FAILED PLAYLISTS LIST {}[/color][/b]\n'.format(
+				self.partiallyDownloadedPlaylistDic)
+		else:
+			endDownloadInfoStr = '\n[b][color=0000FF]FAILED PLAYLISTS LIST EMPTY[/color][/b]\n'
+
+		outputLabelLineLst = self.outputLabel.text.split('\n')
+		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
+
+		if len(self.partiallyDownloadedPlaylistDic) > 0:
+			for item in self.requestListRV.data:
+				itemData = item['data']
+				if itemData.title in self.partiallyDownloadedPlaylistDic:
+					item['toDownload'] = True
+				else:
+					item['toDownload'] = False
+			self.downloadSelectedUrlItems()
 	
+	#		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
+#		histoLines = [{'text': udl.title, 'data': udl, 'toDownload': False, 'selectable': True} for udl in udlLst]
+
 	def downloadFromFailedVideoListOnNewThread(self):
 		"""
 		Called by downloadPlaylistFailedVideos() method which is called by
@@ -644,10 +665,10 @@ class AudioDownloaderGUI(AudioGUI):
 				while self.downloadThreadCreated:
 					time.sleep(TIME_SLEEP_SECONDS)
 		
-		self.downloadFromUrlDownloadLstThreadCreated = False  # used to fix a problem on Android
-		# where two download threads are
-		# created after clicking on 'Yes'
-		# button on the ConfirmPopup dialog
+		self.downloadFromUrlDownloadLstThreadCreated = False    # used to fix a problem on Android
+																# where two download threads are
+																# created after clicking on 'Yes'
+																# button on the ConfirmPopup dialog
 		self.displayFailedVideoRedownloadLstEndDownloadInfo()
 	
 	def executeDownload(self, playlistOrSingleVideoUrl):
@@ -1010,16 +1031,16 @@ class AudioDownloaderGUI(AudioGUI):
 			# The button's text is 'Down All'. Clicking on it does download
 			# the selected URL's, playlist URL's for the most part.
 			self.downloadSelectedItems()
-			
-			# while len(self.partiallyDownloadedPlaylistDic) > 0:
-			# 	# some playlist video were partially downloaded
-			# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
-			# 		self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
-			# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
-			# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
-			#
-			# 		while self.downloadThreadCreated:
-			# 			time.sleep(TIME_SLEEP_SECONDS)
+		
+		# while len(self.partiallyDownloadedPlaylistDic) > 0:
+		# 	# some playlist video were partially downloaded
+		# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
+		# 		self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
+		# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
+		# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
+		#
+		# 		while self.downloadThreadCreated:
+		# 			time.sleep(TIME_SLEEP_SECONDS)
 		else:
 			# here, we are in the state where the list displays the downloaded
 			# playlists or single videos. The button's text is 'Del All'.
@@ -1670,26 +1691,6 @@ class AudioDownloaderGUI(AudioGUI):
 			# button on the ConfirmPopup dialog
 			
 			self.stopDownloadButton.disabled = True
-
-			# if len(self.partiallyDownloadedPlaylistDic) > 0:
-			# 	# some playlist video were partially downloaded
-			# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
-			# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
-			# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
-			#
-			# 		while self.downloadThreadCreated:
-			# 			time.sleep(TIME_SLEEP_SECONDS)
-			
-			while len(self.partiallyDownloadedPlaylistDic) > 0:
-				self.outputResult(self.partiallyDownloadedPlaylistDic.keys)
-				# some playlist video were partially downloaded
-				for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
-					self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
-					playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
-					self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
-					
-					while self.downloadThreadCreated:
-						time.sleep(TIME_SLEEP_SECONDS)
 	
 	def createDownloadConfirmPopup(self,
 	                               confirmPopupTitle,
@@ -1765,11 +1766,11 @@ class AudioDownloaderGUI(AudioGUI):
 		self.increasePlaylistVideoDownloadNumber(originalPlaylistTitle=originalPlaylistTitle)
 		self.updateStatusBar(msgText)
 		self.outputResult(msgText)
-
+	
 	def displayPlaylistReDownloadInfo(self, originalPlaylistTitle):
 		msgText = 're-downloading \n[b][color=0000FF]{}[/color][/b] playlist'.format(originalPlaylistTitle)
 		self.outputResult(msgText)
-
+	
 	def increasePlaylistVideoDownloadNumber(self, originalPlaylistTitle):
 		if originalPlaylistTitle in self.partiallyDownloadedPlaylistDic:
 			self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] += 1
@@ -2120,9 +2121,9 @@ class AudioDownloaderGUI(AudioGUI):
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		
 		endDownloadInfoStr = self.buildEndDownloadInfoStr()
-		
+
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
-	
+
 	def displayFailedVideoRedownloadLstEndDownloadInfo(self):
 		"""
 		Method called when the failed video re-download on PC is finished.
@@ -2137,6 +2138,7 @@ class AudioDownloaderGUI(AudioGUI):
 			endDownloadInfoStr += self.formatRedownloadedVideoMsgLst(redownloadedVideoMsgLst)
 		
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
+	
 	
 	def formatRedownloadedVideoMsgLst(self, msgLineLst):
 		formattedMsgStr = '\n\n[b][color=00FF00]REDOWNLOADED FAILED VIDEOS[/color][/b]'
@@ -2154,11 +2156,13 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		return formattedMsgStr
 	
+	
 	def addToOutputLabelStr(self, endDownloadInfoStr, outputLabelLineLst):
 		outputLabelLineLst = outputLabelLineLst[:-1]
 		outputLabelLineLst.append(endDownloadInfoStr)
 		self.outputLabel.text = outputLabelLineLst[0] + '\n' + '\n'.join(outputLabelLineLst[1:])
 		self.isFirstCurrentDownloadInfo = True
+	
 	
 	def buildEndDownloadInfoStr(self):
 		if self.totalDownloadVideoSuccessNb < 2:
@@ -2181,10 +2185,8 @@ class AudioDownloaderGUI(AudioGUI):
 			self.totalDownloadVideoSkippedNb,
 			videoSkippedStr)
 		
-		if len(self.partiallyDownloadedPlaylistDic) > 0:
-			self.downloadFromUrlDownloadLstOnNewThread()
-		
 		return endDownloadInfoStr
+	
 	
 	def createYesNoPopup(self,
 	                     yesNoPopupTitle,
@@ -2201,7 +2203,7 @@ class AudioDownloaderGUI(AudioGUI):
 		:param yesNoPopupCallbackFunction:  function called when the user click on
 											yes or no button
 		:param isPlayListDownloaded         currently not used
-
+	
 		:return:
 		"""
 		popupSize = None
@@ -2234,13 +2236,14 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		return popup
 	
+	
 	def onPrefixSuffixFileNameConfirmYesNoPopupAnswer(self, yesNoPopupInstance, answer):
 		"""
 		Method called when one of the YesNoPopup button is pushed. The
 		YesNoPopup is displayed when it is necessary to get user
 		confirmation of the way the downloaded files will be renamed
 		using video download date prefix or/and video upload date suffix.
-
+	
 		:param yesNoPopupInstance:
 		:param answer:
 		"""
@@ -2271,6 +2274,7 @@ class AudioDownloaderGUI(AudioGUI):
 		
 		popup = yesNoPopupInstance.parent.parent.parent
 		popup.dismiss()
+	
 	
 	def downloadPlaylistAudioOnNewThread(self):
 		"""
