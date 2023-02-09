@@ -1670,7 +1670,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# button on the ConfirmPopup dialog
 			
 			self.stopDownloadButton.disabled = True
-			#
+
 			# if len(self.partiallyDownloadedPlaylistDic) > 0:
 			# 	# some playlist video were partially downloaded
 			# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
@@ -1681,6 +1681,7 @@ class AudioDownloaderGUI(AudioGUI):
 			# 			time.sleep(TIME_SLEEP_SECONDS)
 			
 			while len(self.partiallyDownloadedPlaylistDic) > 0:
+				self.outputResult(self.partiallyDownloadedPlaylistDic.keys)
 				# some playlist video were partially downloaded
 				for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
 					self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
@@ -1779,7 +1780,7 @@ class AudioDownloaderGUI(AudioGUI):
 		if originalPlaylistTitle in self.partiallyDownloadedPlaylistDic:
 			downloadingVideoNumber = self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] - 1;
 			if downloadingVideoNumber == 0:
-				del self.partiallyDownloadedPlaylistDic[originalPlaylistTitle]
+				self.partiallyDownloadedPlaylistDic.pop(originalPlaylistTitle)
 			else:
 				self.partiallyDownloadedPlaylistDic[originalPlaylistTitle] = downloadingVideoNumber
 		else:
@@ -2147,6 +2148,9 @@ class AudioDownloaderGUI(AudioGUI):
 			else:
 				# playlist dir
 				formattedMsgStr += '\n\n[b][color=00FF00]' + line.replace('/', sep) + '[/color][/b]'
+				playlistName = line.rsplit('/', 1)[-1]
+				self.decreasePlaylistVideoDownloadNumber(playlistName)
+				self.outputResult(playlistName + ' decreased ------')
 		
 		return formattedMsgStr
 	
