@@ -607,13 +607,15 @@ class AudioDownloaderGUI(AudioGUI):
 		outputLabelLineLst = self.outputLabel.text.split('\n')
 		self.addToOutputLabelStr(endDownloadInfoStr, outputLabelLineLst)
 
-		if len(self.partiallyDownloadedPlaylistDic) > 0:
+		if not self.downloadThreadCreated and len(self.partiallyDownloadedPlaylistDic) > 0:
 			for item in self.requestListRV.data:
 				itemData = item['data']
 				if itemData.title in self.partiallyDownloadedPlaylistDic:
 					item['toDownload'] = True
 				else:
 					item['toDownload'] = False
+					
+			# calling the method linked to the Download All button
 			self.downloadSelectedUrlItems()
 	
 	#		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
