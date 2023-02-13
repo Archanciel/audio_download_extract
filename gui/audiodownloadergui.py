@@ -612,15 +612,22 @@ class AudioDownloaderGUI(AudioGUI):
 				itemData = item['data']
 				if itemData.title in self.partiallyDownloadedPlaylistDic:
 					item['toDownload'] = True
+					# since the partiallyDownloadedPlaylistDic will be updated
+					# again in case the next call to downloadSelectedUrlItems()
+					# causes the re-addition of the removed playlist, the
+					# playlist must be suppressed here.
+					# self.partiallyDownloadedPlaylistDic.pop(itemData.title)
+					
+					# in fact, the next instruction is be better since it
+					# improves the case where more than one video in the
+					# playlist were partially downloaded.
+					self.decreasePlaylistVideoDownloadNumber()
 				else:
 					item['toDownload'] = False
 					
 			# calling the method linked to the Download All button
 			self.downloadSelectedUrlItems()
 	
-	#		udlLst = self.downloadUrlInfoDic.getAllUrlDownloadDataSortedList()
-#		histoLines = [{'text': udl.title, 'data': udl, 'toDownload': False, 'selectable': True} for udl in udlLst]
-
 	def downloadFromFailedVideoListOnNewThread(self):
 		"""
 		Called by downloadPlaylistFailedVideos() method which is called by
@@ -1033,16 +1040,6 @@ class AudioDownloaderGUI(AudioGUI):
 			# The button's text is 'Down All'. Clicking on it does download
 			# the selected URL's, playlist URL's for the most part.
 			self.downloadSelectedItems()
-		
-		# while len(self.partiallyDownloadedPlaylistDic) > 0:
-		# 	# some playlist video were partially downloaded
-		# 	for originalPlaylistTitle in self.partiallyDownloadedPlaylistDic.keys():
-		# 		self.displayPlaylistReDownloadInfo(originalPlaylistTitle)
-		# 		playlistUrl = self.downloadUrlInfoDic.getUrlForUrlTitle(originalPlaylistTitle)
-		# 		self.downloadPlaylistOrSingleVideoAudioFromUrlLst(playlistUrl)
-		#
-		# 		while self.downloadThreadCreated:
-		# 			time.sleep(TIME_SLEEP_SECONDS)
 		else:
 			# here, we are in the state where the list displays the downloaded
 			# playlists or single videos. The button's text is 'Del All'.
