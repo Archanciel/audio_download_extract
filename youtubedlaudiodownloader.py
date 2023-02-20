@@ -49,7 +49,7 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		
 		self.ydl_opts = {
 			# 'format': 'bestaudio/best',   # for unknown reason, not working on
-			#                               # Android when used by AudioDownloaderGUI !
+			#                               # Android when used by AudioDownloaderGUI.
 			'format': 'worstaudio/worst',   # this fixes the error AttributeError:
 											# 'str' object has no attribute 'write'
 			'quiet': YOUTUBE_DL_QUIET,
@@ -144,7 +144,8 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 		downloadDatePrefix = self.buildDownloadDatePrefix()
 			
 		with youtube_dl.YoutubeDL(self.ydl_opts) as ydl:
-			for videoUrl in playlistObject.video_urls:
+			for video in playlistObject.videos:
+				videoUrl = video.watch_url
 				if self.audioController.stopDownloading:
 					msgText = '[b]{}[/b] playlist audio(s) download interrupted.\n'.format(
 						downloadVideoInfoDic.getPlaylistNameOriginal())
@@ -163,21 +164,24 @@ class YoutubeDlAudioDownloader(AudioDownloader):
 				
 				formattedUploadDateSuffix = ''
 				isCurrentVideoDowloadProblem = False
-				
-				try:
-					meta = ydl.extract_info(videoUrl, download=False)
-					videoTitle = meta['title']
-					
-					if isUploadDateSuffixAddedToPlaylistVideo:
-						uploadDate = meta['upload_date']
-						formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
-				except AttributeError as e:
-					msgText = 'obtaining video title and upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
-					self.audioController.displayError(msgText)
-					self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
-					playlistDownloadedVideoNb_failed += 1
+				videoTitle = video.title
+				uploadDate = video.publish_date
+				formattedUploadDateSuffix = uploadDate.strftime(' %y-%m-%d')
 
-					continue
+				# try:
+				# 	meta = ydl.extract_info(videoUrl, download=False)
+				# 	videoTitle = meta['title']
+				#
+				# 	if isUploadDateSuffixAddedToPlaylistVideo:
+				# 		uploadDate = meta['upload_date']
+				# 		formattedUploadDateSuffix = datetime.datetime.strptime(uploadDate, '%Y%m%d').strftime(' %y-%m-%d')
+				# except AttributeError as e:
+				# 	msgText = 'obtaining video title and upload date [b][color=FF0000]failed[/color][/b] with error {}.\n'.format(e)
+				# 	self.audioController.displayError(msgText)
+				# 	self.displayRetryPlaylistDownloadMsg(downloadVideoInfoDic)
+				# 	playlistDownloadedVideoNb_failed += 1
+				#
+				# 	continue
 				
 				if videoTitle:
 					purgedVideoTitle = DirUtil.replaceUnauthorizedDirOrFileNameChars(videoTitle)
