@@ -213,13 +213,13 @@ class ConfigManager:
 		self._updated = True
 	
 	@property
-	def singleVideoDataPath(self):
-		return self.__singleVideoDataPath
-	
-	@singleVideoDataPath.setter
 	def singleVideoDataPath(self, singleVideoDataPathStr):
 		self.__singleVideoDataPath = singleVideoDataPathStr
 		self._updated = True
+	
+	@property
+	def singleVideoDataPath(self):
+		return self.__singleVideoDataPath
 	
 	@property
 	def excludedAudioSubdirNameLst(self):
